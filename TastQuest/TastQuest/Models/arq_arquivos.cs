@@ -20,11 +20,13 @@ namespace TastQuest.Models
         [StringLength(40)]
         public string arq_caminho { get; set; }
         
+        [Required]
         public int arq_tamanho { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime arq_data_upload { get; set; }
 
+        [Required]
         public virtual tsk_task tsk_task { get; set; }
 
     }
