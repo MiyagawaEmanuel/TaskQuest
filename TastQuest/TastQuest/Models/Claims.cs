@@ -9,11 +9,10 @@ namespace TaskQuest.Models
     {
         public Claims()
         {
-            Id = Guid.NewGuid();
         }
 
         [Key]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Required(AllowEmptyStrings = false, ErrorMessage = "Fornceça um nome para a Claim")]
         [MaxLength(128, ErrorMessage = "Tamanho máximo {0} excedido")]

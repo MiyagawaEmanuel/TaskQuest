@@ -1,10 +1,9 @@
 namespace TastQuest.Models
 {
     using System;
-    using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.msg_mensagem")]
     public partial class msg_mensagem
@@ -12,7 +11,7 @@ namespace TastQuest.Models
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int msg_id { get; set; }
-
+        
         public int usu_id_remetente { get; set; }
 
         public int? usu_id_destinatario { get; set; }
@@ -28,8 +27,8 @@ namespace TastQuest.Models
 
         public virtual gru_grupo gru_grupo { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
 
-        public virtual usu_usuario usu_usuario1 { get; set; }
+        public virtual ApplicationUser usu_usuario1 { get; set; }
     }
 }

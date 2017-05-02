@@ -5,6 +5,7 @@ namespace TastQuest.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.qst_quest")]
     public partial class qst_quest
@@ -51,7 +52,7 @@ namespace TastQuest.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tsk_task> tsk_task { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<sem_semana> sem_semana { get; set; }

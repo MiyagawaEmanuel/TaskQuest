@@ -12,9 +12,9 @@ namespace TaskQuest.Identity
 {
     // Configuração do UserManager Customizado
 
-    public class ApplicationUserManager : UserManager<ApplicationUser>
+    public class ApplicationUserManager : UserManager<ApplicationUser, int>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser> store)
+        public ApplicationUserManager(IUserStore<ApplicationUser, int> store)
             : base(store)
         {
         }
@@ -22,10 +22,10 @@ namespace TaskQuest.Identity
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
             IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new UserStore<ApplicationUser>(context.Get<ApplicationDbContext>()));
+            var manager = new ApplicationUserManager(new CustomUserStore(context.Get<DbContext>()));
 
             // Configurando validator para nome de usuario
-            manager.UserValidator = new UserValidator<ApplicationUser>(manager)
+            manager.UserValidator = new UserValidator<ApplicationUser, int>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -35,7 +35,7 @@ namespace TaskQuest.Identity
             manager.PasswordValidator = new PasswordValidator
             {
                 RequiredLength = 6,
-                RequireNonLetterOrDigit = true,
+                RequireNonLetterOrDigit = false,
                 RequireDigit = true,
                 RequireLowercase = true,
                 RequireUppercase = true,
@@ -44,19 +44,7 @@ namespace TaskQuest.Identity
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
-
-            // Registrando os providers para Two Factor.
-            manager.RegisterTwoFactorProvider("Código via SMS", new PhoneNumberTokenProvider<ApplicationUser>
-            {
-                MessageFormat = "Seu código de segurança é: {0}"
-            });
-
-            manager.RegisterTwoFactorProvider("Código via E-mail", new EmailTokenProvider<ApplicationUser>
-            {
-                Subject = "Código de Segurança",
-                BodyFormat = "Seu código de segurança é: {0}"
-            });
-
+            
             // Definindo a classe de serviço de e-mail
             manager.EmailService = new EmailService();
             
@@ -65,7 +53,7 @@ namespace TaskQuest.Identity
             if (dataProtectionProvider != null)
             {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser>(dataProtectionProvider.Create("ASP.NET Identity"));
+                    new DataProtectorTokenProvider<ApplicationUser, int>(dataProtectionProvider.Create("TaskQuest Token"));
             }
 
             return manager;

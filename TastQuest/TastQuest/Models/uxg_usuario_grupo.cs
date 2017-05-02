@@ -5,6 +5,7 @@ namespace TastQuest.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.uxg_usuario_grupo")]
     public partial class uxg_usuario_grupo
@@ -23,6 +24,6 @@ namespace TastQuest.Models
 
         public virtual gru_grupo gru_grupo { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
     }
 }

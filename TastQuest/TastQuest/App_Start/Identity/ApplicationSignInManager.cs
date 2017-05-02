@@ -5,7 +5,7 @@ using Microsoft.Owin.Security;
 
 namespace TaskQuest.Identity
 {
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, string>
+    public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
     {
 
         public ApplicationSignInManager(ApplicationUserManager userManager, IAuthenticationManager authenticationManager)

@@ -5,6 +5,7 @@ namespace TastQuest.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.tel_telefone")]
     public partial class tel_telefone
@@ -26,6 +27,6 @@ namespace TastQuest.Models
         [StringLength(15)]
         public string tel_tipo { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
     }
 }

@@ -152,9 +152,9 @@ namespace TaskQuest.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(string userId, string code)
+        public async Task<ActionResult> ConfirmEmail(int userId, string code)
         {
-            if (userId == null || code == null)
+            if (userId == 0 || code == null)
             {
                 return View("Error");
             }
@@ -284,7 +284,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> PickColor(string color)
         {
-            await UserManager.AddClaimAsync(User.Identity.GetUserId(), new Claim("Color", color));
+            await UserManager.AddClaimAsync(User.Identity.GetUserId<int>(), new Claim("Color", color));
             return View("Inicio");
         }
 
@@ -350,7 +350,7 @@ namespace TaskQuest.Controllers
         private async Task SignOutAsync()
         {
             var clientKey = Request.Browser.Type;
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = UserManager.FindById(User.Identity.GetUserId<int>());
             await UserManager.SignOutClientAsync(user, clientKey);
             AuthenticationManager.SignOut();
         }
@@ -359,7 +359,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> SignOutEverywhere()
         {
-            UserManager.UpdateSecurityStamp(User.Identity.GetUserId());
+            UserManager.UpdateSecurityStamp(User.Identity.GetUserId<int>());
             await SignOutAsync();
             return RedirectToAction("Index", "Home");
         }
@@ -368,7 +368,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SignOutClient(int clientId)
         {
-            var user = UserManager.FindById(User.Identity.GetUserId());
+            var user = UserManager.FindById(User.Identity.GetUserId<int>());
             var client = user.Clients.SingleOrDefault(c => c.Id == clientId);
             if (client != null)
             {

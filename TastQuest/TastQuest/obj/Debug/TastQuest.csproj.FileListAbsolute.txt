@@ -256,3 +256,5 @@ C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\bin\SendGrid.pdb
 C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\bin\SendGrid.xml
 C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\bin\SendGrid.SmtpApi.pdb
 C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\bin\SendGrid.SmtpApi.dll.config
+C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\obj\Debug\TastQuest.Migrations.Identity.resources
+C:\Users\Emanuel\Source\Repos\TaskQuest\TastQuest\TastQuest\obj\Debug\TastQuest.csproj.GenerateResource.Cache

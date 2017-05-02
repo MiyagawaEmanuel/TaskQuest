@@ -5,6 +5,7 @@ namespace TastQuest.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.pre_precedencia")]
     public partial class pre_precedencia
@@ -30,6 +31,6 @@ namespace TastQuest.Models
 
         public virtual tsk_task tsk_task1 { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
     }
 }

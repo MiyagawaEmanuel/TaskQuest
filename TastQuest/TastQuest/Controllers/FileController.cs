@@ -26,6 +26,7 @@ namespace TestAjaxUpload
                         myFile.SaveAs(Path.Combine(pathForSaving, myFile.FileName));
                         isUploaded = true;
                         message = "File uploaded successfully!";
+                        //Colocar a informação no nome e caminho do arquivo no banco
                     }
                     catch (Exception ex)
                     {

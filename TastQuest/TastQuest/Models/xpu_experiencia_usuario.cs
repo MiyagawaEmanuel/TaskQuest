@@ -5,6 +5,7 @@ namespace TastQuest.Models
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
     using System.Data.Entity.Spatial;
+    using TaskQuest.Models;
 
     [Table("taskquest.xpu_experiencia_usuario")]
     public partial class xpu_experiencia_usuario
@@ -25,6 +26,6 @@ namespace TastQuest.Models
 
         public virtual tsk_task tsk_task { get; set; }
 
-        public virtual usu_usuario usu_usuario { get; set; }
+        public virtual ApplicationUser usu_usuario { get; set; }
     }
 }
