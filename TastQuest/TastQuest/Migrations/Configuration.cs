@@ -1,4 +1,4 @@
-namespace TastQuest.Migrations
+namespace TaskQuest.Migrations
 {
     using System;
     using System.Data.Entity;
