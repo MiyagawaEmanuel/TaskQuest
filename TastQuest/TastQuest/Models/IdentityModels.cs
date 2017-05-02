@@ -23,7 +23,6 @@ namespace TaskQuest.Models
             pre_precedencia = new HashSet<pre_precedencia>();
             qst_quest = new HashSet<qst_quest>();
             tel_telefone = new HashSet<tel_telefone>();
-            arq_arquivos = new HashSet<arq_arquivos>();
             uxg_usuario_grupo = new HashSet<uxg_usuario_grupo>();
             xpu_experiencia_usuario = new HashSet<xpu_experiencia_usuario>();
         }
@@ -61,9 +60,6 @@ namespace TaskQuest.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<tel_telefone> tel_telefone { get; set; }
-
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<arq_arquivos> arq_arquivos { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<uxg_usuario_grupo> uxg_usuario_grupo { get; set; }
