@@ -19,9 +19,9 @@ namespace TastQuest.Models
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int tsk_id { get; set; }
 
-        public int xpu_valor { get; set; }
+        public int xpg_valor { get; set; }
 
-        public DateTime xpu_data { get; set; }
+        public DateTime xpg_data { get; set; }
 
         public virtual gru_grupo gru_grupo { get; set; }
 
