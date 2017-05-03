@@ -17,6 +17,7 @@ namespace TastQuest.Models
             pre_precedencia1 = new HashSet<pre_precedencia>();
             xpu_experiencia_usuario = new HashSet<xpu_experiencia_usuario>();
             xpg_experiencia_grupo = new HashSet<xpg_experiencia_grupo>();
+            arq_arquivos = new HashSet<arq_arquivos>();
         }
 
         [Key]
@@ -57,5 +58,8 @@ namespace TastQuest.Models
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<xpg_experiencia_grupo> xpg_experiencia_grupo { get; set; }
+
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<arq_arquivos> arq_arquivos { get; set; }
     }
 }

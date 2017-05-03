@@ -3,7 +3,7 @@ namespace TastQuest.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class Identity : DbMigration
+    public partial class InitialMigration : DbMigration
     {
         public override void Up()
         {
@@ -16,14 +16,11 @@ namespace TastQuest.Migrations
                         arq_caminho = c.String(nullable: false, maxLength: 40, unicode: false),
                         arq_tamanho = c.Int(nullable: false),
                         arq_data_upload = c.DateTime(nullable: false, precision: 0),
-                        ApplicationUser_Id = c.Int(),
-                        tsk_task_tsk_id = c.Int(),
+                        tsk_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.arq_id)
-                .ForeignKey("taskquest.usu_usuario", t => t.ApplicationUser_Id)
-                .ForeignKey("taskquest.tsk_task", t => t.tsk_task_tsk_id)
-                .Index(t => t.ApplicationUser_Id)
-                .Index(t => t.tsk_task_tsk_id);
+                .ForeignKey("taskquest.tsk_task", t => t.tsk_id, cascadeDelete: true)
+                .Index(t => t.tsk_id);
             
             CreateTable(
                 "taskquest.tsk_task",
@@ -143,13 +140,9 @@ namespace TastQuest.Migrations
                         EmailConfirmed = c.Boolean(nullable: false),
                         PasswordHash = c.String(unicode: false),
                         SecurityStamp = c.String(unicode: false),
-                        PhoneNumber = c.String(unicode: false),
-                        PhoneNumberConfirmed = c.Boolean(nullable: false),
-                        TwoFactorEnabled = c.Boolean(nullable: false),
                         LockoutEndDateUtc = c.DateTime(precision: 0),
                         LockoutEnabled = c.Boolean(nullable: false),
                         AccessFailedCount = c.Int(nullable: false),
-                        UserName = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.Id);
             
@@ -229,16 +222,15 @@ namespace TastQuest.Migrations
                 "taskquest.tel_telefone",
                 c => new
                     {
-                        tel_id = c.Int(nullable: false),
+                        tel_id = c.Int(nullable: false, identity: true),
                         usu_id = c.Int(nullable: false),
                         tel_ddd = c.Int(nullable: false),
                         tel_numero = c.Int(nullable: false),
                         tel_tipo = c.String(nullable: false, maxLength: 15, unicode: false),
-                        usu_usuario_Id = c.Int(),
                     })
-                .PrimaryKey(t => new { t.tel_id, t.usu_id })
-                .ForeignKey("taskquest.usu_usuario", t => t.usu_usuario_Id)
-                .Index(t => t.usu_usuario_Id);
+                .PrimaryKey(t => t.tel_id)
+                .ForeignKey("taskquest.usu_usuario", t => t.usu_id, cascadeDelete: true)
+                .Index(t => t.usu_id);
             
             CreateTable(
                 "taskquest.uxg_usuario_grupo",
@@ -247,13 +239,12 @@ namespace TastQuest.Migrations
                         usu_id = c.Int(nullable: false),
                         gru_id = c.Int(nullable: false),
                         uxg_administrador = c.Boolean(nullable: false),
-                        usu_usuario_Id = c.Int(),
                     })
                 .PrimaryKey(t => new { t.usu_id, t.gru_id })
                 .ForeignKey("taskquest.gru_grupo", t => t.gru_id, cascadeDelete: true)
-                .ForeignKey("taskquest.usu_usuario", t => t.usu_usuario_Id)
+                .ForeignKey("taskquest.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.gru_id)
-                .Index(t => t.usu_usuario_Id);
+                .Index(t => t.usu_id);
             
             CreateTable(
                 "taskquest.xpu_experiencia_usuario",
@@ -263,13 +254,12 @@ namespace TastQuest.Migrations
                         tsk_id = c.Int(nullable: false),
                         xpu_valor = c.Int(nullable: false),
                         xpu_data = c.DateTime(nullable: false, precision: 0),
-                        usu_usuario_Id = c.Int(),
                     })
                 .PrimaryKey(t => new { t.usu_id, t.tsk_id })
                 .ForeignKey("taskquest.tsk_task", t => t.tsk_id, cascadeDelete: true)
-                .ForeignKey("taskquest.usu_usuario", t => t.usu_usuario_Id)
+                .ForeignKey("taskquest.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.tsk_id)
-                .Index(t => t.usu_usuario_Id);
+                .Index(t => t.usu_id);
             
             CreateTable(
                 "taskquest.xpg_experiencia_grupo",
@@ -333,7 +323,6 @@ namespace TastQuest.Migrations
         public override void Down()
         {
             DropForeignKey("dbo.CustomUserRoles", "CustomRole_CustomRoleId", "dbo.CustomRoles");
-            DropForeignKey("taskquest.arq_arquivos", "tsk_task_tsk_id", "taskquest.tsk_task");
             DropForeignKey("taskquest.pre_precedencia", "tsk_id_precedente", "taskquest.tsk_task");
             DropForeignKey("taskquest.pre_precedencia", "tsk_id_antecedente", "taskquest.tsk_task");
             DropForeignKey("taskquest.tsk_task", "qst_id", "taskquest.qst_quest");
@@ -359,8 +348,8 @@ namespace TastQuest.Migrations
             DropForeignKey("taskquest.crt_cartao", "usu_usuario_usu_id", "taskquest.usu_usuario");
             DropForeignKey("dbo.AspNetClients", "ApplicationUser_Id", "taskquest.usu_usuario");
             DropForeignKey("dbo.CustomUserClaims", "Id", "taskquest.usu_usuario");
-            DropForeignKey("taskquest.arq_arquivos", "ApplicationUser_Id", "taskquest.usu_usuario");
             DropForeignKey("taskquest.feb_feedback", "tsk_id", "taskquest.tsk_task");
+            DropForeignKey("taskquest.arq_arquivos", "tsk_id", "taskquest.tsk_task");
             DropIndex("taskquest.qxs_quest_semana", new[] { "sem_id" });
             DropIndex("taskquest.qxs_quest_semana", new[] { "qst_id" });
             DropIndex("taskquest.xpg_experiencia_grupo", new[] { "tsk_id" });
@@ -388,8 +377,7 @@ namespace TastQuest.Migrations
             DropIndex("taskquest.pre_precedencia", new[] { "qst_id_antecedente" });
             DropIndex("taskquest.feb_feedback", new[] { "tsk_id" });
             DropIndex("taskquest.tsk_task", new[] { "qst_id" });
-            DropIndex("taskquest.arq_arquivos", new[] { "tsk_task_tsk_id" });
-            DropIndex("taskquest.arq_arquivos", new[] { "ApplicationUser_Id" });
+            DropIndex("taskquest.arq_arquivos", new[] { "tsk_id" });
             DropTable("taskquest.qxs_quest_semana");
             DropTable("dbo.CustomRoles");
             DropTable("dbo.AspNetClaims");

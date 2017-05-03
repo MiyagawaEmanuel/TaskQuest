@@ -4,12 +4,16 @@ using TastQuest.Models;
 
 namespace TaskQuest.Models
 {
+    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
     public class DbContext : IdentityDbContext<ApplicationUser, CustomRole, int,
         CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public DbContext()
             : base("DefaultConnection")
         {
+            Database.SetInitializer(new DropCreateDatabaseAlways<DbContext>());
+            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
+
         }
 
         public virtual DbSet<Client> Client { get; set; }
@@ -125,8 +129,8 @@ namespace TaskQuest.Models
                 .IsUnicode(false);
 
             modelBuilder.Entity<arq_arquivos>()
-                            .Property(e => e.arq_caminho)
-                            .IsUnicode(false);
+                .Property(e => e.arq_caminho)
+                .IsUnicode(false);
 
             modelBuilder.Entity<tsk_task>()
                 .Property(e => e.tsk_nome)
@@ -187,6 +191,7 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.usu_usuario)
                 .HasForeignKey(e => e.usu_id_criador)
                 .WillCascadeOnDelete();
+
         }
 
     }

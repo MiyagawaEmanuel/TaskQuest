@@ -25,6 +25,8 @@ namespace TastQuest.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime arq_data_upload { get; set; }
 
+        public int tsk_id { get; set; }
+
         public virtual tsk_task tsk_task { get; set; }
 
     }

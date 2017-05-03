@@ -13,9 +13,7 @@ namespace TastQuest.Models
         [Key]
         [Column(Order = 0)]
         public int tel_id { get; set; }
-
-        [Key]
-        [Column(Order = 1)]
+        
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int usu_id { get; set; }
 
