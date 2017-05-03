@@ -191,6 +191,38 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.usu_usuario)
                 .HasForeignKey(e => e.usu_id_criador)
                 .WillCascadeOnDelete();
+                
+            modelBuilder.Entity<gru_grupo>()
+                .Property(e => e.gru_data_criacao)
+                .HasDefaultValue(DateTime.Now);
+                
+            modelBuilder.Entity<qst_quest>()
+                .Property(e => e.qst_criacao)
+                .HasDefaultValue(DateTime.Now);
+                
+            modelBuilder.Entity<tsk_task>()
+                .Property(e => e.tsk_data_criacao)
+                .HasDefaultValue(DateTime.Now);
+                
+            modelBuilder.Entity<arq_arquivos>()
+                .Property(e => e.arq_data_upload)
+                .HasDefaultValue(DateTime.Now);
+                
+            modelBuilder.Entity<xpg_experiencia_grupo>()
+                .Property(e => e.xpg_valor)
+                .HasDefaultValue(0);
+                
+            modelBuilder.Entity<xpg_experiencia_grupo>()
+                .Property(e => e.xpg_data)
+                .HasDefaultValue(DateTime.Now);
+                
+            modelBuilder.Entity<xpu_experiencia_usuario>()
+                .Property(e => e.xpu_valor)
+                .HasDefaultValue(0);
+                
+            modelBuilder.Entity<xpu_experiencia_usuario>()
+                .Property(e => e.xpu_data)
+                .HasDefaultValue(DateTime.Now);
 
         }
 
