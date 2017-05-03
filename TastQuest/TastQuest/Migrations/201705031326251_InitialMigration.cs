@@ -11,7 +11,7 @@ namespace TastQuest.Migrations
                 "taskquest.arq_arquivos",
                 c => new
                     {
-                        arq_id = c.Int(nullable: false),
+                        arq_id = c.Int(nullable: false, identity: true),
                         arq_nome = c.String(nullable: false, maxLength: 20, unicode: false),
                         arq_caminho = c.String(nullable: false, maxLength: 40, unicode: false),
                         arq_tamanho = c.Int(nullable: false),
@@ -26,7 +26,7 @@ namespace TastQuest.Migrations
                 "taskquest.tsk_task",
                 c => new
                     {
-                        tsk_id = c.Int(nullable: false),
+                        tsk_id = c.Int(nullable: false, identity: true),
                         qst_id = c.Int(nullable: false),
                         tsk_nome = c.String(nullable: false, maxLength: 45, unicode: false),
                         tsk_status = c.Int(nullable: false),
@@ -44,7 +44,7 @@ namespace TastQuest.Migrations
                 "taskquest.feb_feedback",
                 c => new
                     {
-                        feb_id = c.Int(nullable: false),
+                        feb_id = c.Int(nullable: false, identity: true),
                         tsk_id = c.Int(nullable: false),
                         feb_relatorio = c.String(nullable: false, maxLength: 150, unicode: false),
                         feb_nota = c.Int(),
@@ -82,7 +82,7 @@ namespace TastQuest.Migrations
                 "taskquest.qst_quest",
                 c => new
                     {
-                        qst_id = c.Int(nullable: false),
+                        qst_id = c.Int(nullable: false, identity: true),
                         usu_id_criador = c.Int(),
                         gru_id_criador = c.Int(),
                         qst_cor = c.String(nullable: false, maxLength: 45, unicode: false),
@@ -100,7 +100,7 @@ namespace TastQuest.Migrations
                 "taskquest.gru_grupo",
                 c => new
                     {
-                        gru_id = c.Int(nullable: false),
+                        gru_id = c.Int(nullable: false, identity: true),
                         gru_nome = c.String(nullable: false, maxLength: 20, unicode: false),
                         gru_cor = c.String(nullable: false, maxLength: 7, unicode: false),
                         gru_data_criacao = c.DateTime(nullable: false, precision: 0),
@@ -112,7 +112,7 @@ namespace TastQuest.Migrations
                 "taskquest.msg_mensagem",
                 c => new
                     {
-                        msg_id = c.Int(nullable: false),
+                        msg_id = c.Int(nullable: false, identity: true),
                         usu_id_remetente = c.Int(nullable: false),
                         usu_id_destinatario = c.Int(),
                         gru_id_destinatario = c.Int(),
@@ -280,7 +280,7 @@ namespace TastQuest.Migrations
                 "taskquest.sem_semana",
                 c => new
                     {
-                        sem_id = c.Int(nullable: false),
+                        sem_id = c.Int(nullable: false, identity: true),
                         sem_dia = c.String(nullable: false, maxLength: 10, unicode: false),
                         sem_sigla = c.String(nullable: false, maxLength: 1, unicode: false),
                     })
