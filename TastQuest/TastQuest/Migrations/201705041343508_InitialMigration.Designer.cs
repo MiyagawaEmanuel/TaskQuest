@@ -13,7 +13,7 @@ namespace TastQuest.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201705031326251_InitialMigration"; }
+            get { return "201705041343508_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source
