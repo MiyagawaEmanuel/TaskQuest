@@ -7,10 +7,6 @@ namespace TaskQuest.Models
     [Table("AspNetClaims")]
     public class Claims
     {
-        public Claims()
-        {
-        }
-
         [Key]
         public int Id { get; set; }
 

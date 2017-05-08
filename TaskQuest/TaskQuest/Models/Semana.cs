@@ -1,33 +1,34 @@
 namespace TaskQuest.Models
 {
-    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
-    using System.Data.Entity.Spatial;
 
     [Table("sem_semana")]
-    public partial class sem_semana
+    public class Semana
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public sem_semana()
+        public Semana()
         {
-            qst_quest = new HashSet<qst_quest>();
+            Quests = new HashSet<Quest>();
         }
 
         [Key]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
-        public int sem_id { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        [Column("sem_id")]
+        public int Id { get; set; }
 
         [Required]
         [StringLength(10)]
-        public string sem_dia { get; set; }
+        [Column("sem_dia")]
+        public string Dia { get; set; }
 
         [Required]
         [StringLength(1)]
-        public string sem_sigla { get; set; }
+        [Column("sem_sigla")]
+        public string Sigla { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<qst_quest> qst_quest { get; set; }
+        public virtual ICollection<Quest> Quests { get; set; }
     }
 }

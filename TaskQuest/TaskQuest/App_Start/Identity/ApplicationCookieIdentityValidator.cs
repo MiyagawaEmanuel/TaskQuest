@@ -24,13 +24,13 @@ namespace TaskQuest.Identity
             if (!string.IsNullOrEmpty(clientId) && user.Clients.Any(c => c.Id.ToString() == clientId))
             {
                 user.CurrentClientId = clientId;
-                return Task.FromResult(true);
+                return System.Threading.Tasks.Task.FromResult(true);
             }
 
-            return Task.FromResult(false);
+            return System.Threading.Tasks.Task.FromResult(false);
         }
 
-        public static Func<CookieValidateIdentityContext, Task> OnValidateIdentity(TimeSpan validateInterval, Func<ApplicationUserManager, ApplicationUser, Task<ClaimsIdentity>> regenerateIdentity)
+        public static Func<CookieValidateIdentityContext, System.Threading.Tasks.Task> OnValidateIdentity(TimeSpan validateInterval, Func<ApplicationUserManager, ApplicationUser, Task<ClaimsIdentity>> regenerateIdentity)
         {
             return async context =>
             {

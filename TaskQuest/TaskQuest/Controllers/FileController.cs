@@ -3,7 +3,7 @@ using System.IO;
 using System.Web;
 using System.Web.Mvc;
 
-namespace TestAjaxUpload
+namespace TaskQuest.Controllers
 {
     public class FileController : Controller
     {
@@ -17,7 +17,7 @@ namespace TestAjaxUpload
             if (myFile != null && myFile.ContentLength != 0)
             {
                 string pathForSaving = Server.MapPath("~/Uploads");
-                if (this.CreateFolderIfNeeded(pathForSaving))
+                if (CreateFolderIfNeeded(pathForSaving))
                 {
                     try
                     {
