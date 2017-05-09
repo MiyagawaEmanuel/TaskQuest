@@ -1,9 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("crt_cartao")]
     public class Cartao
     {
@@ -11,8 +10,8 @@ namespace TaskQuest.Models
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("crt_id")]
         public int Id { get; set; }
-        
-        [Column("usu_usuario_usu_id")]
+
+        [Column("usu_id")]
         public int UsuarioId { get; set; }
 
         [Required]
@@ -21,7 +20,7 @@ namespace TaskQuest.Models
 
         [Required]
         [Column("crt_numero_cartao")]
-        public String Numero { get; set; }
+        public string Numero { get; set; }
 
         [Required]
         [Column("crt_nome_titular")]
@@ -29,7 +28,7 @@ namespace TaskQuest.Models
 
         [Required]
         [Column("crt_data_vencimento")]
-        public String DataVencimento { get; set; }
+        public string DataVencimento { get; set; }
 
         [Required]
         [Column("crt_codigo_seguranca")]

@@ -125,8 +125,6 @@ C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\D
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Extensions.DependencyInjection.Abstractions.dll
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\System.Runtime.InteropServices.RuntimeInformation.dll
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Extensions.DependencyInjection.Abstractions.xml
-C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
-C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\bin\ApplicationInsights.config
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\bin\roslyn\csc.exe
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\bin\roslyn\csc.exe.config
@@ -222,3 +220,5 @@ C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\bin\pt-br\System.Web
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.dll
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.pdb
+C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._21.resources
+C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache

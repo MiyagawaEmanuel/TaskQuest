@@ -15,7 +15,7 @@ namespace TaskQuest.Identity
         {
             return SendMail(message);
         }
-        
+
         // Implementação de e-mail manual
         private Task SendMail(IdentityMessage message)
         {
@@ -27,8 +27,10 @@ namespace TaskQuest.Identity
                 msg.From = new MailAddress("admin@portal.com.br", "Admin do Portal");
                 msg.To.Add(new MailAddress(message.Destination));
                 msg.Subject = message.Subject;
-                msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
-                msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
+                msg.AlternateViews.Add(
+                    AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Plain));
+                msg.AlternateViews.Add(
+                    AlternateView.CreateAlternateViewFromString(text, null, MediaTypeNames.Text.Html));
 
                 var smtpClient = new SmtpClient("smtp.provedor.com", Convert.ToInt32(587));
                 var credentials = new NetworkCredential(ConfigurationManager.AppSettings["ContaDeEmail"],

@@ -25,8 +25,9 @@ namespace TaskQuest.Models
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Código")]
+        [Display(Name = "Codigo")]
         public string Code { get; set; }
+
         public string ReturnUrl { get; set; }
 
         [Display(Name = "Lembrar este Browser?")]
@@ -34,7 +35,6 @@ namespace TaskQuest.Models
 
         [HiddenInput]
         public int UserId { get; set; }
-
     }
 
     public class SendCodeViewModel
@@ -51,7 +51,7 @@ namespace TaskQuest.Models
     {
         public string ReturnUrl { get; set; }
     }
-    
+
     public class ForgotViewModel
     {
         [Required]
@@ -87,10 +87,11 @@ namespace TaskQuest.Models
         [DataType(DataType.Password)]
         [Display(Name = "Password")]
         public string Password { get; set; }
-        
+
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
+            "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
 
@@ -109,7 +110,8 @@ namespace TaskQuest.Models
 
         [DataType(DataType.Password)]
         [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage = "The password and confirmation password do not match.")]
+        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
+            "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

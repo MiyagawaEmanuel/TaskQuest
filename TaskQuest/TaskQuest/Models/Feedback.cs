@@ -1,9 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("feb_feedback")]
     public class Feedback
     {
@@ -19,18 +19,22 @@ namespace TaskQuest.Models
 
         [Column("feb_nota")]
         public int? Nota { get; set; }
-        
+
         [StringLength(150)]
         [Column("feb_feedback")]
         public string Resposta { get; set; }
 
         [Column("feb_data_conclusao")]
         public DateTime DataConclusao { get; set; }
-        
+
         [Column("tsk_id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TaskId { get; set; }
 
+        [Column("usu_id_responsavel")]
+        public int UsuarioResponsavelId { get; set; }
+
         public virtual Task Task { get; set; }
+
+        public virtual ApplicationUser UsuarioResponsavel { get; set; }
     }
 }

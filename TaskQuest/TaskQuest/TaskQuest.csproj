@@ -126,9 +126,9 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Migrations\201705050239122_InitialMigration.cs" />
-    <Compile Include="Migrations\201705050239122_InitialMigration.Designer.cs">
-      <DependentUpon>201705050239122_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201705091652160_2.1.cs" />
+    <Compile Include="Migrations\201705091652160_2.1.Designer.cs">
+      <DependentUpon>201705091652160_2.1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
@@ -254,8 +254,8 @@
     <Folder Include="App_Data\" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705050239122_InitialMigration.resx">
-      <DependentUpon>201705050239122_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705091652160_2.1.resx">
+      <DependentUpon>201705091652160_2.1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

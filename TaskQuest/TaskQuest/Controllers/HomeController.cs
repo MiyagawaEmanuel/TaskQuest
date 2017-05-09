@@ -1,5 +1,4 @@
 ﻿using System.Web.Mvc;
-using TaskQuest.Models;
 
 namespace TaskQuest.Controllers
 {

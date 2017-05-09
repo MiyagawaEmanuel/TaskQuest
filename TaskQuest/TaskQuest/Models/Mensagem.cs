@@ -1,9 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("msg_mensagem")]
     public class Mensagem
     {
@@ -25,10 +25,10 @@ namespace TaskQuest.Models
         [StringLength(120)]
         [Column("msg_conteudo")]
         public string Conteudo { get; set; }
-        
+
         [Column("msg_data")]
         public DateTime Data { get; set; }
-        
+
         public virtual Grupo GrupoDestinatario { get; set; }
 
         public virtual ApplicationUser UsuarioRemetente { get; set; }

@@ -1,18 +1,19 @@
 using System.Data.Entity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using System.Data.Entity.ModelConfiguration.Conventions;
+using Microsoft.AspNet.Identity.EntityFramework;
+using MySql.Data.Entity;
 
 namespace TaskQuest.Models
 {
-    [DbConfigurationType(typeof(MySql.Data.Entity.MySqlEFConfiguration))]
+    [DbConfigurationType(typeof(MySqlEFConfiguration))]
     public class DbContext : IdentityDbContext<ApplicationUser, CustomRole, int,
         CustomUserLogin, CustomUserRole, CustomUserClaim>
     {
         public DbContext()
             : base("DefaultConnection")
         {
-            DbConfiguration.SetConfiguration(new MySql.Data.Entity.MySqlEFConfiguration());
-            Database.SetInitializer<DbContext>(new DropCreateDatabaseAlways<DbContext>());
+            DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
+            Database.SetInitializer(new DropCreateDatabaseAlways<DbContext>());
         }
 
         public virtual DbSet<Client> Client { get; set; }
@@ -38,7 +39,6 @@ namespace TaskQuest.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
             modelBuilder.Entity<Cartao>()
@@ -105,7 +105,7 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<Quest>()
                 .HasMany(e => e.Precedencias)
-                .WithOptional(e => e.QuestAntecedente)
+                .WithOptional(e => e.QuestPrecedente)
                 .HasForeignKey(e => e.QuestPrecedenteId)
                 .WillCascadeOnDelete();
 
@@ -153,11 +153,11 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.TaskPrecedente)
                 .HasForeignKey(e => e.TaskPrecedenteId)
                 .WillCascadeOnDelete();
-            
+
             modelBuilder.Entity<ApplicationUser>()
                 .Property(e => e.Sobrenome)
                 .IsUnicode(false);
-            
+
             modelBuilder.Entity<ApplicationUser>()
                 .Property(e => e.Sexo)
                 .IsUnicode(false);
@@ -179,9 +179,15 @@ namespace TaskQuest.Models
                 .HasForeignKey(e => e.UsuarioRemetenteId);
 
             modelBuilder.Entity<ApplicationUser>()
-                .HasMany(e => e.Precedencias)
-                .WithRequired(e => e.Responsavel)
-                .HasForeignKey(e => e.ResponsavelId)
+                .HasMany(e => e.Tasks)
+                .WithRequired(e => e.UsuarioResponsavel)
+                .HasForeignKey(e => e.UsuarioResponsavelId)
+                .WillCascadeOnDelete(false);
+
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(e => e.Feedbacks)
+                .WithRequired(e => e.UsuarioResponsavel)
+                .HasForeignKey(e => e.UsuarioResponsavelId)
                 .WillCascadeOnDelete(false);
 
             modelBuilder.Entity<ApplicationUser>()
@@ -189,8 +195,6 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.UsuarioCriador)
                 .HasForeignKey(e => e.UsuarioCriadorId)
                 .WillCascadeOnDelete();
-
         }
-
     }
 }

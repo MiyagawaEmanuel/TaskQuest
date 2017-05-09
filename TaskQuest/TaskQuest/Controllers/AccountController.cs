@@ -1,45 +1,55 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using Microsoft.Owin.Security;
-using System;
+﻿using System;
 using System.Linq;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
+using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.Owin.Security;
 using TaskQuest.Identity;
 using TaskQuest.Models;
+using Task = System.Threading.Tasks.Task;
 
 namespace TaskQuest.Controllers
 {
     [Authorize]
     public class AccountController : Controller
     {
+        // Used for XSRF protection when adding external logins
+        private const string XsrfKey = "XsrfId";
+
+        // Definindo a instancia SignInManager presente no request.
+        private ApplicationSignInManager _signInManager;
+
+        // Definindo a instancia UserManager presente no request.
+        private ApplicationUserManager _userManager;
+
         public AccountController()
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
         }
 
-        // Definindo a instancia UserManager presente no request.
-        private ApplicationUserManager _userManager;
         public ApplicationUserManager UserManager
         {
-            get
-            {
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            }
-            private set
-            {
-                _userManager = value;
-            }
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            private set => _userManager = value;
         }
 
-        private async System.Threading.Tasks.Task SignInAsync(ApplicationUser user, bool isPersistent)
+        public ApplicationSignInManager SignInManager
+        {
+            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            private set => _signInManager = value;
+        }
+
+        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
+
+        private async Task SignInAsync(ApplicationUser user, bool isPersistent)
         {
             var clientKey = Request.Browser.Type;
             await UserManager.SignInClientAsync(user, clientKey);
@@ -47,29 +57,16 @@ namespace TaskQuest.Controllers
             await UserManager.ResetAccessFailedCountAsync(user.Id);
 
             // Coletando Claims externos (se houver)
-            ClaimsIdentity ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+            var ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
 
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie, DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.ApplicationCookie);
+            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie,
+                DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn
-                (
-                    new AuthenticationProperties { IsPersistent = isPersistent },
-                    // Criação da instancia do Identity e atribuição dos Claims
-                    await user.GenerateUserIdentityAsync(UserManager, ext)
-                );
-        }
-
-        // Definindo a instancia SignInManager presente no request.
-        private ApplicationSignInManager _signInManager;
-        public ApplicationSignInManager SignInManager
-        {
-            get
-            {
-                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            }
-            private set
-            {
-                _signInManager = value;
-            }
+            (
+                new AuthenticationProperties {IsPersistent = isPersistent},
+                // Criação da instancia do Identity e atribuição dos Claims
+                await user.GenerateUserIdentityAsync(UserManager, ext)
+            );
         }
 
         //
@@ -88,20 +85,16 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> Login(LoginViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View();
-            }
 
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, shouldLockout: true);
+            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
             switch (result)
             {
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.Email, model.Password);
                     //Se o email do usuário foi ou não confirmado
                     if (!user.EmailConfirmed)
-                    {
                         return View("ConfirmarEmail");
-                    }
                     await SignInAsync(user, model.RememberMe);
                     return View("Inicio");
                 //Se o usuário foi bloqueado por exceder número máximo de tentativar de entrada
@@ -113,7 +106,7 @@ namespace TaskQuest.Controllers
                     return View();
             }
         }
-        
+
         //
         // GET: /Account/Register
         [AllowAnonymous]
@@ -143,8 +136,10 @@ namespace TaskQuest.Controllers
                 if (result.Succeeded)
                 {
                     var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", "Por favor confirme sua conta clicando neste link: <a href='" + callbackUrl + "'></a>");
+                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code},
+                        Request.Url.Scheme);
+                    await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta",
+                        "Por favor confirme sua conta clicando neste link: <a href='" + callbackUrl + "'></a>");
                     ViewBag.Link = callbackUrl;
                     return View("DisplayEmail");
                 }
@@ -161,9 +156,7 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> ConfirmEmail(int userId, string code)
         {
             if (userId == 0 || code == null)
-            {
                 return View("Error");
-            }
             var result = await UserManager.ConfirmEmailAsync(userId, code);
             return View(result.Succeeded ? "Inicio" : "Error");
         }
@@ -186,15 +179,14 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !(await UserManager.IsEmailConfirmedAsync(user.Id)))
-                {
-                    // Não revelar se o usuario nao existe ou nao esta confirmado
+                if (user == null || !await UserManager.IsEmailConfirmedAsync(user.Id))
                     return View("ForgotPasswordConfirmation");
-                }
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha", "Por favor altere sua senha clicando aqui: <a href='" + callbackUrl + "'></a>");
+                var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code},
+                    Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha",
+                    "Por favor altere sua senha clicando aqui: <a href='" + callbackUrl + "'></a>");
                 return View("ForgotPasswordConfirmation");
             }
 
@@ -226,20 +218,13 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-            {
                 return View(model);
-            }
             var user = await UserManager.FindByNameAsync(model.Email);
             if (user == null)
-            {
-                // Não revelar se o usuario nao existe ou nao esta confirmado
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
-            {
                 return RedirectToAction("ResetPasswordConfirmation", "Account");
-            }
             AddErrors(result);
             return View();
         }
@@ -261,26 +246,24 @@ namespace TaskQuest.Controllers
         {
             return new ChallengeResult("Facebook", "/Account/ExternalLoginCallback");
         }
-        
+
         //
         // GET: /Account/ExternalLoginCallback
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback()
         {
-
             var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
             if (loginInfo == null)
-            {
                 return RedirectToAction("Login");
-            }
 
-            var externalIdentity = HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+            var externalIdentity = HttpContext.GetOwinContext().Authentication
+                .GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
             var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:email").Value;
-            var firstName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:first_name").Value;
-            var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;     
+            var firstName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:first_name")
+                .Value;
+            var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
             ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
             return View("PickColor");
-
         }
 
         //
@@ -304,56 +287,14 @@ namespace TaskQuest.Controllers
             //AuthenticationManager.SignOut();
             return RedirectToAction("Index", "Home");
         }
-        
-        // Used for XSRF protection when adding external logins
-        private const string XsrfKey = "XsrfId";
-
-        private IAuthenticationManager AuthenticationManager
-        {
-            get
-            {
-                return HttpContext.GetOwinContext().Authentication;
-            }
-        }
 
         private void AddErrors(IdentityResult result)
         {
             foreach (var error in result.Errors)
-            {
                 ModelState.AddModelError("", error);
-            }
-        }
-        
-        internal class ChallengeResult : HttpUnauthorizedResult
-        {
-            public ChallengeResult(string provider, string redirectUri)
-                : this(provider, redirectUri, null)
-            {
-            }
-
-            public ChallengeResult(string provider, string redirectUri, string userId)
-            {
-                LoginProvider = provider;
-                RedirectUri = redirectUri;
-                UserId = userId;
-            }
-
-            public string LoginProvider { get; set; }
-            public string RedirectUri { get; set; }
-            public string UserId { get; set; }
-
-            public override void ExecuteResult(ControllerContext context)
-            {
-                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
-                if (UserId != null)
-                {
-                    properties.Dictionary[XsrfKey] = UserId;
-                }
-                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
-            }
         }
 
-        private async System.Threading.Tasks.Task SignOutAsync()
+        private async Task SignOutAsync()
         {
             var clientKey = Request.Browser.Type;
             var user = UserManager.FindById(User.Identity.GetUserId<int>());
@@ -377,11 +318,36 @@ namespace TaskQuest.Controllers
             var user = UserManager.FindById(User.Identity.GetUserId<int>());
             var client = user.Clients.SingleOrDefault(c => c.Id == clientId);
             if (client != null)
-            {
                 user.Clients.Remove(client);
-            }
             UserManager.Update(user);
             return RedirectToAction("Index", "Home");
+        }
+
+        internal class ChallengeResult : HttpUnauthorizedResult
+        {
+            public ChallengeResult(string provider, string redirectUri)
+                : this(provider, redirectUri, null)
+            {
+            }
+
+            public ChallengeResult(string provider, string redirectUri, string userId)
+            {
+                LoginProvider = provider;
+                RedirectUri = redirectUri;
+                UserId = userId;
+            }
+
+            public string LoginProvider { get; set; }
+            public string RedirectUri { get; set; }
+            public string UserId { get; set; }
+
+            public override void ExecuteResult(ControllerContext context)
+            {
+                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
+                if (UserId != null)
+                    properties.Dictionary[XsrfKey] = UserId;
+                context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);
+            }
         }
     }
 }

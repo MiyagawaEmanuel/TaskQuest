@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
 using System.Threading.Tasks;
-using TaskQuest.Models;
 using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
-using TaskQuest.Identity;
+using TaskQuest.Models;
 
 namespace TaskQuest.Identity
 {
@@ -38,23 +36,22 @@ namespace TaskQuest.Identity
                 RequireNonLetterOrDigit = false,
                 RequireDigit = true,
                 RequireLowercase = true,
-                RequireUppercase = true,
+                RequireUppercase = true
             };
             // Configuração de Lockout
             manager.UserLockoutEnabledByDefault = true;
             manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
             manager.MaxFailedAccessAttemptsBeforeLockout = 5;
-            
+
             // Definindo a classe de serviço de e-mail
             manager.EmailService = new EmailService();
-            
+
             var dataProtectionProvider = options.DataProtectionProvider;
 
             if (dataProtectionProvider != null)
-            {
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser, int>(dataProtectionProvider.Create("TaskQuest Token"));
-            }
+                    new DataProtectorTokenProvider<ApplicationUser, int>(
+                        dataProtectionProvider.Create("TaskQuest Token"));
 
             return manager;
         }
@@ -63,14 +60,12 @@ namespace TaskQuest.Identity
         public async Task<IdentityResult> SignInClientAsync(ApplicationUser user, string clientKey)
         {
             if (string.IsNullOrEmpty(clientKey))
-            {
                 throw new ArgumentNullException("clientKey");
-            }
 
             var client = user.Clients.SingleOrDefault(c => c.ClientKey == clientKey);
             if (client == null)
             {
-                client = new Client() { ClientKey = clientKey };
+                client = new Client {ClientKey = clientKey};
                 user.Clients.Add(client);
             }
 
@@ -83,15 +78,11 @@ namespace TaskQuest.Identity
         public async Task<IdentityResult> SignOutClientAsync(ApplicationUser user, string clientKey)
         {
             if (string.IsNullOrEmpty(clientKey))
-            {
                 throw new ArgumentNullException("clientKey");
-            }
 
             var client = user.Clients.SingleOrDefault(c => c.ClientKey == clientKey);
             if (client != null)
-            {
                 user.Clients.Remove(client);
-            }
 
             user.CurrentClientId = null;
             return await UpdateAsync(user);

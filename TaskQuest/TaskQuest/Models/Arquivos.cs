@@ -7,7 +7,6 @@ namespace TaskQuest.Models
     [Table("arq_arquivos")]
     public class Arquivo
     {
-        
         [Key]
         [Column("arq_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
@@ -22,10 +21,10 @@ namespace TaskQuest.Models
         [StringLength(40)]
         [Column("arq_caminho")]
         public string Path { get; set; }
-        
+
         [Column("arq_tamanho")]
         public int Size { get; set; }
-        
+
         [Column("arq_data_upload")]
         public DateTime UploadDate { get; set; }
 
@@ -33,6 +32,5 @@ namespace TaskQuest.Models
         public int TaskId { get; set; }
 
         public virtual Task Task { get; set; }
-
     }
 }

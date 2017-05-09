@@ -8,7 +8,6 @@ namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-
         private static List<gru_grupo> lista;
 
         public static List<gru_grupo> Sort(List<gru_grupo> grupos)
@@ -31,9 +30,9 @@ namespace TaskQuest.App_Code
         public static int Particionar(int inicio, int fim)
         {
             string pivo = lista[fim].gru_nome;
-            int i = inicio;
+            var i = inicio;
             gru_grupo aux;
-            for (int j = inicio; j <= fim; j++)
+            for (var j = inicio; j <= fim; j++)
             {
                 if (string.Compare(lista[j].gru_nome, pivo, true) < 0)
                 {

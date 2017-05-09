@@ -1,18 +1,18 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("uxg_usuario_grupo")]
     public class UsuarioGrupo
     {
         [Key]
-        [Column(TypeName = "usu_id", Order = 0)]
+        [Column("usu_id", Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UsuarioId { get; set; }
 
         [Key]
-        [Column(TypeName = "gru_id", Order = 1)]
+        [Column("gru_id", Order = 1)]
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int GrupoId { get; set; }
 

@@ -1,9 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("xpu_experiencia_usuario")]
     public class ExperienciaUsuario
     {
@@ -25,6 +25,6 @@ namespace TaskQuest.Models
 
         public virtual Task Task { get; set; }
 
-        public virtual ApplicationUser Ususario { get; set; }
+        public virtual ApplicationUser Usuario { get; set; }
     }
 }

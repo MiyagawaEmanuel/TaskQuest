@@ -8,6 +8,7 @@ namespace TaskQuest.Models
     {
         [Key]
         public int Id { get; set; }
+
         public string ClientKey { get; set; }
     }
 }

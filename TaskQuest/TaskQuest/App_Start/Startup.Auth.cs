@@ -1,9 +1,9 @@
-﻿using Microsoft.AspNet.Identity;
+﻿using System;
+using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using Microsoft.Owin.Security.Cookies;
 using Owin;
-using System;
 using TaskQuest.Identity;
 using TaskQuest.Models;
 
@@ -30,19 +30,18 @@ namespace TaskQuest
                 {
                     OnValidateIdentity = SecurityStampValidator
                         .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(
-                            validateInterval: TimeSpan.FromMinutes(30),
-                            regenerateIdentityCallback: (manager, user) =>
+                            TimeSpan.FromMinutes(30),
+                            (manager, user) =>
                                 user.GenerateUserIdentityAsync(manager),
-                            getUserIdCallback: (id) => (id.GetUserId<int>()))
+                            id => id.GetUserId<int>())
                 }
             });
             app.UseExternalSignInCookie(DefaultAuthenticationTypes.ExternalCookie);
-            
+
             //Colocar as informações e descomentar!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
             //app.UseFacebookAuthentication(
             //   appId: "",
             //   appSecret: "");
-            
         }
     }
 }

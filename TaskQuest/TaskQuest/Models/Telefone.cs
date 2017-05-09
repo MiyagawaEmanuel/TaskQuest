@@ -1,16 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("tel_telefone")]
     public class Telefone
     {
         [Key]
-        [Column(TypeName = "tel_id", Order = 0)]
+        [Column("tel_id", Order = 0)]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
-        
+
         [DatabaseGenerated(DatabaseGeneratedOption.None)]
         [Column("usu_id")]
         public int UsuarioId { get; set; }

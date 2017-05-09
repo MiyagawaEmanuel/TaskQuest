@@ -1,8 +1,8 @@
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("pre_precedencia")]
     public class Precedencia
     {
@@ -23,9 +23,6 @@ namespace TaskQuest.Models
         [Column("tsk_id_precedente")]
         public int? TaskPrecedenteId { get; set; }
 
-        [Column("usu_id_responsavel_conclusao")]
-        public int ResponsavelId { get; set; }
-
         public virtual Quest QuestAntecedente { get; set; }
 
         public virtual Task TaskAntecedente { get; set; }
@@ -33,7 +30,5 @@ namespace TaskQuest.Models
         public virtual Quest QuestPrecedente { get; set; }
 
         public virtual Task TaskPrecedente { get; set; }
-
-        public virtual ApplicationUser Responsavel { get; set; }
     }
 }

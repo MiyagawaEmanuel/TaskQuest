@@ -1,7 +1,7 @@
-﻿using Microsoft.AspNet.Identity;
-using Microsoft.Owin.Security;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNet.Identity;
+using Microsoft.Owin.Security;
 
 namespace TaskQuest.Models
 {
@@ -57,5 +57,4 @@ namespace TaskQuest.Models
         [Compare("NewPassword", ErrorMessage = "The new password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
     }
-    
 }

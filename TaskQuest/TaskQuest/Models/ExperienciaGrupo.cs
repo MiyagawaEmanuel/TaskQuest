@@ -1,9 +1,9 @@
+using System;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
+
 namespace TaskQuest.Models
 {
-    using System;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-
     [Table("xpg_experiencia_grupo")]
     public class ExperienciaGrupo
     {
@@ -18,7 +18,7 @@ namespace TaskQuest.Models
         public int TaskId { get; set; }
 
         [Column("xpg_valor")]
-        public int valor { get; set; }
+        public int Valor { get; set; }
 
         [Column("xpg_data")]
         public DateTime Data { get; set; }

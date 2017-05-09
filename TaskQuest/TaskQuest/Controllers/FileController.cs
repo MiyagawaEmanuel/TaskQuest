@@ -1,6 +1,5 @@
 ﻿using System;
 using System.IO;
-using System.Web;
 using System.Web.Mvc;
 
 namespace TaskQuest.Controllers
@@ -10,15 +9,14 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public virtual ActionResult UploadFile()
         {
-            HttpPostedFileBase myFile = Request.Files["File"];
-            bool isUploaded = false;
-            string message = "File upload failed";
+            var myFile = Request.Files["File"];
+            var isUploaded = false;
+            var message = "File upload failed";
 
             if (myFile != null && myFile.ContentLength != 0)
             {
-                string pathForSaving = Server.MapPath("~/Uploads");
+                var pathForSaving = Server.MapPath("~/Uploads");
                 if (CreateFolderIfNeeded(pathForSaving))
-                {
                     try
                     {
                         myFile.SaveAs(Path.Combine(pathForSaving, myFile.FileName));
@@ -30,17 +28,15 @@ namespace TaskQuest.Controllers
                     {
                         message = string.Format("File upload failed: {0}", ex.Message);
                     }
-                }
             }
-            return Json(new { isUploaded = isUploaded, message = message }, "text/html");
+            return Json(new {isUploaded, message}, "text/html");
         }
 
-        
+
         private bool CreateFolderIfNeeded(string path)
         {
-            bool result = true;
+            var result = true;
             if (!Directory.Exists(path))
-            {
                 try
                 {
                     Directory.CreateDirectory(path);
@@ -50,7 +46,6 @@ namespace TaskQuest.Controllers
                     /*TODO: You must process this exception.*/
                     result = false;
                 }
-            }
             return result;
         }
     }
