@@ -17,12 +17,12 @@ namespace TaskQuest.App_Code
         command.Parameters.Add(new MySqlParameter(nomeDoParametro, valor););
     }
     
-    public static class ExecuteInsert()
+    public static class Execute()
     {
         
     }
     
-    public static class ExecuteSelect()
+    public static class Select()
     {
     
     }
