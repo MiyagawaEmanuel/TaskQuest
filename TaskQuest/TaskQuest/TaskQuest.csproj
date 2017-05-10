@@ -126,6 +126,8 @@
     <Reference Include="System.EnterpriseServices" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\QuickGrupo.cs" />
+    <Content Include="App_Code\Cursor.cs" />
     <Compile Include="Migrations\201705091652160_2.1.cs" />
     <Compile Include="Migrations\201705091652160_2.1.Designer.cs">
       <DependentUpon>201705091652160_2.1.cs</DependentUpon>
@@ -146,7 +148,7 @@
     <Compile Include="Models\Telefone.cs" />
     <Compile Include="Models\UsuarioGrupo.cs" />
     <Compile Include="Startup.cs" />
-    <Content Include="App_Code\Quicksort.cs" />
+    <Compile Include="App_Code\Quicksort.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Identity\ApplicationCookieIdentityValidator.cs" />
