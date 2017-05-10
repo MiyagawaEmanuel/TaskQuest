@@ -30,7 +30,7 @@ namespace TaskQuest.Models
         public int? GrupoCriadorId { get; set; }
 
         [Required]
-        [StringLength(45)]
+        [StringLength(20)]
         [Column("qst_cor")]
         public string Cor { get; set; }
 
