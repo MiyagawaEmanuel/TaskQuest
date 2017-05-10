@@ -29,7 +29,7 @@ namespace TaskQuest.Models
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(7)]
+        [StringLength(20)]
         [Column("gru_cor")]
         public string Cor { get; set; }
 
