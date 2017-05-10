@@ -41,6 +41,9 @@ namespace TaskQuest.Models
 
         [Column("tsk_duracao")]
         public TimeSpan Duracao { get; set; }
+        
+        [Column("tsk_cor")]
+        public string Cor { get; set; }
 
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         [Column("tsk_data_cricacao")]
