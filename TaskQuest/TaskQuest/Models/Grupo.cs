@@ -16,25 +16,42 @@ namespace TaskQuest.Models
             Mensagens = new HashSet<Mensagem>();
             UsuarioGrupos = new HashSet<UsuarioGrupo>();
             ExperienciaGrupos = new HashSet<ExperienciaGrupo>();
+            DataCriacao = DateTime.Now;
         }
 
         [Key]
         [Column("gru_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; set; }
+        public int Id { get; }
 
         [Required]
         [StringLength(20)]
         [Column("gru_nome")]
-        public string Nome { get; set; }
+        public string Nome 
+        { 
+            get; 
+            set
+            {
+                if((value.Length > 0)&&(value.Length <= 20))
+                    Nome = value;
+            } 
+        }
 
         [Required]
         [StringLength(20)]
         [Column("gru_cor")]
-        public string Cor { get; set; }
+        public string Cor 
+        { 
+            get; 
+            set
+            {
+                if((value.Length > 0)&&(value.Length <= 20))
+                    Cor = value;
+            } 
+        }
 
         [Column("gru_data_cricao")]
-        public DateTime DataCriacao { get; set; }
+        public DateTime DataCriacao { get; private set; }
 
         [Column("gru_plano")]
         public bool Plano { get; set; }
