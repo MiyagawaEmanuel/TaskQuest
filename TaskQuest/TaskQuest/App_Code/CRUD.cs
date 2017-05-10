@@ -5,10 +5,20 @@ using System;
 namespace TaskQuest.App_Code{
     public static class CRUD{
         
-        public void Create(){}
-        public void Read(){}
-        public void Update(){}
-        public void Delete(){}
+        public void Create(Grupo grupo)
+        {
+            try{
+                PropertyInfo attributes = grupo.GetType().GetProperties();
+                string sql = "INSERT INTO gru_grupo(gru_nome, gru_cor, gru_plano) VALUES(?gru_nome, ?gru_cor, ?gru_plano)";
+            }
+            catch(Exception e){}
+        }
+        
+        public void Read(int quntity){}
+        
+        public void Update(int id){}
+        
+        public void Delete(int id){}
         
     }
 }
