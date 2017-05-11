@@ -1,50 +1,66 @@
-﻿<!DOCTYPE html>
-<html>
+<!DOCTYPE html>
+<html lang="pt-br">
 <head>
-    <meta charset="utf-8"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
-    @Styles.Render("~/Content/css")
-    @Scripts.Render("~/bundles/modernizr")
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, user-scalable=no">
+    <title>Layout</title>
 
-</head>
+    <!-- Styles -->
+    <link rel="stylesheet" href="css/font-awesome.min.css">
+    <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700'
+          rel='stylesheet' type='text/css'>
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/layout.css">
+
 <body>
-<div class="navbar navbar-inverse navbar-fixed-top">
-    <div class="container">
-        <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-                <span class="icon-bar"></span>
-            </button>
-            @Html.ActionLink("Application name", "Index", "Home", null, new {@class = "navbar-brand"})
-        </div>
-        <div class="navbar-collapse collapse">
-            <ul class="nav navbar-nav">
-                <li>@Html.ActionLink("Home", "Index", "Home")</li>
-                <li>@Html.ActionLink("About", "About", "Home")</li>
-                <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
 
-                @if (Request.IsAuthenticated && User.IsInRole("Admin"))
-                {
-                    <li>@Html.ActionLink("RolesAdmin", "Index", "RolesAdmin")</li>
-                    <li>@Html.ActionLink("UsersAdmin", "Index", "UsersAdmin")</li>
-                }
-            </ul>
-            @Html.Partial("_LoginPartial")
-        </div>
-    </div>
-</div>
-<div class="container body-content">
-    @RenderBody()
-    <hr/>
-    <footer>
-        <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
-    </footer>
-</div>
+	<header>
+		<div class="container">
+			<div class="headercont">
+			<div class="col-md-3 col-lg-3 col-xs-3 col-sm-3 divimg">
+		            <a class="logo" href="index.html"><img src="img/kakaka.png" alt="Logo"></a>
+		    </div>
+		    </div>
+		    <div class="divcontent">
+		    <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3 exp"><li><i class="fa fa-plus-circle fa-todos ex" aria-hidden="true"></i></li></div>
+		    <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+			    	<li class="dropdown">
+		          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bell fa-todos" aria-hidden="true"></i><span class="caret"></span></a>
+		          <ul class="dropdown-menu">
+		            <li><a>Notificações</a></li>
+		            <li role="separator" class="divider"></li>
+		            <li><a href="#">Conteúdo</a></li>
+		          </ul>
+		        </li>
+		   </div>
+		    <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
+		    	<li class="dropdown">
+	          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars fa-todos" aria-hidden="true"></i><span class="caret"></span></a>
+	          <ul class="dropdown-menu">
+	            <li><a href="#">Criar Grupo</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Criar Quest</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Mensagens</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Visualizar Perfil</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#">Configurações</a></li>
+	            <li role="separator" class="divider"></li>
+	            <li><a href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i>Sair</a></li>
+	          </ul>
+	        </li>
+		    </div>
 
-@Scripts.Render("~/bundles/jquery")
-@Scripts.Render("~/bundles/bootstrap")
-@RenderSection("scripts", false)
+		    </div>
+		</div>
+	</header>
+    
+   @RenderBody()                 
+
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+
 </body>
 </html>
+
