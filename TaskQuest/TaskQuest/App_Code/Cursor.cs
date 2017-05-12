@@ -14,7 +14,7 @@ namespace TaskQuest.App_Code
 
         private static string Type;
         private static Object Obj;
-        private static int Qtd;
+        private static int? Id;
 
         public static bool ExecuteQuery(Object obj, string type)
         {
@@ -40,11 +40,11 @@ namespace TaskQuest.App_Code
             throw new Exception("Invalid Type");
         }
 
-        public static DataSet ExecuteQuery(Object obj, int qtd)
+        public static DataSet ExecuteQuery(Object obj, int? id=null)
         {
             Type = "Read";
             Obj = obj;
-            Qtd = qtd;
+            Id = id;
             try
             {
                 Connection = new MySqlConnection(ConfigurationManager.AppSettings["DefaultConnection"]);
@@ -65,7 +65,7 @@ namespace TaskQuest.App_Code
         private static void AddQuery()
         {
             var props = Obj.GetType().GetProperties();
-            var query = "";
+            string query;
             if (Type.Equals("Create"))
             {
                 query = "INSERT INTO " + Obj.GetType().Name + "(" + Columns(props) + 
@@ -74,13 +74,15 @@ namespace TaskQuest.App_Code
             }
             else if (Type.Equals("Read"))
             {
-                query = "SELECT " + Columns(props) + " FROM " + Obj.GetType().Name;
+                query = "SELECT * FROM " + Obj.GetType().Name;
+                if(Id)
+                    query += " WHERE " + props[0].Name + " = " + Id;
                 Command.CommandText = query;
             }
             else if (Type.Equals("Update"))
             {
                 query = "UPDATE " + Obj.GetType().Name + " SET " + Columns(props) + 
-                    " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj) + " LIMIT " + Qtd;
+                    " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj);
                 Command.CommandText = query;
             }
             else if (Type.Equals("Delete"))
