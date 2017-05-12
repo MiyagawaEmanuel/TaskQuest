@@ -40,7 +40,7 @@ namespace TaskQuest.App_Code
             throw new Exception("Invalid Type");
         }
 
-        public static DataSet ExecuteQuery(Object obj, int? id=null)
+        public static List<T> ExecuteQuery<T>(Object obj, int? id=null) where T: new()
         {
             Type = "Read";
             Obj = obj;
@@ -53,8 +53,7 @@ namespace TaskQuest.App_Code
                 Adapter = new MySqlDataAdapter();
                 AddQuery();
                 AddParameters();
-                DataSet Ds = ExecuteSelect();
-                return Ds;
+                return ExecuteSelect<T>();
             }
             catch (Exception)
             {
@@ -107,16 +106,19 @@ namespace TaskQuest.App_Code
             Connection.Dispose();
         }
 
-        private static DataSet ExecuteSelect()
+        private static List<T> ExecuteSelect<T>() where T: new()
         {
             var Ds = new DataSet();
             Adapter.SelectCommand = Command;
             Adapter.Fill(Ds);
+            
+            List<Obj.GetType()> vetor = Ds.Tables[0].ToList<Obj.GetType()>();
+            
             Connection.Close();
             Command.Dispose();
             Adapter.Dispose();
             Connection.Dispose();
-            return Ds;
+            return vetor;
         }
 
         private static string Columns(PropertyInfo[] props)
@@ -141,6 +143,30 @@ namespace TaskQuest.App_Code
                     query += ", ";
             }
             return query;
+        }
+        
+        private static List<T> ToList<T>(this DataTable table) where T : new()
+        {
+            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            List<T> result = new List<T>();
+
+            foreach (var row in table.Rows)
+            {
+                var item = CreateItemFromRow<T>((DataRow)row, properties);
+                result.Add(item);
+            }
+
+            return result;
+        }
+
+        private static T CreateItemFromRow<T>(DataRow row, IList<PropertyInfo> properties) where T : new()
+        {
+            T item = new T();
+            foreach (var property in properties)
+            {
+                property.SetValue(item, row[property.Name], null);
+            }
+            return item;
         }
     }
 }
