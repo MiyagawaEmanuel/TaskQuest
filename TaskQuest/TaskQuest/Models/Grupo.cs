@@ -22,33 +22,17 @@ namespace TaskQuest.Models
         [Key]
         [Column("gru_id")]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int Id { get; }
+        public int Id { get; set; }
 
         [Required]
         [StringLength(20)]
         [Column("gru_nome")]
-        public string Nome 
-        { 
-            get; 
-            set
-            {
-                if((value.Length > 0)&&(value.Length <= 20))
-                    Nome = value;
-            } 
-        }
+        public string Nome { get; set; }
 
         [Required]
         [StringLength(20)]
         [Column("gru_cor")]
-        public string Cor 
-        { 
-            get; 
-            set
-            {
-                if((value.Length > 0)&&(value.Length <= 20))
-                    Cor = value;
-            } 
-        }
+        public string Cor { get; set; }
 
         [Column("gru_data_cricao")]
         public DateTime DataCriacao { get; private set; }

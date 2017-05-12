@@ -222,3 +222,4 @@ C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.pdb
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._21.resources
 C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
+C:\Users\Emanuel\Source\Repos\TaskQuest\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csprojResolveAssemblyReference.cache

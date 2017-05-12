@@ -1,16 +1,13 @@
 using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Web;
-using TaskQuest.Models;
 
 namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-        private static List<Grupo> lista;
+        private static List<gru_grupo> lista;
 
-        public static List<Grupo> Sort(List<Grupo> grupos)
+        public static List<gru_grupo> Sort(List<gru_grupo> grupos)
         {
             lista = grupos;
             Quicksort(0, lista.Count - 1);
@@ -29,12 +26,12 @@ namespace TaskQuest.App_Code
 
         public static int Particionar(int inicio, int fim)
         {
-            string pivo = lista[fim].Nome;
+            string pivo = lista[fim].gru_nome;
             var i = inicio;
-            Grupo aux;
+            gru_grupo aux;
             for (var j = inicio; j <= fim; j++)
             {
-                if (String.Compare(lista[j].Nome, pivo, StringComparison.OrdinalIgnoreCase) < 0)
+                if (String.Compare(lista[j].gru_nome, pivo, StringComparison.OrdinalIgnoreCase) < 0)
                 {
                     aux = lista[i];
                     lista[i] = lista[j];
