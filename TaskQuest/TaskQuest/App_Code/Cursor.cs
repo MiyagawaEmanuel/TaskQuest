@@ -20,7 +20,7 @@ namespace TaskQuest.App_Code
         {
             Type = type;
             Obj = obj;
-            if (Type.Equals("Create") || Type.Equals("Read") || Type.Equals("Update") || Type.Equals("Delete"))
+            if (Type.Equals("Create") || Type.Equals("Update") || Type.Equals("Delete"))
             {
                 try
                 {
