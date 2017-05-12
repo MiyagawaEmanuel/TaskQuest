@@ -1,4 +1,5 @@
-﻿using System;
+using System;
+using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
 using System.Reflection;
@@ -6,7 +7,8 @@ using MySql.Data.MySqlClient;
 
 namespace TaskQuest.App_Code
 {
-    public static class Cursor{
+    public static class Cursor
+    {
 
         private static MySqlConnection Connection;
         private static MySqlCommand Command;
@@ -40,7 +42,7 @@ namespace TaskQuest.App_Code
             throw new Exception("Invalid Type");
         }
 
-        public static List<T> ExecuteQuery<T>(Object obj, int? id=null) where T: new()
+        public static List<T> ExecuteQuery<T>(Object obj, int? id = null) where T : new()
         {
             Type = "Read";
             Obj = obj;
@@ -67,26 +69,26 @@ namespace TaskQuest.App_Code
             string query;
             if (Type.Equals("Create"))
             {
-                query = "INSERT INTO " + Obj.GetType().Name + "(" + Columns(props) + 
+                query = "INSERT INTO " + Obj.GetType().Name + "(" + Columns(props) +
                     ") VALUES(" + Columns(props, "?") + ")";
                 Command.CommandText = query;
             }
             else if (Type.Equals("Read"))
             {
                 query = "SELECT * FROM " + Obj.GetType().Name;
-                if(Id)
+                if (Id != null)
                     query += " WHERE " + props[0].Name + " = " + Id;
                 Command.CommandText = query;
             }
             else if (Type.Equals("Update"))
             {
-                query = "UPDATE " + Obj.GetType().Name + " SET " + Columns(props) + 
+                query = "UPDATE " + Obj.GetType().Name + " SET " + Columns(props) +
                     " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj);
                 Command.CommandText = query;
             }
             else if (Type.Equals("Delete"))
             {
-                query = "DELETE " + Obj.GetType().Name + 
+                query = "DELETE " + Obj.GetType().Name +
                     " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj);
                 Command.CommandText = query;
             }
@@ -94,10 +96,10 @@ namespace TaskQuest.App_Code
 
         private static void AddParameters()
         {
-            foreach(PropertyInfo prop in Obj.GetType().GetProperties())
+            foreach (PropertyInfo prop in Obj.GetType().GetProperties())
                 Command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(Obj)));
         }
-        
+
         private static void Execute()
         {
             Command.ExecuteNonQuery();
@@ -106,13 +108,13 @@ namespace TaskQuest.App_Code
             Connection.Dispose();
         }
 
-        private static List<T> ExecuteSelect<T>() where T: new()
+        private static List<T> ExecuteSelect<T>() where T : new()
         {
             var Ds = new DataSet();
             Adapter.SelectCommand = Command;
             Adapter.Fill(Ds);
             
-            List<Obj.GetType()> vetor = Ds.Tables[0].ToList<Obj.GetType()>();
+            List<T> vetor = Ds.Tables[0].ToList<T>();
             
             Connection.Close();
             Command.Dispose();
@@ -144,7 +146,7 @@ namespace TaskQuest.App_Code
             }
             return query;
         }
-        
+
         private static List<T> ToList<T>(this DataTable table) where T : new()
         {
             IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
