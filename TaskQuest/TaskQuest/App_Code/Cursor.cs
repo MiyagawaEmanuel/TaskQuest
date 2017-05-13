@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
+using System.Linq;
 using System.Reflection;
 using MySql.Data.MySqlClient;
 
@@ -149,7 +150,7 @@ namespace TaskQuest.App_Code
 
         private static List<T> ToList<T>(this DataTable table) where T : new()
         {
-            IList<PropertyInfo> properties = typeof(T).GetProperties().ToList();
+            PropertyInfo[] properties = typeof(T).GetProperties();
             List<T> result = new List<T>();
 
             foreach (var row in table.Rows)
