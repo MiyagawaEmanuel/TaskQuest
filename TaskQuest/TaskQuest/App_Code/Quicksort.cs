@@ -5,13 +5,13 @@ namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-        private static List<gru_grupo> lista;
+        private static List<gru_grupo> _lista;
 
         public static List<gru_grupo> Sort(List<gru_grupo> grupos)
         {
-            lista = grupos;
-            Quicksort(0, lista.Count - 1);
-            return lista;
+            _lista = grupos;
+            Quicksort(0, _lista.Count - 1);
+            return _lista;
         }
 
         public static void Quicksort(int inicio, int fim)
@@ -26,22 +26,22 @@ namespace TaskQuest.App_Code
 
         public static int Particionar(int inicio, int fim)
         {
-            string pivo = lista[fim].gru_nome;
+            string pivo = _lista[fim].gru_nome;
             var i = inicio;
             gru_grupo aux;
             for (var j = inicio; j <= fim; j++)
             {
-                if (String.Compare(lista[j].gru_nome, pivo, StringComparison.OrdinalIgnoreCase) < 0)
+                if (String.Compare(_lista[j].gru_nome, pivo, StringComparison.OrdinalIgnoreCase) < 0)
                 {
-                    aux = lista[i];
-                    lista[i] = lista[j];
-                    lista[j] = aux;
+                    aux = _lista[i];
+                    _lista[i] = _lista[j];
+                    _lista[j] = aux;
                     i++;
                 }
             }
-            aux = lista[i];
-            lista[i] = lista[fim];
-            lista[fim] = aux;
+            aux = _lista[i];
+            _lista[i] = _lista[fim];
+            _lista[fim] = aux;
             return i;
         }
     }

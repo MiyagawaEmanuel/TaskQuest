@@ -34,7 +34,7 @@ namespace TaskQuest.Models
         [Column("gru_cor")]
         public string Cor { get; set; }
 
-        [Column("gru_data_cricao")]
+        [Column("gru_data_criacao")]
         public DateTime DataCriacao { get; private set; }
 
         [Column("gru_plano")]

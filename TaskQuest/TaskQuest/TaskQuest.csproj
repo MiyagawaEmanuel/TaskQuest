@@ -133,6 +133,10 @@
     <Compile Include="Migrations\201705091652160_2.1.Designer.cs">
       <DependentUpon>201705091652160_2.1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705151536484_2.1.0.1.cs" />
+    <Compile Include="Migrations\201705151536484_2.1.0.1.Designer.cs">
+      <DependentUpon>201705151536484_2.1.0.1.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Arquivos.cs" />
@@ -231,6 +235,9 @@
   <ItemGroup>
     <EmbeddedResource Include="Migrations\201705091652160_2.1.resx">
       <DependentUpon>201705091652160_2.1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705151536484_2.1.0.1.resx">
+      <DependentUpon>201705151536484_2.1.0.1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

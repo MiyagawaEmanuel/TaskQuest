@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Configuration;
 using System.Data;
-using System.Linq;
 using System.Reflection;
 using MySql.Data.MySqlClient;
 
@@ -11,25 +10,25 @@ namespace TaskQuest.App_Code
     public static class Cursor
     {
 
-        private static MySqlConnection Connection;
-        private static MySqlCommand Command;
-        private static MySqlDataAdapter Adapter;
+        private static MySqlConnection _connection;
+        private static MySqlCommand _command;
+        private static MySqlDataAdapter _adapter;
 
-        private static string Type;
-        private static Object Obj;
-        private static int? Id;
+        private static string _type;
+        private static Object _obj;
+        private static int? _id;
 
         public static bool ExecuteQuery(Object obj, string type)
         {
-            Type = type;
-            Obj = obj;
-            if (Type.Equals("Create") || Type.Equals("Update") || Type.Equals("Delete"))
+            _type = type;
+            _obj = obj;
+            if (_type.Equals("Create") || _type.Equals("Update") || _type.Equals("Delete"))
             {
                 try
                 {
-                    Connection = new MySqlConnection(ConfigurationManager.AppSettings["DefaultConnection"]);
-                    Connection.Open();
-                    Command = Connection.CreateCommand();
+                    _connection = new MySqlConnection(ConfigurationManager.AppSettings["DefaultConnection"]);
+                    _connection.Open();
+                    _command = _connection.CreateCommand();
                     AddQuery();
                     AddParameters();
                     Execute();
@@ -45,15 +44,15 @@ namespace TaskQuest.App_Code
 
         public static List<T> ExecuteQuery<T>(Object obj, int? id = null) where T : new()
         {
-            Type = "Read";
-            Obj = obj;
-            Id = id;
+            _type = "Read";
+            _obj = obj;
+            _id = id;
             try
             {
-                Connection = new MySqlConnection(ConfigurationManager.AppSettings["DefaultConnection"]);
-                Connection.Open();
-                Command = Connection.CreateCommand();
-                Adapter = new MySqlDataAdapter();
+                _connection = new MySqlConnection(ConfigurationManager.AppSettings["DefaultConnection"]);
+                _connection.Open();
+                _command = _connection.CreateCommand();
+                _adapter = new MySqlDataAdapter();
                 AddQuery();
                 AddParameters();
                 return ExecuteSelect<T>();
@@ -63,80 +62,74 @@ namespace TaskQuest.App_Code
                 return null;
             }
         }
-
+        
         private static void AddQuery()
         {
-            var props = Obj.GetType().GetProperties();
+            var props = _obj.GetType().GetProperties();
             string query;
-            if (Type.Equals("Create"))
+            if (_type.Equals("Insert"))
             {
-                query = "INSERT INTO " + Obj.GetType().Name + "(" + Columns(props) +
+                query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props) +
                     ") VALUES(" + Columns(props, "?") + ")";
-                Command.CommandText = query;
+                _command.CommandText = query;
             }
-            else if (Type.Equals("Read"))
+            else if (_type.Equals("Select"))
             {
-                query = "SELECT * FROM " + Obj.GetType().Name;
-                if (Id != null)
-                    query += " WHERE " + props[0].Name + " = " + Id;
-                Command.CommandText = query;
+                query = "SELECT * FROM " + _obj.GetType().Name;
+                if (_id != null)
+                    query += " WHERE " + props[0].Name + " = " + _id;
+                _command.CommandText = query;
             }
-            else if (Type.Equals("Update"))
+            else if (_type.Equals("Update"))
             {
-                query = "UPDATE " + Obj.GetType().Name + " SET " + Columns(props) +
-                    " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj);
-                Command.CommandText = query;
+                query = "UPDATE " + _obj.GetType().Name + " SET ";
+                for (int x = 1; x < props.Length; x++)
+                {
+                    query += props[x].Name + " = ?" + props[x].Name;
+                    if (x < props.Length - 1)
+                        query += ", ";
+                }
+                query += " WHERE " + props[0].Name + " = " + props[0].GetValue(_obj);
+                _command.CommandText = query;
             }
-            else if (Type.Equals("Delete"))
+            else if (_type.Equals("Delete"))
             {
-                query = "DELETE " + Obj.GetType().Name +
-                    " WHERE " + props[0].Name + " = " + props[0].GetValue(Obj);
-                Command.CommandText = query;
+                query = "DELETE FROM " + _obj.GetType().Name +
+                    " WHERE " + props[0].Name + " = " + props[0].GetValue(_obj);
+                _command.CommandText = query;
             }
         }
 
         private static void AddParameters()
         {
-            foreach (PropertyInfo prop in Obj.GetType().GetProperties())
-                Command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(Obj)));
+            foreach (PropertyInfo prop in _obj.GetType().GetProperties())
+                _command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(_obj)));
         }
 
         private static void Execute()
         {
-            Command.ExecuteNonQuery();
-            Connection.Close();
-            Command.Dispose();
-            Connection.Dispose();
+            _command.ExecuteNonQuery();
+            _connection.Close();
+            _command.Dispose();
+            _connection.Dispose();
         }
 
         private static List<T> ExecuteSelect<T>() where T : new()
         {
-            var Ds = new DataSet();
-            Adapter.SelectCommand = Command;
-            Adapter.Fill(Ds);
+            var ds = new DataSet();
+            _adapter.SelectCommand = _command;
+            _adapter.Fill(ds);
             
-            List<T> vetor = Ds.Tables[0].ToList<T>();
+            List<T> vetor = ds.Tables[0].ToList<T>();
             
-            Connection.Close();
-            Command.Dispose();
-            Adapter.Dispose();
-            Connection.Dispose();
+            _connection.Close();
+            _command.Dispose();
+            _adapter.Dispose();
+            _connection.Dispose();
             return vetor;
         }
 
-        private static string Columns(PropertyInfo[] props)
-        {
-            var query = "";
-            for (int x = 1; x < props.Length; x++)
-            {
-                query += props[x].Name;
-                if (x < props.Length - 1)
-                    query += ", ";
-            }
-            return query;
-        }
-
-        private static string Columns(PropertyInfo[] props, string plus)
+        private static string Columns(PropertyInfo[] props, string plus="")
         {
             var query = "";
             for (int x = 1; x < props.Length; x++)
