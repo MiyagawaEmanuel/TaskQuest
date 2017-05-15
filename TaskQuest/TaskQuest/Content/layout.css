@@ -19,13 +19,20 @@ body{
 	background-color: rgba(0,0,0,0.08);
 }
 
-
 .container{
 	margin-right: inherit;
 }
 
 .navbar-header {
         margin-top: 1%;
+}
+
+.drop-menu{
+	margin-left: -65px;
+}
+
+.drop-notification{
+	margin-left: -60px;
 }
 
 .fa-todos{
@@ -36,33 +43,40 @@ body{
 }
 
 
-/* Media Queries */
-
 @media (min-width: 320px) and (max-width: 380px){
+	img{
+		width: 70px;
+		margin-top: 15%;
+	}
 	.dropdown-menu{
 		top: 135%;
 		left: -88px;
 	}
 	.divcontent{
 		margin-top: 3%;
+		display: flex;
+		justify-content: space-around;
 	}
-
-	img{
-		width: 70px;
-		margin-top: 15%;
+	.exp{
+		display: none;
 	}
 }
 
 @media (min-width: 381px) and (max-width: 600px){
+	img{
+		width: 70px;
+		margin-top: 15%;
+	}
 	.dropdown-menu{
 		top: 130%;
 		left: -78px;
 	}
 	.divcontent{
 		margin-top: 2%;
+		display: flex;
+		justify-content: space-around;
 	}
-	img{
-		width: 70px;
-		margin-top: 15%;
+	.exp{
+		display: none;
 	}
 }
