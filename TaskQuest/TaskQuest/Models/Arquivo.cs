@@ -28,6 +28,9 @@ namespace TaskQuest.Models
         [Column("arq_data_upload")]
         public DateTime UploadDate { get; set; }
 
+        [Column("arq_versao_atual")]
+        public bool VersaoAtual { get; set; }
+
         [Column("tsk_id")]
         public int TaskId { get; set; }
 

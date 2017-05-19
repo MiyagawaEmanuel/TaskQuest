@@ -137,9 +137,13 @@
     <Compile Include="Migrations\201705151536484_2.1.0.1.Designer.cs">
       <DependentUpon>201705151536484_2.1.0.1.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201705190318386_2.1.0.2.cs" />
+    <Compile Include="Migrations\201705190318386_2.1.0.2.Designer.cs">
+      <DependentUpon>201705190318386_2.1.0.2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ApplicationUser.cs" />
-    <Compile Include="Models\Arquivos.cs" />
+    <Compile Include="Models\Arquivo.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\ExperienciaGrupo.cs" />
     <Compile Include="Models\ExperienciaUsuario.cs" />
@@ -238,6 +242,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\201705151536484_2.1.0.1.resx">
       <DependentUpon>201705151536484_2.1.0.1.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201705190318386_2.1.0.2.resx">
+      <DependentUpon>201705190318386_2.1.0.2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
