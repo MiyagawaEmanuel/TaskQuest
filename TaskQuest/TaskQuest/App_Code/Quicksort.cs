@@ -1,47 +1,49 @@
 using System;
+using HttpContext;
+using System.Reflection;
 using System.Collections.Generic;
 
 namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-        private static List<gru_grupo> _lista;
-
-        public static List<gru_grupo> Sort(List<gru_grupo> grupos)
+        public static List<T> Sort<T>(List<T> list, PropartyInfo property) where T : new()
         {
-            _lista = grupos;
-            Quicksort(0, _lista.Count - 1);
-            return _lista;
+            Session["list"] = list; 
+            Quicksort(0, _lista.Count - 1, property);
+            list = (List<T>)Session["list"];
+            HttpContext.Session.Clear();
+            return list;
         }
 
-        public static void Quicksort(int inicio, int fim)
+        private static void Quicksort<T>(int inicio, int fim, PropertyInfo property) where T : new()
         {
             if (inicio < fim)
             {
-                int pivo = Particionar(inicio, fim);
-                Quicksort(inicio, pivo - 1);
-                Quicksort(pivo + 1, fim);
+                int pivo = Particionar<T>(inicio, fim, property);
+                Quicksort<T>(inicio, pivo - 1, property);
+                Quicksort<T>(pivo + 1, fim, property);
             }
         }
 
-        public static int Particionar(int inicio, int fim)
+        private static int Particionar<T>(int inicio, int fim, PropertyInfo property)
         {
-            string pivo = _lista[fim].gru_nome;
+            string pivo = property.GetValue((List<T>)Session["list"][fim]);
             var i = inicio;
-            gru_grupo aux;
+            T aux;
             for (var j = inicio; j <= fim; j++)
             {
-                if (String.Compare(_lista[j].gru_nome, pivo, StringComparison.OrdinalIgnoreCase) < 0)
+                if (property.GetValue((List<T>)Session["list"][j] < pivo))
                 {
-                    aux = _lista[i];
-                    _lista[i] = _lista[j];
-                    _lista[j] = aux;
+                    aux = (List<T>)Session["list"][i];
+                    (List<T>)Session["list"][i] = (List<T>)Session["list"][j];
+                    (List<T>)Session["list"][j] = aux;
                     i++;
                 }
             }
-            aux = _lista[i];
-            _lista[i] = _lista[fim];
-            _lista[fim] = aux;
+            aux = (List<T>)Session["list"][i];
+            (List<T>)Session["list"][i] = (List<T>)Session["list"][fim];
+            (List<T>)Session["list"][fim] = aux;
             return i;
         }
     }
