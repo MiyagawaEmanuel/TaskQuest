@@ -7,8 +7,6 @@ namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-        //The PropertyInfo of a specific property may be get through this function: 
-        //T.GetType().GetProperty("")
         public static List<T> Sort<T>(List<T> list, string propertyName) where T : new()
         {
             Session["list"] = list; 
@@ -44,7 +42,7 @@ namespace TaskQuest.App_Code
             T aux;
             for (var j = inicio; j <= fim; j++)
             {
-                if (property.GetValue((List<T>)Session["list"][j] < pivo))
+                if (property.GetValue((List<T>)Session["list"][j]) < pivo)
                 {
                     aux = (List<T>)Session["list"][i];
                     (List<T>)Session["list"][i] = (List<T>)Session["list"][j];
