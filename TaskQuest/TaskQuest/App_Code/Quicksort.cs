@@ -7,9 +7,20 @@ namespace TaskQuest.App_Code
 {
     public static class Utilities
     {
-        public static List<T> Sort<T>(List<T> list, PropartyInfo property) where T : new()
+        //The PropertyInfo of a specific property may be get through this function: 
+        //T.GetType().GetProperty("")
+        public static List<T> Sort<T>(List<T> list, string propertyName) where T : new()
         {
             Session["list"] = list; 
+            try
+            {
+                PropertyInfo property = T.GetType().GetProperty(propertyName);
+            }
+            catch(Exception e){
+                throw new System.ArgumentException("Invalid property name");
+            }
+            if(property == null)
+                throw new System.ArgumentException("Invalid property name");
             Quicksort(0, _lista.Count - 1, property);
             list = (List<T>)Session["list"];
             HttpContext.Session.Clear();
