@@ -1,4 +1,5 @@
 using System.Data.Entity;
+using System;
 using System.Data.Entity.ModelConfiguration.Conventions;
 using Microsoft.AspNet.Identity.EntityFramework;
 using MySql.Data.Entity;
@@ -39,129 +40,103 @@ namespace TaskQuest.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
+            
+            //Remove uma configuração embutida no Entity que modifica os nomes das tabelas e campos
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.Bandeira)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.NomeTitular)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.CodigoSeguranca)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Feedback>()
-                .Property(e => e.Relatorio)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Feedback>()
-                .Property(e => e.Resposta)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Grupo>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Grupo>()
-                .Property(e => e.Cor)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Grupo>()
-                .HasMany(e => e.Quests)
-                .WithOptional(e => e.GrupoCriador)
-                .HasForeignKey(e => e.GrupoCriadorId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Grupo>()
-                .HasMany(e => e.Mensagens)
-                .WithOptional(e => e.GrupoDestinatario)
-                .HasForeignKey(e => e.GrupoDestinatarioId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Mensagem>()
-                .Property(e => e.Conteudo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Quest>()
-                .Property(e => e.Cor)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Quest>()
-                .Property(e => e.Descricao)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Quest>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Antecedencias)
-                .WithOptional(e => e.QuestAntecedente)
-                .HasForeignKey(e => e.QuestAntecedenteId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Precedencias)
-                .WithOptional(e => e.QuestPrecedente)
-                .HasForeignKey(e => e.QuestPrecedenteId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Semanas)
-                .WithMany(e => e.Quests)
-                .Map(m => m.ToTable("qxs_quest_semana").MapLeftKey("qst_id").MapRightKey("sem_id"));
-
-            modelBuilder.Entity<Semana>()
-                .Property(e => e.Dia)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Semana>()
-                .Property(e => e.Sigla)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Telefone>()
-                .Property(e => e.Tipo)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.Path)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Task>()
-                .Property(e => e.Nome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<Task>()
-                .Property(e => e.Duracao)
-                .HasPrecision(2);
-
-            modelBuilder.Entity<Task>()
-                .HasMany(e => e.Antecedencias)
-                .WithOptional(e => e.TaskAntecedente)
-                .HasForeignKey(e => e.TaskAntecedenteId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Task>()
-                .HasMany(e => e.Precedencias)
-                .WithOptional(e => e.TaskPrecedente)
-                .HasForeignKey(e => e.TaskPrecedenteId)
-                .WillCascadeOnDelete();
-
+            
+            /*
+                Configurando tabela ApplicationUser (usu_usuario)
+            */
+            
             modelBuilder.Entity<ApplicationUser>()
-                .Property(e => e.Sobrenome)
-                .IsUnicode(false);
-
-            modelBuilder.Entity<ApplicationUser>()
-                .Property(e => e.Sexo)
-                .IsUnicode(false);
-
+                .ToTable("usu_usuario");
+            
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.AccessFailedCount) 
+                .HasColumnName("usu_contador_acesso_falho");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Claims) 
+                .HasColumnName("usu_claims");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Email) 
+                .HasColumnName("usu_email");
+            
+            //Configurando coluna como Not Null
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Email).IsRequired();
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.EmailConfirmed) 
+                .HasColumnName("usu_email_confirmado");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Id) 
+                .HasColumnName("usu_id");
+                
+            modelBuilder.Entity<ApplicationUser>().Property(e => e.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOprion.Identity);
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.LockoutEnabled) 
+                .HasColumnName("usu_bloqueado");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.LockoutEndDateUtc) 
+                .HasColumnName("usu_data_desbloqueio");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Logins) 
+                .HasColumnName("usu_logins");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.PasswordHash) 
+                .HasColumnName("usu_senha");
+                
+            modelBuilder.Entity<ApplicationUser>().Ignore(t => t.PhoneNumber);
+                
+            modelBuilder.Entity<ApplicationUser>().Ignore(t => t.PhoneNumberConfirmed);
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Roles) 
+                .HasColumnName("usu_roles");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.SecurityStamp) 
+                .HasColumnName("usu_selo_seguranca");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.TwoFactorEnabled) 
+                .HasColumnName("usu_dois_passos_login");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.UserName) 
+                .HasColumnName("usu_nome");
+                
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.UserName).IsRequired();
+            
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.UserName).HasMaxLength(20);
+            
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Sobrenome) 
+                .HasColumnName("usu_sobrenome");
+                
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Sobrenome).IsRequired();
+            
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Sobrenome).HasMaxLength(20);
+            
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.DataNascimento) 
+                .HasColumnName("usu_data_nascimento");
+                
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Sexo) 
+                .HasColumnName("usu_sexo");
+                
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Sexo).IsRequired();
+            
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Sexo).IsMaxLength(1);
+            
             modelBuilder.Entity<ApplicationUser>()
                 .HasMany(e => e.Cartoes)
                 .WithRequired(e => e.Usuario)
@@ -194,6 +169,119 @@ namespace TaskQuest.Models
                 .HasMany(e => e.Quests)
                 .WithOptional(e => e.UsuarioCriador)
                 .HasForeignKey(e => e.UsuarioCriadorId)
+                .WillCascadeOnDelete();
+            
+            /*
+                Configurando tabela Arquivo
+            */
+            
+            //Configurando o nome da tabela
+            modelBuilder.Entity<Arquivo>()
+                .ToTable("arq_arquivo");
+            
+            //Configurando um campo como chave primária AUTO_INCREMENT
+            modelBuilder.Entity<Arquivo>().Property(e => e.Id)
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOprion.Identity);
+            
+            //Configurando o nome do campo
+            modelBuilder.Entity<Arquivo>() 
+                .Property(e => e.Id) 
+                .HasColumnName("arq_id");
+            
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.Name)
+                .HasColumnName("arq_nome");
+            
+            //Configurando tamanho máximo da String
+            modelBuilder.Entity<Arquivo>().Property(t => t.Nome).HasMaxLength(20);
+            
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.Path)
+                .HasColumnName("arq_caminho");
+            
+            modelBuilder.Entity<Arquivo>().Property(t => t.Path).HasMaxLength(40);
+            
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.Size)
+                .HasColumnName("arq_tamanho");
+                
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.UploadDate)
+                .HasColumnName("arq_data_upload");
+                
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.UploadDate)
+                .HasDefaultValue(DateTime.Now());
+                
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.VersaoAtual)
+                .HasColumnName("arq_versao_atual");
+                
+            modelBuilder.Entity<Arquivo>()
+                .Property(e => e.TaskId)
+                .HasColumnName("task_id");
+            
+            //Configurando chave estrangeira com relacionamento 1 x 1
+            modelBuilder.Entity<Arquivo>() 
+                .HasRequired(e => e.TaskId) 
+                .WithRequiredPrincipal(e => e.Task);
+            
+            /*
+                Configurando tabela Cartao
+            */
+            
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.Id)
+                .HasColumnName("crt_id");
+            
+            //Criando uma chave primária com AUTO_INCREMENT
+            modelBuilder.Entity<Cartao>().Property(e => e.Id) 
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+            
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.Id)
+                .HasColumnName("crt_id");
+            
+            // ------------------- Coisas antigas ----------------------------------
+            modelBuilder.Entity<Grupo>()
+                .HasMany(e => e.Quests)
+                .WithOptional(e => e.GrupoCriador)
+                .HasForeignKey(e => e.GrupoCriadorId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Grupo>()
+                .HasMany(e => e.Mensagens)
+                .WithOptional(e => e.GrupoDestinatario)
+                .HasForeignKey(e => e.GrupoDestinatarioId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(e => e.Antecedencias)
+                .WithOptional(e => e.QuestAntecedente)
+                .HasForeignKey(e => e.QuestAntecedenteId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(e => e.Precedencias)
+                .WithOptional(e => e.QuestPrecedente)
+                .HasForeignKey(e => e.QuestPrecedenteId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Quest>()
+                .HasMany(e => e.Semanas)
+                .WithMany(e => e.Quests)
+                .Map(m => m.ToTable("qxs_quest_semana").MapLeftKey("qst_id").MapRightKey("sem_id"));
+
+            modelBuilder.Entity<Task>()
+                .HasMany(e => e.Antecedencias)
+                .WithOptional(e => e.TaskAntecedente)
+                .HasForeignKey(e => e.TaskAntecedenteId)
+                .WillCascadeOnDelete();
+
+            modelBuilder.Entity<Task>()
+                .HasMany(e => e.Precedencias)
+                .WithOptional(e => e.TaskPrecedente)
+                .HasForeignKey(e => e.TaskPrecedenteId)
                 .WillCascadeOnDelete();
         }
     }
