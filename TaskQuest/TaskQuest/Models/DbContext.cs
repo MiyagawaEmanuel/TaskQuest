@@ -63,6 +63,19 @@ namespace TaskQuest.Models
                 .Property(e => e.Email) 
                 .HasColumnName("usu_email");
             
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Email).IsRequired();
+            
+            modelBuilder.Entity<ApplicationUser>().Property(t => t.Email).HasMaxLength(50);
+            
+            modelBuilder.Entity<ApplicationUser>() 
+                .Property(e => e.Email) 
+                .HasColumnAnnotation( 
+                    "Index",  
+                    new IndexAnnotation(new[] 
+                    { 
+                        new IndexAttribute("email_unique_idx") { IsUnique = true } 
+                    })));
+            
             //Configurando coluna como Not Null
             modelBuilder.Entity<ApplicationUser>().Property(t => t.Email).IsRequired();
                 
@@ -221,14 +234,12 @@ namespace TaskQuest.Models
                 .Property(e => e.TaskId)
                 .HasColumnName("task_id");
             
-            //Configurando chave estrangeira com relacionamento 1 x 1
-            modelBuilder.Entity<Arquivo>() 
-                .HasRequired(e => e.TaskId) 
-                .WithRequiredPrincipal(e => e.Task);
-            
             /*
                 Configurando tabela Cartao
             */
+            
+            modelBuilder.Entity<Cartao>()
+                .ToTable("crt_cartao");
             
             modelBuilder.Entity<Cartao>()
                 .Property(e => e.Id)
@@ -241,6 +252,40 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Cartao>()
                 .Property(e => e.Id)
                 .HasColumnName("crt_id");
+                
+            modelBuilder.Entity<Cartao>() 
+                .Property(e => e.Bandeira) 
+                .HasColumnName("crt_bandeira");
+                
+            modelBuilder.Entity<Cartao>().Property(t => t.Bandeira).IsRequired();
+            
+            modelBuilder.Entity<Cartao>() 
+                .Property(e => e.Numero) 
+                .HasColumnName("crt_numero");
+                
+            modelBuilder.Entity<Cartao>().Property(t => t.Numero).IsRequired();
+            
+            modelBuilder.Entity<Cartao>() 
+                .Property(e => e.NomeTitular) 
+                .HasColumnName("crt_nome_titular");
+                
+            modelBuilder.Entity<Cartao>().Property(t => t.NomeTitular).IsRequired();
+            
+            modelBuilder.Entity<Cartao>() 
+                .Property(e => e.DataVencimento) 
+                .HasColumnName("crt_data_vencimento");
+                
+            modelBuilder.Entity<Cartao>().Property(t => t.DataVencimento).IsRequired();
+            
+            modelBuilder.Entity<Cartao>() 
+                .Property(e => e.CodigoSeguranca) 
+                .HasColumnName("crt_codigo_seguranca");
+                
+            modelBuilder.Entity<Cartao>().Property(t => t.CodigoSeguranca).IsRequired();
+            
+            /*
+                Configurando tabela ...
+            */
             
             // ------------------- Coisas antigas ----------------------------------
             modelBuilder.Entity<Grupo>()
