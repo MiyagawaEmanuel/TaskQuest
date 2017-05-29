@@ -10,8 +10,9 @@ namespace TaskQuest.App_Code
             gru_data_criacao = DateTime.Now;
         }
 
-        public gru_grupo(string nome, string cor, bool plano)
+        public gru_grupo(int id, string nome, string cor, bool plano)
         {
+            gru_id = id;
             gru_nome = nome;
             gru_cor = cor;
             gru_data_criacao = DateTime.Now;

@@ -115,7 +115,7 @@ c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\M
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.xml
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.Cookies.xml
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.OAuth.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._22.resources
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Host.SystemWeb.dll
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Host.SystemWeb.xml
+C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._31.resources
+C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache

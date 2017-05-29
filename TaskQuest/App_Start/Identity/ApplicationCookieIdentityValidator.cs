@@ -13,14 +13,14 @@ namespace TaskQuest.Identity
     // Validação do Secutiry Stamp para usuário conectado nos clients registrados.
     public static class ApplicationCookieIdentityValidator
     {
-        private static async Task<bool> VerifySecurityStampAsync(ApplicationUserManager manager, ApplicationUser user,
+        private static async Task<bool> VerifySecurityStampAsync(ApplicationUserManager manager, User user,
             CookieValidateIdentityContext context)
         {
             var stamp = context.Identity.FindFirstValue("AspNet.Identity.SecurityStamp");
             return stamp == await manager.GetSecurityStampAsync(context.Identity.GetUserId<int>());
         }
 
-        private static Task<bool> VerifyClientIdAsync(ApplicationUserManager manager, ApplicationUser user,
+        private static Task<bool> VerifyClientIdAsync(ApplicationUserManager manager, User user,
             CookieValidateIdentityContext context)
         {
             var clientId = context.Identity.FindFirstValue("AspNet.Identity.ClientId");
@@ -34,7 +34,7 @@ namespace TaskQuest.Identity
         }
 
         public static Func<CookieValidateIdentityContext, Task> OnValidateIdentity(TimeSpan validateInterval,
-            Func<ApplicationUserManager, ApplicationUser, Task<ClaimsIdentity>> regenerateIdentity)
+            Func<ApplicationUserManager, User, Task<ClaimsIdentity>> regenerateIdentity)
         {
             return async context =>
             {

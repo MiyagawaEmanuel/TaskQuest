@@ -10,9 +10,9 @@ namespace TaskQuest.Identity
 {
     // Configuração do UserManager Customizado
 
-    public class ApplicationUserManager : UserManager<ApplicationUser, int>
+    public class ApplicationUserManager : UserManager<User, int>
     {
-        public ApplicationUserManager(IUserStore<ApplicationUser, int> store)
+        public ApplicationUserManager(IUserStore<User, int> store)
             : base(store)
         {
         }
@@ -20,10 +20,10 @@ namespace TaskQuest.Identity
         public static ApplicationUserManager Create(IdentityFactoryOptions<ApplicationUserManager> options,
             IOwinContext context)
         {
-            var manager = new ApplicationUserManager(new CustomUserStore(context.Get<DbContext>()));
+            var manager = new ApplicationUserManager(new UserStore(context.Get<DbContext>()));
 
             // Configurando validator para nome de usuario
-            manager.UserValidator = new UserValidator<ApplicationUser, int>(manager)
+            manager.UserValidator = new UserValidator<User, int>(manager)
             {
                 AllowOnlyAlphanumericUserNames = false,
                 RequireUniqueEmail = true
@@ -50,14 +50,14 @@ namespace TaskQuest.Identity
 
             if (dataProtectionProvider != null)
                 manager.UserTokenProvider =
-                    new DataProtectorTokenProvider<ApplicationUser, int>(
+                    new DataProtectorTokenProvider<User, int>(
                         dataProtectionProvider.Create("TaskQuest Token"));
 
             return manager;
         }
 
         // Metodo para login async que guarda os dados Client conectado
-        public async Task<IdentityResult> SignInClientAsync(ApplicationUser user, string clientKey)
+        public async Task<IdentityResult> SignInClientAsync(User user, string clientKey)
         {
             if (string.IsNullOrEmpty(clientKey))
                 throw new ArgumentNullException("clientKey");
@@ -75,7 +75,7 @@ namespace TaskQuest.Identity
         }
 
         // Metodo para login async que remove os dados Client conectado
-        public async Task<IdentityResult> SignOutClientAsync(ApplicationUser user, string clientKey)
+        public async Task<IdentityResult> SignOutClientAsync(User user, string clientKey)
         {
             if (string.IsNullOrEmpty(clientKey))
                 throw new ArgumentNullException("clientKey");

@@ -10,9 +10,9 @@ namespace TaskQuest.Controllers
         public ActionResult Index()
         {
             string aux = "";
-            List<gru_grupo> grupos = Cursor.Select<gru_grupo>();
+            List<gru_grupo> grupos = Cursor.Select<gru_grupo>(typeof(gru_grupo).GetProperty(nameof(gru_grupo.gru_nome)), "PI");
 
-            grupos = Quick.Sort(grupos, Comparer<gru_grupo>.Create((x, y) => String.Compare(x.gru_nome, y.gru_nome, true)));
+            //grupos = Quick.Sort(grupos, Comparer<gru_grupo>.Create((x, y) => String.Compare(x.gru_nome, y.gru_nome, true)));
             
             try
             {
@@ -23,6 +23,7 @@ namespace TaskQuest.Controllers
             {
                 aux = e.ToString();
             }
+
             return Content(aux);
         }
 

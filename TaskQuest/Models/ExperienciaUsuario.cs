@@ -1,30 +1,19 @@
 using System;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
 
 namespace TaskQuest.Models
 {
-    [Table("xpu_experiencia_usuario")]
     public class ExperienciaUsuario
     {
-        [Key]
-        [Column("usu_id", Order = 0)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int UsuarioId { get; set; }
 
-        [Key]
-        [Column("tsk_id", Order = 1)]
-        [DatabaseGenerated(DatabaseGeneratedOption.None)]
         public int TaskId { get; set; }
 
-        [Column("xpg_valor")]
         public int Valor { get; set; }
 
-        [Column("xpu_data")]
         public DateTime Data { get; set; }
 
         public virtual Task Task { get; set; }
 
-        public virtual ApplicationUser Usuario { get; set; }
+        public virtual User Usuario { get; set; }
     }
 }

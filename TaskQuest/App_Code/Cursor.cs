@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using MySql.Data.MySqlClient;
-using System.Configuration;
 
 namespace TaskQuest.App_Code
 {
@@ -27,10 +26,9 @@ namespace TaskQuest.App_Code
             return ExecuteQuery(query);
         }
 
-        public static List<T> Select<T>(int? id = null) where T : new()
+        public static List<T> Select<T>(PropertyInfo atributo=null, Object value=null) where T : new()
         {
             _obj = new T();
-            var props = _obj.GetType().GetProperties();
 
             try
             {
@@ -44,8 +42,12 @@ namespace TaskQuest.App_Code
                 var adapter = new MySqlDataAdapter();
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
-                if (id != null)
-                    query += " WHERE " + props[0].Name + " = " + id;
+
+                if (atributo != null && value != null)
+                {
+                    atributo.SetValue(_obj, value);
+                    query += " WHERE " + atributo.Name + " = ?" + atributo.Name;
+                }
 
                 _command.CommandText = query;
                 AddParameters();

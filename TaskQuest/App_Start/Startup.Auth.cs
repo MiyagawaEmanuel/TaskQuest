@@ -29,7 +29,7 @@ namespace TaskQuest
                 Provider = new CookieAuthenticationProvider
                 {
                     OnValidateIdentity = SecurityStampValidator
-                        .OnValidateIdentity<ApplicationUserManager, ApplicationUser, int>(
+                        .OnValidateIdentity<ApplicationUserManager, User, int>(
                             TimeSpan.FromMinutes(30),
                             (manager, user) =>
                                 user.GenerateUserIdentityAsync(manager),

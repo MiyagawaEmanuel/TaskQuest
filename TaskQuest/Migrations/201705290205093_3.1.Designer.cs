@@ -6,14 +6,14 @@ namespace TaskQuest.Migrations
     using System.Data.Entity.Migrations.Infrastructure;
     using System.Resources;
     
-    [GeneratedCode("EntityFramework.Migrations", "6.1.0-30225")]
-    public sealed partial class _22 : IMigrationMetadata
+    [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
+    public sealed partial class _31 : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(_22));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(_31));
         
         string IMigrationMetadata.Id
         {
-            get { return "201705251605488_2.2"; }
+            get { return "201705290205093_3.1"; }
         }
         
         string IMigrationMetadata.Source

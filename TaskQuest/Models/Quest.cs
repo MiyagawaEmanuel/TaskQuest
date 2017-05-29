@@ -1,15 +1,10 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 
 namespace TaskQuest.Models
 {
-    [Table("qst_quest")]
     public class Quest
     {
-        [SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public Quest()
         {
             Precedencias = new HashSet<Precedencia>();
@@ -18,49 +13,30 @@ namespace TaskQuest.Models
             Semanas = new HashSet<Semana>();
         }
 
-        [Key]
-        [Column("qst_id")]
-        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
 
-        [Column("usu_id_criador")]
         public int? UsuarioCriadorId { get; set; }
 
-        [Column("gru_id_criador")]
         public int? GrupoCriadorId { get; set; }
 
-        [Required]
-        [StringLength(20)]
-        [Column("qst_cor")]
         public string Cor { get; set; }
 
-        [Column("qst_criacao")]
         public DateTime DataCricao { get; set; }
 
-        [Required]
-        [StringLength(45)]
-        [Column("qst_descricao")]
         public string Descricao { get; set; }
 
-        [Required]
-        [StringLength(45)]
-        [Column("qst_nome")]
         public string Nome { get; set; }
 
         public virtual Grupo GrupoCriador { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Precedencia> Precedencias { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Precedencia> Antecedencias { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
 
-        public virtual ApplicationUser UsuarioCriador { get; set; }
+        public virtual User UsuarioCriador { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Semana> Semanas { get; set; }
     }
 }

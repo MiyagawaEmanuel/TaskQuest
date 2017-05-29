@@ -5,7 +5,7 @@ using TaskQuest.Models;
 
 namespace TaskQuest.Identity
 {
-    public class ApplicationSignInManager : SignInManager<ApplicationUser, int>
+    public class ApplicationSignInManager : SignInManager<User, int>
     {
         public ApplicationSignInManager(ApplicationUserManager userManager,
             IAuthenticationManager authenticationManager)

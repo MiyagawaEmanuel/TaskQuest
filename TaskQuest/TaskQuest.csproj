@@ -175,9 +175,13 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="App_Code\crt_cartao.cs" />
     <Compile Include="App_Code\Cursor.cs" />
     <Compile Include="App_Code\gru_grupo.cs" />
     <Compile Include="App_Code\Quicksort.cs" />
+    <Content Include="App_Code\usu_usuario.cs" />
+    <Content Include="App_Code\tel_telefone.cs" />
+    <Content Include="App_Code\uxg_usuario_grupo.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Identity\ApplicationCookieIdentityValidator.cs" />
@@ -192,9 +196,9 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201705251605488_2.2.cs" />
-    <Compile Include="Migrations\201705251605488_2.2.Designer.cs">
-      <DependentUpon>201705251605488_2.2.cs</DependentUpon>
+    <Compile Include="Migrations\201705290205093_3.1.cs" />
+    <Compile Include="Migrations\201705290205093_3.1.Designer.cs">
+      <DependentUpon>201705290205093_3.1.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\AccountViewModels.cs" />
@@ -202,6 +206,7 @@
     <Compile Include="Models\ApplicationUser.cs" />
     <Compile Include="Models\Arquivo.cs" />
     <Compile Include="Models\Cartao.cs" />
+    <Compile Include="Models\Client.cs" />
     <Compile Include="Models\DbContext.cs" />
     <Compile Include="Models\ExperienciaGrupo.cs" />
     <Compile Include="Models\ExperienciaUsuario.cs" />
@@ -285,8 +290,8 @@
     <Content Include="Scripts\jquery-3.1.1.min.map" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201705251605488_2.2.resx">
-      <DependentUpon>201705251605488_2.2.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201705290205093_3.1.resx">
+      <DependentUpon>201705290205093_3.1.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

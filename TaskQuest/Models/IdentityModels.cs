@@ -1,61 +1,51 @@
-using System.ComponentModel.DataAnnotations;
 using Microsoft.AspNet.Identity.EntityFramework;
 
 namespace TaskQuest.Models
 {
-    public class CustomUserRole : IdentityUserRole<int>
+    public class UserRole : IdentityUserRole<int>
     {
-        [Key]
-        public int CustomUserRoleId { get; set; }
+        public int Id { get; set; }
     }
 
-    public class CustomUserClaim : IdentityUserClaim<int>
+    public class UserClaim : IdentityUserClaim<int>
     {
-        [Key]
-        public int CustomUserClaimId { get; set; }
     }
 
-    public class CustomUserLogin : IdentityUserLogin<int>
+    public class UserLogin : IdentityUserLogin<int>
     {
-        [Key]
-        public int CustomUserLoginId { get; set; }
+        public int Id { get; set; }
     }
 
-    public class CustomRole : IdentityRole<int, CustomUserRole>
+    public class Role : IdentityRole<int, UserRole>
     {
-        public CustomRole()
+        public Role()
         {
         }
 
-        public CustomRole(string name)
+        public Role(string name)
         {
             Name = name;
         }
-
-        [Key]
-        public int CustomRoleId { get; set; }
     }
 
-    public class CustomUserStore : UserStore<ApplicationUser, CustomRole, int,
-        CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class UserStore : UserStore<User, Role, int,
+        UserLogin, UserRole, UserClaim>
     {
-        public CustomUserStore(DbContext context)
+        public UserStore(DbContext context)
             : base(context)
         {
         }
 
-        [Key]
-        public int CustomUserStoreId { get; set; }
+        public int Id { get; set; }
     }
 
-    public class CustomRoleStore : RoleStore<CustomRole, int, CustomUserRole>
+    public class RoleStore : RoleStore<Role, int, UserRole>
     {
-        public CustomRoleStore(DbContext context)
+        public RoleStore(DbContext context)
             : base(context)
         {
         }
 
-        [Key]
-        public int CustomRoleStoreId { get; set; }
+        public int Id { get; set; }
     }
 }

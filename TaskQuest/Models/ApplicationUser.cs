@@ -1,20 +1,18 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-using System.Diagnostics.CodeAnalysis;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using System.Collections.ObjectModel;
 
 namespace TaskQuest.Models
 {
-    [Table("usu_usuario")]
-    public class ApplicationUser : IdentityUser<int, CustomUserLogin, CustomUserRole, CustomUserClaim>
+    public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>
     {
-        public ApplicationUser()
+        public User()
         {
+            Clients = new Collection<Client>();
             Cartoes = new HashSet<Cartao>();
             RemetenteMensagens = new HashSet<Mensagem>();
             DestinatarioMensagens = new HashSet<Mensagem>();
@@ -26,50 +24,35 @@ namespace TaskQuest.Models
             ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
         }
 
-        [Required]
-        [StringLength(20)]
-        [Column("usu_sobrenome")]
         public string Sobrenome { get; set; }
 
-        [Column("usu_data_nascimento", TypeName = "date")]
         public DateTime DataNascimento { get; set; }
 
-        [Column("usu_sexo", TypeName = "char")]
-        [Required]
-        [StringLength(1)]
         public string Sexo { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Cartao> Cartoes { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mensagem> RemetenteMensagens { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Mensagem> DestinatarioMensagens { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Task> Tasks { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Quest> Quests { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Telefone> Telefones { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<UsuarioGrupo> UsuarioGrupos { get; set; }
 
-        [SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
 
-        [NotMapped]
+        public virtual ICollection<Client> Clients { get; set; }
+
         public string CurrentClientId { get; set; }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager,
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager,
             ClaimsIdentity ext = null)
         {
             // Observe que o authenticationType precisa ser o mesmo que foi definido em CookieAuthenticationOptions.AuthenticationType
@@ -107,7 +90,7 @@ namespace TaskQuest.Models
             }
         }
 
-        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser, int> manager)
+        public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager)
         {
             // Note the authenticationType must match the one defined in
             // CookieAuthenticationOptions.AuthenticationType 

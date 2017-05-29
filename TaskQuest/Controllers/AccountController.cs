@@ -49,7 +49,7 @@ namespace TaskQuest.Controllers
 
         private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
-        private async Task SignInAsync(ApplicationUser user, bool isPersistent)
+        private async Task SignInAsync(User user, bool isPersistent)
         {
             var clientKey = Request.Browser.Type;
             await UserManager.SignInClientAsync(user, clientKey);
@@ -124,7 +124,7 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var user = new ApplicationUser();
+                var user = new User();
                 user.UserName = "Emanuel";
                 user.Sexo = "M";
                 user.DataNascimento = new DateTime(1996, 12, 21);
