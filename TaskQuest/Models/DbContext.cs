@@ -134,6 +134,12 @@ namespace TaskQuest.Models
                 .HasForeignKey(e => e.UsuarioId);
 
             modelBuilder.Entity<User>()
+                .HasMany(e => e.Clients)
+                .WithOptional(e => e.Usuario)
+                .HasForeignKey(e => e.UsuarioId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.DestinatarioMensagens)
                 .WithOptional(e => e.UsuarioDestinatario)
                 .HasForeignKey(e => e.UsuarioDestinatarioId)
@@ -143,29 +149,29 @@ namespace TaskQuest.Models
                 .HasMany(e => e.RemetenteMensagens)
                 .WithRequired(e => e.UsuarioRemetente)
                 .HasForeignKey(e => e.UsuarioRemetenteId);
-
-            modelBuilder.Entity<User>()
-                .HasMany(e => e.Tasks)
-                .WithRequired(e => e.UsuarioResponsavel)
-                .HasForeignKey(e => e.UsuarioResponsavelId)
-                .WillCascadeOnDelete(false);
-
+            
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Feedbacks)
                 .WithRequired(e => e.UsuarioResponsavel)
                 .HasForeignKey(e => e.UsuarioResponsavelId)
-                .WillCascadeOnDelete(false);
+                .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Quests)
                 .WithOptional(e => e.UsuarioCriador)
                 .HasForeignKey(e => e.UsuarioCriadorId)
-                .WillCascadeOnDelete();
-            
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Tasks)
+                .WithOptional(e => e.UsuarioResponsavel)
+                .HasForeignKey(e => e.UsuarioResponsavelId)
+                .WillCascadeOnDelete(true);
+
             /*
                 Configurando tabela Arquivo
             */
-            
+
             //Configurando o nome da tabela
             modelBuilder.Entity<Arquivo>()
                 .ToTable("arq_arquivo");
@@ -351,6 +357,10 @@ namespace TaskQuest.Models
                 .Property(e => e.ClientKey)
                 .HasColumnName("cli_key");
 
+            modelBuilder.Entity<Client>()
+                .Property(e => e.UsuarioId)
+                .HasColumnName("usu_id");
+
             /*
                 Configurando tabela Feedback
             */
@@ -369,6 +379,10 @@ namespace TaskQuest.Models
                 .HasColumnName("feb_relatorio")
                 .HasMaxLength(150)
                 .IsRequired();
+
+            modelBuilder.Entity<Feedback>()
+                .Property(e => e.Resposta)
+                .HasColumnName("feb_resposta");
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Nota)
@@ -667,8 +681,7 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.DataConclusao)
-                .HasColumnName("tsk_data_conclusao")
-                .IsRequired();
+                .HasColumnName("tsk_data_conclusao");
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.RequerVerificacao)
@@ -677,8 +690,7 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.UsuarioResponsavelId)
-                .HasColumnName("usu_id_responsavel")
-                .IsRequired();
+                .HasColumnName("usu_id_responsavel");
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.Cor)
@@ -697,7 +709,7 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.TaskPrecedente)
                 .HasForeignKey(e => e.TaskPrecedenteId)
                 .WillCascadeOnDelete();
-
+            
             /*
                 Configuração da tabela UsuarioGrupo 
             */

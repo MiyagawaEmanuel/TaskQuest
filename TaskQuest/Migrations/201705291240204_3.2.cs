@@ -3,7 +3,7 @@ namespace TaskQuest.Migrations
     using System;
     using System.Data.Entity.Migrations;
     
-    public partial class _31 : DbMigration
+    public partial class _32 : DbMigration
     {
         public override void Up()
         {
@@ -37,10 +37,10 @@ namespace TaskQuest.Migrations
                         tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         tsk_data_conclusao = c.DateTime(nullable: false, precision: 0),
                         tsk_verificacao = c.Boolean(nullable: false),
-                        usu_id_responsavel = c.Int(nullable: false),
+                        usu_id_responsavel = c.Int(),
                     })
                 .PrimaryKey(t => t.tsk_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel, cascadeDelete: true)
                 .ForeignKey("dbo.qst_quest", t => t.qst_id, cascadeDelete: true)
                 .Index(t => t.qst_id)
                 .Index(t => t.usu_id_responsavel);
@@ -185,11 +185,11 @@ namespace TaskQuest.Migrations
                     {
                         cli_id = c.Int(nullable: false, identity: true),
                         cli_key = c.String(unicode: false),
-                        User_Id = c.Int(),
+                        usu_id = c.Int(),
                     })
                 .PrimaryKey(t => t.cli_id)
-                .ForeignKey("dbo.usu_usuario", t => t.User_Id)
-                .Index(t => t.User_Id);
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
+                .Index(t => t.usu_id);
             
             CreateTable(
                 "dbo.xpu_experiencia_usuario",
@@ -220,7 +220,7 @@ namespace TaskQuest.Migrations
                     })
                 .PrimaryKey(t => t.feb_id)
                 .ForeignKey("dbo.tsk_task", t => t.tsk_id, cascadeDelete: true)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel, cascadeDelete: true)
                 .Index(t => t.tsk_id)
                 .Index(t => t.usu_id_responsavel);
             
@@ -338,7 +338,7 @@ namespace TaskQuest.Migrations
             DropForeignKey("dbo.xpu_experiencia_usuario", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.xpu_experiencia_usuario", "tsk_id", "dbo.tsk_task");
             DropForeignKey("dbo.msg_mensagem", "usu_id_destinatario", "dbo.usu_usuario");
-            DropForeignKey("dbo.cli_client", "User_Id", "dbo.usu_usuario");
+            DropForeignKey("dbo.cli_client", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.cuc_custom_user_claim", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.crt_cartao", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.xpg_experiencia_grupo", "tsk_id", "dbo.tsk_task");
@@ -356,7 +356,7 @@ namespace TaskQuest.Migrations
             DropIndex("dbo.feb_feedback", new[] { "tsk_id" });
             DropIndex("dbo.xpu_experiencia_usuario", new[] { "usu_id" });
             DropIndex("dbo.xpu_experiencia_usuario", new[] { "tsk_id" });
-            DropIndex("dbo.cli_client", new[] { "User_Id" });
+            DropIndex("dbo.cli_client", new[] { "usu_id" });
             DropIndex("dbo.cuc_custom_user_claim", new[] { "usu_id" });
             DropIndex("dbo.crt_cartao", new[] { "usu_id" });
             DropIndex("dbo.usu_usuario", "email_unique_idx");

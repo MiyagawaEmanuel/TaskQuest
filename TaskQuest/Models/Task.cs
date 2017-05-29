@@ -35,7 +35,7 @@ namespace TaskQuest.Models
 
         public bool RequerVerificacao { get; set; }
 
-        public int UsuarioResponsavelId { get; set; }
+        public int? UsuarioResponsavelId { get; set; }
 
         public virtual User UsuarioResponsavel { get; set; }
 

@@ -12,7 +12,7 @@ namespace TaskQuest.Models
     {
         public User()
         {
-            Clients = new Collection<Client>();
+            Clients = new HashSet<Client>();
             Cartoes = new HashSet<Cartao>();
             RemetenteMensagens = new HashSet<Mensagem>();
             DestinatarioMensagens = new HashSet<Mensagem>();
@@ -49,7 +49,7 @@ namespace TaskQuest.Models
         public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
 
         public virtual ICollection<Client> Clients { get; set; }
-
+        
         public string CurrentClientId { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager,
