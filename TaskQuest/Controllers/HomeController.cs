@@ -1,7 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
 using TaskQuest.App_Code;
+using TaskQuest.Models;
 using System.Web.Mvc;
+using TaskQuest.ViewModels;
 
 namespace TaskQuest.Controllers
 {
@@ -9,36 +11,62 @@ namespace TaskQuest.Controllers
     {
         public ActionResult Index()
         {
-            string aux = "";
-            List<gru_grupo> grupos = Cursor.Select<gru_grupo>(typeof(gru_grupo).GetProperty(nameof(gru_grupo.gru_nome)), "PI");
-
-            //grupos = Quick.Sort(grupos, Comparer<gru_grupo>.Create((x, y) => String.Compare(x.gru_nome, y.gru_nome, true)));
-            
-            try
-            {
-                foreach (var grupo in grupos)
-                    aux += grupo.gru_nome + ", ";
-            }
-            catch(Exception e)
-            {
-                aux = e.ToString();
-            }
-
-            return Content(aux);
-        }
-
-        public ActionResult About()
-        {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        public ActionResult Login(LoginViewModel model)
         {
-            ViewBag.Message = "Your contact page.";
+            return RedirectToAction("Inicio");
+        }
 
+        public ActionResult Register(RegisterViewModel model)
+        {
+            return RedirectToAction("Index");
+        }
+        
+        public ActionResult Inicio()
+        {
+            var model = new InicioViewModel();
+            return View(model);
+        }
+
+        public ActionResult Usuario()
+        {
+            var model = new UsuarioViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Usuario(UsuarioViewModel model)
+        {
+            ViewBag.Result = "200//ok";
             return View();
         }
+
+        public ActionResult Grupos()
+        {
+            var model = new GruposViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult CriarGrupo(CriarGrupoViewModel model)
+        {
+            ViewBag.Result = "200//ok";
+            return RedirectToAction("Grupos");
+        }
+
+        public ActionResult Grupo()
+        {
+            var model = new GrupoViewModel();
+            return View(model);
+        }
+
+        [HttpPost]
+        public ActionResult Grupo(GrupoViewModel model)
+        {
+            return View(model);
+        }
+
     }
 }

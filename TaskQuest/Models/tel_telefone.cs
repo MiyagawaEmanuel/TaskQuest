@@ -1,4 +1,4 @@
-﻿namespace TaskQuest.App_Code
+﻿namespace TaskQuest.Models
 {
     public class tel_telefone
     {

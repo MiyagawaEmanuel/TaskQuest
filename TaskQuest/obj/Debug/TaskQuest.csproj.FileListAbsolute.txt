@@ -94,30 +94,9 @@ c:\users\emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\p
 c:\users\emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csprojResolveAssemblyReference.cache
 c:\users\emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.dll
 c:\users\emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.pdb
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\EntityFramework.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\EntityFramework.SqlServer.dll
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.Core.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.EntityFramework.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.Owin.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.Cookies.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.OAuth.dll
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\MySql.Data.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\MySql.Data.Entity.EF6.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Owin.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\EntityFramework.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\EntityFramework.SqlServer.xml
 c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.Core.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.EntityFramework.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.AspNet.Identity.Owin.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.Cookies.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Security.OAuth.xml
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Host.SystemWeb.dll
-c:\Users\Emanuel\Documents\Visual Studio 2017\Projects\TaskQuest\TaskQuest\bin\Microsoft.Owin.Host.SystemWeb.xml
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._32.resources
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._321.resources
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations._322.resources
+C:\Users\Emanuel\Desktop\TaskQUest\TaskQuest\obj\Debug\TaskQuest.csprojResolveAssemblyReference.cache
+C:\Users\Emanuel\Desktop\TaskQUest\TaskQuest\obj\Debug\TaskQuest.dll
+C:\Users\Emanuel\Desktop\TaskQUest\TaskQuest\obj\Debug\TaskQuest.pdb
