@@ -1,197 +1,134 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no">
-	<title>Início</title>
+@{
+	ViewBag.Title = "Inicio";
+	Layout = "_Layout";
+}
 
-	<!-- Styles -->
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700'
-	rel='stylesheet' type='text/css'>
-	<link rel="stylesheet" href="css/bootstrap.min.css">
-	<link rel="stylesheet" href="css/style.css">
+<section>
+	<div class="container fluid ">
+		<div class="row inicial">
+			<div><a>Criar Grupo</a></div>
+			<div><h1>Grupos</h1></div>
+			<div><a href="Grupos.html">Ver todos</a></div>
+		</div>
 
-	<script src="js/modernizr-2.7.1.js"></script>
-
-</head>
-
-<body>
-
-		<header>
-    <div class="container headercont">
-        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="logo" href="inicio.html"><img src="img/kakaka.png" alt="Logo"></a>
-            </div>
-            <div class="navbar-collapse collapse">
-                <ul class="nav navbar-nav navbar-right inputs">
-                    <li></li>
-                    <li></li>
-                    <li></li>
-                </ul>
-            </div>
-        </div>
-        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3"><a href="Notificações.html"><i class="fa fa-bell fa-settings" aria-hidden="true"></i></a></div>
-        <div class="col-md-3 col-lg-3 col-xs-3 col-sm-3">
-            <li class="dropdown">
-          <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars fa-settings" aria-hidden="true"></i><span class="caret"></span></a>
-          <ul class="dropdown-menu">
-            <li><a href="#">Criar Grupo</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Criar Quest</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Mensagens</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="#">Visualizar Perfil</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="Configurações.html">Configurações</a></li>
-            <li role="separator" class="divider"></li>
-            <li><a href="index.html"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
-          </ul>
-        </li>
-
-        </div>
-    </div>
-</header>
-
-		<section>
-			<div class="container fluid ">
-				<div class="row inicial">
-					<div><a>Criar Grupo</a></div>
-					<div><h1>Grupos</h1></div>
-					<div><a href="Grupos.html">Ver todos</a></div>
+		<div class="row grupo-nome">
+			<div class="col-md-3">
+				<div class="row">		
+					<div class="col-md-12 grupo-elipse" id="grupo1"></div>
+					<div class="col-md-12"><h2>Grupo RH</h2></div>
 				</div>
-
-				<div class="row grupo-nome">
-					<div class="col-md-3">
-						<div class="row">		
-							<div class="col-md-12 grupo-elipse" id="grupo1"></div>
-							<div class="col-md-12"><h2>Grupo RH</h2></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="row">
-							<div class="col-md-12 grupo-elipse" id="grupo2"></div>
-							<div class="col-md-12"><h2><a href="GruposInterna(ADM).html">ADS</a></h2></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="row">
-							<div class="col-md-12 grupo-elipse" id="grupo3"></div>
-							<div class="col-md-12"><h2>Trabalho</h2></div>
-						</div>
-					</div>
-					<div class="col-md-3">
-						<div class="row">
-							<div class="col-md-12 grupo-elipse" id="grupo4"></div>
-							<div class="col-md-12"><h2>PI</h2></div>
-						</div>
-					</div>
-				</div>
-				<hr class="quebra">
 			</div>
-		</section>
-
-		<section>
-			<div class="container fluid ">
-				<div class="row inicial">
-					<div><a href="CriarQuests.html">Criar Quest</a></div>
-					<div><h1>Pendências</h1></div>
-					<div><a href="Quests.html">Ver todas</a></div>
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-12 grupo-elipse" id="grupo2"></div>
+					<div class="col-md-12"><h2><a href="GruposInterna(ADM).html">ADS</a></h2></div>
 				</div>
-				<div class="row inicial">
-					<div class="quest-quadrado" id="pend1">
-						<div class="row">
-							<div class="col-md-12"><h2>Fazer Wireframe</h2></div>
-							<div class="col-md-12"><h3>17/04/2017</h3></div>
-							<div class="col-md-12"><h3>Criar 10 telas do sistema.</h3></div>
-							<div class="col-md-12 making">
-								<select class="form-control selects" id="selectPrec">
-									<option value="">A fazer</option>
-									<option value="">Fazendo</option>
-									<option value="">Feito</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="quest-quadrado" id="pend2">
-						<div class="row">
-							<div class="col-md-12"><h2>Fazer o MER</h2></div>
-							<div class="col-md-12"><h3>17/04/2017</h3></div>
-							<div class="col-md-12"><h3>Entregar o MER completo.</h3></div>
-							<div class="col-md-12 making">
-								<select class="form-control selects" id="selectPrec">
-									<option value="">A fazer</option>
-									<option value="">Fazendo</option>
-									<option value="">Feito</option>
-								</select>
-							</div>
-						</div>
-					</div>
-					<div class="quest-quadrado" id="pend3">
-						<div class="row">
-							<div class="col-md-12"><h2>Landing Page</h2></div>
-							<div class="col-md-12"><h3>17/04/2017</h3></div>
-							<div class="col-md-12"><h3>Entregar Landing Page completa.</h3></div>
-							<div class="col-md-12 making">
-								<select class="form-control selects" id="selectPrec">
-									<option value="">A fazer</option>
-									<option value="">Fazendo</option>
-									<option value="">Feito</option>
-								</select>
-							</div>
-						</div>
-					</div>
-				</div>
-				<hr class="quebra">
 			</div>
-		</section>
-
-		<section>
-			<div class="container fluid ">
-				<div class="row inicial">
-					<div><a class="hid" href="CriarQuests.html">Criar Quest</a></div>
-					<div><h1>Feedback</h1></div>
-					<div><a href="Quests.html">Ver todas</a></div>
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-12 grupo-elipse" id="grupo3"></div>
+					<div class="col-md-12"><h2>Trabalho</h2></div>
 				</div>
-				<div class="row inicial">
-					<div class="quest-quadrado" id="quest1">
-						<div class="row">
-							<div class="col-md-12"><h2>Fazer Monografia</h2></div>
-							<div class="col-md-12"><h3>20/04/2017</h3></div>
-							<div class="col-md-12"><h1>3</h1></div>
-							<div class="col-md-12"><h3>Passou um pouco do prazo.</h3></div>
-						</div>
-					</div>
-					<div class="quest-quadrado" id="quest2">
-						<div class="row">
-							<div class="col-md-12"><h2>Modelar Banco</h2></div>
-							<div class="col-md-12"><h3>04/04/2017</h3></div>
-							<div class="col-md-12"><h1>0</h1></div>
-							<div class="col-md-12"><h3>Ficou bem ruim, tem que melhorar.</h3></div>
-						</div>
-					</div>
-					<div class="quest-quadrado" id="quest3">
-						<div class="row">
-							<div class="col-md-12"><h2>Fazer Diagramas</h2></div>
-							<div class="col-md-12"><h3>17/04/2017</h3></div>
-							<div class="col-md-12"><h1>5</h1></div>
-							<div class="col-md-12"><h3>Ficou muito bom, parabéns :)</h3></div>
-						</div>
-					</div>
-				</div>
-				<hr class="quebra">
 			</div>
-		</section>
+			<div class="col-md-3">
+				<div class="row">
+					<div class="col-md-12 grupo-elipse" id="grupo4"></div>
+					<div class="col-md-12"><h2>PI</h2></div>
+				</div>
+			</div>
+		</div>
+		<hr class="quebra">
+	</div>
+</section>
 
-		<script src="js/jquery-1.11.0.min.js"></script>
-		<script src="js/bootstrap.min.js"></script>
+<section>
+	<div class="container fluid ">
+		<div class="row inicial">
+			<div><a href="CriarQuests.html">Criar Quest</a></div>
+			<div><h1>Pendências</h1></div>
+			<div><a href="Quests.html">Ver todas</a></div>
+		</div>
+		<div class="row inicial">
+			<div class="quest-quadrado" id="pend1">
+				<div class="row">
+					<div class="col-md-12"><h2>Fazer Wireframe</h2></div>
+					<div class="col-md-12"><h3>17/04/2017</h3></div>
+					<div class="col-md-12"><h3>Criar 10 telas do sistema.</h3></div>
+					<div class="col-md-12 making">
+						<select class="form-control selects" id="selectPrec">
+							<option value="">A fazer</option>
+							<option value="">Fazendo</option>
+							<option value="">Feito</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="quest-quadrado" id="pend2">
+				<div class="row">
+					<div class="col-md-12"><h2>Fazer o MER</h2></div>
+					<div class="col-md-12"><h3>17/04/2017</h3></div>
+					<div class="col-md-12"><h3>Entregar o MER completo.</h3></div>
+					<div class="col-md-12 making">
+						<select class="form-control selects" id="selectPrec">
+							<option value="">A fazer</option>
+							<option value="">Fazendo</option>
+							<option value="">Feito</option>
+						</select>
+					</div>
+				</div>
+			</div>
+			<div class="quest-quadrado" id="pend3">
+				<div class="row">
+					<div class="col-md-12"><h2>Landing Page</h2></div>
+					<div class="col-md-12"><h3>17/04/2017</h3></div>
+					<div class="col-md-12"><h3>Entregar Landing Page completa.</h3></div>
+					<div class="col-md-12 making">
+						<select class="form-control selects" id="selectPrec">
+							<option value="">A fazer</option>
+							<option value="">Fazendo</option>
+							<option value="">Feito</option>
+						</select>
+					</div>
+				</div>
+			</div>
+		</div>
+		<hr class="quebra">
+	</div>
+</section>
 
-	</body>
-	</html>
+<section>
+	<div class="container fluid ">
+		<div class="row inicial">
+			<div><a class="hid" href="CriarQuests.html">Criar Quest</a></div>
+			<div><h1>Feedback</h1></div>
+			<div><a href="Quests.html">Ver todas</a></div>
+		</div>
+		<div class="row inicial">
+			<div class="quest-quadrado" id="quest1">
+				<div class="row">
+					<div class="col-md-12"><h2>Fazer Monografia</h2></div>
+					<div class="col-md-12"><h3>20/04/2017</h3></div>
+					<div class="col-md-12"><h1>3</h1></div>
+					<div class="col-md-12"><h3>Passou um pouco do prazo.</h3></div>
+				</div>
+			</div>
+			<div class="quest-quadrado" id="quest2">
+				<div class="row">
+					<div class="col-md-12"><h2>Modelar Banco</h2></div>
+					<div class="col-md-12"><h3>04/04/2017</h3></div>
+					<div class="col-md-12"><h1>0</h1></div>
+					<div class="col-md-12"><h3>Ficou bem ruim, tem que melhorar.</h3></div>
+				</div>
+			</div>
+			<div class="quest-quadrado" id="quest3">
+				<div class="row">
+					<div class="col-md-12"><h2>Fazer Diagramas</h2></div>
+					<div class="col-md-12"><h3>17/04/2017</h3></div>
+					<div class="col-md-12"><h1>5</h1></div>
+					<div class="col-md-12"><h3>Ficou muito bom, parabéns :)</h3></div>
+				</div>
+			</div>
+		</div>
+		<hr class="quebra">
+	</div>
+</section>

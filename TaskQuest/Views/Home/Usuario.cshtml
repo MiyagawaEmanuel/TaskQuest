@@ -1,0 +1,93 @@
+@model TaskQuest.ViewModel.UsuarioViewModel
+
+<section>
+    <div class="container fluid group-image"><h3 class="img-grupo">Image</h3></div>
+    <hr class="quebra group-image">
+</section>
+
+<section>
+    <div class="container fluid">
+        <div id="chartContainer"></div>
+    </div>
+</section>
+
+<hr class="quebra group-image">
+
+<section>
+    <div class="container fluid">
+        <div class="row info-p">
+
+            @using (Html.BeginForm("Usuario", "home", FormMethod.Post)) {
+                <input type="submit" class="btn btn-primary editar" value="Editar">
+                <div class="col-md-12"><h2 class="setting-title">Informações Pessoais</h2></div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.Nome, new { @class = "form-control inputs centralize", @value=@Model.Nome })</div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.Sobrenome, new { @class = "form-control inputs centralize", @value=@Model.Sobrenome })</div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control inputs centralize", @value=@Model.DataNascimento })</div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.Email, new { @class = "form-control inputs centralize", @value=@Model.Email })</div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.Senha, new { @class = "form-control inputs centralize", @type="password", @value=@Model.Senha })</div>
+                <div class="col-md-6">
+                    <input type="text" name="showPaletteOnly" id="showPaletteOnly" style="display: none;">
+                </div>
+            }
+        </div>   
+    </div>
+</section>
+
+<hr class="quebra group-image">
+
+<section>
+    <div class="container fluid">
+        <div class="row">
+            <div class="col-md-12"><h2 class="setting-title">Telefones</h2></div>
+            <div class="row info-t">
+                @ foreach (var telefone in @Model.Telefones){
+                    <div class="col-md-12">@telefone.Tipo: <input type="text" class="form-control inputs centralize" value="@telefone.Numero" name="campo"></div>
+                }
+                @Html.Partial("_AdicionarTelefonePartial")
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="quebra group-image">
+
+<section>
+    <div class="container fluid">
+        <div class="row info-p">
+            <div class="col-md-12"><h2 class="setting-title">Cartões</h2></div>
+            <div class="info-c">
+                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="Bruno Ribeiro dos Santos" name="campo"></div>
+                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="Visa" name="campo"></div>
+                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="156746-189465" name="campo"></div>
+                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="379" name="campo"></div>
+                <div class="col-md-6"><input type="date" class="form-control inputs centralize" value="2020-01-25" name="campo"></div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<hr class="quebra group-image">
+
+
+
+
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script src="js/graphics.js"></script>
+<script src='js/spectrum.js'></script>
+<script src="js/codespec.js"></script>
+<script>  
+
+    $(document).ready(function() {
+        $("input[type='text']").prop('disabled', true);
+        $("input[type='password']").prop('disabled', true);
+        $("input[type='submit']").value("Editar");
+    });
+
+    $("input[type='submit']").click(function() {
+        $("input[type='text']").prop('disabled', false);
+        $("input[type='password']").prop('disabled', false);
+        $("input[type='submit']").value("Salvar");
+    });
+
+</script>

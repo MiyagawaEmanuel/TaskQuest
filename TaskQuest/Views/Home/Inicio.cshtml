@@ -1,0 +1,28 @@
+@model TaskQuest.ViewModel.InicioViewModel;
+
+@{
+	ViewBag.Title = "Inicio";
+	Layout = "_Layout";
+}
+
+<section>
+	<div class="container fluid ">
+		<div class="row inicial">
+			<div><a>Criar Grupo</a></div>
+			<div><h1>Grupos</h1></div>
+			<div><a href="Grupos.html">Ver todos</a></div>
+		</div>
+
+		<div class="row grupo-nome">
+			@foreach (var grupo in Model.Grupos){
+				<div class="col-md-3">
+					<div class="row">		
+						<div class="col-md-12 grupo-elipse @grupo.Cor"></div>
+						<div class="col-md-12"><h2>@grupo.Nome</h2></div>
+					</div>
+				</div>
+			}
+		</div>
+		<hr class="quebra">
+	</div>
+</section>
