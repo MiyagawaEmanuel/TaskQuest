@@ -9,41 +9,55 @@ namespace TaskQuest.Controllers
 {
     public class HomeController : Controller
     {
-        public ActionResult Index()
+        public ActionResult Index() //V
         {
             return View();
         }
 
-        public ActionResult Login(LoginViewModel model)
+        public ActionResult Login(LoginViewModel model) //V
         {
             return RedirectToAction("Inicio");
         }
 
-        public ActionResult Register(RegisterViewModel model)
+        public ActionResult Register(RegisterViewModel model) //V
         {
             return RedirectToAction("Index");
         }
         
-        public ActionResult Inicio()
+        public ActionResult Inicio() //V
         {
             var model = new InicioViewModel();
             return View(model);
         }
 
-        public ActionResult Usuario()
+        public ActionResult Usuario() //V
         {
             var model = new UsuarioViewModel();
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Usuario(UsuarioViewModel model)
+        public ActionResult Usuario(UsuarioViewModel model) //V
         {
             ViewBag.Result = "200//ok";
             return View();
         }
 
-        public ActionResult Grupos()
+        [HttpPost]
+        public ActionResult AdicionarTelefone(TelefoneViewModel model) //V
+        {
+            ViewBag.Result = "200/ok";
+            return RedirectToAction("Usuario");
+        }
+
+        [HttpPost]
+        public ActionResult AdicionarCartao(CartaoViewModel model) //V
+        {
+            ViewBag.Result = "200/ok";
+            return RedirectToAction("Usuario");
+        }
+
+        public ActionResult Grupos() //V
         {
             var model = new GruposViewModel();
             return View(model);
@@ -56,7 +70,7 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Grupos");
         }
 
-        public ActionResult Grupo()
+        public ActionResult Grupo() //V
         {
             var model = new GrupoViewModel();
             return View(model);
@@ -69,7 +83,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model)
+        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) //V
         {
             return RedirectToAction("Grupos");
         }

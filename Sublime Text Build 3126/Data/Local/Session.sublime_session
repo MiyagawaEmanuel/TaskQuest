@@ -144,6 +144,22 @@
 				"selected_items":
 				[
 					[
+						"View",
+						"ViewBag"
+					],
+					[
+						"Re",
+						"RedirectToAction"
+					],
+					[
+						"Te",
+						"TelefoneViewModel"
+					],
+					[
+						"Ca",
+						"CartaoViewModel"
+					],
+					[
 						"in",
 						"input\tTag"
 					],
@@ -156,20 +172,11 @@
 			"buffers":
 			[
 				{
-					"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Usuario.cshtml",
+					"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Controllers/HomeController.cs",
 					"settings":
 					{
-						"buffer_size": 3905,
-						"encoding": "UTF-8",
-						"line_ending": "Windows"
-					}
-				},
-				{
-					"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarTelefonePartial",
-					"settings":
-					{
-						"buffer_size": 0,
-						"encoding": "UTF-8",
+						"buffer_size": 2233,
+						"encoding": "UTF-8 with BOM",
 						"line_ending": "Windows"
 					}
 				}
@@ -206,12 +213,23 @@
 			},
 			"file_history":
 			[
-				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Controllers/HomeController.cs",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Grupo.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarUsuarioGrupoPartial.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_LoginPartial.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/AdicionarUsuarioPartial.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Models/ViewModels/GrupoViewModel.cs",
+				"/C/Users/Aluno/Desktop/TaskQuest/Bruno/GruposInterna(ADM).html",
+				"/C/Users/Aluno/Desktop/TaskQuest/Bruno/Grupos - Interna.html",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Models/ViewModels/UsuarioViewModel.cs",
 				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Usuario.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Grupos.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/Bruno/Grupos.html",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarTelefonePartial.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarCartaoPartial.cshtml",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarTelefonePartial",
+				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Controllers/HomeController.cs",
 				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Inicio.cshtml",
 				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Index.cshtml",
-				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_LoginPartial.cshtml",
-				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Models/ViewModels/UsuarioViewModel.cs",
 				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_Layout.cshtml",
 				"/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Models/ViewModels/RegisterViewModel.cs"
 			],
@@ -253,60 +271,32 @@
 					[
 						{
 							"buffer": 0,
-							"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Home/Usuario.cshtml",
+							"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Controllers/HomeController.cs",
 							"semi_transient": false,
 							"settings":
 							{
-								"buffer_size": 3905,
+								"buffer_size": 2233,
 								"regions":
 								{
 								},
 								"selection":
 								[
 									[
-										2166,
-										2166
+										2225,
+										2225
 									]
 								],
 								"settings":
 								{
-									"syntax": "Packages/HTML/HTML.sublime-syntax",
+									"syntax": "Packages/C#/C#.sublime-syntax",
 									"tab_size": 4,
 									"translate_tabs_to_spaces": true
 								},
 								"translation.x": 0.0,
-								"translation.y": 225.0,
+								"translation.y": 810.0,
 								"zoom_level": 1.0
 							},
 							"stack_index": 0,
-							"type": "text"
-						},
-						{
-							"buffer": 1,
-							"file": "/C/Users/Aluno/Desktop/TaskQuest/TaskQuest/Views/Shared/_AdicionarTelefonePartial",
-							"semi_transient": false,
-							"settings":
-							{
-								"buffer_size": 0,
-								"regions":
-								{
-								},
-								"selection":
-								[
-									[
-										0,
-										0
-									]
-								],
-								"settings":
-								{
-									"syntax": "Packages/Text/Plain text.tmLanguage"
-								},
-								"translation.x": 0.0,
-								"translation.y": 0.0,
-								"zoom_level": 1.0
-							},
-							"stack_index": 1,
 							"type": "text"
 						}
 					]

@@ -1,0 +1,7 @@
+@model TaskQuest.ViewModels.Telefone
+
+@using (Html.BeginForm("AdicionarTelefone", "Home", FormMethod.Post)) {
+	@Html.TextBoxFor(m => m.Tipo, new { @class="form-control inputs centralize" })
+	@Html.TextBoxFor(m => m.Numero, new { @class="form-control inputs centralize" })
+	<input type="submit" value="Adicionar" class="btn btn-primary editar">
+}

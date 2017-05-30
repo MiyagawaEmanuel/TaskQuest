@@ -1,0 +1,10 @@
+@model TaskQuest.ViewModels.Telefone
+
+@using (Html.BeginForm("AdicionarCartao", "Home", FormMethod.Post)) {
+	@Html.TextBoxFor(m => m.NomeTitular, new { @class"form-control inputs centralize" })
+	@Html.TextBoxFor(m => m.Bandeira, new { @class="form-control inputs centralize" })
+	@Html.TextBoxFor(m => m.Numero, new { @class="form-control inputs centralize" })
+	@Html.TextBoxFor(m => m.CodigoSeguranca, new { @class="form-control inputs centralize" })
+	@Html.TextBoxFor(m => m.DataVencimento, new { @class="form-control inputs centralize", @type="date" })
+	<input type="submit" value="Adicionar" class="btn btn-primary editar">
+}

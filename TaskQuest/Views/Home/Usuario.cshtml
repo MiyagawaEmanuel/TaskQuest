@@ -1,23 +1,15 @@
 @model TaskQuest.ViewModel.UsuarioViewModel
 
-<section>
-    <div class="container fluid group-image"><h3 class="img-grupo">Image</h3></div>
-    <hr class="quebra group-image">
-</section>
-
-<section>
-    <div class="container fluid">
-        <div id="chartContainer"></div>
-    </div>
-</section>
-
-<hr class="quebra group-image">
+@{
+    ViewBag.Title = "Configuração de Usuario";
+    Layout = "_Layout";
+}
 
 <section>
     <div class="container fluid">
         <div class="row info-p">
 
-            @using (Html.BeginForm("Usuario", "home", FormMethod.Post)) {
+            @using (Html.BeginForm("Usuario", "Home", FormMethod.Post)) {
                 <input type="submit" class="btn btn-primary editar" value="Editar">
                 <div class="col-md-12"><h2 class="setting-title">Informações Pessoais</h2></div>
                 <div class="col-md-6">@Html.TextBoxFor(m => m.Nome, new { @class = "form-control inputs centralize", @value=@Model.Nome })</div>
@@ -40,8 +32,11 @@
         <div class="row">
             <div class="col-md-12"><h2 class="setting-title">Telefones</h2></div>
             <div class="row info-t">
-                @ foreach (var telefone in @Model.Telefones){
-                    <div class="col-md-12">@telefone.Tipo: <input type="text" class="form-control inputs centralize" value="@telefone.Numero" name="campo"></div>
+                @ for (int x = 0; x < Model.Telefones.Count; x++){
+                    @Html.HiddenFor(m => Model.Telefones[x].Id) @Model[i].Name
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Telefones[x].Tipo, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Telefones[x].Numero, new { @class="form-control inputs centralize" })</div>
+                    <hr class="quebra">
                 }
                 @Html.Partial("_AdicionarTelefonePartial")
             </div>
@@ -56,11 +51,16 @@
         <div class="row info-p">
             <div class="col-md-12"><h2 class="setting-title">Cartões</h2></div>
             <div class="info-c">
-                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="Bruno Ribeiro dos Santos" name="campo"></div>
-                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="Visa" name="campo"></div>
-                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="156746-189465" name="campo"></div>
-                <div class="col-md-6"><input type="text" class="form-control inputs centralize" value="379" name="campo"></div>
-                <div class="col-md-6"><input type="date" class="form-control inputs centralize" value="2020-01-25" name="campo"></div>
+                @ for (int x = 0; x < Model.Cartoes.Count; x++){
+                    @Html.HiddenFor(m => Model.Cartoes[i].Id) @Model[i].Name
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].NomeTitular, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Bandeira, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Numero, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].CodigoSeguranca, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].DataVencimento, new { @class="form-control inputs centralize" })</div>
+                    <hr class="quebra">
+                }
+                @Html.Partial("_AdicionarCartaoPartial")
             </div>
         </div>
     </div>

@@ -1,0 +1,25 @@
+@modal TaskQuest.ViewModels.AdicionarUsuarioGrupoViewModel
+
+<div id="modalUsuario" class="modal fade" role="dialog">
+	<div class="modal-dialog">
+
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal">&times;</button>
+				<h2 class="modal-title">Adicionar Usuário</h2>
+			</div>
+
+			@using (Html.BeginForm("AdicionarUsuarioGrupo", "Home", FormMethod.Post)) {
+				<div class="modal-body titles">
+					<h3>Digite o e-mail do usuário que deseja adicionar.</h3>
+					@Html.TextBoxFor(m => m.Email, new { @class="form-control inputs" })
+				</div>
+
+				<div class="modal-footer">
+					<input type="submit" class="btn btn-primary btn-modal" value="Enviar">
+				</div>
+			}
+		</div>
+
+	</div>
+</div>

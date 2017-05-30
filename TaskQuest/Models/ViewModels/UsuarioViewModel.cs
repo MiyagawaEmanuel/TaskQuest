@@ -20,10 +20,16 @@ namespace TaskQuest.ViewModels
 
         public char Sexo { get; set; }
 
+        public List<CartaoViewModel> Cartoes = new List<CartaoViewModel>();
+
+        public List<TelefoneViewModel> Telefones = new List<TelefoneViewModel>();
+
     }
 
-    public class Cartao
+    public class CartaoViewModel
     {
+        public int Id { get; set; }
+
         public string Bandeira { get; set; }
 
         public string Numero { get; set; }
@@ -35,8 +41,10 @@ namespace TaskQuest.ViewModels
         public string CodigoSeguranca { get; set; }
     }
 
-    public class Telefone
+    public class TelefoneViewModel
     {
+        public int Id { get; set; }
+
         public string Tipo { get; set; }
 
         public string Numero { get; set; }

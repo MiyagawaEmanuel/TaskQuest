@@ -1,0 +1,54 @@
+@model TaskQuest.ViewModels.GrupoViewModel
+
+@{
+ViewBag.Title = "Grupo " + Model.Nome;
+Layout = "_Layout";
+}
+
+<section>
+	<div class="container fluid ">
+		<div class="row infos2">
+			<div><div class="imagem @Model.Cor"></div></div>
+			<div><h2>@Model.Nome</h2></div>
+			<div><h3>@Model.Integrantes.Count Integrantes</h3></div>
+			<div><h3>Premimum</h3></div>
+			<div><input type="date" class="form-control inputs"></div>
+		</div>
+	</div>
+	<hr class="quebra group-image">
+</section>
+
+<section>
+	<div class="container fluid">
+		<div id="tabs">
+			<ul>
+				<li><a href="#integrantes">Integrantes</a></li>
+				<li><a href="#quests">Quests</a></li>
+			</ul>
+			<div id="integrantes">
+				@ for(int x = 0; x < Model.Integrantes.Count; x++){
+				<div class="row teste">
+					<div class="col-md-2 imagem @Model.Integrantes[x].Cor"></div>
+					<h3>@Model.Integrantes[x].Nome</h3>
+					<hr class="quebra">
+				</div>
+			}
+		</div>
+	</div>
+</div>
+</section>
+
+<hr class="quebra">
+
+@Html.Partial("_AdicionarUsuarioGrupoPartial")
+
+<script src="js/jquery-1.11.0.min.js"></script>
+<script src="js/modernizr-2.7.1.js"></script>
+<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
+<script src="js/jquery-ui/jquery-ui.js"></script>
+<script src="js/bootstrap.min.js"></script>
+<script>
+	$( function() {
+		$( "#tabs" ).tabs();
+	} );
+</script>

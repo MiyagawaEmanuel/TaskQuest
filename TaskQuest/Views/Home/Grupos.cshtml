@@ -1,0 +1,26 @@
+@model TaskQuest.ViewModel.GruposViewModel
+
+@{
+    ViewBag.Title = "Grupos";
+    Layout = "_Layout";
+}
+
+<section>
+	<div class="container"> 
+		@ for(int x = 0; x < Model.Grupos.Count; x++){
+			<div class="row">
+			<div>
+				<h1>Grupos</h1> 
+			</div>
+		</div>
+		<div class="container fluid">
+		<div class="row teste">
+				<div class="col-md-4 imagem" ></div>
+				<h3>Grupo PI</h3>
+		</div>
+			@if(x < Model.Grupos.Count - 1){
+				<hr class="quebra">
+			}
+		}
+	</div>	
+</section>

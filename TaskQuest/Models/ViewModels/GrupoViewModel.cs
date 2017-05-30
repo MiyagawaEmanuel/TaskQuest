@@ -11,11 +11,13 @@ namespace TaskQuest.ViewModels
 
         public string Cor { get; set; }
         
-        public List<Integrante> integrantes = new List<Integrante>();
+        public List<IntegranteViewModel> integrantes = new List<IntegranteViewModel>();
     }
 
-    public class Integrante
+    public class IntegranteViewModel
     {
+        public int Id { get; set; }
+
         public string Nome { get; set; }
 
         public string Cor { get; set; }
