@@ -136,5 +136,15 @@ namespace TaskQuest.Models
             }
         }
 
+        private string _usu_cor;
+        public string usu_cor
+        {
+            get => _usu_cor;
+            set
+            {
+                if (value.Length > 0 && value.Length <= 20)
+                    _usu_cor = value;
+            }
+        }
     }
 }

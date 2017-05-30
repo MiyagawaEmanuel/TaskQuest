@@ -68,5 +68,11 @@ namespace TaskQuest.Controllers
             return View(model);
         }
 
+        [HttpPost]
+        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model)
+        {
+            return RedirectToAction("Grupos");
+        }
+
     }
 }

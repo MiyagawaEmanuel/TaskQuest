@@ -1,0 +1,9 @@
+Index (Landing Page) -> Cadastro está faltando sexo
+
+Configuracao -> Tira a imagem e o gráfico para a apresentação
+	     -> Está faltando o tipo do telefone
+
+CriarQuest -> Tirar precedência para apresentação
+	   -> 
+
+Grupo -> Tira imagem, gráfico, Feedback, Tasks e Quests para apresentação
