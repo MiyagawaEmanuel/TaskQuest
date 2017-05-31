@@ -17,8 +17,8 @@
 			@foreach (var grupo in Model.Grupos){
 				<div class="col-md-3">
 					<div class="row">		
-						<div class="col-md-12 grupo-elipse @grupo.Cor"></div>
-						<div class="col-md-12"><h2>@grupo.Nome</h2></div>
+						<a href="/Grupo/@grupo.Id"><div class="col-md-12 grupo-elipse @grupo.Cor"></div></a>
+						<a href="/Grupo/@grupo.Id"><div class="col-md-12"><h2>@grupo.Nome</h2></div></a>
 					</div>
 				</div>
 			}
