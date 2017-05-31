@@ -1,7 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+
 
 namespace TaskQuest.ViewModels
 {
@@ -11,7 +9,7 @@ namespace TaskQuest.ViewModels
 
         public string Cor { get; set; }
         
-        public List<IntegranteViewModel> integrantes = new List<IntegranteViewModel>();
+        public List<IntegranteViewModel> Integrantes = new List<IntegranteViewModel>();
     }
 
     public class IntegranteViewModel

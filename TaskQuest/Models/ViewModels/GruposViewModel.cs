@@ -4,6 +4,6 @@ namespace TaskQuest.ViewModels
 {
     public class GruposViewModel
     {
-        List<Grupo> grupos = new List<Grupo>();
+        public List<Grupo> Grupos = new List<Grupo>();
     }
 }

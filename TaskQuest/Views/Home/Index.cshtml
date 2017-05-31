@@ -1,4 +1,4 @@
-@ model TaskQuest.ViewModel.RegisterViewModel
+﻿@model TaskQuest.ViewModels.RegisterViewModel
 
 <!DOCTYPE html>
 <html lang="pt-br">
@@ -61,25 +61,25 @@
                 <div class="modal-body">
                     <p>Preencha os campos abaixo para realizar seu cadastro.</p>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Nome, new { @id="nome" @maxlength="30" @class="form-control", @placeholder="Nome" }
+                        @Html.TextBoxFor(m => m.Nome, new { @id="nome", @maxlength="30", @class="form-control", @placeholder="Nome" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Sobrenome, new { @id="sobrenome" @maxlength="40" @class="form-control", @placeholder="Sobrenome" }
+                        @Html.TextBoxFor(m => m.Sobrenome, new { @id="sobrenome", @maxlength="40", @class="form-control", @placeholder="Sobrenome" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.DataNascimento, new { @id="datanasc" @maxlength="30" @type="date" @class="form-control" }
+                        @Html.TextBoxFor(m => m.DataNascimento, new { @id="datanasc", @maxlength="30", @type="date", @class="form-control" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Telefone, new { @id="telefone" @maxlength="13" @class="form-control" @placeholder="Telefone" }
+                        @Html.TextBoxFor(m => m.Telefone, new { @id="telefone", @maxlength="13", @class="form-control", @placeholder="Telefone" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Senha, new { @id="senha" @maxlength="30" @type="password" @class="form-control" @placeholder="Senha" }
+                        @Html.TextBoxFor(m => m.Senha, new { @id="senha", @maxlength="30", @type="password", @class="form-control", @placeholder="Senha" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma" @maxlength="30" @type="password" @class="form-control" @placeholder="Confirme sua senha" }
+                        @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma", @maxlength="30", @type="password", @class="form-control", @placeholder="Confirme sua senha" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma" @maxlength="30" @type="password" @class="form-control" @placeholder="Confirme sua senha" }
+                        @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma", @maxlength="30", @type="password", @class="form-control", @placeholder="Confirme sua senha" })
                     </div>
                     <div class="col-md-6 inp">
                         Feminino: @Html.RadioButtonFor(m => m.Sexo, 'F')

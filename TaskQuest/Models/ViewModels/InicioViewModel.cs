@@ -5,9 +5,9 @@ namespace TaskQuest.ViewModels
 {
     public class InicioViewModel
     {
-        List<Grupo> grupos = new List<Grupo>();
-        List<Pendencia> pendencias = new List<Pendencia>();
-        List<Feedback> feedbacks = new List<Feedback>();
+        List<Grupo> Grupos = new List<Grupo>();
+        List<Pendencia> Pendencias = new List<Pendencia>();
+        List<Feedback> Feedbacks = new List<Feedback>();
     }
 
     public class Grupo

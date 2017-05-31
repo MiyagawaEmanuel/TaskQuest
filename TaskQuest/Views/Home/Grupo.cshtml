@@ -26,13 +26,13 @@ Layout = "_Layout";
 				<li><a href="#quests">Quests</a></li>
 			</ul>
 			<div id="integrantes">
-				@ for(int x = 0; x < Model.Integrantes.Count; x++){
+				@for(int x = 0; x < Model.Integrantes.Count; x++){
 				<div class="row teste">
 					<div class="col-md-2 imagem @Model.Integrantes[x].Cor"></div>
 					<h3>@Model.Integrantes[x].Nome</h3>
 					<hr class="quebra">
 				</div>
-			}
+			    }
 		</div>
 	</div>
 </div>
