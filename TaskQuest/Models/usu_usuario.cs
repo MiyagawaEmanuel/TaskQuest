@@ -97,15 +97,14 @@ namespace TaskQuest.Models
             set => _usu_dois_passos_login = value;
         }
 
-        private string _usu_data_desbloqueio;
+        private DateTime _usu_data_desbloqueio;
         public DateTime usu_data_desbloqueio
         {
-            get => DateTime.ParseExact(_usu_data_desbloqueio, "yyyy-MM-dd HH:mm:ss,fff",
-                                       System.Globalization.CultureInfo.InvariantCulture);
+            get => _usu_data_desbloqueio;
             set
             {
                 if (value.CompareTo(DateTime.Now) > 0)
-                    _usu_data_desbloqueio = value.ToString();
+                    _usu_data_desbloqueio = value;
             }
         }
 

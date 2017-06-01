@@ -5,6 +5,7 @@ using TaskQuest.Models;
 using System.Web.Mvc;
 using TaskQuest.ViewModels;
 using System.Linq;
+using System.Diagnostics;
 
 namespace TaskQuest.Controllers
 {
@@ -20,7 +21,6 @@ namespace TaskQuest.Controllers
             return View();
         }
 
-        [Route("/login")]
         public ActionResult Login(LoginViewModel model) //V
         {
 
@@ -40,10 +40,11 @@ namespace TaskQuest.Controllers
             }
 
         }
-
-        [Route("/register")]
+        
         public ActionResult Register(RegisterViewModel model) //V
         {
+
+            Debug.WriteLine("Usou o Register controller");
 
             usu_usuario usuario = new usu_usuario()
             {
@@ -71,7 +72,6 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Login", new LoginViewModel() { Email = model.Email, Senha = Hash.String(model.Senha) });
         }
 
-        [Route("/inicio")]
         public ActionResult Inicio() //V
         {
 
@@ -99,7 +99,6 @@ namespace TaskQuest.Controllers
             return View(model);
         }
 
-        [Route("/usuario")]
         public ActionResult Usuario() //V
         {
             
@@ -152,7 +151,6 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        [Route("/usuario/edit")]
         public ActionResult Usuario(UsuarioViewModel model) //V
         {
 
@@ -229,7 +227,6 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        [Route("/add/telefone")]
         public ActionResult AdicionarTelefone(TelefoneViewModel model) //V
         {
 
@@ -264,7 +261,6 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        [Route("/add/cartao")]
         public ActionResult AdicionarCartao(CartaoViewModel model) //V
         {
 
@@ -300,7 +296,6 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Usuario");
         }
 
-        [Route("/grupos")]
         public ActionResult Grupos() //V
         {
 
@@ -333,7 +328,6 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        [Route("/add/grupo")]
         public ActionResult CriarGrupo(CriarGrupoViewModel model)
         {
 
@@ -377,7 +371,6 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Grupos");
         }
 
-        [Route("grupo/{id:int}")]
         public ActionResult Grupo(int id) //V
         {
 
@@ -431,7 +424,6 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        [Route("grupo/edit")]
         public ActionResult Grupo(GrupoViewModel model)
         {
 

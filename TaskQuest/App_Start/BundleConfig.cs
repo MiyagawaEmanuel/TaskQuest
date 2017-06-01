@@ -8,7 +8,7 @@ namespace TaskQuest
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            //var valBundle = new
+            /*var valBundle = new
 
             //Bundles de JavaScript
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-jquery").Include("~/Scripts/jquery-1.11.0.min.js", "~/Scripts/bootstrap.min.js"));
@@ -35,6 +35,7 @@ namespace TaskQuest
 
             // Code removed for clarity.
             BundleTable.EnableOptimizations = true;
+            */
         }
 
         public class AsIsBundleOrderer : IBundleOrderer
