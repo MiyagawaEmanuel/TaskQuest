@@ -1,4 +1,5 @@
 ﻿using System;
+using TaskQuest.App_Code;
 
 namespace TaskQuest.Models
 {
@@ -27,24 +28,24 @@ namespace TaskQuest.Models
             }
         }
 
-        private DateTime _usu_datanascimento;
-        public DateTime usu_datanascimento
+        private DateTime _usu_data_nascimento;
+        public DateTime usu_data_nascimento
         {
-            get => _usu_datanascimento;
+            get => _usu_data_nascimento;
             set
             {
                 if (value.CompareTo(DateTime.Now) < 0)
-                    _usu_datanascimento = value;
+                    _usu_data_nascimento = value;
             }
         }
 
-        private string _usu_sexo;
-        public string usu_sexo
+        private char _usu_sexo;
+        public char usu_sexo
         {
             get => _usu_sexo;
             set
             {
-                if (value.Length == 1 && (value.ToCharArray()[0].Equals('M')|| value.ToCharArray()[0].Equals('F')))
+                if (value.Equals('M')|| value.Equals('F'))
                     _usu_sexo = value;
             }
         }
@@ -74,7 +75,7 @@ namespace TaskQuest.Models
             set //Hashear Value
             {
                 if (value.Length > 0)
-                    _usu_senha = value;
+                    _usu_senha = Hash.String(value);
             }
         }
 
@@ -96,14 +97,15 @@ namespace TaskQuest.Models
             set => _usu_dois_passos_login = value;
         }
 
-        private DateTime _usu_data_desbloqueio;
+        private string _usu_data_desbloqueio;
         public DateTime usu_data_desbloqueio
         {
-            get => _usu_data_desbloqueio;
+            get => DateTime.ParseExact(_usu_data_desbloqueio, "yyyy-MM-dd HH:mm:ss,fff",
+                                       System.Globalization.CultureInfo.InvariantCulture);
             set
             {
                 if (value.CompareTo(DateTime.Now) > 0)
-                    _usu_data_desbloqueio = value;
+                    _usu_data_desbloqueio = value.ToString();
             }
         }
 

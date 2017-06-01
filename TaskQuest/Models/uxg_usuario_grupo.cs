@@ -3,6 +3,8 @@
     public class uxg_usuario_grupo
     {
 
+        public uxg_usuario_grupo() { }
+
         public uxg_usuario_grupo(int usu_id, int gru_id, bool uxg_administrador)
         {
             this.usu_id = usu_id;

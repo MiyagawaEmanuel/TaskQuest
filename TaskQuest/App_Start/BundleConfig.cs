@@ -8,7 +8,7 @@ namespace TaskQuest
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            var valBundle = new
+            //var valBundle = new
 
             //Bundles de JavaScript
             bundles.Add(new ScriptBundle("~/bundles/bootstrap-jquery").Include("~/Scripts/jquery-1.11.0.min.js", "~/Scripts/bootstrap.min.js"));
@@ -21,17 +21,20 @@ namespace TaskQuest
 
             //Bundles de CSS
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap.min.css"));
-            bundles.Add(new StyleBundle("~/Content/fonts").Include("http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700","~/Content/font-awesome.min.css"));
+            bundles.Add(new StyleBundle("~/Content/fonts").Include("http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700", "~/Content/font-awesome.min.css"));
             bundles.Add(new StyleBundle("~/Content/layout").Include("~/Content/layout.css"));
             bundles.Add(new StyleBundle("~/Content/landing-page").Include("~/Content/main.css", "~/Content/animate.css"));
             bundles.Add(new StyleBundle("~/Content/style").Include("~/Content/style.css"));
             bundles.Add(new StyleBundle("~/Content/spectrum").Include("~/Content/spectrum.css"));
             bundles.Add(new StyleBundle("~/Content/jquery-ui").Include("~/Content/jquery-ui.css"));
 
-            valBundle.Orderer = new AsIsBundleOrderer();
+            //valBundle.Orderer = new AsIsBundleOrderer();
 
-            bundles.Add(valBundle);
+            // bundles.Add(valBundle);
 
+
+            // Code removed for clarity.
+            BundleTable.EnableOptimizations = true;
         }
 
         public class AsIsBundleOrderer : IBundleOrderer

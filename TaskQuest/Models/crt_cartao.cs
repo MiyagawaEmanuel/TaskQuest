@@ -2,25 +2,7 @@
 {
     public class crt_cartao
     {
-
-        public crt_cartao
-        (
-            int crt_id, 
-            int usu_id, 
-            string crt_numero, 
-            string crt_nome_titular, 
-            string crt_data_vencimento, 
-            string crt_codigo_seguranca
-        )
-        {
-            this.crt_id = crt_id;
-            this.usu_id = usu_id;
-            this.crt_numero = crt_numero;
-            this.crt_nome_titular = crt_nome_titular;
-            this.crt_data_vencimento = crt_data_vencimento;
-            this.crt_codigo_seguranca = crt_codigo_seguranca;
-        }
-
+        
         private int _crt_id;
         public int crt_id
         {
