@@ -8,16 +8,21 @@ namespace TaskQuest
         // For more information on bundling, visit http://go.microsoft.com/fwlink/?LinkId=301862
         public static void RegisterBundles(BundleCollection bundles)
         {
-            /*var valBundle = new
+            /*
 
             //Bundles de JavaScript
-            bundles.Add(new ScriptBundle("~/bundles/bootstrap-jquery").Include("~/Scripts/jquery-1.11.0.min.js", "~/Scripts/bootstrap.min.js"));
+            var Index = new ScriptBundle("~/bundles/bootstrap-jquery").Include("~/Scripts/jquery-1.11.0.min.js", "~/Scripts/bootstrap.min.js"));
+            Index.Orderer = new AsIsBundleOrderer();
+            bundles.Add(Index);
+            
             bundles.Add(new ScriptBundle("~/bundles/modernizr").Include("~/Scripts/modernizr-2.7.1.js"));
             bundles.Add(new ScriptBundle("~/bundles/colors").Include("~/Scripts/spectrum.js", "~/Scripts/codespec.js"));
             bundles.Add(new ScriptBundle("~/bundles/canvas").Include("http://canvasjs.com/assets/script/canvasjs.min.js", "~/Scripts/graphics.js"));
             bundles.Add(new ScriptBundle("~/bundles/uitabs").Include("~/Scripts/jquery-ui/jquery-ui.js", "~/Scripts/tabs.js"));
             bundles.Add(new ScriptBundle("~/bundles/validate").Include("~/Scripts/validate.js"));
             bundles.Add(new ScriptBundle("~/bundles/wow").Include("~/Scripts//wow.min.js"));
+            
+            bundles.Add(new ScriptBundle("~/bundles/general").Include("~/Scripts//wow.min.js"));
 
             //Bundles de CSS
             bundles.Add(new StyleBundle("~/Content/bootstrap").Include("~/Content/bootstrap.min.css"));
