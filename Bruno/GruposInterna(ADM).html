@@ -19,55 +19,6 @@
 	<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
 	<script src="js/jquery-ui/jquery-ui.js"></script>
 
-	<script type="text/javascript">
-		window.onload = function () {
-			var chart = new CanvasJS.Chart("chartContainer",{
-				title: {
-					text: "Gráfico de Gantt das últimas tarefas"
-				},
-				axisX: {
-					minimum: 5,
-					maximum: 120
-				},
-				data: [
-				{
-					type: "spline",
-					dataPoints: [
-					{ x: 10, y: 71 },
-					{ x: 20, y: 55 },
-					{ x: 30, y: 50 },
-					{ x: 40, y: 65 },
-					{ x: 50, y: 95 },
-					{ x: 60, y: 68 },
-					{ x: 70, y: 28 },
-					{ x: 80, y: 34 },
-					{ x: 90, y: 14 }
-					]
-				}					
-				]
-			});
-			chart.render();
-
-			jQuery(".canvasjs-chart-canvas").last().on("click", 
-				function(e){
-					var parentOffset = $(this).parent().offset();
-					var relX = e.pageX - parentOffset.left;
-					var relY = e.pageY - parentOffset.top
-					var xValue = Math.round(chart.axisX[0].convertPixelToValue(relX));
-					var yValue = Math.round(chart.axisY[0].convertPixelToValue(relY));
-
-					chart.data[0].addTo("dataPoints", {x: xValue, y: yValue});
-					chart.axisX[0].set("maximum", Math.max(chart.axisX[0].maximum, xValue + 30));
-				});
-		}
-	</script>	
-
-	<script>
-		$( function() {
-			$( "#tabs" ).tabs();
-		} );
-	</script>
-
 </head>
 
 <body>
@@ -122,11 +73,11 @@
 	<section>
 		<div class="container fluid ">
 			<div class="row infos2">
-				<div><div class="imagem"></div></div>
-				<div><h2>ADS</h2></div>
+				<div><input type="text" name="showPaletteOnly" id="showPaletteOnly" style="display: none;"></div>
+				<div><input type="text" name="campo" class="form-control inputs" value="Grupo Bom Gosto"></div>
 				<div><h3>2 Integrantes</h3><i class="fa fa-plus-square fa-settings" aria-hidden="true" data-target="#modalUsuario" data-toggle="modal"></i></div>
-				<div><h3>Premium</h3></div>
-				<div><input type="date" class="form-control inputs"></div>
+				<div><h3>21/12/2012</h3></div>
+				<div><input type="button" value="Editar"></div>
 			</div>
 		</div>
 		<hr class="quebra group-image">
@@ -338,8 +289,22 @@
 			</div>
 		</div>
 
+		<script>  
+
+        $(document).ready(function() {
+            $("input[name='campo']").prop('disabled', true);
+        });
+
+        $("input[type='button']").click(function() {
+            $("input[name='campo']").prop('disabled', false);
+         });
+
+    </script>
+
 
 		<script src="js/bootstrap.min.js"></script>
+		<script src='js/spectrum.js'></script>
+		<script src="js/codespec.js"></script>
 		<script src="js/graphics.js"></script>
 
 	</body>

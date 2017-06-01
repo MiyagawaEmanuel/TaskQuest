@@ -165,11 +165,6 @@ body{
 }
 
 
-.info-p input{
-	margin-top: 50px;
-}
-
-
 #showPaletteOnly{
 	margin-top: 50px;
 }
@@ -216,6 +211,7 @@ body{
 	width: 200px;
 	display: block;
 	margin: auto;
+	margin-top: 10px;
 }
 
 #selectQuests{
@@ -238,6 +234,7 @@ body{
 
 .titles{
 	text-align: center;
+	margin-top: 10px;
 }
 
 .titles input{
