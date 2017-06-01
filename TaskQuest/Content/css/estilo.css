@@ -1,0 +1,197 @@
+/* Estrutura Geral */
+
+a, h1, h2, h3, h4, h5{
+	font-family: 'Calibri','Impact';
+}
+
+body{
+	background-color: rgba(0,0,0,0.08);
+}
+
+/* Estilo da Header */
+
+.menu{
+	background-color: #106494;
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+#logo{
+	font-size: 350px;
+	color: white;
+}
+
+#elementos{
+	font-size: 30px;
+	color: white;
+}
+
+/* Textos */
+
+.titulo{
+	font-size: 100px;
+	color: #106494;
+}
+
+h1{
+	font-size: 200px;
+	color: black;
+}
+
+h2{
+	font-size: 70px;
+	color: rgba(0,0,0,0.8);
+}
+
+h3{
+	font-size: 50px;
+	color: rgba(0,0,0,0.5);
+}
+
+h4{
+	font-size: 35px;
+	color: rgba(0,0,0,0.3);
+}
+
+
+/* Faixas */
+
+.faixa-titulo{
+	background-color: white;
+	width: 30%;
+}
+
+.faixa-corpo{
+	background-color: rgba(0,0,0,1);
+	width: 70%;
+}
+
+
+/* Bloco dos Grupos */
+
+.div-grupos{
+	display: flex;
+	justify-content: space-between;
+}
+
+.grupos-elipse{
+	background-color: $cor-grupo;
+	background:url('img/grupo.png');
+	border-radius: 30px;
+	height: 50px;
+	width: 50px;
+}
+
+
+/* Bloco das Quests e Pendências */
+
+.div-quests{
+	display: flex;
+	justify-content: space-between;
+}
+
+.quests-blocos{
+	background-color: rgba(0,0,0,1);
+	width: 220px;
+	height: 400px;
+}
+
+.filete{
+	background-color: $cor-quest;
+	width: 220px;
+	height: 20px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+.container{
+	margin-right: inherit;
+}
+
+.navbar-header {
+        margin-top: 1%;
+}
+
+.drop-menu{
+	margin-left: -65px;
+}
+
+.drop-notification{
+	margin-left: -60px;
+}
+
+.fa-all{
+	color: white;
+	text-align: center;
+	font-size: 30px;
+	margin-top: 5%;
+}
+
+.divcontent{
+	display: flex;
+	justify-content: space-around;
+}
+
+
+@media (min-width: 320px) and (max-width: 380px){
+	img{
+		width: 70px;
+		margin-top: 15%;
+	}
+	.dropdown-menu{
+		top: 135%;
+		left: -88px;
+	}
+	.divcontent{
+		margin-top: 3%;
+
+	}
+}
+
+@media (min-width: 381px) and (max-width: 600px){
+	img{
+		width: 70px;
+		margin-top: 15%;
+	}
+	.dropdown-menu{
+		top: 130%;
+		left: -78px;
+	}
+	.divcontent{
+		margin-top: 2%;
+	}
+}

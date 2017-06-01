@@ -28,7 +28,6 @@
 
     <script src="js/modernizr-2.7.1.js"></script>
 
-
 </head>
 
 <body>
@@ -87,7 +86,7 @@
                     </div>
                     <div class="col-md-12">
                         <p>Escolha a cor do seu tema.</p>
-                        <input type="text" name="showPaletteOnly" id="showPaletteOnly" style="display: none;">
+                        @Html.TextBoxFor(m => m.Cor, new { @name="showPaletteOnly", @id="showPaletteOnly", @style="display: none" })
                     </div>
                 </div>
                 <div class="modal-footer">
