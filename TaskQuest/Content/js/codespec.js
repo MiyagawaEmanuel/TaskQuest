@@ -3,11 +3,10 @@ $("#showPaletteOnly").spectrum({
     showPalette:true,
     color: 'green',
     change: function (color) {
-        $("#Cor").val(color.toName());
+        $("#Cor").val(color);
     },
     palette: [
-        ['black', 'white', 'blanchedalmond',
-        'rgb(255, 128, 0);', 'hsv 100 70 50'],
-        ['red', 'yellow', 'green', 'blue', 'violet']
+        ['#106494', '#2E8B57', '#7A378B'],
+        ['#CD2626', '#4F4F4F', '#CD950C']
     ]
 });

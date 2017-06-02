@@ -28,7 +28,7 @@ namespace TaskQuest.Controllers
 
             if (usuario == null)
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewBag["Result"] = "Usuario não reconhecido";
                 return RedirectToAction("Index");
             }
@@ -57,7 +57,12 @@ namespace TaskQuest.Controllers
                 usu_senha = Hash.String(model.Senha),
             };
 
-            Cursor.Insert(usuario);
+            if (!Cursor.Insert(usuario))
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Algo deu errado";
+                return RedirectToAction("Index");
+            }
 
             tel_telefone telefone = new tel_telefone()
             {
@@ -66,8 +71,13 @@ namespace TaskQuest.Controllers
                 tel_numero = Convert.ToInt32(model.Telefone.Substring(5, model.Telefone.Length)),
                 usu_id = Cursor.Select<usu_usuario>(GetType().GetProperty("usu_email"), model.Email)[0].usu_id,
             };
-
-            Cursor.Insert(telefone);
+            
+            if (!Cursor.Insert(telefone))
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Algo deu errado";
+                return RedirectToAction("Index");
+            }
 
             return RedirectToAction("Login", new LoginViewModel() { Email = model.Email, Senha = Hash.String(model.Senha) });
         }
@@ -80,7 +90,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -107,7 +117,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -159,7 +169,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -178,7 +188,7 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Update(usuario))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
@@ -195,7 +205,7 @@ namespace TaskQuest.Controllers
                 };
                 if (!Cursor.Update(tel))
                 {
-                    ViewData["ResultColor"] = "red-alert";
+                    ViewData["ResultColor"] = "#EEEE00";
                     ViewData["Result"] = "Algo deu errado";
                     return RedirectToAction("Usuario");
                 }
@@ -215,13 +225,13 @@ namespace TaskQuest.Controllers
                 };
                 if (!Cursor.Update(crt))
                 {
-                    ViewData["ResultColor"] = "red-alert";
+                    ViewData["ResultColor"] = "#EEEE00";
                     ViewData["Result"] = "Algo deu errado";
                     return RedirectToAction("Usuario");
                 }
             }
 
-            ViewBag.ResultColor = "green-alert";
+            ViewBag.ResultColor = "#32CD32";
             ViewBag.Result = "Seus dados foram atualizados";
             return View();
         }
@@ -235,7 +245,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -250,12 +260,12 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(tel))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
-            ViewData["ResultColor"] = "green-alert";
+            ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = "Telefone adicionado com sucesso";
             return RedirectToAction("Usuario");
         }
@@ -269,7 +279,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -286,12 +296,12 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(crt))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
-            ViewData["ResultColor"] = "green-alert";
+            ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = "Cartão adicionado com sucesso";
             return RedirectToAction("Usuario");
         }
@@ -304,7 +314,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -336,7 +346,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -352,7 +362,7 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(gru))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
@@ -361,12 +371,12 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gruId, true)))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
-            ViewData["ResultColor"] = "green-alert";
+            ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = "Grupo adicionado com sucesso";
             return RedirectToAction("Grupos");
         }
@@ -379,7 +389,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -395,7 +405,7 @@ namespace TaskQuest.Controllers
 
             if (!usuarioHasGrupo)
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não tem esse grupo";
                 return RedirectToAction("Inicio");
             }
@@ -432,7 +442,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -449,12 +459,12 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Update(gru))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Grupo", model.Id);
             }
 
-            ViewBag.ResultColor = "green_alert";
+            ViewBag.ResultColor = "#32CD32";
             ViewBag.Result = "Grupo editado com sucesso";
             return View(model);
         }
@@ -468,7 +478,7 @@ namespace TaskQuest.Controllers
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
@@ -477,19 +487,19 @@ namespace TaskQuest.Controllers
 
             if (usu == null)
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Usuario não encontrado";
                 return RedirectToAction("Grupo", model.gru_id);
             }
 
             if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false)))
             {
-                ViewData["ResultColor"] = "red-alert";
+                ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Grupo", model.gru_id);
             }
 
-            ViewData["ResultColor"] = "green-alert";
+            ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = usu.usu_nome + " adicionado ao grupo com sucesso";
             return RedirectToAction("Grupo", model.gru_id);
         }

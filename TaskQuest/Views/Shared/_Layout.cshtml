@@ -5,6 +5,9 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no">
     <title>@ViewBag.Title</title>
 
+    @Styles.Render("~/bundles/layout")
+    @Scripts.Render("~/bundles/layout")
+
     @RenderSection("head", false)
 
 </head>
