@@ -36,7 +36,7 @@ namespace TaskQuest.Controllers
 
             else
             {
-                //Problema com a Session
+                //Problema com a Session muito grave
                 Session.Clear();
                 Session["user"] = Util.Hash(usuario.usu_id.ToString());
                 return RedirectToAction("Inicio");
