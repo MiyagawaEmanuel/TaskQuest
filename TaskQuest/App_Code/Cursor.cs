@@ -26,7 +26,7 @@ namespace TaskQuest.App_Code
             return ExecuteQuery(query);
         }
 
-        public static List<T> SelectMD5<T>(string hashedString) where T : new()
+        public static List<T> SelectMD5<T>(string hash_id) where T : new()
         {
 
             _obj = new T();
@@ -45,10 +45,10 @@ namespace TaskQuest.App_Code
                 var id = _obj.GetType().GetProperties()[0];
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
-                query += " where md5(" + id.Name  + ") = ?hashedString";
+                query += " where md5(" + id.Name  + ") = ?hash_id";
 
                 _command.CommandText = query;
-                 _command.Parameters.Add(new MySqlParameter("hashedString", hashedString));
+                 _command.Parameters.Add(new MySqlParameter("?hash_id", hash_id));
 
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
@@ -87,15 +87,16 @@ namespace TaskQuest.App_Code
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
 
+                _command.CommandText = query;
+
                 if (atributo != null && value != null)
                 {
                     atributo.SetValue(_obj, value);
                     query += " WHERE " + atributo.Name + " = ?" + atributo.Name;
+                    Debug.WriteLine(query);
+                    _command.Parameters.Add(new MySqlParameter(atributo.Name, atributo.GetValue(_obj)));
                 }
-
-                _command.CommandText = query;
-                AddParameters();
-
+                
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
                 adapter.Fill(ds);
@@ -161,7 +162,7 @@ namespace TaskQuest.App_Code
                 _command.CommandText = query;
                 AddParameters();
                 
-                _command.ExecuteNonQuery().ToString();
+                _command.ExecuteNonQuery();
                 _connection.Close();
                 _command.Dispose();
                 _connection.Dispose();

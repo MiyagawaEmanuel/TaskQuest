@@ -15,11 +15,12 @@ namespace TaskQuest
             var IndexJs = new ScriptBundle("~/bundles/index-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
-                "~/Content/js/modernizr-2.7.1.js",
+                //"~/Content/js/modernizr-2.7.1.js",
                 "~/Content/js/main.js",
-                "~/Content/js/wow.min.js",
-                "~/Content/js/spectrum.js",
-                "~/Content/js/codespec.js");
+                "~/Content/js/wow.min.js"
+                //"~/Content/js/spectrum.js",
+                //"~/Content/js/codespec.js"
+                );
             
             IndexJs.Orderer = new AsIsBundleOrderer();
             bundles.Add(IndexJs);
@@ -77,24 +78,19 @@ namespace TaskQuest
             bundles.Add(UsuarioJs);
             
             //Bundle CSS Index 
-            var IndexCss = new StyleBundle("~/Content/index-css").Include(
+            bundles.Add( new StyleBundle("~/Content/index-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/main.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
                 "~/Content/font-awesome/font-awesome.min.css",
                 "~/Content/font-awesome/animate.css"
                 //"~/Content/css/spectrum.css"
-                );
+                ));
             
-            IndexCss.Orderer = new AsIsBundleOrderer();
-            bundles.Add(IndexCss);
             
             //Bundle CSS Geral(Inicio, Grupos)
             var GeralCss = new StyleBundle("~/Content/geral-css").Include(
-                "~/Content/css/bootstrap.min.css",
-                "~/Content/css/style.css",
-                //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
-                "~/Content/font-awesome/font-awesome.min.css");
+                "~/Content/css/style.css");
             
             GeralCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(GeralCss);
@@ -138,9 +134,10 @@ namespace TaskQuest
             //Bundle CSS Layout
             var Layout = new StyleBundle("~/Content/layout-css").Include(
                 "~/Content/css/bootstrap.min.css",
-                "~/Content/css/layout.css",
+                "~/Content/font-awesome/font-awesome.min.css",
+                "~/Content/css/layout.css"
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
-                "~/Content/font-awesome/font-awesome.min.css");
+                );
             
             Layout.Orderer = new AsIsBundleOrderer();
             bundles.Add(Layout);

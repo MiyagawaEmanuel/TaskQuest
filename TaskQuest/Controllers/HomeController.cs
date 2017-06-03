@@ -4,7 +4,6 @@ using TaskQuest.App_Code;
 using TaskQuest.Models;
 using System.Web.Mvc;
 using TaskQuest.ViewModels;
-using System.Linq;
 using System.Diagnostics;
 
 namespace TaskQuest.Controllers
@@ -33,27 +32,24 @@ namespace TaskQuest.Controllers
                 ViewBag["Result"] = "Usuario não reconhecido";
                 return RedirectToAction("Index");
             }
-
+            
             else
             {
-                Session.Clear();
                 Session["user"] = Util.Hash(usuario.usu_id.ToString());
                 return RedirectToAction("Inicio");
             }
 
         }
         
+        [HttpPost]
         public ActionResult Register(RegisterViewModel model) //V
         {
-
-            Debug.WriteLine("Usou o Register controller");
 
             usu_usuario usuario = new usu_usuario()
             {
                 usu_nome = model.Nome,
                 usu_sobrenome = model.Sobrenome,
                 usu_email = model.Email,
-                //usu_cor = model.Cor,
                 usu_data_nascimento = model.DataNascimento,
                 usu_sexo = model.Sexo.ToString(),
                 usu_senha = Util.Hash(model.Senha),
@@ -76,9 +72,6 @@ namespace TaskQuest.Controllers
             try
             {
                 usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-                Debug.WriteLine(Session["user"].ToString());
-                Debug.WriteLine(Util.Hash(Convert.ToString(1)));
-                Debug.WriteLine(Util.Hash(Convert.ToString(2)));
             }
             catch (Exception)
             {
@@ -141,7 +134,7 @@ namespace TaskQuest.Controllers
             model.DataNascimento = usuario.usu_data_nascimento;
             model.Sexo = usuario.usu_sexo;
 
-            foreach (var cartao in Cursor.Select<crt_cartao>())
+            foreach (var cartao in Cursor.Select<crt_cartao>(GetType().GetProperty("usu_id"), usuario.usu_id))
             {
                 model.Cartoes.Add(new CartaoViewModel()
                 {
@@ -154,7 +147,7 @@ namespace TaskQuest.Controllers
                 });
             }
 
-            foreach (var telefone in Cursor.Select<tel_telefone>())
+            foreach (var telefone in Cursor.Select<tel_telefone>(GetType().GetProperty("usu_id"), usuario.usu_id))
             {
                 model.Telefones.Add(new TelefoneViewModel()
                 {
@@ -387,7 +380,6 @@ namespace TaskQuest.Controllers
                 {
                     Id = grupo.gru_id,
                     Nome = grupo.gru_nome,
-                    //Cor = grupo.gru_cor,
                 });
             }
 
@@ -420,7 +412,6 @@ namespace TaskQuest.Controllers
 
             var gru = new gru_grupo()
             {
-                //gru_cor = model.Cor,
                 gru_data_criacao = DateTime.Now,
                 gru_descricao = model.Descricao,
                 gru_nome = model.Nome,
@@ -498,7 +489,6 @@ namespace TaskQuest.Controllers
             {
                 Id = grupo.gru_id,
                 Nome = grupo.gru_nome,
-                //Cor = grupo.gru_cor,
                 Descricao = grupo.gru_descricao,
                 Plano = grupo.gru_plano,
             };
@@ -510,7 +500,6 @@ namespace TaskQuest.Controllers
                 {
                     Id = usu.usu_id,
                     Nome = usu.usu_nome,
-                    //Cor = usu.usu_cor,
                 });
             }
 
@@ -544,7 +533,6 @@ namespace TaskQuest.Controllers
             gru_grupo gru = new gru_grupo()
             {
                 gru_nome = model.Nome,
-                //gru_cor = model.Cor,
                 gru_data_criacao = DateTime.Now,
                 gru_descricao = model.Descricao,
                 gru_plano = model.Plano,

@@ -72,7 +72,7 @@ namespace TaskQuest.Models
         public string usu_senha
         {
             get => _usu_senha;
-            set //Hashear Value
+            set 
             {
                 if (value.Length > 0)
                     _usu_senha = Util.Hash(value);
@@ -136,18 +136,5 @@ namespace TaskQuest.Models
                     _usu_nome = value;
             }
         }
-
-        /*
-        private string _usu_cor;
-        public string usu_cor
-        {
-            get => _usu_cor;
-            set
-            {
-                if (value.Length > 0 && value.Length <= 20)
-                    _usu_cor = value;
-            }
-        }
-        */
     }
 }

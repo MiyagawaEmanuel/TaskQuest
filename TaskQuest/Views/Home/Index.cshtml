@@ -1,24 +1,18 @@
-﻿@model TaskQuest.ViewModels.RegisterViewModel
+﻿@model TaskQuest.ViewModels.LoginViewModel
+
+@{ 
+    Layout = null;
+}
 
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
     <meta charset="utf-8">
     <title>Task Quest</title>
-    <meta name="keywords" content="">
-    <meta name="description" content="">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-
-    <meta property="og:title" content="">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="">
-    <meta property="og:site_name" content="">
-    <meta property="og:description" content="">
 
     @Styles.Render("~/Content/index-css")
     @Scripts.Render("~/bundles/index-js")
 
-    <script src="~/Content/js/codespec.js"></script>
 
 </head>
 
@@ -34,7 +28,20 @@
             </button>
             <a class="logo" href="/Home/Index"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
         </div>
-        @Html.Partial("_LoginPartial")
+        <div class="navbar-collapse collapse">
+            <form action="/Home/Login" method="post">
+                <ul class="nav navbar-nav navbar-right inputs">
+                    <li><input name="Email" id="Email" class="form-control login" placeholder="Email" /></li>
+                    <li><input name="Senha" id="Senha" class="form-control login" placeholder="Senha" /></li>
+                    <li>
+                        <input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Entrar">
+                        <div>
+                            <a href="" id="forget">Esqueceu sua senha?</a>
+                        </div>
+                    </li>
+                </ul>
+            </form>
+        </div>
     </div>
 </header>
 
@@ -48,42 +55,7 @@
                 <div class="logomod"></div>
                 <h4 class="modal-title">Cadastro</h4>
             </div>
-            @using (Html.BeginForm("Register", "Home", FormMethod.Post)) {
-                <div class="modal-body">
-                    <p>Preencha os campos abaixo para realizar seu cadastro.</p>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Nome, new { @id="nome", @maxlength="30", @class="form-control", @placeholder="Nome" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Sobrenome, new { @id="sobrenome", @maxlength="40", @class="form-control", @placeholder="Sobrenome" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.DataNascimento, new { @id="datanasc", @maxlength="30", @type="date", @class="form-control" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Email, new { @id="confirma", @maxlength="30", @class="form-control", @placeholder="Email" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Senha, new { @id="senha", @maxlength="30", @type="password", @class="form-control", @placeholder="Senha" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma", @maxlength="30", @type="password", @class="form-control", @placeholder="Confirme sua senha" })
-                    </div>
-                    <div class="col-md-12 inp">
-                        <div>
-                            <h3>Feminino:</h3> @Html.RadioButtonFor(m => m.Sexo, 'F')
-                        </div>
-                        <div>
-                            <h3>Masculino:</h3> @Html.RadioButtonFor(m => m.Sexo, 'M')
-                        </div>
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <div class="col-md-12">
-                        <input type="submit" class="btn btn-primary btn-lg" value="Cadastrar">
-                    </div>
-                </div>
-            }
+            @Html.Partial("_LoginPartial")
         </div>
     </div>
 </div>
