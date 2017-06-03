@@ -11,7 +11,7 @@ namespace TaskQuest.ViewModels
 
         public string Descricao { get; set; }
 
-        public string Cor { get; set; }
+        //public string Cor { get; set; }
 
         public DateTime DataCriacao { get; set; }
 

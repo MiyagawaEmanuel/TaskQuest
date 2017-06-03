@@ -2,25 +2,34 @@
 
 @{
     ViewBag.Title = "Grupos";
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    @Styles.Render("~/Content/grupos-css")
+    @Scripts.Render("~/bundles/grupo-js")
 }
 
 <section>
-	<div class="container"> 
-		@for(int x = 0; x < Model.Grupos.Count; x++){
-			<div class="row">
-			<div>
-				<h1>Grupos</h1> 
-			</div>
-		</div>
-		<div class="container fluid">
-		<div class="row teste">
-				<div class="col-md-4 imagem" ></div>
-				<h3>Grupo PI</h3>
-		</div>
-			@if(x < Model.Grupos.Count - 1){
-				<hr class="quebra">
-			}
-		}
-	</div>	
+    <div class="container">
+        <div class="row">
+            <div>
+                <h1>Grupos</h1>
+            </div>
+        </div>
+        <div class="container fluid">
+            @for (int x = 0; x < Model.Grupos.Count; x++)
+            {
+                <div class="row teste">
+                    <div class="col-md-4 imagem"></div>
+                    <h3><a href="/Grupo/@Model.Grupos[x].Id">@Model.Grupos[x].Nome</a></h3>
+                </div>
+                @if (x < Model.Grupos.Count - 1)
+                {
+                    <hr class="quebra">
+                }
+            }
+        </div>
+    </div>
 </section>

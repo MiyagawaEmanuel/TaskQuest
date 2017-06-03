@@ -14,17 +14,21 @@ namespace TaskQuest.ViewModels
         public string Email { get; set; }
 
         //YYYY-MM-DD
-        public string DataNascimento { get; set; }
+        public DateTime DataNascimento { get; set; }
         
         public string Senha { get; set; }
 
-        public string Cor { get; set; }
+        //public string Cor { get; set; }
 
-        public char Sexo { get; set; }
+        public string Sexo { get; set; }
 
         public List<CartaoViewModel> Cartoes = new List<CartaoViewModel>();
 
         public List<TelefoneViewModel> Telefones = new List<TelefoneViewModel>();
+
+        public TelefoneViewModel telefoneViewModel = new TelefoneViewModel();
+
+        public CartaoViewModel cartaoViewModel = new CartaoViewModel();
 
     }
 
@@ -49,6 +53,8 @@ namespace TaskQuest.ViewModels
 
         public string Tipo { get; set; }
 
-        public string Numero { get; set; }
+        public int Ddd { get; set; }
+
+        public int Numero { get; set; }
     }
 }

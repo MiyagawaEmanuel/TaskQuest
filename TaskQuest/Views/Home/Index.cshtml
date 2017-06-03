@@ -15,8 +15,10 @@
     <meta property="og:site_name" content="">
     <meta property="og:description" content="">
 
-    @Styles.Render("~/bundles/indexcss")
-    @Scripts.Render("~/bundles/indexjs")
+    @Styles.Render("~/Content/index-css")
+    @Scripts.Render("~/bundles/index-js")
+
+    <script src="~/Content/js/codespec.js"></script>
 
 </head>
 
@@ -30,7 +32,7 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
             </button>
-            <a class="logo" href="/index"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
+            <a class="logo" href="/Home/Index"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
         </div>
         @Html.Partial("_LoginPartial")
     </div>
@@ -59,7 +61,7 @@
                         @Html.TextBoxFor(m => m.DataNascimento, new { @id="datanasc", @maxlength="30", @type="date", @class="form-control" })
                     </div>
                     <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Telefone, new { @id="telefone", @maxlength="13", @class="form-control", @placeholder="Telefone" })
+                        @Html.TextBoxFor(m => m.Email, new { @id="confirma", @maxlength="30", @class="form-control", @placeholder="Email" })
                     </div>
                     <div class="col-md-6 inp">
                         @Html.TextBoxFor(m => m.Senha, new { @id="senha", @maxlength="30", @type="password", @class="form-control", @placeholder="Senha" })
@@ -67,17 +69,13 @@
                     <div class="col-md-6 inp">
                         @Html.TextBoxFor(m => m.ConfirmarSenha, new { @id="confirma", @maxlength="30", @type="password", @class="form-control", @placeholder="Confirme sua senha" })
                     </div>
-                    <div class="col-md-6 inp">
-                        @Html.TextBoxFor(m => m.Email, new { @id="confirma", @maxlength="30", @class="form-control", @placeholder="Email" })
-                    </div>
-                    <div class="col-md-6 inp">
-                        Feminino: @Html.RadioButtonFor(m => m.Sexo, 'F')
-                        Masculino: @Html.RadioButtonFor(m => m.Sexo,'M')
-                    </div>
-                    <div class="col-md-12">
-                        <p>Escolha a cor do seu tema.</p>
-                        @Html.HiddenFor(m => m.Cor, new { @value= "#106494" })
-                        <input name="showPaletteOnly" id="showPaletteOnly" style="display: none"/>
+                    <div class="col-md-12 inp">
+                        <div>
+                            <h3>Feminino:</h3> @Html.RadioButtonFor(m => m.Sexo, 'F')
+                        </div>
+                        <div>
+                            <h3>Masculino:</h3> @Html.RadioButtonFor(m => m.Sexo, 'M')
+                        </div>
                     </div>
                 </div>
                 <div class="modal-footer">

@@ -16,14 +16,14 @@ namespace TaskQuest.ViewModels
 
         public string Nome { get; set; }
 
-        public string Cor { get; set; }
+        //public string Cor { get; set; }
     }
     
     public class Pendencia
     {
         public string Namo { get; set; }
 
-        public string Cor { get; set; }
+        //public string Cor { get; set; }
 
         public DateTime Data { get; set; }
 
@@ -36,7 +36,7 @@ namespace TaskQuest.ViewModels
     {
         public string Nome { get; set; }
 
-        public string Cor { get; set; }
+        //public string Cor { get; set; }
 
         public DateTime Data { get; set; }
 

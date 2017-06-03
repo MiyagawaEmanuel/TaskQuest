@@ -10,11 +10,11 @@ namespace TaskQuest.Models
             gru_data_criacao = DateTime.Now;
         }
 
-        public gru_grupo(int id, string nome, string cor, bool plano)
+        public gru_grupo(int id, string nome, bool plano)
         {
             gru_id = id;
             gru_nome = nome;
-            gru_cor = cor;
+            //gru_cor = cor;
             gru_data_criacao = DateTime.Now;
             gru_plano = plano;
         }
@@ -41,6 +41,7 @@ namespace TaskQuest.Models
             }
         }
 
+        /*
         private string _gru_cor;
         public string gru_cor
         {
@@ -51,6 +52,7 @@ namespace TaskQuest.Models
                     _gru_cor = value;
             }
         }
+        */
 
         private DateTime _gru_data_criacao;
         public DateTime gru_data_criacao

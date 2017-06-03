@@ -2,23 +2,29 @@
 
 @{
 	ViewBag.Title = "Inicio";
-	Layout = "_Layout";
+	Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    @Styles.Render("~/Content/geral-css");
+    @Scripts.Render("~/bundles/geral-js");
 }
 
 <section>
 	<div class="container fluid ">
 		<div class="row inicial">
-			<div><a href="/CriarGrupo">Criar Grupo</a></div>
+			<div><a href="/Home/CriarGrupo">Criar Grupo</a></div>
 			<div><h1>Grupos</h1></div>
-			<div><a href="/Grupos">Ver todos</a></div>
+			<div><a href="/Home/Grupos">Ver todos</a></div>
 		</div>
 
 		<div class="row grupo-nome">
 			@foreach (var grupo in Model.Grupos){
 				<div class="col-md-3">
 					<div class="row">		
-						<a href="/Grupo/@grupo.Id"><div class="col-md-12 grupo-elipse @grupo.Cor"></div></a>
-						<a href="/Grupo/@grupo.Id"><div class="col-md-12"><h2>@grupo.Nome</h2></div></a>
+						<a href="/Home/Grupo/@grupo.Id"><div class="col-md-12 grupo-elipse"></div></a>
+						<a href="/Home/Grupo/@grupo.Id"><div class="col-md-12"><h2>@grupo.Nome</h2></div></a>
 					</div>
 				</div>
 			}

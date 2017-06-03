@@ -2,26 +2,50 @@
 
 @{
     ViewBag.Title = "Configuração de Usuario";
-    Layout = "_Layout";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    @Styles.Render("~/Content/usuario-css")
+    @Scripts.Render("~/bundles/usuario-js")
 }
 
 <section>
     <div class="container fluid">
         <div class="row info-p">
-
-            @using (Html.BeginForm("Usuario", "Home", FormMethod.Post)) {
+            <form action="/Home/Usuario" method="post">
                 <input type="submit" class="btn btn-primary editar" value="Editar">
                 <div class="col-md-12"><h2 class="setting-title">Informações Pessoais</h2></div>
-                <div class="col-md-6">@Html.TextBoxFor(m => m.Nome, new { @class = "form-control inputs centralize", @value=@Model.Nome })</div>
-                <div class="col-md-6">@Html.TextBoxFor(m => m.Sobrenome, new { @class = "form-control inputs centralize", @value=@Model.Sobrenome })</div>
-                <div class="col-md-6">@Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control inputs centralize", @value=@Model.DataNascimento })</div>
-                <div class="col-md-6">@Html.TextBoxFor(m => m.Email, new { @class = "form-control inputs centralize", @value=@Model.Email })</div>
-                <div class="col-md-6">@Html.TextBoxFor(m => m.Senha, new { @class = "form-control inputs centralize", @type="password", @value=@Model.Senha })</div>
-                <div class="col-md-6">
-                    <input type="text" name="showPaletteOnly" id="showPaletteOnly" style="display: none;">
+                <div class="col-md-6"><input name="Nome" id="Nome" class="form-control inputs centralize" value="@Model.Nome" placeholder="Nome" type="text" /> </div>
+                <div class="col-md-6"><input name="Sobrenome" id="Sobrenome" class="form-control inputs centralize" value="@Model.Sobrenome" placeholder="Sobrenome" type="text" /></div>
+                <div class="col-md-6"><input name="DataNascimento" id="DataNascimento" class="form-control inputs centralize" value="@Model.DataNascimento.Date" type="date" /></div>
+                <div class="col-md-6"><input name="Email" id="Email" class="form-control inputs centralize" value="@Model.Email" placeholder="Email" type="text" /></div>
+                <div class="col-md-6"><input name="Senha" id="Senha" class="form-control inputs centralize" value="@Model.Senha" placeholder="Senha" type="password" /></div>
+                <div class="col-md-12 inp">
+                    <div>
+                        @if (Model.Sexo.Equals("F"))
+                        {
+                            <h3>Feminino:</h3> <input data-val="true" id="Sexo" name="Sexo" type="radio" value="F" checked="checked" />
+                        }
+                        else
+                        { 
+                            <h3>Feminino:</h3> <input data-val="true" id="Sexo" name="Sexo" type="radio" value="F" />
+                        }
+                    </div>
+                    <div>
+                        @if (Model.Sexo.Equals("M"))
+                        {
+                            <h3>Masculino:</h3> <input id="Sexo" name="Sexo" type="radio" value="M" checked="checked" />
+                        }
+                        else
+                        {
+                            <h3>Masculino:</h3> <input id="Sexo" name="Sexo" type="radio" value="M" />
+                        }
+                    </div>
                 </div>
-            }
-        </div>   
+            </form>
+        </div>
     </div>
 </section>
 
@@ -32,13 +56,15 @@
         <div class="row">
             <div class="col-md-12"><h2 class="setting-title">Telefones</h2></div>
             <div class="row info-t">
-                @for (int x = 0; x < Model.Telefones.Count; x++){
+                @for (int x = 0; x < Model.Telefones.Count; x++)
+                {
                     @Html.HiddenFor(m => Model.Telefones[x].Id)
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Telefones[x].Tipo, new { @class="form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Telefones[x].Numero, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Tipo, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Ddd, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Numero, new { @class = "form-control inputs centralize" })</div>
                     <hr class="quebra">
                 }
-                @Html.Partial("_AdicionarTelefonePartial")
+                @Html.Partial("_AdicionarTelefonePartial", Model.telefoneViewModel)
             </div>
         </div>
     </div>
@@ -51,43 +77,20 @@
         <div class="row info-p">
             <div class="col-md-12"><h2 class="setting-title">Cartões</h2></div>
             <div class="info-c">
-                @for (int x = 0; x < Model.Cartoes.Count; x++){
+                @for (int x = 0; x < Model.Cartoes.Count; x++)
+                {
                     @Html.HiddenFor(m => Model.Cartoes[x].Id)
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].NomeTitular, new { @class="form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Bandeira, new { @class="form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Numero, new { @class="form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].CodigoSeguranca, new { @class="form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].DataVencimento, new { @class="form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].NomeTitular, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Bandeira, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Numero, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].CodigoSeguranca, new { @class = "form-control inputs centralize" })</div>
+                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].DataVencimento, new { @class = "form-control inputs centralize" })</div>
                     <hr class="quebra">
                 }
-                @Html.Partial("_AdicionarCartaoPartial")
+                @Html.Partial("_AdicionarCartaoPartial", Model.cartaoViewModel)
             </div>
         </div>
     </div>
 </section>
 
 <hr class="quebra group-image">
-
-
-
-
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/graphics.js"></script>
-<script src='js/spectrum.js'></script>
-<script src="js/codespec.js"></script>
-<script>  
-
-    $(document).ready(function() {
-        $("input[type='text']").prop('disabled', true);
-        $("input[type='password']").prop('disabled', true);
-        $("input[type='submit']").value("Editar");
-    });
-
-    $("input[type='submit']").click(function() {
-        $("input[type='text']").prop('disabled', false);
-        $("input[type='password']").prop('disabled', false);
-        $("input[type='submit']").value("Salvar");
-    });
-
-</script>

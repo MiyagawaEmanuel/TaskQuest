@@ -12,7 +12,7 @@ namespace TaskQuest
             bundles.UseCdn = true;
 
             //Bundle JS Index
-            var IndexJs = new ScriptBundle("~/bundles/indexjs").Include(
+            var IndexJs = new ScriptBundle("~/bundles/index-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
                 "~/Content/js/modernizr-2.7.1.js",
@@ -25,7 +25,7 @@ namespace TaskQuest
             bundles.Add(IndexJs);
             
             //Bundle JS Geral (Cru, para páginas que só usam Bootstrap e JQuery
-            var GeralJs = new ScriptBundle("~/bundles/geraljs").Include(
+            var GeralJs = new ScriptBundle("~/bundles/geral-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
                 "~/Content/js/modernizr-2.7.1.js");
@@ -33,60 +33,64 @@ namespace TaskQuest
             GeralJs.Orderer = new AsIsBundleOrderer();
             bundles.Add(GeralJs);
             
-            //Bundle JS GruposInterna 
-            var GruposJs = new ScriptBundle("~/bundles/grupojs").Include(
+            //Bundle JS Grupos 
+            var GruposJs = new ScriptBundle("~/bundles/grupo-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
                 "~/Content/jquery-ui/jquery-ui.js",
                 "~/Content/js/modernizr-2.7.1.js",
-                "~/Content/js/validate.js",
-                "~/Content/js/canvasjs.min.js",
-                "~/Content/js/spectrum.js",
-                "~/Content/js/graphics.js",
-                "~/Content/js/codespec.js");
+                "~/Content/js/validate.js"
+                //"~/Content/js/canvasjs.min.js",
+                //"~/Content/js/spectrum.js",
+                //"~/Content/js/graphics.js",
+                //"~/Content/js/codespec.js"
+                );
             
             GruposJs.Orderer = new AsIsBundleOrderer();
             bundles.Add(GruposJs);
             
             //Bundle JS CriarGrupo 
-            var CriarGrupoJs = new ScriptBundle("~/bundles/criargrupojs").Include(
+            var CriarGrupoJs = new ScriptBundle("~/bundles/criargrupo-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
-                "~/Content/js/modernizr-2.7.1.js",
-                "~/Content/js/spectrum.js",
-                "~/Content/js/codespec.js");
+                "~/Content/js/modernizr-2.7.1.js"
+                //"~/Content/js/spectrum.js",
+                //"~/Content/js/codespec.js"
+                );
             
             CriarGrupoJs.Orderer = new AsIsBundleOrderer();
             bundles.Add(CriarGrupoJs);
             
-            //Bundle JS Configurações 
-            var UsuarioJs = new ScriptBundle("~/bundles/usuariojs").Include(
+            //Bundle JS Usuario 
+            var UsuarioJs = new ScriptBundle("~/bundles/usuario-js").Include(
                 "~/Content/js/jquery-1.11.0.min.js",
                 "~/Content/js/bootstrap.min.js",
                 "~/Content/js/modernizr-2.7.1.js",
-                "~/Content/js/validate.js",
-                "~/Content/js/canvasjs.min.js",
-                "~/Content/js/spectrum.js",
-                "~/Content/js/graphics.js",
-                "~/Content/js/codespec.js");
+                "~/Content/js/validate.js"
+                //"~/Content/js/canvasjs.min.js",
+                //"~/Content/js/spectrum.js",
+                //"~/Content/js/graphics.js",
+                //"~/Content/js/codespec.js"
+                );
             
             UsuarioJs.Orderer = new AsIsBundleOrderer();
             bundles.Add(UsuarioJs);
             
             //Bundle CSS Index 
-            var IndexCss = new StyleBundle("~/bundles/indexcss").Include(
+            var IndexCss = new StyleBundle("~/Content/index-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/main.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
                 "~/Content/font-awesome/font-awesome.min.css",
-                "~/Content/font-awesome/animate.css",
-                "~/Content/css/spectrum.css");
+                "~/Content/font-awesome/animate.css"
+                //"~/Content/css/spectrum.css"
+                );
             
             IndexCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(IndexCss);
             
             //Bundle CSS Geral(Inicio, Grupos)
-            var GeralCss = new StyleBundle("~/bundles/geralcss").Include(
+            var GeralCss = new StyleBundle("~/Content/geral-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/style.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
@@ -95,43 +99,44 @@ namespace TaskQuest
             GeralCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(GeralCss);
                 
-            //Bundle CSS GruposInterna
-            var GruposCss = new StyleBundle("~/bundles/gruposcss").Include(
+            //Bundle CSS Grupos
+            var GruposCss = new StyleBundle("~/Content/grupos-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/style.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
                 "~/Content/font-awesome/font-awesome.min.css",
-                "~/Content/css/spectrum.css",
+                //"~/Content/css/spectrum.css",
                 "~/Content/jquery-ui/jquery-ui.css");
             
             GruposCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(GruposCss);
             
             //Bundle CSS CriarGrupo
-            var CriarGruposCss = new StyleBundle("~/bundles/criargrupocss").Include(
+            var CriarGruposCss = new StyleBundle("~/Content/criargrupo-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/style.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
-                "~/Content/font-awesome/font-awesome.min.css",
-                "~/Content/css/spectrum.css");
+                "~/Content/font-awesome/font-awesome.min.css"
+                //"~/Content/css/spectrum.css"
+                );
             
             CriarGruposCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(CriarGruposCss);
             
-             //Bundle CSS Configurações
-            var UsuarioCss = new StyleBundle("~/bundles/usuariocss").Include(
+             //Bundle CSS Usuario
+            var UsuarioCss = new StyleBundle("~/Content/usuario-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/style.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",
                 "~/Content/font-awesome/font-awesome.min.css",
-                "~/Content/css/spectrum.css",
+                //"~/Content/css/spectrum.css",
                 "~/Content/jquery-ui/jquery-ui.css");
             
             UsuarioCss.Orderer = new AsIsBundleOrderer();
             bundles.Add(UsuarioCss);
             
             //Bundle CSS Layout
-            var Layout = new StyleBundle("~/bundles/layoutcss").Include(
+            var Layout = new StyleBundle("~/Content/layout-css").Include(
                 "~/Content/css/bootstrap.min.css",
                 "~/Content/css/layout.css",
                 //"http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700",

@@ -2,12 +2,22 @@
 <div class="navbar-collapse collapse">
 	<ul class="nav navbar-nav navbar-right inputs">
 		@using (Html.BeginForm("Login", "Home", FormMethod.Post)) {
-			<li>@Html.TextBoxFor(m => m.Email, new { @class="form-control login", @placeholder="Email" })</li>
-			<li>@Html.TextBoxFor(m => m.Senha, new { @class="form-control login", @placeholder="Senha" })</li>
-			<li>
-				<input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Entrar">
-				<a href="" id="forget">Esqueceu sua senha?</a>
-			</li>
+            <div class="row">
+                <div class="col-lg-4">
+                    <li>@Html.TextBoxFor(m => m.Email, new { @class = "form-control login", @placeholder = "Email" })</li>
+                </div>
+                <div class="col-lg-4">
+                    <li>@Html.TextBoxFor(m => m.Senha, new { @class = "form-control login", @placeholder = "Senha" })</li>
+                </div>
+                <div class="col-lg-4">
+                    <li>
+                        <input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Entrar">
+                        <div>
+                            <a href="" id="forget">Esqueceu sua senha?</a>
+                        </div>
+                    </li>
+                </div>
+            </div>
 		}
 	</ul>
 </div>

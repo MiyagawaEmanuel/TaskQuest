@@ -142,8 +142,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="App_Code\Cursor.cs" />
-    <Compile Include="App_Code\MD5.cs" />
-    <Compile Include="App_Code\Quick.cs" />
+    <Compile Include="App_Code\Util.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />

@@ -1,12 +1,11 @@
 ﻿<!DOCTYPE html>
 <html lang="pt-br">
 <head>
-	<meta charset="utf-8">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
 	<meta name="viewport" content="width=device-width, user-scalable=no">
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/bundles/layout")
-    @Scripts.Render("~/bundles/layout")
+    @Styles.Render("~/Content/layout-css")
 
     @RenderSection("head", false)
 
@@ -17,7 +16,7 @@
 	<header>
 		<div class="container ">
 				<div class="col-md-4 col-lg-4 col-xs-4 col-sm-4 divimg headercont">
-			            <a class="logo" href="\Inicio"><img src="img/kakaka.png" alt="Logo"></a>
+			            <a class="logo" href="/Home/Inicio"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
 			    </div>
 
 			    <div class="col-md-4 col-lg-4 col-xs-4 col-sm-4 divcontent">
@@ -36,9 +35,7 @@
 		          <ul class="dropdown-menu drop-menu">
 		            <li><a href="#">Peguntas Frequentes</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Configurações</a></li>
-		            <li role="separator" class="divider"></li>
-		            <li><a href="#">Sair</a></li>
+		            <li><a href="/Home/Usuario">Configurações</a></li>
 		            <li role="separator" class="divider"></li>
 		            <li><a href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
 		          </ul>
@@ -49,8 +46,12 @@
 
 	@RenderBody()
 
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
+    @if(ViewBag.Result != null)
+    {
+        <script>
+            alert(@ViewBag.Result);
+        </script>
+    }
 
 </body>
 </html>

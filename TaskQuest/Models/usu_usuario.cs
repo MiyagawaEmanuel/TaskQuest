@@ -39,13 +39,13 @@ namespace TaskQuest.Models
             }
         }
 
-        private char _usu_sexo;
-        public char usu_sexo
+        private string _usu_sexo;
+        public string usu_sexo
         {
             get => _usu_sexo;
             set
             {
-                if (value.Equals('M')|| value.Equals('F'))
+                if (value.Equals("M", StringComparison.OrdinalIgnoreCase) || value.Equals("F", StringComparison.OrdinalIgnoreCase))
                     _usu_sexo = value;
             }
         }
@@ -75,7 +75,7 @@ namespace TaskQuest.Models
             set //Hashear Value
             {
                 if (value.Length > 0)
-                    _usu_senha = Hash.String(value);
+                    _usu_senha = Util.Hash(value);
             }
         }
 
@@ -137,6 +137,7 @@ namespace TaskQuest.Models
             }
         }
 
+        /*
         private string _usu_cor;
         public string usu_cor
         {
@@ -147,5 +148,6 @@ namespace TaskQuest.Models
                     _usu_cor = value;
             }
         }
+        */
     }
 }

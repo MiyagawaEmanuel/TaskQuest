@@ -1,18 +1,30 @@
 @model TaskQuest.ViewModels.GrupoViewModel
 
 @{
-ViewBag.Title = "Grupo " + Model.Nome;
-Layout = "_Layout";
+    ViewBag.Title = "Grupo " + Model.Nome;
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head
+{
+    @Styles.Render("~/Content/grupo-css")
+    @Scripts.Render("~/bundles/grupo-js")
 }
 
 <section>
 	<div class="container fluid ">
 		<div class="row infos2">
-			<div><div class="imagem @Model.Cor"></div></div>
+			<div><div class="imagem"></div></div>
 			<div><h2>@Model.Nome</h2></div>
 			<div><h3>@Model.Integrantes.Count Integrantes</h3></div>
-			<div><h3>Premimum</h3></div>
-			<div><input type="date" class="form-control inputs"></div>
+			@if (Model.Plano)
+            {
+                <div><h3>Premium</h3></div>
+            }
+            else
+            {
+                <div><h3>Free</h3></div>
+            }
 		</div>
 	</div>
 	<hr class="quebra group-image">
@@ -28,7 +40,7 @@ Layout = "_Layout";
 			<div id="integrantes">
 				@for(int x = 0; x < Model.Integrantes.Count; x++){
 				<div class="row teste">
-					<div class="col-md-2 imagem @Model.Integrantes[x].Cor"></div>
+					<div class="col-md-2 imagem"></div>
 					<h3>@Model.Integrantes[x].Nome</h3>
 					<hr class="quebra">
 				</div>
@@ -40,15 +52,4 @@ Layout = "_Layout";
 
 <hr class="quebra">
 
-@Html.Partial("_AdicionarUsuarioGrupoPartial")
-
-<script src="js/jquery-1.11.0.min.js"></script>
-<script src="js/modernizr-2.7.1.js"></script>
-<script type="text/javascript" src="http://canvasjs.com/assets/script/canvasjs.min.js"></script>
-<script src="js/jquery-ui/jquery-ui.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script>
-	$( function() {
-		$( "#tabs" ).tabs();
-	} );
-</script>
+@Html.Partial("_AdicionarUsuarioGrupoPartial", Model.adicionarUsuarioGrupoViewModel)

@@ -1,10 +1,13 @@
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
+using System.Security.Cryptography;
+using System.Text;
 using static System.Web.HttpContext;
 
 namespace TaskQuest.App_Code
 {
-    public static class Quick
+    public static class Util
     {
+
         //compare -> Comparer<T>.Create((x, y) => typeof(Atributo).Compare(x.Atributo, y.Atributo))
         public static List<T> Sort<T>(List<T> list, Comparer<T> compare) where T : new()
         {
@@ -19,7 +22,7 @@ namespace TaskQuest.App_Code
             return list;
         }
 
-        public static void Quicksort<T>(int inicio, int fim) where T : new()
+        private static void Quicksort<T>(int inicio, int fim) where T : new()
         {
             if (inicio < fim)
             {
@@ -29,7 +32,7 @@ namespace TaskQuest.App_Code
             }
         }
 
-        public static int Particionar<T>(int inicio, int fim) where T : new()
+        private static int Particionar<T>(int inicio, int fim) where T : new()
         {
             T pivo = ((List<T>)Current.Session["list"])[fim];
             var i = inicio;
@@ -50,5 +53,20 @@ namespace TaskQuest.App_Code
             ((List<T>)Current.Session["list"])[fim] = aux;
             return i;
         }
+
+        public static string Hash(string s)
+        {
+            StringBuilder sb = new StringBuilder();
+            MD5 md5 = MD5.Create();
+
+            byte[] entrada = Encoding.ASCII.GetBytes(s);
+            byte[] hash = md5.ComputeHash(entrada);
+
+            for (int i = 0; i < hash.Length; i++)
+                sb.Append(hash[i].ToString("X2"));
+
+            return sb.ToString();
+        }
+
     }
 }

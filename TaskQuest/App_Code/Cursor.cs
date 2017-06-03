@@ -26,8 +26,11 @@ namespace TaskQuest.App_Code
             return ExecuteQuery(query);
         }
 
-        public static List<T> SelectMD5<T>(string id) where T : new()
+        public static List<T> SelectMD5<T>(string hashedString) where T : new()
         {
+
+            _obj = new T();
+
             try
             {
                 string myConnectionString = "server=127.0.0.1;uid=root;pwd=Kur0N3k0;database=task_quest;";
@@ -39,11 +42,13 @@ namespace TaskQuest.App_Code
                 _command = _connection.CreateCommand();
                 var adapter = new MySqlDataAdapter();
 
-                var query = "SELECT * FROM " + typeof(T).GetType().Name;
-                query += "where md5(id) = ?id";
+                var id = _obj.GetType().GetProperties()[0];
+
+                var query = "SELECT * FROM " + _obj.GetType().Name;
+                query += " where md5(" + id.Name  + ") = ?hashedString";
 
                 _command.CommandText = query;
-                 _command.Parameters.Add(new MySqlParameter("id", id));
+                 _command.Parameters.Add(new MySqlParameter("hashedString", hashedString));
 
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
@@ -155,8 +160,8 @@ namespace TaskQuest.App_Code
                 _command = _connection.CreateCommand();
                 _command.CommandText = query;
                 AddParameters();
-
-                _command.ExecuteNonQuery();
+                
+                _command.ExecuteNonQuery().ToString();
                 _connection.Close();
                 _command.Dispose();
                 _connection.Dispose();
@@ -174,6 +179,7 @@ namespace TaskQuest.App_Code
         {
             foreach (PropertyInfo prop in _obj.GetType().GetProperties())
                 _command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(_obj)));
+                
         }
 
         private static string Columns(PropertyInfo[] props, string plus = "")
@@ -192,13 +198,21 @@ namespace TaskQuest.App_Code
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             List<T> result = new List<T>();
-
+            
             foreach (DataRow row in table.Rows)
             {
                 T item = new T();
                 foreach (var property in properties)
                 {
-                    property.SetValue(item, row[property.Name], null);
+                    try
+                    {
+                        if(row[property.Name].GetType() != typeof(DBNull))
+                            property.SetValue(item, row[property.Name], null);
+                    }
+                    catch(Exception e)
+                    {
+                        Debug.WriteLine(e);
+                    }
                 }
                 result.Add(item);
             }

@@ -6,7 +6,7 @@
         private int _tel_id;
         public int tel_id
         {
-            get => tel_id;
+            get => _tel_id;
             set
             {
                 if (value > 0)
