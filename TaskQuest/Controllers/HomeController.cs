@@ -10,7 +10,7 @@ namespace TaskQuest.Controllers
 {
     public class HomeController : Controller
     {
-        
+
         public ActionResult Index() //V
         {
 
@@ -18,7 +18,7 @@ namespace TaskQuest.Controllers
             ViewBag.Result = ViewData["Result"];
 
             return View();
-            
+
         }
 
         public ActionResult Login(LoginViewModel model) //V
@@ -32,7 +32,7 @@ namespace TaskQuest.Controllers
                 ViewBag["Result"] = "Usuario não reconhecido";
                 return RedirectToAction("Index");
             }
-            
+
             else
             {
                 Session["user"] = Util.Hash(usuario.usu_id.ToString());
@@ -40,7 +40,7 @@ namespace TaskQuest.Controllers
             }
 
         }
-        
+
         [HttpPost]
         public ActionResult Register(RegisterViewModel model) //V
         {
@@ -61,13 +61,13 @@ namespace TaskQuest.Controllers
                 ViewData["Result"] = "Algo deu errado";
                 return RedirectToAction("Index");
             }
-            
+
             return RedirectToAction("Login", new LoginViewModel() { Email = model.Email, Senha = model.Senha });
         }
 
         public ActionResult Inicio() //V
         {
-            
+
             usu_usuario usuario = new usu_usuario();
             try
             {
@@ -104,7 +104,7 @@ namespace TaskQuest.Controllers
 
         public ActionResult Usuario() //V
         {
-            
+
             usu_usuario usuario = new usu_usuario();
             try
             {
@@ -162,7 +162,7 @@ namespace TaskQuest.Controllers
             ViewBag.Result = ViewData["Result"];
 
             return View(model);
-            
+
         }
 
         [HttpPost]
@@ -199,7 +199,7 @@ namespace TaskQuest.Controllers
                 usu_data_nascimento = model.DataNascimento,
                 usu_sexo = model.Sexo,
             };
-            
+
             if (!Cursor.Update(usu))
             {
                 ViewData["ResultColor"] = "#EEEE00";
@@ -218,7 +218,7 @@ namespace TaskQuest.Controllers
                     tel_numero = telefone.Numero,
                 };
 
-                foreach(var prop in tel.GetType().GetProperties())
+                foreach (var prop in tel.GetType().GetProperties())
                 {
                     Debug.WriteLine(prop.GetValue(tel));
                 }
@@ -254,6 +254,177 @@ namespace TaskQuest.Controllers
             ViewBag.ResultColor = "#32CD32";
             ViewBag.Result = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
+        }
+
+        [HttpPost]
+        public ActionResult EditarTelefone(List<TelefoneViewModel> model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            
+            foreach(var telefone in model)
+            {
+                var tel = new tel_telefone()
+                {
+                    tel_id = telefone.Id,
+                    usu_id = usuario.usu_id,
+                    tel_tipo = telefone.Tipo,
+                    tel_ddd = telefone.Ddd,
+                    tel_numero = telefone.Numero,
+                };
+
+                if (!Cursor.Update(tel))
+                {
+                    ViewData["ResultColor"] = "#EEEE00";
+                    ViewData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ViewBag.ResultColor = "#32CD32";
+            ViewBag.Result = "Seus dados foram atualizados";
+            return RedirectToAction("Usuario");
+        }
+
+        [HttpPost]
+        public ActionResult EditarCartao(List<CartaoViewModel> model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
+            foreach(var cartao in model)
+            {
+                var crt = new crt_cartao()
+                {
+                    crt_id = cartao.Id,
+                    crt_numero = cartao.Numero,
+                    crt_bandeira = cartao.Bandeira,
+                    crt_codigo_seguranca = cartao.CodigoSeguranca,
+                    crt_data_vencimento = cartao.DataVencimento,
+                    crt_nome_titular = cartao.NomeTitular,
+                    usu_id = usuario.usu_id,
+                };
+                if (!Cursor.Update(crt))
+                {
+                    ViewData["ResultColor"] = "#EEEE00";
+                    ViewData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Index");
+                }
+            }
+
+            ViewBag.ResultColor = "#32CD32";
+            ViewBag.Result = "Seus dados foram atualizados";
+            return RedirectToAction("Usuario");
+        }
+
+        [HttpPost]
+        public ActionResult ExcluirTelefone(TelefoneViewModel model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
+            if (!Cursor.Delete<tel_telefone>(model.Id))
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Algo deu errado";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ResultColor = "#32CD32";
+            ViewBag.Result = "Seus dados foram atualizados";
+            return RedirectToAction("Usuario");
+
+        }
+
+        [HttpPost]
+        public ActionResult ExcluirCartao(CartaoViewModel model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
+            if (!Cursor.Delete<crt_cartao>(model.Id))
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Algo deu errado";
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.ResultColor = "#32CD32";
+            ViewBag.Result = "Seus dados foram atualizados";
+            return RedirectToAction("Usuario");
+
         }
 
         [HttpPost]
@@ -373,7 +544,7 @@ namespace TaskQuest.Controllers
 
             List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(GetType().GetProperty("usu_id"), usuario.usu_id);
 
-            foreach(var uxg in uxgs)
+            foreach (var uxg in uxgs)
             {
                 gru_grupo grupo = Cursor.Select<gru_grupo>(GetType().GetProperty("gru_id"), uxg.gru_id)[0];
                 model.Grupos.Add(new Grupo()
@@ -441,7 +612,7 @@ namespace TaskQuest.Controllers
 
         public ActionResult Grupo(int? id) //V
         {
-            
+
             usu_usuario usuario = new usu_usuario();
             try
             {
@@ -462,15 +633,15 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
 
-            if(id == null)
+            if (id == null)
             {
                 return RedirectToAction("Inicio");
             }
 
             gru_grupo grupo = Cursor.Select<gru_grupo>(GetType().GetProperty("gru_id"), id)[0];
-            
+
             List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(GetType().GetProperty("gru_id"), grupo.gru_id);
-            
+
             /*
             bool usuarioHasGrupo = false;
             foreach (var uxg in uxgs)
@@ -492,8 +663,8 @@ namespace TaskQuest.Controllers
                 Descricao = grupo.gru_descricao,
                 Plano = grupo.gru_plano,
             };
-            
-            foreach(uxg_usuario_grupo uxg in uxgs)
+
+            foreach (uxg_usuario_grupo uxg in uxgs)
             {
                 usu_usuario usu = Cursor.Select<usu_usuario>(GetType().GetProperty("usu_id"), uxg.usu_id)[0];
                 model.Integrantes.Add(new IntegranteViewModel()

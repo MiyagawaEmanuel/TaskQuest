@@ -1,0 +1,19 @@
+﻿@model List<TaskQuest.ViewModels.CartaoViewModel>
+
+@using (Html.BeginForm("Cartoes", "Home", FormMethod.Post))
+{
+    @for (int x = 0; x < Model.Count; x++)
+    {
+        @Html.HiddenFor(m => Model[x].Id)
+        <div class="col-md-12"><input type="submit" value="Editar" class="btn btn-primary btn-lg btn-header darkblue-bg" /></div>
+        <div class="col-md-6">@Html.TextBoxFor(m => Model[x].NomeTitular, new { @class = "form-control inputs centralize" })</div>
+        <div class="col-md-6">@Html.TextBoxFor(m => Model[x].Bandeira, new { @class = "form-control inputs centralize" })</div>
+        <div class="col-md-6">@Html.TextBoxFor(m => Model[x].Numero, new { @class = "form-control inputs centralize" })</div>
+        <div class="col-md-6">@Html.TextBoxFor(m => Model[x].CodigoSeguranca, new { @class = "form-control inputs centralize" })</div>
+        <div class="col-md-6">@Html.TextBoxFor(m => Model[x].DataVencimento, new { @class = "form-control inputs centralize" })</div>
+        <div class="col-md-12">
+            @Html.Partial("_ExcluirCartaoPartial", Model[x])
+        </div>
+        <hr class="quebra">
+    }
+}

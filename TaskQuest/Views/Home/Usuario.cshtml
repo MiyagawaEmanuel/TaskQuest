@@ -56,14 +56,7 @@
         <div class="row">
             <div class="col-md-12"><h2 class="setting-title">Telefones</h2></div>
             <div class="row info-t">
-                @for (int x = 0; x < Model.Telefones.Count; x++)
-                {
-                    @Html.HiddenFor(m => Model.Telefones[x].Id)
-                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Tipo, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Ddd, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-4">@Html.TextBoxFor(m => Model.Telefones[x].Numero, new { @class = "form-control inputs centralize" })</div>
-                    <hr class="quebra">
-                }
+                @Html.Partial("_TelefonesPartial", Model.Telefones)
                 @Html.Partial("_AdicionarTelefonePartial", Model.telefoneViewModel)
             </div>
         </div>
@@ -77,16 +70,7 @@
         <div class="row info-p">
             <div class="col-md-12"><h2 class="setting-title">Cartões</h2></div>
             <div class="info-c">
-                @for (int x = 0; x < Model.Cartoes.Count; x++)
-                {
-                    @Html.HiddenFor(m => Model.Cartoes[x].Id)
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].NomeTitular, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Bandeira, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].Numero, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].CodigoSeguranca, new { @class = "form-control inputs centralize" })</div>
-                    <div class="col-md-6">@Html.TextBoxFor(m => Model.Cartoes[x].DataVencimento, new { @class = "form-control inputs centralize" })</div>
-                    <hr class="quebra">
-                }
+                @Html.Partial("_CartoesPartial", Model.Cartoes)
                 @Html.Partial("_AdicionarCartaoPartial", Model.cartaoViewModel)
             </div>
         </div>

@@ -261,7 +261,7 @@
     <Content Include="Views\Shared\_AdicionarCartaoPartial.cshtml" />
     <Content Include="Views\Shared\_AdicionarTelefonePartial.cshtml" />
     <Content Include="Views\Shared\_AdicionarUsuarioGrupoPartial.cshtml" />
-    <Content Include="Views\Shared\_LoginPartial.cshtml" />
+    <Content Include="Views\Shared\_RegisterPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\main.css.map" />
@@ -306,6 +306,18 @@
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\img\script26mar.zip" />
     <Content Include="Content\jquery-ui\package.json" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_TelefonesPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ExcluirTelefonePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CartoesPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ExcluirCartaoPartial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>
