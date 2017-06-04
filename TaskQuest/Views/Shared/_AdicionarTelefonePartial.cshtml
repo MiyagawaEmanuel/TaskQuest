@@ -1,6 +1,7 @@
-@model TaskQuest.ViewModels.TelefoneViewModel
+﻿@model TaskQuest.ViewModels.TelefoneViewModel
 
 <form action="/Home/AdicionarTelefone" method="post">
+    @Html.AntiForgeryToken()
     <div class="row">
         <div class="col-lg-3 col-md-3">
             <input type="submit" value="Adicionar" class="btn btn-primary editar">
@@ -12,7 +13,7 @@
             <input type="number" name="Ddd" id="Ddd" class="form-control inputs centralize" placeholder="DDD" />
         </div>
         <div class="col-lg-3 col-md-3">
-            <input type="number" name="Numero" id="Numero" class="form-control inputs centralize" placeholder="N�mero" />
+            <input type="number" name="Numero" id="Numero" class="form-control inputs centralize" placeholder="Número" />
         </div>
     </div>
 </form>

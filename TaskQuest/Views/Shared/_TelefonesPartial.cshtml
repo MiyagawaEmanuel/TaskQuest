@@ -3,7 +3,8 @@
 <div class="col-md-8">
     @using (Html.BeginForm("EditarTelefone", "Home", FormMethod.Post))
     {
-        for(int x = 0; x < Model.Count; x++)
+        @Html.AntiForgeryToken()
+        for (int x = 0; x < Model.Count; x++)
         {
             @Html.HiddenFor(m => Model[x].Id)
             <div class="col-md-12"><input type="submit" value="Editar" class="btn btn-primary btn-lg btn-header darkblue-bg" /></div>

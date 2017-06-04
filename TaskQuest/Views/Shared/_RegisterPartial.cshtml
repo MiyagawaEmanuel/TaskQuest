@@ -1,8 +1,9 @@
-@model TaskQuest.ViewModels.RegisterViewModel
+﻿@model TaskQuest.ViewModels.RegisterViewModel
 
 
 @using (Html.BeginForm("Register", "Home", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     <div class="modal-body">
         <p>Preencha os campos abaixo para realizar seu cadastro.</p>
         <div class="col-md-6 inp">

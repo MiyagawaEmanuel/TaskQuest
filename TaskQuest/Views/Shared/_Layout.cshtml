@@ -45,5 +45,12 @@
 	</header>
 
 	@RenderBody()
+
+    @if (TempData["Result"] != null)
+    {
+        <script>
+            alert("@TempData["Result"]");
+        </script>
+    }
 </body>
 </html>

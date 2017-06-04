@@ -16,6 +16,7 @@
         <div class="row infos2">
             @using (Html.BeginForm("EditarGrupo", "Home", FormMethod.Post))
             {
+                @Html.AntiForgeryToken()
                 <input type="submit" value="Editar" class="btn btn-primary btn-lg btn-header darkblue-bg" />
                 @Html.HiddenFor(m => m.Id)
                 <div>@Html.TextBoxFor(m => m.Nome)</div>

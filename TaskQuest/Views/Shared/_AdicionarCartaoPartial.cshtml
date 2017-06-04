@@ -1,18 +1,20 @@
-@model TaskQuest.ViewModels.CartaoViewModel
+Ôªø@model TaskQuest.ViewModels.CartaoViewModel
 
-@using (Html.BeginForm("AdicionarCartao", "Home", FormMethod.Post, new { @id = "cartao" })) {
+@using (Html.BeginForm("AdicionarCartao", "Home", FormMethod.Post, new { @id = "cartao" }))
+{
+    @Html.AntiForgeryToken()
     <div class="row">
         <div class="col-lg-6 col-md-6">
             @Html.TextBoxFor(m => m.NomeTitular, new { @class = "form-control inputs centralize", @placeholder="Nome do titular" })
         </div>
         <div class="col-lg-6 col-md-6">
-            @Html.TextBoxFor(m => m.Bandeira, new { @class = "form-control inputs centralize", @placeholder="Bandeira do cart„o" })
+            @Html.TextBoxFor(m => m.Bandeira, new { @class = "form-control inputs centralize", @placeholder="Bandeira do cart√£o" })
         </div>
         <div class="col-lg-6 col-md-6">
-            @Html.TextBoxFor(m => m.Numero, new { @class = "form-control inputs centralize", @placeholder = "N˙mero do cart„o" })
+            @Html.TextBoxFor(m => m.Numero, new { @class = "form-control inputs centralize", @placeholder = "N√∫mero do cart√£o" })
         </div>
         <div class="col-lg-6 col-md-6">
-            @Html.TextBoxFor(m => m.CodigoSeguranca, new { @class = "form-control inputs centralize", @placeholder = "CÛdigo de seguranÁa" })
+            @Html.TextBoxFor(m => m.CodigoSeguranca, new { @class = "form-control inputs centralize", @placeholder = "C√≥digo de seguran√ßa" })
         </div>
         <div class="col-lg-12 col-md-12">
             @Html.EditorFor(m => m.DataVencimento, new { @class = "form-control inputs centralize", @type = "date" })

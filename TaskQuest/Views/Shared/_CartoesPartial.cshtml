@@ -2,6 +2,7 @@
 
 @using (Html.BeginForm("Cartoes", "Home", FormMethod.Post))
 {
+    @Html.AntiForgeryToken()
     for (int x = 0; x < Model.Count; x++)
     {
         @Html.HiddenFor(m => Model[x].Id)

@@ -15,13 +15,12 @@ namespace TaskQuest.Controllers
         public ActionResult Index() //V
         {
 
-            ViewBag.ResultColor = ViewData["ResultColor"];
-            ViewBag.Result = ViewData["Result"];
-
             return View();
 
         }
 
+        [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Login(LoginViewModel model) //V
         {
 
@@ -33,15 +32,15 @@ namespace TaskQuest.Controllers
             catch (Exception e)
             {
                 Debug.WriteLine(e.Message);
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Usuario não reconhecido";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Usuario não reconhecido";
                 return RedirectToAction("Index");
             }
             
             if (!String.Equals(Util.Hash(model.Senha), usuario.usu_senha, StringComparison.OrdinalIgnoreCase))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Usuario não reconhecido";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Usuario não reconhecido";
                 return View("Index");
             }
 
@@ -54,6 +53,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Register(RegisterViewModel model) //V
         {
 
@@ -69,8 +69,8 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(usuario))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Index");
             }
 
@@ -88,15 +88,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -128,15 +128,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -173,14 +173,12 @@ namespace TaskQuest.Controllers
                 });
             }
 
-            ViewBag.ResultColor = ViewData["ResultColor"];
-            ViewBag.Result = ViewData["Result"];
-
             return View(model);
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Usuario(UsuarioViewModel model) //V
         {
 
@@ -192,15 +190,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -217,8 +215,8 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Update(usu))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Index");
             }
 
@@ -240,8 +238,8 @@ namespace TaskQuest.Controllers
 
                 if (!Cursor.Update(tel))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Index");
                 }
             }
@@ -260,18 +258,19 @@ namespace TaskQuest.Controllers
                 };
                 if (!Cursor.Update(crt))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Index");
                 }
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Seus dados foram atualizados";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditarTelefone(List<TelefoneViewModel> model) //V
         {
 
@@ -283,15 +282,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -308,18 +307,19 @@ namespace TaskQuest.Controllers
 
                 if (!Cursor.Update(tel))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Index");
                 }
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Seus dados foram atualizados";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditarCartao(List<CartaoViewModel> model) //V
         {
 
@@ -331,15 +331,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -357,14 +357,14 @@ namespace TaskQuest.Controllers
                 };
                 if (!Cursor.Update(crt))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Index");
                 }
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Seus dados foram atualizados";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
         }
 
@@ -379,15 +379,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -398,13 +398,13 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Delete<tel_telefone>(id ?? 0))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Seus dados foram atualizados";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
 
         }
@@ -420,15 +420,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -439,18 +439,19 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Delete<crt_cartao>(id ?? 0))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Index");
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Seus dados foram atualizados";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Seus dados foram atualizados";
             return RedirectToAction("Usuario");
 
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AdicionarTelefone(TelefoneViewModel model) //V
         {
 
@@ -462,15 +463,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -484,17 +485,18 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(tel))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
-            ViewData["ResultColor"] = "#32CD32";
-            ViewData["Result"] = "Telefone adicionado com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Telefone adicionado com sucesso";
             return RedirectToAction("Usuario");
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AdicionarCartao(CartaoViewModel model) //V
         {
 
@@ -506,15 +508,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -530,13 +532,13 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(crt))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
-            ViewData["ResultColor"] = "#32CD32";
-            ViewData["Result"] = "Cartão adicionado com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Cartão adicionado com sucesso";
             return RedirectToAction("Usuario");
         }
 
@@ -551,15 +553,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -586,6 +588,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult CriarGrupo(CriarGrupoViewModel model) //V
         {
 
@@ -597,15 +600,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -619,8 +622,8 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Insert(gru))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 
@@ -636,14 +639,14 @@ namespace TaskQuest.Controllers
             {
                 if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id.Value, true), true))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Usuario");
                 }
             }
             
-            ViewData["ResultColor"] = "#32CD32";
-            ViewData["Result"] = "Grupo adicionado com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Grupo adicionado com sucesso";
             return RedirectToAction("Grupos");
         }
 
@@ -658,15 +661,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -692,8 +695,8 @@ namespace TaskQuest.Controllers
 
             if (!usuarioHasGrupo)
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não pertence a esse grupo";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não pertence a esse grupo";
                 return RedirectToAction("Index");
             }
 
@@ -722,6 +725,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult EditarGrupo(GrupoViewModel model)
         {
 
@@ -733,15 +737,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             
@@ -752,8 +756,8 @@ namespace TaskQuest.Controllers
                    select x
                 ).First().uxg_administrador)
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não pode executar essa ação";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não pode executar essa ação";
                 return RedirectToAction("Index");
             }
 
@@ -766,17 +770,18 @@ namespace TaskQuest.Controllers
 
             if (!Cursor.Update(gru))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Grupo", new { id = model.Id });
             }
 
-            ViewBag.ResultColor = "#32CD32";
-            ViewBag.Result = "Grupo editado com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Grupo editado com sucesso";
             return RedirectToAction("Grupo", new { id = model.Id });
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) //V 
         {
 
@@ -788,15 +793,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -804,24 +809,25 @@ namespace TaskQuest.Controllers
 
             if (usu == null)
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Usuario não encontrado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Usuario não encontrado";
                 return RedirectToAction("Grupo", new { id = model.gru_id });
             }
             
             if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false), true))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Grupo", new { id = model.gru_id });
             }
 
-            ViewData["ResultColor"] = "#32CD32";
-            ViewData["Result"] = usu.usu_nome + " adicionado ao grupo com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = usu.usu_nome + " adicionado ao grupo com sucesso";
             return RedirectToAction("Grupo", new { id = model.gru_id });
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult ExcluirUsuarioGrupo(ExcluirUsuarioGrupo model) //V
         {
 
@@ -833,15 +839,15 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
@@ -856,20 +862,20 @@ namespace TaskQuest.Controllers
             {
                 if (!Cursor.Delete<uxg_usuario_grupo>(model.usu_id, model.gru_id))
                 {
-                    ViewData["ResultColor"] = "#EEEE00";
-                    ViewData["Result"] = "Algo deu errado";
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
                     return RedirectToAction("Grupo", new { id = model.gru_id });
                 }
             }
             else
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não tem privilégios para fazer isso";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não tem privilégios para fazer isso";
                 return RedirectToAction("Index");
             }
 
-            ViewData["ResultColor"] = "#32CD32";
-            ViewData["Result"] = "Usuário retirado com sucesso";
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Usuário retirado com sucesso";
             return RedirectToAction("Grupo", new { id = model.gru_id });
 
         }
@@ -884,22 +890,22 @@ namespace TaskQuest.Controllers
             catch (Exception)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
             if (usuario == null)
             {
                 Session.Clear();
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não está logado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
 
             if (!Cursor.Delete<usu_usuario>(usuario.usu_id))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Algo deu errado";
                 return RedirectToAction("Usuario");
             }
 

@@ -1,4 +1,4 @@
-@model TaskQuest.ViewModels.UsuarioViewModel
+﻿@model TaskQuest.ViewModels.UsuarioViewModel
 
 @{
     ViewBag.Title = "Configuração de Usuario";
@@ -15,6 +15,7 @@
     <div class="container fluid">
         <div class="row info-p">
             <form action="/Home/Usuario" method="post">
+                @Html.AntiForgeryToken()
                 <input type="submit" class="btn btn-primary editar" value="Editar">
                 <div class="col-md-12"><h2 class="setting-title">Informações Pessoais</h2></div>
                 <div class="col-md-6"><input name="Nome" id="Nome" class="form-control inputs centralize" value="@Model.Nome" placeholder="Nome" type="text" /> </div>

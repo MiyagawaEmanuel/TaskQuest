@@ -7,6 +7,7 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
     <meta charset="utf-8">
     <title>Task Quest</title>
 
@@ -30,6 +31,7 @@
         </div>
         <div class="navbar-collapse collapse">
             <form action="/Home/Login" method="post">
+                @Html.AntiForgeryToken()
                 <ul class="nav navbar-nav navbar-right inputs">
                     <li><input name="Email" id="Email" class="form-control login" placeholder="Email" /></li>
                     <li><input name="Senha" id="Senha" class="form-control login" placeholder="Senha" type="password"/></li>
@@ -254,6 +256,11 @@
 
     </div>
 </footer>
-
+    @if(TempData["Result"] != null)
+    {
+        <script>
+            alert("@TempData["Result"]");
+        </script>
+    }
 </body>
 </html>

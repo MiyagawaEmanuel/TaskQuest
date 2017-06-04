@@ -1,4 +1,4 @@
-@model TaskQuest.ViewModels.AdicionarUsuarioGrupoViewModel
+﻿@model TaskQuest.ViewModels.AdicionarUsuarioGrupoViewModel
 
 <div id="modalAdicionarUsuario" class="modal fade" role="dialog">
 	<div class="modal-dialog">
@@ -9,7 +9,9 @@
 				<h2 class="modal-title">Adicionar Usuário</h2>
 			</div>
 
-			@using (Html.BeginForm("AdicionarUsuarioGrupo", "Home", FormMethod.Post)) {
+			@using (Html.BeginForm("AdicionarUsuarioGrupo", "Home", FormMethod.Post))
+            {
+                @Html.AntiForgeryToken()
 				<div class="modal-body titles">
 					<h3>Digite o e-mail do usuário que deseja adicionar.</h3>
                     @Html.HiddenFor(m => m.gru_id)
