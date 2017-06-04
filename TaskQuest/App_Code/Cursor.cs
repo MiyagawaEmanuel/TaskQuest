@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace TaskQuest.App_Code
 {
@@ -14,13 +15,15 @@ namespace TaskQuest.App_Code
 
         private static Object _obj;
 
-        public static bool Insert(Object obj)
+        public static bool Insert(Object obj, bool allElements = false)
         {
             _obj = obj;
             var props = _obj.GetType().GetProperties();
 
-            var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props) +
-                    ") VALUES(" + Columns(props, "?") + ")";
+            var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props, allElements: allElements) +
+                    ") VALUES(" + Columns(props, "?", allElements) + ")";
+
+            Debug.WriteLine(query);
 
             return ExecuteQuery(query);
         }
@@ -64,7 +67,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 return null;
             }
         }
@@ -122,7 +125,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 return null;
             }
         }
@@ -144,7 +147,7 @@ namespace TaskQuest.App_Code
             return ExecuteQuery(query);
         }
 
-        public static bool Delete<T>(int id, int? secondId =null) where T : new()
+        public static bool Delete<T>(int id, int? secondId = null) where T : new()
         {
             _obj = new T();
             var props = _obj.GetType().GetProperties();
@@ -155,7 +158,7 @@ namespace TaskQuest.App_Code
             var query = "DELETE FROM " + _obj.GetType().Name +
                     " WHERE " + props[0].Name + " = " + id;
 
-            if(secondId != null)
+            if (secondId != null)
             {
                 query += ", " + props[1].Name + " = " + secondId;
             }
@@ -186,7 +189,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }
@@ -197,10 +200,17 @@ namespace TaskQuest.App_Code
                 _command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(_obj)));
         }
 
-        private static string Columns(PropertyInfo[] props, string plus = "")
+        private static string Columns(PropertyInfo[] props, string plus = "", bool allElements = false)
         {
             var query = "";
-            for (int x = 1; x < props.Length; x++)
+
+            int x;
+            if (allElements)
+                x = 0;
+            else
+                x = 1;
+
+            for (; x < props.Length; x++)
             {
                 query += plus + props[x].Name;
                 if (x < props.Length - 1)

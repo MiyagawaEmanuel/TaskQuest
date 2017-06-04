@@ -586,7 +586,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult CriarGrupo(CriarGrupoViewModel model)
+        public ActionResult CriarGrupo(CriarGrupoViewModel model) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -624,20 +624,24 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Usuario");
             }
 
-            int gru_id =
-                (from x in
-                Cursor.Select<gru_grupo>()
-                 where (x.gru_data_criacao.ToString("yyyy-MM-dd HH:mm:ss") ==
-                 gru.gru_data_criacao.ToString("yyyy-MM-dd HH:mm:ss"))
-                 select x).First().gru_id;
-
-            if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id, true)))
+            int? gru_id = null;
+            foreach (var grupo in Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_nome), gru.gru_nome))
             {
-                ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Algo deu errado";
-                return RedirectToAction("Usuario");
+                Console.WriteLine(grupo.gru_id + ", " + grupo.gru_nome + ", " + grupo.gru_data_criacao.ToString());
+                if (grupo.gru_data_criacao.ToString().CompareTo(gru.gru_data_criacao.ToString()) == 0)
+                    gru_id = grupo.gru_id;
             }
 
+            if(gru_id != null)
+            {
+                if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id.Value, true), true))
+                {
+                    ViewData["ResultColor"] = "#EEEE00";
+                    ViewData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Usuario");
+                }
+            }
+            
             ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = "Grupo adicionado com sucesso";
             return RedirectToAction("Grupos");
@@ -802,14 +806,17 @@ namespace TaskQuest.Controllers
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Usuario não encontrado";
-                return RedirectToAction("Grupo", model.gru_id);
+                return RedirectToAction("Index");
             }
 
-            if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false)))
+            Debug.WriteLine(usu.usu_id);
+            Debug.WriteLine(model.gru_id);
+
+            if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false), true))
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
-                return RedirectToAction("Grupo", model.gru_id);
+                return RedirectToAction("Inicio");
             }
 
             ViewData["ResultColor"] = "#32CD32";

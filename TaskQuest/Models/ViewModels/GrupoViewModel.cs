@@ -7,14 +7,20 @@ namespace TaskQuest.ViewModels
         public int Id { get; set; }
 
         public string Nome { get; set; }
-        
+
         public string Descricao { get; set; }
 
         public bool Plano { get; set; }
-        
+
         public List<IntegranteViewModel> Integrantes = new List<IntegranteViewModel>();
 
-        public AdicionarUsuarioGrupoViewModel adicionarUsuarioGrupoViewModel = new AdicionarUsuarioGrupoViewModel();
+        public AdicionarUsuarioGrupoViewModel adicionarUsuarioGrupoViewModel()
+        {
+            return new AdicionarUsuarioGrupoViewModel()
+            {
+                gru_id = Id,
+            };
+        }
 
         public ExcluirUsuarioGrupo criarExcluirUsuarioGrupo(int usuario_id)
         {

@@ -12,6 +12,7 @@
 			@using (Html.BeginForm("AdicionarUsuarioGrupo", "Home", FormMethod.Post)) {
 				<div class="modal-body titles">
 					<h3>Digite o e-mail do usuário que deseja adicionar.</h3>
+                    @Html.HiddenFor(m => m.gru_id)
 					@Html.TextBoxFor(m => m.Email, new { @class="form-control inputs" })
 				</div>
 
