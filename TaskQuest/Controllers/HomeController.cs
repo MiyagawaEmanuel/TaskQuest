@@ -647,7 +647,7 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Grupos");
         }
 
-        public ActionResult Grupo(int? id) 
+        public ActionResult Grupo(int? id) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -745,7 +745,7 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
             
-            if ((
+            if (!(
                    from x in
                    Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
                    where (x.gru_id == model.Id)
@@ -768,16 +768,16 @@ namespace TaskQuest.Controllers
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
-                return RedirectToAction("Grupo", model.Id);
+                return RedirectToAction("Grupo", new { id = model.Id });
             }
 
             ViewBag.ResultColor = "#32CD32";
             ViewBag.Result = "Grupo editado com sucesso";
-            return View(model);
+            return RedirectToAction("Grupo", new { id = model.Id });
         }
 
         [HttpPost]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) 
+        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) //V 
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -806,26 +806,23 @@ namespace TaskQuest.Controllers
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Usuario não encontrado";
-                return RedirectToAction("Index");
+                return RedirectToAction("Grupo", new { id = model.gru_id });
             }
-
-            Debug.WriteLine(usu.usu_id);
-            Debug.WriteLine(model.gru_id);
-
+            
             if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false), true))
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
-                return RedirectToAction("Inicio");
+                return RedirectToAction("Grupo", new { id = model.gru_id });
             }
 
             ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = usu.usu_nome + " adicionado ao grupo com sucesso";
-            return RedirectToAction("Grupo", model.gru_id);
+            return RedirectToAction("Grupo", new { id = model.gru_id });
         }
 
         [HttpPost]
-        public ActionResult ExcluirUsuarioGrupo(ExcluirUsuarioGrupo model)
+        public ActionResult ExcluirUsuarioGrupo(ExcluirUsuarioGrupo model) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -861,7 +858,7 @@ namespace TaskQuest.Controllers
                 {
                     ViewData["ResultColor"] = "#EEEE00";
                     ViewData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Grupo", model.gru_id);
+                    return RedirectToAction("Grupo", new { id = model.gru_id });
                 }
             }
             else
@@ -873,7 +870,7 @@ namespace TaskQuest.Controllers
 
             ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = "Usuário retirado com sucesso";
-            return RedirectToAction("Grupo", model.gru_id);
+            return RedirectToAction("Grupo", new { id = model.gru_id });
 
         }
 

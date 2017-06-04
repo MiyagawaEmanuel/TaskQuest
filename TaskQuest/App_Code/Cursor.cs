@@ -22,9 +22,7 @@ namespace TaskQuest.App_Code
 
             var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props, allElements: allElements) +
                     ") VALUES(" + Columns(props, "?", allElements) + ")";
-
-            Debug.WriteLine(query);
-
+            
             return ExecuteQuery(query);
         }
 
@@ -160,9 +158,9 @@ namespace TaskQuest.App_Code
 
             if (secondId != null)
             {
-                query += ", " + props[1].Name + " = " + secondId;
+                query += " AND " + props[1].Name + " = " + secondId;
             }
-
+            
             return ExecuteQuery(query);
         }
 
