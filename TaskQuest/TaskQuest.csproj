@@ -157,6 +157,7 @@
     <Compile Include="Models\uxg_usuario_grupo.cs" />
     <Compile Include="Models\ViewModels\AdicionarUsuarioGrupoViewModel.cs" />
     <Compile Include="Models\ViewModels\CriarGrupoViewModel.cs" />
+    <Compile Include="Models\ViewModels\ExcluirUsuarioGrupo.cs" />
     <Compile Include="Models\ViewModels\GruposViewModel.cs" />
     <Compile Include="Models\ViewModels\GrupoViewModel.cs" />
     <Compile Include="Models\ViewModels\InicioViewModel.cs" />
@@ -311,13 +312,16 @@
     <Content Include="Views\Shared\_TelefonesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_ExcluirTelefonePartial.cshtml" />
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\_CartoesPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Views\Shared\_ExcluirCartaoPartial.cshtml" />
+    <Content Include="Views\Home\GrupoAdmin.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\CriarGrupo.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_ExcluirUsuarioGrupoPartial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

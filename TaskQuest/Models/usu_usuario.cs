@@ -75,7 +75,7 @@ namespace TaskQuest.Models
             set 
             {
                 if (value.Length > 0)
-                    _usu_senha = Util.Hash(value);
+                    _usu_senha = value;
             }
         }
 

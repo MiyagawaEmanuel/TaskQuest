@@ -1,0 +1,24 @@
+﻿@model TaskQuest.ViewModels.CriarGrupoViewModel
+
+@{
+    ViewBag.Title = "Criar Grupo";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+@section head{
+    @Styles.Render("~/Content/geral-css")
+    @Scripts.Render("~/bundles/geral-js")
+}
+
+<section>
+    <div class="container fluid ">
+        <h2 class="titles">Criar Novo Grupo</h2>
+        <form action="/Home/CriarGrupo" method="post">
+            <div class="row">
+                <div class="col-md-6"><input type="text" id="Nome" name="Nome" class="form-control inputs" placeholder="Nome do Grupo"></div>
+                <div class="col-md-12"><input type="text" id="Descricao" name="Descricao" class="form-control texts" placeholder="Descrição do Grupo"></div>
+                <div class="col-md-6"><input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Criar grupo"></div>
+            </div>
+        </form>
+    </div>
+</section>

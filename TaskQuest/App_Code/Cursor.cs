@@ -1,5 +1,4 @@
 using System;
-using System.Diagnostics;
 using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
@@ -45,10 +44,10 @@ namespace TaskQuest.App_Code
                 var id = _obj.GetType().GetProperties()[0];
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
-                query += " where md5(" + id.Name  + ") = ?hash_id";
+                query += " where md5(" + id.Name + ") = ?hash_id";
 
                 _command.CommandText = query;
-                 _command.Parameters.Add(new MySqlParameter("?hash_id", hash_id));
+                _command.Parameters.Add(new MySqlParameter("?hash_id", hash_id));
 
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
@@ -65,17 +64,26 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return null;
             }
         }
 
-        public static List<T> Select<T>(PropertyInfo atributo=null, Object value=null) where T : new()
+        public static List<T> Select<T>(string att = null, Object value = null) where T : new()
         {
             _obj = new T();
+            var props = _obj.GetType().GetProperties();
 
             try
             {
+                PropertyInfo atributo = null;
+                if (att != null)
+                {
+                    atributo = _obj.GetType().GetProperty(att);
+                    if (atributo == null)
+                        throw new Exception("Atributo incorreto");
+                }
+
                 string myConnectionString = "server=127.0.0.1;uid=root;pwd=Kur0N3k0;database=task_quest;";
                 _connection = new MySqlConnection
                 {
@@ -87,16 +95,18 @@ namespace TaskQuest.App_Code
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
 
-                _command.CommandText = query;
-
                 if (atributo != null && value != null)
                 {
                     atributo.SetValue(_obj, value);
                     query += " WHERE " + atributo.Name + " = ?" + atributo.Name;
-                    Debug.WriteLine(query);
-                    _command.Parameters.Add(new MySqlParameter(atributo.Name, atributo.GetValue(_obj)));
+                    _command.CommandText = query;
+                    _command.Parameters.Add(new MySqlParameter("?" + atributo.Name, atributo.GetValue(_obj)));
                 }
-                
+                else
+                {
+                    _command.CommandText = query;
+                }
+
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
                 adapter.Fill(ds);
@@ -112,7 +122,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return null;
             }
         }
@@ -134,7 +144,7 @@ namespace TaskQuest.App_Code
             return ExecuteQuery(query);
         }
 
-        public static bool Delete<T>(int id) where T : new()
+        public static bool Delete<T>(int id, int? secondId =null) where T : new()
         {
             _obj = new T();
             var props = _obj.GetType().GetProperties();
@@ -144,6 +154,11 @@ namespace TaskQuest.App_Code
 
             var query = "DELETE FROM " + _obj.GetType().Name +
                     " WHERE " + props[0].Name + " = " + id;
+
+            if(secondId != null)
+            {
+                query += ", " + props[1].Name + " = " + secondId;
+            }
 
             return ExecuteQuery(query);
         }
@@ -161,7 +176,7 @@ namespace TaskQuest.App_Code
                 _command = _connection.CreateCommand();
                 _command.CommandText = query;
                 AddParameters();
-                
+
                 _command.ExecuteNonQuery();
                 _connection.Close();
                 _command.Dispose();
@@ -171,16 +186,15 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
-        
+
         private static void AddParameters()
         {
             foreach (PropertyInfo prop in _obj.GetType().GetProperties())
                 _command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(_obj)));
-                
         }
 
         private static string Columns(PropertyInfo[] props, string plus = "")
@@ -199,21 +213,14 @@ namespace TaskQuest.App_Code
         {
             PropertyInfo[] properties = typeof(T).GetProperties();
             List<T> result = new List<T>();
-            
+
             foreach (DataRow row in table.Rows)
             {
                 T item = new T();
                 foreach (var property in properties)
                 {
-                    try
-                    {
-                        if(row[property.Name].GetType() != typeof(DBNull))
-                            property.SetValue(item, row[property.Name], null);
-                    }
-                    catch(Exception e)
-                    {
-                        Debug.WriteLine(e);
-                    }
+                    if (row[property.Name].GetType() != typeof(DBNull))
+                        property.SetValue(item, row[property.Name], null);
                 }
                 result.Add(item);
             }

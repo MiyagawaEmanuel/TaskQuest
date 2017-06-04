@@ -5,6 +5,7 @@ using TaskQuest.Models;
 using System.Web.Mvc;
 using TaskQuest.ViewModels;
 using System.Diagnostics;
+using System.Linq;
 
 namespace TaskQuest.Controllers
 {
@@ -24,13 +25,24 @@ namespace TaskQuest.Controllers
         public ActionResult Login(LoginViewModel model) //V
         {
 
-            var usuario = Cursor.Select<usu_usuario>(GetType().GetProperty("usu_email"), model.Email)[0];
-
-            if (usuario == null)
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_email), model.Email)[0];
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e.Message);
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Usuario não reconhecido";
+                return RedirectToAction("Index");
+            }
+            
+            if (!String.Equals(Util.Hash(model.Senha), usuario.usu_senha, StringComparison.OrdinalIgnoreCase))
             {
                 ViewData["ResultColor"] = "#EEEE00";
-                ViewBag["Result"] = "Usuario não reconhecido";
-                return RedirectToAction("Index");
+                ViewData["Result"] = "Usuario não reconhecido";
+                return View("Index");
             }
 
             else
@@ -90,13 +102,16 @@ namespace TaskQuest.Controllers
 
             var model = new InicioViewModel();
 
-            foreach (var grupo in Cursor.Select<gru_grupo>(GetType().GetProperty("usu_id"), usuario.usu_id))
+            foreach (var uxg in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id))
             {
-                model.Grupos.Add(new Grupo()
+                foreach (var grupo in Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id))
                 {
-                    Nome = grupo.gru_nome,
-                    Id = grupo.gru_id,
-                });
+                    model.Grupos.Add(new Grupo()
+                    {
+                        Nome = grupo.gru_nome,
+                        Id = grupo.gru_id,
+                    });
+                }
             }
 
             return View(model);
@@ -134,7 +149,7 @@ namespace TaskQuest.Controllers
             model.DataNascimento = usuario.usu_data_nascimento;
             model.Sexo = usuario.usu_sexo;
 
-            foreach (var cartao in Cursor.Select<crt_cartao>(GetType().GetProperty("usu_id"), usuario.usu_id))
+            foreach (var cartao in Cursor.Select<crt_cartao>(nameof(usu_usuario.usu_id), usuario.usu_id))
             {
                 model.Cartoes.Add(new CartaoViewModel()
                 {
@@ -147,7 +162,7 @@ namespace TaskQuest.Controllers
                 });
             }
 
-            foreach (var telefone in Cursor.Select<tel_telefone>(GetType().GetProperty("usu_id"), usuario.usu_id))
+            foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.usu_id))
             {
                 model.Telefones.Add(new TelefoneViewModel()
                 {
@@ -257,7 +272,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditarTelefone(List<TelefoneViewModel> model)
+        public ActionResult EditarTelefone(List<TelefoneViewModel> model) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -279,8 +294,8 @@ namespace TaskQuest.Controllers
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
-            
-            foreach(var telefone in model)
+
+            foreach (var telefone in model)
             {
                 var tel = new tel_telefone()
                 {
@@ -305,7 +320,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult EditarCartao(List<CartaoViewModel> model)
+        public ActionResult EditarCartao(List<CartaoViewModel> model) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -328,7 +343,7 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
 
-            foreach(var cartao in model)
+            foreach (var cartao in model)
             {
                 var crt = new crt_cartao()
                 {
@@ -353,8 +368,7 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Usuario");
         }
 
-        [HttpPost]
-        public ActionResult ExcluirTelefone(TelefoneViewModel model)
+        public ActionResult ExcluirTelefone(int? id) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -377,7 +391,12 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (!Cursor.Delete<tel_telefone>(model.Id))
+            if (id == null)
+            {
+                return RedirectToAction("Inicio");
+            }
+
+            if (!Cursor.Delete<tel_telefone>(id ?? 0))
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
@@ -390,8 +409,7 @@ namespace TaskQuest.Controllers
 
         }
 
-        [HttpPost]
-        public ActionResult ExcluirCartao(CartaoViewModel model)
+        public ActionResult ExcluirCartao(int? id) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -414,7 +432,12 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
 
-            if (!Cursor.Delete<crt_cartao>(model.Id))
+            if (id == null)
+            {
+                return RedirectToAction("Inicio");
+            }
+
+            if (!Cursor.Delete<crt_cartao>(id ?? 0))
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
@@ -542,11 +565,11 @@ namespace TaskQuest.Controllers
 
             var model = new GruposViewModel();
 
-            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(GetType().GetProperty("usu_id"), usuario.usu_id);
+            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id);
 
             foreach (var uxg in uxgs)
             {
-                gru_grupo grupo = Cursor.Select<gru_grupo>(GetType().GetProperty("gru_id"), uxg.gru_id)[0];
+                gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id)[0];
                 model.Grupos.Add(new Grupo()
                 {
                     Id = grupo.gru_id,
@@ -555,6 +578,11 @@ namespace TaskQuest.Controllers
             }
 
             return View(model);
+        }
+
+        public ActionResult CriarGrupo() //V
+        {
+            return View(new CriarGrupoViewModel());
         }
 
         [HttpPost]
@@ -596,9 +624,14 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Usuario");
             }
 
-            var gruId = Cursor.Select<gru_grupo>(GetType().GetProperty("gru_data_criacao"), gru.gru_data_criacao)[0].gru_id;
+            int gru_id =
+                (from x in
+                Cursor.Select<gru_grupo>()
+                 where (x.gru_data_criacao.ToString("yyyy-MM-dd HH:mm:ss") ==
+                 gru.gru_data_criacao.ToString("yyyy-MM-dd HH:mm:ss"))
+                 select x).First().gru_id;
 
-            if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gruId, true)))
+            if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id, true)))
             {
                 ViewData["ResultColor"] = "#EEEE00";
                 ViewData["Result"] = "Algo deu errado";
@@ -610,7 +643,7 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Grupos");
         }
 
-        public ActionResult Grupo(int? id) //V
+        public ActionResult Grupo(int? id) 
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -638,23 +671,27 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Inicio");
             }
 
-            gru_grupo grupo = Cursor.Select<gru_grupo>(GetType().GetProperty("gru_id"), id)[0];
+            gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), id)[0];
 
-            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(GetType().GetProperty("gru_id"), grupo.gru_id);
+            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>("gru_id", grupo.gru_id);
 
-            /*
             bool usuarioHasGrupo = false;
-            foreach (var uxg in uxgs)
-                if (uxg.usu_id == usuario.usu_id)
+            int uxg_Index = 0;
+            for (; uxg_Index < uxgs.Count; uxg_Index++)
+            {
+                if (uxgs[uxg_Index].usu_id == usuario.usu_id)
+                {
                     usuarioHasGrupo = true;
+                    break;
+                }
+            }
 
             if (!usuarioHasGrupo)
             {
                 ViewData["ResultColor"] = "#EEEE00";
-                ViewData["Result"] = "Você não tem esse grupo";
+                ViewData["Result"] = "Você não pertence a esse grupo";
                 return RedirectToAction("Index");
             }
-            */
 
             var model = new GrupoViewModel()
             {
@@ -666,7 +703,7 @@ namespace TaskQuest.Controllers
 
             foreach (uxg_usuario_grupo uxg in uxgs)
             {
-                usu_usuario usu = Cursor.Select<usu_usuario>(GetType().GetProperty("usu_id"), uxg.usu_id)[0];
+                usu_usuario usu = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_id), uxg.usu_id)[0];
                 model.Integrantes.Add(new IntegranteViewModel()
                 {
                     Id = usu.usu_id,
@@ -674,11 +711,14 @@ namespace TaskQuest.Controllers
                 });
             }
 
+            if (uxgs[uxg_Index].uxg_administrador)
+                return View("GrupoAdmin", model);
+
             return View(model);
         }
 
         [HttpPost]
-        public ActionResult Grupo(GrupoViewModel model)
+        public ActionResult EditarGrupo(GrupoViewModel model)
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -700,13 +740,23 @@ namespace TaskQuest.Controllers
                 ViewData["Result"] = "Você não está logado";
                 return RedirectToAction("Index");
             }
+            
+            if ((
+                   from x in
+                   Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                   where (x.gru_id == model.Id)
+                   select x
+                ).First().uxg_administrador)
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não pode executar essa ação";
+                return RedirectToAction("Index");
+            }
 
             gru_grupo gru = new gru_grupo()
             {
                 gru_nome = model.Nome,
-                gru_data_criacao = DateTime.Now,
                 gru_descricao = model.Descricao,
-                gru_plano = model.Plano,
                 gru_id = model.Id,
             };
 
@@ -723,7 +773,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) //V
+        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) 
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -746,7 +796,7 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Index");
             }
 
-            usu_usuario usu = Cursor.Select<usu_usuario>(GetType().GetProperty("usu_email"), model.Email)[0];
+            usu_usuario usu = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_email), model.Email)[0];
 
             if (usu == null)
             {
@@ -765,6 +815,99 @@ namespace TaskQuest.Controllers
             ViewData["ResultColor"] = "#32CD32";
             ViewData["Result"] = usu.usu_nome + " adicionado ao grupo com sucesso";
             return RedirectToAction("Grupo", model.gru_id);
+        }
+
+        [HttpPost]
+        public ActionResult ExcluirUsuarioGrupo(ExcluirUsuarioGrupo model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
+            var uxg = (
+                        from x
+                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                        where (x.gru_id == model.gru_id)
+                        select x
+                      ).First();
+
+            if (uxg.uxg_administrador)
+            {
+                if (!Cursor.Delete<uxg_usuario_grupo>(model.usu_id, model.gru_id))
+                {
+                    ViewData["ResultColor"] = "#EEEE00";
+                    ViewData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Grupo", model.gru_id);
+                }
+            }
+            else
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não tem privilégios para fazer isso";
+                return RedirectToAction("Index");
+            }
+
+            ViewData["ResultColor"] = "#32CD32";
+            ViewData["Result"] = "Usuário retirado com sucesso";
+            return RedirectToAction("Grupo", model.gru_id);
+
+        }
+
+        public ActionResult ApagarUsuario() //V
+        {
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
+            if (!Cursor.Delete<usu_usuario>(usuario.usu_id))
+            {
+                ViewData["ResultColor"] = "#EEEE00";
+                ViewData["Result"] = "Algo deu errado";
+                return RedirectToAction("Usuario");
+            }
+
+            Session.Clear();
+            return RedirectToAction("Index");
+
+        }
+
+        public ActionResult Sair() //V
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
         }
 
     }

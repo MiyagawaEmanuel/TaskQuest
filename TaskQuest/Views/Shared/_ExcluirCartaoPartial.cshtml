@@ -1,8 +1,0 @@
-﻿
-@model TaskQuest.ViewModels.CartaoViewModel
-
-@using (Html.BeginForm("ExcluirCartao", "Home", FormMethod.Post))
-{
-    @Html.HiddenFor(m => m.Id)
-    <input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Excluir" />
-}

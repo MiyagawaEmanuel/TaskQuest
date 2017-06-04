@@ -3,7 +3,7 @@
 <div class="col-md-8">
     @using (Html.BeginForm("EditarTelefone", "Home", FormMethod.Post))
     {
-        @for (int x = 0; x < Model.Count; x++)
+        for(int x = 0; x < Model.Count; x++)
         {
             @Html.HiddenFor(m => Model[x].Id)
             <div class="col-md-12"><input type="submit" value="Editar" class="btn btn-primary btn-lg btn-header darkblue-bg" /></div>
@@ -11,7 +11,7 @@
             <div class="col-md-4">@Html.TextBoxFor(m => Model[x].Ddd, new { @class = "form-control inputs centralize" })</div>
             <div class="col-md-4">@Html.TextBoxFor(m => Model[x].Numero, new { @class = "form-control inputs centralize" })</div>
             <div class="col-md-12">
-                @Html.Partial("_ExcluirTelefonePartial", Model[x])
+                <a class="btn btn-primary btn-lg btn-header darkblue-bg" href="/Home/ExcluirTelefone/@Model[x].Id">Excluir</a>
             </div>
             <hr class="quebra">
         }

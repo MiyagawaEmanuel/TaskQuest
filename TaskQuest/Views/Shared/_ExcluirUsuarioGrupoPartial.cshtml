@@ -1,0 +1,8 @@
+﻿@model TaskQuest.ViewModels.ExcluirUsuarioGrupo
+
+@using (Html.BeginForm("ExcluirUsuarioGrupo", "Home", FormMethod.Post))
+{
+    @Html.HiddenFor(m => m.usu_id)
+    @Html.HiddenFor(m => m.gru_id)
+    <input type="submit" value="Excluir usuário do grupo" class="btn btn-primary btn-lg" />
+}

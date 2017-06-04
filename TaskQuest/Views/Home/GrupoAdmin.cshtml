@@ -1,4 +1,4 @@
-@model TaskQuest.ViewModels.GrupoViewModel
+﻿@model TaskQuest.ViewModels.GrupoViewModel
 
 @{
     ViewBag.Title = "Grupo " + Model.Nome;
@@ -14,9 +14,13 @@
 <section>
     <div class="container fluid ">
         <div class="row infos2">
-            <div><div class="imagem"></div></div>
-            <div><h2>@Model.Nome</h2></div>
-            <div><p>@Model.Descricao</p></div>
+            @using (Html.BeginForm("EditarGrupo", "Home", FormMethod.Post))
+            {
+                <input type="submit" value="Editar" class="btn btn-primary btn-lg btn-header darkblue-bg" />
+                @Html.HiddenFor(m => m.Id)
+                <div>@Html.TextBoxFor(m => m.Nome)</div>
+                <div>@Html.TextBoxFor(m => m.Descricao)</div>
+            }
             <div><h3>@Model.Integrantes.Count Integrantes</h3></div>
         </div>
     </div>
@@ -27,6 +31,11 @@
     <div class="container fluid">
         <div id="tabs">
             <ul>
+                <li>
+                    <button type="button" class="btn btn-primary btn-lg" data-toggle="modal" data-target="#modalAdicionarUsuario">
+                        Adicionar Usuário
+                    </button>
+                </li>
                 <li><h3>Integrantes</h3></li>
             </ul>
             <div id="integrantes">
@@ -35,6 +44,7 @@
                     <div class="row teste">
                         <div class="col-md-2 imagem"></div>
                         <h3>@Model.Integrantes[x].Nome</h3>
+                        @Html.Partial("_ExcluirUsuarioGrupoPartial", Model.criarExcluirUsuarioGrupo(Model.Integrantes[x].Id))
                         <hr class="quebra">
                     </div>
                 }
@@ -42,3 +52,6 @@
         </div>
     </div>
 </section>
+
+@Html.Partial("_AdicionarUsuarioGrupoPartial", Model.adicionarUsuarioGrupoViewModel)
+

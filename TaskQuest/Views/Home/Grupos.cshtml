@@ -23,9 +23,9 @@
             {
                 <div class="row teste">
                     <div class="col-md-4 imagem"></div>
-                    <h3><a href="/Grupo/@Model.Grupos[x].Id">@Model.Grupos[x].Nome</a></h3>
+                    <h3><a href="/Home/Grupo/@Model.Grupos[x].Id">@Model.Grupos[x].Nome</a></h3>
                 </div>
-                @if (x < Model.Grupos.Count - 1)
+                if (x < Model.Grupos.Count - 1)
                 {
                     <hr class="quebra">
                 }
