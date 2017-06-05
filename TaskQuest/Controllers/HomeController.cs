@@ -114,6 +114,8 @@ namespace TaskQuest.Controllers
                 }
             }
 
+            model.Grupos = Util.Sort(model.Grupos, Comparer<Grupo>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
+
             return View(model);
         }
 
@@ -162,6 +164,8 @@ namespace TaskQuest.Controllers
                 });
             }
 
+            model.Cartoes = Util.Sort(model.Cartoes, Comparer<CartaoViewModel>.Create((x, y) => String.Compare(y.DataVencimento, x.DataVencimento)));
+
             foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.usu_id))
             {
                 model.Telefones.Add(new TelefoneViewModel()
@@ -172,6 +176,8 @@ namespace TaskQuest.Controllers
                     Numero = telefone.tel_numero,
                 });
             }
+
+            model.Telefones = Util.Sort(model.Telefones, Comparer<TelefoneViewModel>.Create((x, y) => x.Numero.CompareTo(y.Numero)));
 
             return View(model);
 
@@ -579,11 +585,34 @@ namespace TaskQuest.Controllers
                 });
             }
 
+            model.Grupos = Util.Sort(model.Grupos, Comparer<Grupo>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
+
             return View(model);
         }
 
         public ActionResult CriarGrupo() //V
         {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+            if (usuario == null)
+            {
+                Session.Clear();
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Você não está logado";
+                return RedirectToAction("Index");
+            }
+
             return View(new CriarGrupoViewModel());
         }
 
@@ -717,6 +746,8 @@ namespace TaskQuest.Controllers
                     Nome = usu.usu_nome,
                 });
             }
+
+            model.Integrantes = Util.Sort(model.Integrantes, Comparer<IntegranteViewModel>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
 
             if (uxgs[uxg_Index].uxg_administrador)
                 return View("GrupoAdmin", model);

@@ -8,7 +8,7 @@ namespace TaskQuest.App_Code
     public static class Util
     {
         
-        //compare -> new Comparer<T>.Create((x, y) => typeof(Atributo).Compare(x.Atributo, y.Atributo))
+        //compare -> Comparer<T>.Create((x, y) => typeof(Atributo).Compare(x.Atributo, y.Atributo))
         public static List<T> Sort<T>(List<T> list, Comparer<T> compare) where T : new()
         {
             Current.Session["list"] = list;
@@ -17,7 +17,9 @@ namespace TaskQuest.App_Code
             Quicksort<T>(0, ((List<T>)Current.Session["list"]).Count - 1);
 
             list = ((List<T>)Current.Session["list"]);
-            Current.Session.Clear();
+
+            Current.Session["list"] = "";
+            Current.Session["compare"] = "";
 
             return list;
         }
