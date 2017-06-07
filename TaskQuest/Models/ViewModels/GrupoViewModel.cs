@@ -22,9 +22,9 @@ namespace TaskQuest.ViewModels
             };
         }
 
-        public ExcluirUsuarioGrupo criarExcluirUsuarioGrupo(int usuario_id)
+        public EditarIntegranteViewModel criarEditorIntegrante(int usuario_id)
         {
-            return new ExcluirUsuarioGrupo()
+            return new EditarIntegranteViewModel()
             {
                 gru_id = Id,
                 usu_id = usuario_id,
@@ -39,6 +39,6 @@ namespace TaskQuest.ViewModels
 
         public string Nome { get; set; }
 
-        //public string Cor { get; set; }
+        public bool isAdm { get; set; }
     }
 }

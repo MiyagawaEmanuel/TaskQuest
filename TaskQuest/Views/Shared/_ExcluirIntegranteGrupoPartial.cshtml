@@ -1,0 +1,11 @@
+﻿@model TaskQuest.ViewModels.EditarIntegranteViewModel
+
+<div style="margin-right: 2%;">
+    @using (Html.BeginForm("ExcluirIntegranteGrupo", "Home", FormMethod.Post))
+    {
+        @Html.AntiForgeryToken()
+        @Html.HiddenFor(m => m.usu_id)
+        @Html.HiddenFor(m => m.gru_id)
+        <input type="submit" value="Excluir usuário do grupo" class="btn btn-primary btn-lg" />
+    }
+</div>

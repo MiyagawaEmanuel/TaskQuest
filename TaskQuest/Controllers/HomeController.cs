@@ -33,21 +33,21 @@ namespace TaskQuest.Controllers
             {
                 Debug.WriteLine(e.Message);
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Usuario não reconhecido";
+                TempData["Result"] = "Usuario nao reconhecido";
                 return RedirectToAction("Index");
             }
-            
+
             if (!String.Equals(Util.Hash(model.Senha), usuario.usu_senha, StringComparison.OrdinalIgnoreCase))
             {
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Usuario não reconhecido";
+                TempData["Result"] = "Usuario nao reconhecido";
                 return View("Index");
             }
 
             else
             {
                 Session["user"] = Util.Hash(usuario.usu_id.ToString());
-                return RedirectToAction("Inicio");
+                return RedirectToAction("Grupos");
             }
 
         }
@@ -89,14 +89,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -131,14 +124,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -197,14 +183,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -235,6 +214,7 @@ namespace TaskQuest.Controllers
                     tel_tipo = telefone.Tipo,
                     tel_ddd = telefone.Ddd,
                     tel_numero = telefone.Numero,
+
                 };
 
                 foreach (var prop in tel.GetType().GetProperties())
@@ -289,14 +269,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voca nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -338,14 +311,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -386,20 +352,13 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
             if (id == null)
             {
-                return RedirectToAction("Inicio");
+                return RedirectToAction("Grupos");
             }
 
             if (!Cursor.Delete<tel_telefone>(id ?? 0))
@@ -427,20 +386,13 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
             if (id == null)
             {
-                return RedirectToAction("Inicio");
+                return RedirectToAction("Grupos");
             }
 
             if (!Cursor.Delete<crt_cartao>(id ?? 0))
@@ -470,14 +422,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -515,14 +460,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -544,7 +482,7 @@ namespace TaskQuest.Controllers
             }
 
             TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Cartão adicionado com sucesso";
+            TempData["Result"] = "Cartao adicionado com sucesso";
             return RedirectToAction("Usuario");
         }
 
@@ -560,14 +498,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voca nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -582,6 +513,7 @@ namespace TaskQuest.Controllers
                 {
                     Id = grupo.gru_id,
                     Nome = grupo.gru_nome,
+                    Descricao = grupo.gru_descricao,
                 });
             }
 
@@ -602,14 +534,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -630,14 +555,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -664,7 +582,7 @@ namespace TaskQuest.Controllers
                     gru_id = grupo.gru_id;
             }
 
-            if(gru_id != null)
+            if (gru_id != null)
             {
                 if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id.Value, true), true))
                 {
@@ -673,7 +591,7 @@ namespace TaskQuest.Controllers
                     return RedirectToAction("Usuario");
                 }
             }
-            
+
             TempData["ResultColor"] = "#32CD32";
             TempData["Result"] = "Grupo adicionado com sucesso";
             return RedirectToAction("Grupos");
@@ -691,20 +609,13 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
             if (id == null)
             {
-                return RedirectToAction("Inicio");
+                return RedirectToAction("Grupos");
             }
 
             gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), id)[0];
@@ -725,8 +636,8 @@ namespace TaskQuest.Controllers
             if (!usuarioHasGrupo)
             {
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não pertence a esse grupo";
-                return RedirectToAction("Index");
+                TempData["Result"] = "Voce nao pertence a esse grupo";
+                return RedirectToAction("Grupos");
             }
 
             var model = new GrupoViewModel()
@@ -744,6 +655,7 @@ namespace TaskQuest.Controllers
                 {
                     Id = usu.usu_id,
                     Nome = usu.usu_nome,
+                    isAdm = uxg.uxg_administrador,
                 });
             }
 
@@ -769,17 +681,10 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            
+
             if (!(
                    from x in
                    Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
@@ -788,8 +693,8 @@ namespace TaskQuest.Controllers
                 ).First().uxg_administrador)
             {
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não pode executar essa ação";
-                return RedirectToAction("Index");
+                TempData["Result"] = "Voce nao pode executar essa acao";
+                return RedirectToAction("Grupos");
             }
 
             gru_grupo gru = new gru_grupo()
@@ -825,26 +730,22 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
-            if (usuario == null)
+
+            usu_usuario usu;
+            try
             {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
+                usu = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_email), model.Email)[0];
             }
-
-            usu_usuario usu = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_email), model.Email)[0];
-
-            if (usu == null)
+            catch
             {
                 TempData["ResultColor"] = "#EEEE00";
                 TempData["Result"] = "Usuario não encontrado";
                 return RedirectToAction("Grupo", new { id = model.gru_id });
             }
-            
+
             if (!Cursor.Insert(new uxg_usuario_grupo(usu.usu_id, model.gru_id, false), true))
             {
                 TempData["ResultColor"] = "#EEEE00";
@@ -859,7 +760,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirUsuarioGrupo(ExcluirUsuarioGrupo model) //V
+        public ActionResult ExcluirIntegranteGrupo(EditarIntegranteViewModel model) //V
         {
 
             usu_usuario usuario = new usu_usuario();
@@ -871,14 +772,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -901,12 +795,12 @@ namespace TaskQuest.Controllers
             else
             {
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não tem privilégios para fazer isso";
+                TempData["Result"] = "Voce nao pode fazer isso";
                 return RedirectToAction("Index");
             }
 
             TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Usuário retirado com sucesso";
+            TempData["Result"] = "Usuario retirado com sucesso";
             return RedirectToAction("Grupo", new { id = model.gru_id });
 
         }
@@ -922,14 +816,7 @@ namespace TaskQuest.Controllers
             {
                 Session.Clear();
                 TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
-                return RedirectToAction("Index");
-            }
-            if (usuario == null)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Você não está logado";
+                TempData["Result"] = "Voce nao esta logado";
                 return RedirectToAction("Index");
             }
 
@@ -949,6 +836,166 @@ namespace TaskQuest.Controllers
         {
             Session.Clear();
             return RedirectToAction("Index");
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TornarAdministrador(EditarIntegranteViewModel model)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao esta logado";
+                return RedirectToAction("Index");
+            }
+
+            var uxg = (
+                        from x
+                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                        where (x.gru_id == model.gru_id)
+                        select x
+                      ).First();
+
+            if (uxg.uxg_administrador)
+            {
+                if (!Cursor.Update(new uxg_usuario_grupo(model.usu_id, model.gru_id, true), true))
+                {
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Grupo", new { id = model.gru_id });
+                }
+            }
+            else
+            {
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao pode fazer isso";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Usuario tornou-se Administrador do grupo";
+            return RedirectToAction("Grupo", new { id = model.gru_id });
+        }
+
+        public ActionResult TornarIntegrante(int? id)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao esta logado";
+                return RedirectToAction("Index");
+            }
+
+            if (id == null)
+            {
+                return RedirectToAction("Grupos");
+            }
+
+            var uxgs = Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.gru_id), id);
+
+            int adms = 0;
+            foreach (var x in uxgs)
+                if (x.uxg_administrador)
+                    adms++;
+
+            var uxg = (
+                        from x
+                        in uxgs
+                        where (x.usu_id == usuario.usu_id)
+                        select x
+                      ).First();
+
+            if (uxg.uxg_administrador)
+            {
+                if (adms >= 2)
+                {
+                    if (!Cursor.Update(new uxg_usuario_grupo(usuario.usu_id, id.Value, false), true))
+                    {
+                        TempData["ResultColor"] = "#EEEE00";
+                        TempData["Result"] = "Algo deu errado";
+                        return RedirectToAction("Grupo", new { id = id });
+                    }
+                }
+                else
+                {
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Tem de existir ao menos um Administrador no grupo";
+                    return RedirectToAction("Grupo", new { id = id });
+                }
+            }
+            else
+            {
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao pode fazer isso";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Voce nao e mais Administrador desse grupo";
+            return RedirectToAction("Grupo", new { id = id });
+        }
+
+        public ActionResult ExcluirGrupo(int? id)
+        {
+
+            usu_usuario usuario = new usu_usuario();
+            try
+            {
+                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
+            }
+            catch (Exception)
+            {
+                Session.Clear();
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao esta logado";
+                return RedirectToAction("Index");
+            }
+
+            if (id == null)
+            {
+                return RedirectToAction("Grupos");
+            }
+
+            var uxg = (
+                        from x
+                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.gru_id), id)
+                        where (x.usu_id == usuario.usu_id)
+                        select x
+                      ).First();
+
+            if (uxg.uxg_administrador)
+            {
+                if (!Cursor.Delete<gru_grupo>(id.Value))
+                {
+                    TempData["ResultColor"] = "#EEEE00";
+                    TempData["Result"] = "Algo deu errado";
+                    return RedirectToAction("Grupo", new { id = id });
+                }
+            }
+            else
+            {
+                TempData["ResultColor"] = "#EEEE00";
+                TempData["Result"] = "Voce nao pode fazer isso";
+                return RedirectToAction("Index");
+            }
+
+            TempData["ResultColor"] = "#32CD32";
+            TempData["Result"] = "Grupo excluido com sucesso";
+            return RedirectToAction("Grupos");
         }
 
     }

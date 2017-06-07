@@ -2,18 +2,18 @@
 
 <form action="/Home/AdicionarTelefone" method="post">
     @Html.AntiForgeryToken()
-    <div class="row">
+    <div class="col-lg-12">
         <div class="col-lg-3 col-md-3">
             <input type="submit" value="Adicionar" class="btn btn-primary editar">
         </div>
         <div class="col-lg-3 col-md-3">
-            <input type="text" name="Tipo" id="Tipo" class="form-control inputs centralize" placeholder="Tipo de telefone" />
+            <input type="text" name="Tipo" id="Tipo" class="form-control inputs centralize" placeholder="Tipo de telefone" required />
         </div>
         <div class="col-lg-3 col-md-3">
-            <input type="number" name="Ddd" id="Ddd" class="form-control inputs centralize" placeholder="DDD" />
+            <input type="number" name="Ddd" id="Ddd" class="form-control inputs centralize" placeholder="DDD" required />
         </div>
         <div class="col-lg-3 col-md-3">
-            <input type="number" name="Numero" id="Numero" class="form-control inputs centralize" placeholder="Número" />
+            <input type="number" name="Numero" id="Numero" class="form-control inputs centralize" placeholder="Número" required />
         </div>
     </div>
 </form>

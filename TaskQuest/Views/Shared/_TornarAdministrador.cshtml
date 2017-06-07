@@ -1,0 +1,10 @@
+﻿@model TaskQuest.ViewModels.EditarIntegranteViewModel
+
+@using (Html.BeginForm("TornarAdministrador", "Home", FormMethod.Post))
+{
+    @Html.AntiForgeryToken()
+    @Html.HiddenFor(m => m.usu_id)
+    @Html.HiddenFor(m => m.gru_id)
+    <input type="submit" value="Tornar Administrador" class="btn btn-primary btn-lg" />
+}
+

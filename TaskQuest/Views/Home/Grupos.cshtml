@@ -13,17 +13,18 @@
 
 <section>
     <div class="container">
-        <div class="row">
-            <div>
-                <h1>Grupos</h1>
-            </div>
+        <div class="row centralize">
+            <div class="col-md-4"><a href="/Home/CriarGrupo"><h3>Criar Grupo</h3></a></div>
+            <div class="col-md-4"><h1>Grupos</h1></div>
+            <div class="col-md-4"><a href="/Home/Grupos"><h3>Ver todos</h3></a></div>
         </div>
         <div class="container fluid">
             @for (int x = 0; x < Model.Grupos.Count; x++)
             {
                 <div class="row teste">
                     <div class="col-md-4 imagem"></div>
-                    <h3><a href="/Home/Grupo/@Model.Grupos[x].Id">@Model.Grupos[x].Nome</a></h3>
+                    <h3 style="font-weight:bolder;"><a href="/Home/Grupo/@Model.Grupos[x].Id">@Model.Grupos[x].Nome: </a></h3>
+                    <h3 style="text-align:right; margin-left:1%;">@Model.Grupos[x].Descricao</h3>
                 </div>
                 if (x < Model.Grupos.Count - 1)
                 {

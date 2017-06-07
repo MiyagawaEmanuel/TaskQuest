@@ -16,9 +16,9 @@
         <form action="/Home/CriarGrupo" method="post">
             @Html.AntiForgeryToken()
             <div class="row">
-                <div class="col-md-6"><input type="text" id="Nome" name="Nome" class="form-control inputs" placeholder="Nome do Grupo"></div>
-                <div class="col-md-12"><input type="text" id="Descricao" name="Descricao" class="form-control texts" placeholder="Descrição do Grupo"></div>
-                <div class="col-md-6"><input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Criar grupo"></div>
+                <div class="col-md-12"><input type="text" id="Nome" name="Nome" class="form-control inputs centralize2" placeholder="Nome do Grupo" required></div>
+                <div class="col-md-12"><input type="text" id="Descricao" name="Descricao" class="form-control texts" placeholder="Descrição do Grupo" required style="float=none;margin=0 auto;display=block;></div>
+                <div class="col-md-12"><input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg centralize2" value="Criar grupo" required style="margin-top:2%;"></div>
             </div>
         </form>
     </div>

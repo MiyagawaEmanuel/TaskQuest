@@ -16,7 +16,7 @@ namespace TaskQuest.ViewModels
 
         public string Nome { get; set; }
 
-        //public string Cor { get; set; }
+        public string Descricao { get; set; }
     }
     
     public class Pendencia

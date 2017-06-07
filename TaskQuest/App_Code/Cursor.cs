@@ -128,19 +128,28 @@ namespace TaskQuest.App_Code
             }
         }
 
-        public static bool Update(Object obj)
+        public static bool Update(Object obj, bool allColumns = false)
         {
             _obj = obj;
             var props = _obj.GetType().GetProperties();
 
             var query = "UPDATE " + _obj.GetType().Name + " SET ";
-            for (int x = 1; x < props.Length; x++)
+
+            int x;
+            if (allColumns)
+                x = 0;
+            else
+                x = 1;
+            for (; x < props.Length; x++)
             {
                 query += props[x].Name + " = ?" + props[x].Name;
                 if (x < props.Length - 1)
                     query += ", ";
             }
             query += " WHERE " + props[0].Name + " = " + props[0].GetValue(_obj);
+
+            if (allColumns)
+                query += " and " + props[1].Name + " = " + props[1].GetValue(_obj);
 
             return ExecuteQuery(query);
         }

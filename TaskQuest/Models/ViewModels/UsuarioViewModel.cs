@@ -14,7 +14,7 @@ namespace TaskQuest.ViewModels
         public string Email { get; set; }
 
         //YYYY-MM-DD
-        public DateTime DataNascimento { get; set; }
+        public string DataNascimento { get; set; }
         
         public string Senha { get; set; }
 

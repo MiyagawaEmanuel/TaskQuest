@@ -18,23 +18,23 @@
                 @Html.AntiForgeryToken()
                 <input type="submit" class="btn btn-primary editar" value="Editar">
                 <div class="col-md-12"><h2 class="setting-title">Informações Pessoais</h2></div>
-                <div class="col-md-6"><input name="Nome" id="Nome" class="form-control inputs centralize" value="@Model.Nome" placeholder="Nome" type="text" /> </div>
-                <div class="col-md-6"><input name="Sobrenome" id="Sobrenome" class="form-control inputs centralize" value="@Model.Sobrenome" placeholder="Sobrenome" type="text" /></div>
-                <div class="col-md-6"><input name="DataNascimento" id="DataNascimento" class="form-control inputs centralize" value="@Model.DataNascimento.Date" type="date" /></div>
-                <div class="col-md-6"><input name="Email" id="Email" class="form-control inputs centralize" value="@Model.Email" placeholder="Email" type="text" /></div>
-                <div class="col-md-6"><input name="Senha" id="Senha" class="form-control inputs centralize" value="@Model.Senha" placeholder="Senha" type="password" /></div>
-                <div class="col-md-12 inp">
-                    <div>
+                <div class="col-md-6"><input name="Nome" id="Nome" class="form-control inputs centralize" value="@Model.Nome" placeholder="Nome" type="text" required /> </div>
+                <div class="col-md-6"><input name="Sobrenome" id="Sobrenome" class="form-control inputs centralize" value="@Model.Sobrenome" placeholder="Sobrenome" type="text" required /></div>
+                <div class="col-md-6">@Html.TextBoxFor(m => m.DataNascimento, new { @class = "form-control inputs centralize", required = "" })</div>
+                <div class="col-md-6"><input name="Email" id="Email" class="form-control inputs centralize" value="@Model.Email" placeholder="Email" type="text" required /></div>
+                <div class="col-md-6"><input name="Senha" id="Senha" class="form-control inputs centralize" value="@Model.Senha" placeholder="Senha" type="password" required /></div>
+                <div class="col-md-12 inp centralize">
+                    <div class="centralize">
                         @if (Model.Sexo.Equals("F"))
                         {
                             <h3>Feminino:</h3> <input data-val="true" id="Sexo" name="Sexo" type="radio" value="F" checked="checked" />
                         }
                         else
-                        { 
+                        {
                             <h3>Feminino:</h3> <input data-val="true" id="Sexo" name="Sexo" type="radio" value="F" />
                         }
                     </div>
-                    <div>
+                    <div class="centralize">
                         @if (Model.Sexo.Equals("M"))
                         {
                             <h3>Masculino:</h3> <input id="Sexo" name="Sexo" type="radio" value="M" checked="checked" />
@@ -53,13 +53,11 @@
 <hr class="quebra group-image">
 
 <section>
-    <div class="container fluid">
-        <div class="row">
-            <div class="col-md-12"><h2 class="setting-title">Telefones</h2></div>
-            <div class="row info-t">
-                @Html.Partial("_TelefonesPartial", Model.Telefones)
-                @Html.Partial("_AdicionarTelefonePartial", Model.telefoneViewModel)
-            </div>
+    <div class="container">
+        <div class="centralize"><h2 class="setting-title">Telefones</h2></div>
+        <div class=" info-t ">
+            @Html.Partial("_TelefonesPartial", Model.Telefones)
+            @Html.Partial("_AdicionarTelefonePartial", Model.telefoneViewModel)
         </div>
     </div>
 </section>
@@ -82,6 +80,8 @@
 
 <section class="container">
     <div class="centralize">
-        <a class="btn btn-primary btn-lg btn-header darkblue-bg" href="/Home/ApagarUsuario">Apagar Usuário</a>
+        <a class="btn btn-primary btn-lg btn-header darkblue-bg" href="/Home/ApagarUsuario" style="margin-bottom: 2%;">
+            Apagar Usuário
+        </a>
     </div>
 </section>
