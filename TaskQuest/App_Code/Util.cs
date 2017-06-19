@@ -1,59 +1,39 @@
-﻿using System.Collections.Generic;
+﻿using System;
 using System.Security.Cryptography;
 using System.Text;
-using static System.Web.HttpContext;
 
 namespace TaskQuest.App_Code
 {
     public static class Util
     {
-        
-        //compare -> Comparer<T>.Create((x, y) => typeof(Atributo).Compare(x.Atributo, y.Atributo))
-        public static List<T> Sort<T>(List<T> list, Comparer<T> compare) where T : new()
+
+        public static DateTime StringToDateTime(this string @string)
         {
-            Current.Session["list"] = list;
-            Current.Session["compare"] = compare;
-
-            Quicksort<T>(0, ((List<T>)Current.Session["list"]).Count - 1);
-
-            list = ((List<T>)Current.Session["list"]);
-
-            Current.Session["list"] = "";
-            Current.Session["compare"] = "";
-
-            return list;
+            var aux = @string.Split('/');
+            return new DateTime(Convert.ToInt32(aux[2]), Convert.ToInt32(aux[1]), Convert.ToInt32(aux[0]));
         }
 
-        private static void Quicksort<T>(int inicio, int fim) where T : new()
+        public static string DateTimeToString(this DateTime date)
         {
-            if (inicio < fim)
-            {
-                int pivo = Particionar<T>(inicio, fim);
-                Quicksort<T>(inicio, pivo - 1);
-                Quicksort<T>(pivo + 1, fim);
-            }
+            return date.ToString("yyyy-MM-dd");
         }
 
-        private static int Particionar<T>(int inicio, int fim) where T : new()
+        public static string HexToColor(this string hex)
         {
-            T pivo = ((List<T>)Current.Session["list"])[fim];
-            var i = inicio;
-            T aux;
-            for (var j = inicio; j <= fim; j++)
-            {
-                //list[j] < pivo
-                if (((Comparer<T>)Current.Session["compare"]).Compare(((List<T>)Current.Session["list"])[j], pivo) < 0)
-                {
-                    aux = ((List<T>)Current.Session["list"])[i];
-                    ((List<T>)Current.Session["list"])[i] = ((List<T>)Current.Session["list"])[j];
-                    ((List<T>)Current.Session["list"])[j] = aux;
-                    i++;
-                }
-            }
-            aux = ((List<T>)Current.Session["list"])[i];
-            ((List<T>)Current.Session["list"])[i] = ((List<T>)Current.Session["list"])[fim];
-            ((List<T>)Current.Session["list"])[fim] = aux;
-            return i;
+            if (hex.Equals("106494"))
+                return "tory-blue";
+            else if (hex.Equals("2E8B57"))
+                return "sea-green";
+            else if (hex.Equals("7A378B"))
+                return "vivid-violet";
+            else if (hex.Equals("CD2626"))
+                return "cardinal";
+            else if (hex.Equals("4F4F4F"))
+                return "emperror";
+            else if (hex.Equals("CD950C"))
+                return "pizza";
+            else
+                return null;
         }
 
         public static string Hash(string s)

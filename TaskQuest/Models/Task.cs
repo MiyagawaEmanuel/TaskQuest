@@ -11,7 +11,6 @@ namespace TaskQuest.Models
             Precedencias = new HashSet<Precedencia>();
             Antecedencias = new HashSet<Precedencia>();
             ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
-            ExperienciaGrupos = new HashSet<ExperienciaGrupo>();
             Arquivos = new HashSet<Arquivo>();
         }
 
@@ -48,9 +47,7 @@ namespace TaskQuest.Models
         public virtual ICollection<Precedencia> Antecedencias { get; set; }
 
         public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
-
-        public virtual ICollection<ExperienciaGrupo> ExperienciaGrupos { get; set; }
-
+        
         public virtual ICollection<Arquivo> Arquivos { get; set; }
     }
 }

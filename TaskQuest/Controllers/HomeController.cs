@@ -6,109 +6,50 @@ using System.Web.Mvc;
 using TaskQuest.ViewModels;
 using System.Diagnostics;
 using System.Linq;
+using Teste;
+using TaskQuest.Identity;
+using System.Web;
+using Microsoft.AspNet.Identity.Owin;
+using Microsoft.AspNet.Identity;
 
 namespace TaskQuest.Controllers
 {
+    [Authorize]
     public class HomeController : Controller
     {
 
+        private DbContext db = new DbContext();
+
+        private ApplicationUserManager _userManager;
+        public ApplicationUserManager UserManager
+        {
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set
+            {
+                _userManager = value;
+            }
+        }
+
+        [AllowAnonymous]
         public ActionResult Index() //V
         {
-
             return View();
-
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Login(LoginViewModel model) //V
-        {
-
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.Select<usu_usuario>(nameof(usu_usuario.usu_email), model.Email)[0];
-            }
-            catch (Exception e)
-            {
-                Debug.WriteLine(e.Message);
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Usuario nao reconhecido";
-                return RedirectToAction("Index");
-            }
-
-            if (!String.Equals(Util.Hash(model.Senha), usuario.usu_senha, StringComparison.OrdinalIgnoreCase))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Usuario nao reconhecido";
-                return View("Index");
-            }
-
-            else
-            {
-                Session["user"] = Util.Hash(usuario.usu_id.ToString());
-                return RedirectToAction("Grupos");
-            }
-
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult Register(RegisterViewModel model) //V
-        {
-
-            usu_usuario usuario = new usu_usuario()
-            {
-                usu_nome = model.Nome,
-                usu_sobrenome = model.Sobrenome,
-                usu_email = model.Email,
-                usu_data_nascimento = model.DataNascimento,
-                usu_sexo = model.Sexo.ToString(),
-                usu_senha = Util.Hash(model.Senha),
-            };
-
-            if (!Cursor.Insert(usuario))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Index");
-            }
-
-            return RedirectToAction("Login", new LoginViewModel() { Email = model.Email, Senha = model.Senha });
-        }
-
+        
         public ActionResult Inicio() //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User user = db.Users.Find(User.Identity.GetUserId<int>());
 
             var model = new InicioViewModel();
 
-            foreach (var uxg in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id))
-            {
-                foreach (var grupo in Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id))
-                {
-                    model.Grupos.Add(new Grupo()
-                    {
-                        Nome = grupo.gru_nome,
-                        Id = grupo.gru_id,
-                    });
-                }
-            }
-
-            model.Grupos = Util.Sort(model.Grupos, Comparer<Grupo>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
-
+            foreach (var uxg in user.UsuarioGrupos)
+                foreach (var gru in db.Grupos.Where(q => q.Id == uxg.GrupoId).ToArray())
+                    model.Grupos.Add(gru);
+            
             return View(model);
         }
 
@@ -134,7 +75,7 @@ namespace TaskQuest.Controllers
             model.Sobrenome = usuario.usu_sobrenome;
             model.Email = usuario.usu_email;
             model.Senha = usuario.usu_senha;
-            model.DataNascimento = usuario.usu_data_nascimento;
+            model.DataNascimento = usuario.usu_data_nascimento.DateTimeToString();
             model.Sexo = usuario.usu_sexo;
 
             foreach (var cartao in Cursor.Select<crt_cartao>(nameof(usu_usuario.usu_id), usuario.usu_id))
@@ -149,9 +90,7 @@ namespace TaskQuest.Controllers
                     CodigoSeguranca = cartao.crt_codigo_seguranca,
                 });
             }
-
-            model.Cartoes = Util.Sort(model.Cartoes, Comparer<CartaoViewModel>.Create((x, y) => String.Compare(y.DataVencimento, x.DataVencimento)));
-
+            
             foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.usu_id))
             {
                 model.Telefones.Add(new TelefoneViewModel()
@@ -162,9 +101,7 @@ namespace TaskQuest.Controllers
                     Numero = telefone.tel_numero,
                 });
             }
-
-            model.Telefones = Util.Sort(model.Telefones, Comparer<TelefoneViewModel>.Create((x, y) => x.Numero.CompareTo(y.Numero)));
-
+            
             return View(model);
 
         }
@@ -194,7 +131,7 @@ namespace TaskQuest.Controllers
                 usu_sobrenome = model.Sobrenome,
                 usu_senha = model.Senha,
                 usu_email = model.Email,
-                usu_data_nascimento = model.DataNascimento,
+                usu_data_nascimento = model.DataNascimento.StringToDateTime(),
                 usu_sexo = model.Sexo,
             };
 
@@ -486,6 +423,7 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Usuario");
         }
 
+        /*
         public ActionResult Grupos() //V
         {
 
@@ -509,18 +447,17 @@ namespace TaskQuest.Controllers
             foreach (var uxg in uxgs)
             {
                 gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id)[0];
-                model.Grupos.Add(new Grupo()
+                model.Grupos.Add(new TaskQuest.ViewModels.Grupo()
                 {
                     Id = grupo.gru_id,
                     Nome = grupo.gru_nome,
                     Descricao = grupo.gru_descricao,
                 });
             }
-
-            model.Grupos = Util.Sort(model.Grupos, Comparer<Grupo>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
-
+            
             return View(model);
         }
+        */
 
         public ActionResult CriarGrupo() //V
         {
@@ -658,9 +595,7 @@ namespace TaskQuest.Controllers
                     isAdm = uxg.uxg_administrador,
                 });
             }
-
-            model.Integrantes = Util.Sort(model.Integrantes, Comparer<IntegranteViewModel>.Create((x, y) => String.Compare(x.Nome, y.Nome)));
-
+            
             if (uxgs[uxg_Index].uxg_administrador)
                 return View("GrupoAdmin", model);
 

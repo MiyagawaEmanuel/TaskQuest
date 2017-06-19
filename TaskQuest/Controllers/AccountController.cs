@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using TaskQuest.Identity;
 using TaskQuest.Models;
+using TaskQuest.ViewModels;
+using TaskQuest.App_Code;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskQuest.Controllers
@@ -63,18 +65,10 @@ namespace TaskQuest.Controllers
                 DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.ApplicationCookie);
             AuthenticationManager.SignIn
             (
-                new AuthenticationProperties {IsPersistent = isPersistent},
+                new AuthenticationProperties { IsPersistent = isPersistent },
                 // Criação da instancia do Identity e atribuição dos Claims
                 await user.GenerateUserIdentityAsync(UserManager, ext)
             );
-        }
-
-        //
-        // GET: /Account/Login
-        [AllowAnonymous]
-        public ActionResult Login()
-        {
-            return View();
         }
 
         //
@@ -84,35 +78,23 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Login(LoginViewModel model)
         {
-            if (!ModelState.IsValid)
-                return View();
-
-            var result = await SignInManager.PasswordSignInAsync(model.Email, model.Password, model.RememberMe, true);
+            var result = await SignInManager.PasswordSignInAsync(model.LoginEmail, model.LoginSenha, true, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
-                    var user = await UserManager.FindAsync(model.Email, model.Password);
-                    //Se o email do usuário foi ou não confirmado
-                    if (!user.EmailConfirmed)
-                        return View("ConfirmarEmail");
-                    await SignInAsync(user, model.RememberMe);
-                    return View("Inicio");
-                //Se o usuário foi bloqueado por exceder número máximo de tentativar de entrada
+                    var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
+                    await SignInAsync(user, true);
+                    return RedirectToAction("Inicio", "Home");
                 case SignInStatus.LockedOut:
-                    return View("UsuarioBloqueado");
+                    TempData["Response"] = "Você excedeu seu limite de tentativas de entrada";
+                    TempData["Class"] = "yellow-alert";
+                    return RedirectToAction("Index", "Home");
                 case SignInStatus.Failure:
                 default:
-                    ViewBag.SenhaInvalida = true;
-                    return View();
+                    TempData["Response"] = "Email ou Senha incorretos";
+                    TempData["Class"] = "yellow-alert";
+                    return RedirectToAction("Index", "Home");
             }
-        }
-
-        //
-        // GET: /Account/Register
-        [AllowAnonymous]
-        public ActionResult Register()
-        {
-            return View();
         }
 
         //
@@ -122,32 +104,40 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public async Task<ActionResult> Register(RegisterViewModel model)
         {
-            if (ModelState.IsValid)
-            {
-                var user = new User();
-                user.UserName = "Emanuel";
-                user.Sexo = "M";
-                user.DataNascimento = new DateTime(1996, 12, 21);
-                user.Sobrenome = "Miyagawa";
-                user.UserName = "Emanuel";
-                user.Email = "miyagawa.emanuel@gmail.com";
 
-                var result = await UserManager.CreateAsync(user, model.Password);
-                if (result.Succeeded)
-                {
-                    var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                    var callbackUrl = Url.Action("ConfirmEmail", "Account", new {userId = user.Id, code},
-                        Request.Url.Scheme);
-                    await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta",
-                        "Por favor confirme sua conta clicando neste link: <a href='" + callbackUrl + "'></a>");
-                    ViewBag.Link = callbackUrl;
-                    return View("DisplayEmail");
-                }
-                AddErrors(result);
+            var user = new User()
+            {
+                Nome = model.Nome,
+                Sexo = model.Sexo,
+                DataNascimento = model.DataNascimento.StringToDateTime(),
+                Sobrenome = model.Sobrenome,
+                UserName = model.RegisterEmail,
+                Cor = model.Cor.HexToColor(),
+                Email = model.RegisterEmail
+            };
+
+            if(user.Cor == null)
+            {
+                TempData["Response"] = "Cor inválida";
+                TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Inicio", "Home");
             }
 
+            var result = await UserManager.CreateAsync(user, model.RegisterSenha);
+            if (result.Succeeded)
+            {
+                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                await UserManager.ConfirmEmailAsync(user.Id, code);
+                
+                return RedirectToAction("Index", "Home");
+            }
+            
+            AddErrors(result);
+
             // No caso de falha, reexibir a view. 
-            return View(model);
+            TempData["Response"] = "Algo deu errado";
+            TempData["Class"] = "yellow-alert";
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -183,7 +173,7 @@ namespace TaskQuest.Controllers
                     return View("ForgotPasswordConfirmation");
 
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
-                var callbackUrl = Url.Action("ResetPassword", "Account", new {userId = user.Id, code},
+                var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code },
                     Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha",
                     "Por favor altere sua senha clicando aqui: <a href='" + callbackUrl + "'></a>");
@@ -323,6 +313,20 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Index", "Home");
         }
 
+        [Route("EmailDisponivel?Email={email}")]
+        public JsonResult EmailDisponivel(string email)
+        {
+            try
+            {
+                User user = UserManager.FindByEmail(email);
+                return Json(new { response = false });
+            }
+            catch
+            {
+                return Json(new { response = true });
+            }
+        }
+
         internal class ChallengeResult : HttpUnauthorizedResult
         {
             public ChallengeResult(string provider, string redirectUri)
@@ -343,7 +347,7 @@ namespace TaskQuest.Controllers
 
             public override void ExecuteResult(ControllerContext context)
             {
-                var properties = new AuthenticationProperties {RedirectUri = RedirectUri};
+                var properties = new AuthenticationProperties { RedirectUri = RedirectUri };
                 if (UserId != null)
                     properties.Dictionary[XsrfKey] = UserId;
                 context.HttpContext.GetOwinContext().Authentication.Challenge(properties, LoginProvider);

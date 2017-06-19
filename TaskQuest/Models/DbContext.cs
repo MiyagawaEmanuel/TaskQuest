@@ -15,7 +15,7 @@ namespace TaskQuest.Models
             : base("DefaultConnection")
         {
             DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
-            Database.SetInitializer(new DropCreateDatabaseAlways<DbContext>());
+            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>());
         }
 
         public virtual DbSet<Cartao> Cartoes { get; set; }
@@ -29,7 +29,6 @@ namespace TaskQuest.Models
         public virtual DbSet<Arquivo> Arquivo { get; set; }
         public virtual DbSet<Task> Task { get; set; }
         public virtual DbSet<UsuarioGrupo> UsuarioGrupo { get; set; }
-        public virtual DbSet<ExperienciaGrupo> ExperienciaGrupo { get; set; }
         public virtual DbSet<ExperienciaUsuario> ExperienciaUsuario { get; set; }
         public virtual DbSet<Client> Client { get; set; }
 
@@ -40,100 +39,115 @@ namespace TaskQuest.Models
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
+
             //Remove uma configuração embutida no Entity que modifica os nomes das tabelas e campos
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
-            
+
             /*
                 Configurando tabela User (usu_usuario)
             */
-            
+
             modelBuilder.Entity<User>()
                 .ToTable("usu_usuario");
-            
-            modelBuilder.Entity<User>() 
-                .Property(e => e.AccessFailedCount) 
-                .HasColumnName("usu_contador_acesso_falho");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.Email) 
-                .HasColumnName("usu_email")
-                .IsRequired()
-                .HasMaxLength(50);
-            
-            modelBuilder.Entity<User>() 
-                .Property(e => e.Email) 
-                .HasColumnAnnotation( 
-                    "Index",  
-                    new IndexAnnotation(new[] 
-                    { 
-                        new IndexAttribute("email_unique_idx") { IsUnique = true } 
-                    }));
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.EmailConfirmed) 
-                .HasColumnName("usu_email_confirmado");
-                
+
             modelBuilder.Entity<User>()
-                .HasKey(e => e.Id) 
-                .Property(e => e.Id) 
+                .Property(e => e.AccessFailedCount)
+                .HasColumnName("usu_contador_acesso_falho");
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Email)
+                .HasColumnName("usu_email")
+                .HasMaxLength(40)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Email)
+                .HasColumnAnnotation(
+                    "Index",
+                    new IndexAnnotation(new[]
+                    {
+                        new IndexAttribute("usu_email_unique_idx") { IsUnique = true }
+                    }));
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.EmailConfirmed)
+                .HasColumnName("usu_email_confirmado");
+
+            modelBuilder.Entity<User>()
+                .HasKey(e => e.Id)
+                .Property(e => e.Id)
                 .HasColumnName("usu_id")
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.LockoutEnabled) 
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.LockoutEnabled)
                 .HasColumnName("usu_bloqueado");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.LockoutEndDateUtc) 
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.LockoutEndDateUtc)
                 .HasColumnName("usu_data_desbloqueio");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.PasswordHash) 
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.PasswordHash)
                 .HasColumnName("usu_senha");
-                
+
             modelBuilder.Entity<User>().Ignore(e => e.PhoneNumber);
-                
+
             modelBuilder.Entity<User>().Ignore(e => e.PhoneNumberConfirmed);
 
             modelBuilder.Entity<User>().Ignore(e => e.CurrentClientId);
 
-            modelBuilder.Entity<User>() 
-                .Property(e => e.SecurityStamp) 
+            modelBuilder.Entity<User>()
+                .Property(e => e.SecurityStamp)
                 .HasColumnName("usu_selo_seguranca");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.TwoFactorEnabled) 
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.TwoFactorEnabled)
                 .HasColumnName("usu_dois_passos_login");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.UserName) 
-                .HasColumnName("usu_nome")
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.UserName)
+                .HasColumnName("usu_user_name")
                 .IsRequired()
-                .HasMaxLength(20);
-            
-            modelBuilder.Entity<User>() 
-                .Property(e => e.Sobrenome) 
+                .HasMaxLength(40);
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.UserName)
+                .HasColumnAnnotation(
+                    "Index",
+                    new IndexAnnotation(new[]
+                    {
+                        new IndexAttribute("usu_user_name_unique_idx") { IsUnique = true }
+                    }));
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Nome)
+                .HasColumnName("usu_nome")
+                .HasMaxLength(20)
+                .IsRequired();
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Sobrenome)
                 .HasColumnName("usu_sobrenome")
                 .IsRequired()
                 .HasMaxLength(20);
             
-            modelBuilder.Entity<User>() 
-                .Property(e => e.DataNascimento) 
+            modelBuilder.Entity<User>()
+                .Property(e => e.DataNascimento)
                 .HasColumnName("usu_data_nascimento");
-                
-            modelBuilder.Entity<User>() 
-                .Property(e => e.Sexo) 
+
+            modelBuilder.Entity<User>()
+                .Property(e => e.Sexo)
                 .HasColumnName("usu_sexo")
                 .IsRequired()
                 .HasMaxLength(1);
 
-            modelBuilder.Entity<User>().
+            modelBuilder.Entity<User>()
                 .Property(e => e.Cor)
                 .HasColumnName("usu_cor")
                 .HasMaxLength(20)
                 .IsRequired();
-            
+
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Cartoes)
                 .WithRequired(e => e.Usuario)
@@ -155,7 +169,7 @@ namespace TaskQuest.Models
                 .HasMany(e => e.RemetenteMensagens)
                 .WithRequired(e => e.UsuarioRemetente)
                 .HasForeignKey(e => e.UsuarioRemetenteId);
-            
+
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Feedbacks)
                 .WithRequired(e => e.UsuarioResponsavel)
@@ -181,76 +195,76 @@ namespace TaskQuest.Models
             //Configurando o nome da tabela
             modelBuilder.Entity<Arquivo>()
                 .ToTable("arq_arquivo");
-            
+
             //Configurando um campo como chave primária AUTO_INCREMENT
             modelBuilder.Entity<Arquivo>()
                 .HasKey(e => e.Id)
                 .Property(e => e.Id)
                 .HasColumnName("arq_id")
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Nome)
                 .HasColumnName("arq_nome")
                 .HasMaxLength(20);
-            
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Path)
                 .HasColumnName("arq_caminho")
                 .HasMaxLength(40);
-            
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Size)
                 .HasColumnName("arq_tamanho");
-                
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.UploadDate)
                 .HasColumnName("arq_data_upload")
                 .IsRequired();
-                
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.VersaoAtual)
                 .HasColumnName("arq_versao_atual");
-                
+
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.TaskId)
                 .HasColumnName("tsk_id");
-            
+
             /*
                 Configurando tabela Cartao
             */
-            
+
             modelBuilder.Entity<Cartao>()
                 .ToTable("crt_cartao");
-            
+
             modelBuilder.Entity<Cartao>()
                 .HasKey(e => e.Id)
                 .Property(e => e.Id)
                 .HasColumnName("crt_id")
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-            
-            modelBuilder.Entity<Cartao>() 
-                .Property(e => e.Bandeira) 
+
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.Bandeira)
                 .HasColumnName("crt_bandeira")
                 .IsRequired();
-            
-            modelBuilder.Entity<Cartao>() 
-                .Property(e => e.Numero) 
+
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.Numero)
                 .HasColumnName("crt_numero")
                 .IsRequired();
-            
-            modelBuilder.Entity<Cartao>() 
-                .Property(e => e.NomeTitular) 
+
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.NomeTitular)
                 .HasColumnName("crt_nome_titular")
                 .IsRequired();
-            
-            modelBuilder.Entity<Cartao>() 
-                .Property(e => e.DataVencimento) 
+
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.DataVencimento)
                 .HasColumnName("crt_data_vencimento")
                 .IsRequired();
-            
-            modelBuilder.Entity<Cartao>() 
-                .Property(e => e.CodigoSeguranca) 
+
+            modelBuilder.Entity<Cartao>()
+                .Property(e => e.CodigoSeguranca)
                 .HasColumnName("crt_codigo_seguranca")
                 .IsRequired();
 
@@ -316,7 +330,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<UserLogin>()
                 .Property(e => e.UserId)
                 .HasColumnName("usu_id");
-            
+
             modelBuilder.Entity<UserLogin>()
                 .Property(e => e.LoginProvider)
                 .HasColumnName("cul_login_provider");
@@ -388,7 +402,8 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Resposta)
-                .HasColumnName("feb_resposta");
+                .HasColumnName("feb_resposta")
+                .HasMaxLength(120);
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Nota)
@@ -553,6 +568,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Quest>()
                 .Property(e => e.Cor)
                 .HasColumnName("qst_cor")
+                .HasMaxLength(20)
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
@@ -645,6 +661,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Telefone>()
                 .Property(e => e.Tipo)
                 .HasColumnName("tel_tipo")
+                .HasMaxLength(20)
                 .IsRequired();
 
             /*
@@ -721,7 +738,7 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.TaskPrecedente)
                 .HasForeignKey(e => e.TaskPrecedenteId)
                 .WillCascadeOnDelete();
-            
+
             /*
                 Configuração da tabela UsuarioGrupo 
             */
@@ -743,34 +760,6 @@ namespace TaskQuest.Models
             modelBuilder.Entity<UsuarioGrupo>()
                 .Property(e => e.Administrador)
                 .HasColumnName("uxg_administrador")
-                .IsRequired();
-
-            /*
-                Configuração da tabela ExperienciaGrupo 
-            */
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .ToTable("xpg_experiencia_grupo");
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .Property(e => e.TaskId)
-                .HasColumnName("tsk_id");
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .Property(e => e.GrupoId)
-                .HasColumnName("gru_id");
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .HasKey(e => new { e.TaskId, e.GrupoId });
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .Property(e => e.Valor)
-                .HasColumnName("xpg_valor")
-                .IsRequired();
-
-            modelBuilder.Entity<ExperienciaGrupo>()
-                .Property(e => e.Data)
-                .HasColumnName("xpg_data")
                 .IsRequired();
 
             /*

@@ -10,7 +10,6 @@ namespace TaskQuest.Models
             Quests = new HashSet<Quest>();
             Mensagens = new HashSet<Mensagem>();
             UsuarioGrupos = new HashSet<UsuarioGrupo>();
-            ExperienciaGrupos = new HashSet<ExperienciaGrupo>();
             DataCriacao = DateTime.Now;
         }
 
@@ -31,7 +30,6 @@ namespace TaskQuest.Models
         public virtual ICollection<Mensagem> Mensagens { get; set; }
 
         public virtual ICollection<UsuarioGrupo> UsuarioGrupos { get; set; }
-
-        public virtual ICollection<ExperienciaGrupo> ExperienciaGrupos { get; set; }
+        
     }
 }

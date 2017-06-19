@@ -3,9 +3,8 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using MySql.Data.MySqlClient;
-using System.Diagnostics;
 
-namespace TaskQuest.App_Code
+namespace Teste
 {
     public static class Cursor
     {
@@ -15,14 +14,16 @@ namespace TaskQuest.App_Code
 
         private static Object _obj;
 
-        public static bool Insert(Object obj, bool allElements = false)
+        public static bool Insert(Object obj, bool allElements=false)
         {
             _obj = obj;
             var props = _obj.GetType().GetProperties();
 
-            var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props, allElements: allElements) +
+            var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props, allElements:allElements) +
                     ") VALUES(" + Columns(props, "?", allElements) + ")";
-            
+
+            Console.WriteLine(query);
+
             return ExecuteQuery(query);
         }
 
@@ -65,7 +66,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return null;
             }
         }
@@ -95,7 +96,7 @@ namespace TaskQuest.App_Code
                 var adapter = new MySqlDataAdapter();
 
                 var query = "SELECT * FROM " + _obj.GetType().Name;
-
+                
                 if (atributo != null && value != null)
                 {
                     atributo.SetValue(_obj, value);
@@ -107,7 +108,7 @@ namespace TaskQuest.App_Code
                 {
                     _command.CommandText = query;
                 }
-
+                
                 var ds = new DataSet();
                 adapter.SelectCommand = _command;
                 adapter.Fill(ds);
@@ -123,23 +124,23 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e);
+                Console.WriteLine(e);
                 return null;
             }
         }
 
-        public static bool Update(Object obj, bool allColumns = false)
+        public static bool Update(Object obj, bool allColummns = false)
         {
             _obj = obj;
             var props = _obj.GetType().GetProperties();
 
-            var query = "UPDATE " + _obj.GetType().Name + " SET ";
-
             int x;
-            if (allColumns)
+            if (allColummns)
                 x = 0;
             else
                 x = 1;
+
+            var query = "UPDATE " + _obj.GetType().Name + " SET ";
             for (; x < props.Length; x++)
             {
                 query += props[x].Name + " = ?" + props[x].Name;
@@ -148,7 +149,7 @@ namespace TaskQuest.App_Code
             }
             query += " WHERE " + props[0].Name + " = " + props[0].GetValue(_obj);
 
-            if (allColumns)
+            if (allColummns)
                 query += " and " + props[1].Name + " = " + props[1].GetValue(_obj);
 
             return ExecuteQuery(query);
@@ -167,9 +168,9 @@ namespace TaskQuest.App_Code
 
             if (secondId != null)
             {
-                query += " AND " + props[1].Name + " = " + secondId;
+                query += ", " + props[1].Name + " = " + secondId;
             }
-            
+
             return ExecuteQuery(query);
         }
 
@@ -196,7 +197,7 @@ namespace TaskQuest.App_Code
             }
             catch (Exception e)
             {
-                Debug.WriteLine(e.Message);
+                Console.WriteLine(e.Message);
                 return false;
             }
         }
@@ -207,7 +208,7 @@ namespace TaskQuest.App_Code
                 _command.Parameters.Add(new MySqlParameter(prop.Name, prop.GetValue(_obj)));
         }
 
-        private static string Columns(PropertyInfo[] props, string plus = "", bool allElements = false)
+        private static string Columns(PropertyInfo[] props, string plus = "", bool allElements=false)
         {
             var query = "";
 
