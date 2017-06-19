@@ -291,9 +291,7 @@ namespace TaskQuest.Controllers
             await UserManager.SignOutClientAsync(user, clientKey);
             AuthenticationManager.SignOut();
         }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
+        
         public async Task<ActionResult> SignOutEverywhere()
         {
             UserManager.UpdateSecurityStamp(User.Identity.GetUserId<int>());

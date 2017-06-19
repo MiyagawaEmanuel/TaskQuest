@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Data;
 using System.Reflection;
 using MySql.Data.MySqlClient;
+using System.Diagnostics;
 
 namespace Teste
 {
@@ -22,7 +23,7 @@ namespace Teste
             var query = "INSERT INTO " + _obj.GetType().Name + "(" + Columns(props, allElements:allElements) +
                     ") VALUES(" + Columns(props, "?", allElements) + ")";
 
-            Console.WriteLine(query);
+            Debug.WriteLine(query);
 
             return ExecuteQuery(query);
         }
@@ -66,7 +67,7 @@ namespace Teste
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 return null;
             }
         }
@@ -124,7 +125,7 @@ namespace Teste
             }
             catch (Exception e)
             {
-                Console.WriteLine(e);
+                Debug.WriteLine(e);
                 return null;
             }
         }
@@ -197,7 +198,7 @@ namespace Teste
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                Debug.WriteLine(e.Message);
                 return false;
             }
         }

@@ -249,12 +249,6 @@ body{
 	height: 40px;
 }
 
-.inicial{
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-}
-
 .hid{
 	color: transparent;
 }

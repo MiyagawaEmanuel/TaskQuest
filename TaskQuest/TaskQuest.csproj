@@ -178,6 +178,7 @@
     <Compile Include="App_Code\crt_cartao.cs" />
     <Compile Include="App_Code\Cursor.cs" />
     <Compile Include="App_Code\gru_grupo.cs" />
+    <Compile Include="App_Code\Autenticar.cs" />
     <Compile Include="App_Code\tel_telefone.cs" />
     <Compile Include="App_Code\usu_usuario.cs" />
     <Compile Include="App_Code\Util.cs" />

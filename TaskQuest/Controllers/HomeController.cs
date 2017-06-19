@@ -14,7 +14,6 @@ using Microsoft.AspNet.Identity;
 
 namespace TaskQuest.Controllers
 {
-    [Authorize]
     public class HomeController : Controller
     {
 
@@ -34,11 +33,17 @@ namespace TaskQuest.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index() //V
+        public ActionResult Index(string returnUrl=null) //V
         {
+            if(returnUrl != null)
+            {
+                TempData["Response"] = "Acesso não autorizado";
+                TempData["Class"] = "yellow-alert";
+            }
             return View();
         }
-        
+
+        [Authorize]
         public ActionResult Inicio() //V
         {
 
@@ -49,36 +54,25 @@ namespace TaskQuest.Controllers
             foreach (var uxg in user.UsuarioGrupos)
                 foreach (var gru in db.Grupos.Where(q => q.Id == uxg.GrupoId).ToArray())
                     model.Grupos.Add(gru);
-            
+
             return View(model);
         }
 
         public ActionResult Usuario() //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var model = new UsuarioViewModel();
 
-            model.Nome = usuario.usu_nome;
-            model.Sobrenome = usuario.usu_sobrenome;
-            model.Email = usuario.usu_email;
-            model.Senha = usuario.usu_senha;
-            model.DataNascimento = usuario.usu_data_nascimento.DateTimeToString();
-            model.Sexo = usuario.usu_sexo;
+            model.Nome = usuario.Nome;
+            model.Sobrenome = usuario.Sobrenome;
+            model.Email = usuario.Email;
+            model.Senha = usuario.PasswordHash;
+            model.DataNascimento = usuario.DataNascimento.DateTimeToString();
+            model.Sexo = usuario.Sexo;
 
-            foreach (var cartao in Cursor.Select<crt_cartao>(nameof(usu_usuario.usu_id), usuario.usu_id))
+            foreach (var cartao in Cursor.Select<crt_cartao>(nameof(usu_usuario.usu_id), usuario.Id))
             {
                 model.Cartoes.Add(new CartaoViewModel()
                 {
@@ -90,8 +84,8 @@ namespace TaskQuest.Controllers
                     CodigoSeguranca = cartao.crt_codigo_seguranca,
                 });
             }
-            
-            foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.usu_id))
+
+            foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.Id))
             {
                 model.Telefones.Add(new TelefoneViewModel()
                 {
@@ -101,7 +95,7 @@ namespace TaskQuest.Controllers
                     Numero = telefone.tel_numero,
                 });
             }
-            
+
             return View(model);
 
         }
@@ -111,22 +105,11 @@ namespace TaskQuest.Controllers
         public ActionResult Usuario(UsuarioViewModel model) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var usu = new usu_usuario()
             {
-                usu_id = usuario.usu_id,
+                usu_id = usuario.Id,
                 usu_nome = model.Nome,
                 usu_sobrenome = model.Sobrenome,
                 usu_senha = model.Senha,
@@ -147,7 +130,7 @@ namespace TaskQuest.Controllers
                 var tel = new tel_telefone()
                 {
                     tel_id = telefone.Id,
-                    usu_id = usuario.usu_id,
+                    usu_id = usuario.Id,
                     tel_tipo = telefone.Tipo,
                     tel_ddd = telefone.Ddd,
                     tel_numero = telefone.Numero,
@@ -177,7 +160,7 @@ namespace TaskQuest.Controllers
                     crt_codigo_seguranca = cartao.CodigoSeguranca,
                     crt_data_vencimento = cartao.DataVencimento,
                     crt_nome_titular = cartao.NomeTitular,
-                    usu_id = usuario.usu_id,
+                    usu_id = usuario.Id,
                 };
                 if (!Cursor.Update(crt))
                 {
@@ -239,18 +222,7 @@ namespace TaskQuest.Controllers
         public ActionResult EditarCartao(List<CartaoViewModel> model) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             foreach (var cartao in model)
             {
@@ -262,7 +234,7 @@ namespace TaskQuest.Controllers
                     crt_codigo_seguranca = cartao.CodigoSeguranca,
                     crt_data_vencimento = cartao.DataVencimento,
                     crt_nome_titular = cartao.NomeTitular,
-                    usu_id = usuario.usu_id,
+                    usu_id = usuario.Id,
                 };
                 if (!Cursor.Update(crt))
                 {
@@ -280,18 +252,7 @@ namespace TaskQuest.Controllers
         public ActionResult ExcluirTelefone(int? id) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (id == null)
             {
@@ -314,18 +275,7 @@ namespace TaskQuest.Controllers
         public ActionResult ExcluirCartao(int? id) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (id == null)
             {
@@ -350,22 +300,11 @@ namespace TaskQuest.Controllers
         public ActionResult AdicionarTelefone(TelefoneViewModel model) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var tel = new tel_telefone()
             {
-                usu_id = usuario.usu_id,
+                usu_id = usuario.Id,
                 tel_tipo = model.Tipo,
                 tel_ddd = model.Ddd,
                 tel_numero = model.Numero,
@@ -388,22 +327,11 @@ namespace TaskQuest.Controllers
         public ActionResult AdicionarCartao(CartaoViewModel model) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var crt = new crt_cartao()
             {
-                usu_id = usuario.usu_id,
+                usu_id = usuario.Id,
                 crt_bandeira = model.Bandeira,
                 crt_codigo_seguranca = model.CodigoSeguranca,
                 crt_data_vencimento = model.DataVencimento,
@@ -423,132 +351,65 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Usuario");
         }
 
-        /*
         public ActionResult Grupos() //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voca nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var model = new GruposViewModel();
 
-            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id);
+            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.Id);
 
             foreach (var uxg in uxgs)
             {
                 gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id)[0];
-                model.Grupos.Add(new TaskQuest.ViewModels.Grupo()
+                model.Grupos.Add(new Grupo()
                 {
                     Id = grupo.gru_id,
                     Nome = grupo.gru_nome,
                     Descricao = grupo.gru_descricao,
                 });
             }
-            
+
             return View(model);
         }
-        */
 
+        [Authorize, Autenticar]
         public ActionResult CriarGrupo() //V
         {
-
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
-
             return View(new CriarGrupoViewModel());
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CriarGrupo(CriarGrupoViewModel model) //V
+        public ActionResult CriarGrupo(Grupo model) //V
         {
-
-            usu_usuario usuario = new usu_usuario();
-            try
+            Grupo gru = new Grupo()
             {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
-
-            var gru = new gru_grupo()
-            {
-                gru_data_criacao = DateTime.Now,
-                gru_descricao = model.Descricao,
-                gru_nome = model.Nome,
-                gru_plano = model.Plano,
+                Nome = model.Nome,
+                Descricao = model.Descricao,
+                Plano = false,
+                Cor = model.Cor,
             };
+            db.Grupos.Add(gru);
+            db.SaveChanges();
 
-            if (!Cursor.Insert(gru))
+            UsuarioGrupo uxg = new UsuarioGrupo()
             {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Usuario");
-            }
+                UsuarioId = User.Identity.GetUserId<int>(),
+                GrupoId = gru.Id
+            };
+            db.UsuarioGrupo.Add(uxg);
+            db.SaveChanges();
 
-            int? gru_id = null;
-            foreach (var grupo in Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_nome), gru.gru_nome))
-            {
-                Console.WriteLine(grupo.gru_id + ", " + grupo.gru_nome + ", " + grupo.gru_data_criacao.ToString());
-                if (grupo.gru_data_criacao.ToString().CompareTo(gru.gru_data_criacao.ToString()) == 0)
-                    gru_id = grupo.gru_id;
-            }
+            return RedirectToAction("Inicio", "Home");
 
-            if (gru_id != null)
-            {
-                if (!Cursor.Insert(new uxg_usuario_grupo(usuario.usu_id, gru_id.Value, true), true))
-                {
-                    TempData["ResultColor"] = "#EEEE00";
-                    TempData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Usuario");
-                }
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Grupo adicionado com sucesso";
-            return RedirectToAction("Grupos");
         }
 
         public ActionResult Grupo(int? id) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (id == null)
             {
@@ -563,7 +424,7 @@ namespace TaskQuest.Controllers
             int uxg_Index = 0;
             for (; uxg_Index < uxgs.Count; uxg_Index++)
             {
-                if (uxgs[uxg_Index].usu_id == usuario.usu_id)
+                if (uxgs[uxg_Index].usu_id == usuario.Id)
                 {
                     usuarioHasGrupo = true;
                     break;
@@ -595,7 +456,7 @@ namespace TaskQuest.Controllers
                     isAdm = uxg.uxg_administrador,
                 });
             }
-            
+
             if (uxgs[uxg_Index].uxg_administrador)
                 return View("GrupoAdmin", model);
 
@@ -607,22 +468,11 @@ namespace TaskQuest.Controllers
         public ActionResult EditarGrupo(GrupoViewModel model)
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (!(
                    from x in
-                   Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                   Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.Id)
                    where (x.gru_id == model.Id)
                    select x
                 ).First().uxg_administrador)
@@ -656,18 +506,7 @@ namespace TaskQuest.Controllers
         public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) //V 
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             usu_usuario usu;
             try
@@ -698,22 +537,11 @@ namespace TaskQuest.Controllers
         public ActionResult ExcluirIntegranteGrupo(EditarIntegranteViewModel model) //V
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var uxg = (
                         from x
-                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.Id)
                         where (x.gru_id == model.gru_id)
                         select x
                       ).First();
@@ -742,20 +570,9 @@ namespace TaskQuest.Controllers
 
         public ActionResult ApagarUsuario() //V
         {
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
-            if (!Cursor.Delete<usu_usuario>(usuario.usu_id))
+            if (!Cursor.Delete<usu_usuario>(usuario.Id))
             {
                 TempData["ResultColor"] = "#EEEE00";
                 TempData["Result"] = "Algo deu errado";
@@ -778,22 +595,11 @@ namespace TaskQuest.Controllers
         public ActionResult TornarAdministrador(EditarIntegranteViewModel model)
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             var uxg = (
                         from x
-                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.usu_id)
+                        in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.Id)
                         where (x.gru_id == model.gru_id)
                         select x
                       ).First();
@@ -822,18 +628,7 @@ namespace TaskQuest.Controllers
         public ActionResult TornarIntegrante(int? id)
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (id == null)
             {
@@ -850,7 +645,7 @@ namespace TaskQuest.Controllers
             var uxg = (
                         from x
                         in uxgs
-                        where (x.usu_id == usuario.usu_id)
+                        where (x.usu_id == usuario.Id)
                         select x
                       ).First();
 
@@ -858,7 +653,7 @@ namespace TaskQuest.Controllers
             {
                 if (adms >= 2)
                 {
-                    if (!Cursor.Update(new uxg_usuario_grupo(usuario.usu_id, id.Value, false), true))
+                    if (!Cursor.Update(new uxg_usuario_grupo(usuario.Id, id.Value, false), true))
                     {
                         TempData["ResultColor"] = "#EEEE00";
                         TempData["Result"] = "Algo deu errado";
@@ -887,18 +682,7 @@ namespace TaskQuest.Controllers
         public ActionResult ExcluirGrupo(int? id)
         {
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voce nao esta logado";
-                return RedirectToAction("Index");
-            }
+            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
 
             if (id == null)
             {
@@ -908,7 +692,7 @@ namespace TaskQuest.Controllers
             var uxg = (
                         from x
                         in Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.gru_id), id)
-                        where (x.usu_id == usuario.usu_id)
+                        where (x.usu_id == usuario.Id)
                         select x
                       ).First();
 

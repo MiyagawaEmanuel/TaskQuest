@@ -5,10 +5,30 @@
 	<meta name="viewport" content="width=device-width, user-scalable=no">
     <title>@ViewBag.Title</title>
 
-    @Styles.Render("~/Content/layout-css")
-
+    <link href="~/Content/css/animate.css" rel="stylesheet" />
+    <link href="~/Content/css/balloon.css" rel="stylesheet" />
+    <link href="~/Content/css/bootstrap.min.css" rel="stylesheet" />
+    <link href="~/Content/css/colors.css" rel="stylesheet" />
+    <link href="~/Content/css/estilo.css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.css" rel="stylesheet" />
+    <link href="~/Content/css/font-awesome.min.css" rel="stylesheet" />
+    <link href="~/Content/css/ie.css" rel="stylesheet" />
+    <link href="~/Content/css/jquery-ui.css" rel="stylesheet" />
     <link href="~/Content/css/layout.css" rel="stylesheet" />
+    <link href="~/Content/css/main.css" rel="stylesheet" />
+    <link href="~/Content/css/spectrum.css" rel="stylesheet" />
+    <link href="~/Content/css/style.css" rel="stylesheet" />
 
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/balloon.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/graphics.js"></script>
+    <script src="~/Content/js/jquery.mask.js"></script>
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/main.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    
     @RenderSection("head", false)
 
 </head>
@@ -39,7 +59,7 @@
 		            <li role="separator" class="divider"></li>
 		            <li><a href="/Home/Usuario">Configurações</a></li>
 		            <li role="separator" class="divider"></li>
-		            <li><a href="/Home/Sair"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
+		            <li><a href="/Account/SignOutEverywhere"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
 		          </ul>
 		        </li>
 		    </div>
@@ -48,11 +68,9 @@
 
 	@RenderBody()
 
-    @if (TempData["Result"] != null)
+    @if (TempData["Result"] != null && TempData["Class"] != null)
     {
-        <script>
-            alert("@TempData["Result"]");
-        </script>
+        @Html.Partial("_BalloonPartial", new Tuple<string, string>(TempData["Result"].ToString(), TempData["Class"].ToString()))
     }
 </body>
 </html>
