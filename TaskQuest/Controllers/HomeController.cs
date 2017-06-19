@@ -33,7 +33,7 @@ namespace TaskQuest.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index(string returnUrl=null) //V
+        public ActionResult Index(string returnUrl=null)
         {
             if(returnUrl != null)
             {
@@ -44,10 +44,8 @@ namespace TaskQuest.Controllers
         }
 
         [Authorize]
-        public ActionResult Inicio() //V
+        public ActionResult Inicio()
         {
-
-            User user = db.Users.Find(User.Identity.GetUserId<int>());
 
             var model = new InicioViewModel();
 
@@ -55,343 +53,114 @@ namespace TaskQuest.Controllers
                 foreach (var gru in db.Grupos.Where(q => q.Id == uxg.GrupoId).ToArray())
                     model.Grupos.Add(gru);
 
+            foreach (var qst in db.Grupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>()).ToList())
+                foreach (var tsk in qst.Tasks)
+                    if (tsk.Status != 2)
+                        model.Task.Add(tsk);
+                    
+            foreach (var gru in model.Grupos)
+                foreach (var qst in db.Grupo.Where(q => q.GrupoId == gru.Id).ToList())
+                    foreach (var tsk in qst.Tasks)
+                        if (tsk.Status != 2)
+                            model.Task.Add(tsk);
+                        
+            foreach (var tsk in model.Tasks)
+                foreach (var feb in tsk.Feedbacks)
+                    model.Feedback.Add(feb);
+                    
+            return View(model);
+        }
+        
+        [Authorize]
+        public ActionResult Configuracao()
+        {
+            var model = new ConfiguracaoViewModel();
+            model.usuario = db.Users.Find(User.Identity.GetUserId<int>());
+            model.Cartoes = model.usuario.Cartoes.ToList();
+            model.Telefones = model.usuario.Telefones.ToList();
             return View(model);
         }
 
-        public ActionResult Usuario() //V
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [Authorize]
+        public ActionResult Configuracao(ConfiguracaoViewModel model)
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            var model = new UsuarioViewModel();
-
-            model.Nome = usuario.Nome;
-            model.Sobrenome = usuario.Sobrenome;
-            model.Email = usuario.Email;
-            model.Senha = usuario.PasswordHash;
-            model.DataNascimento = usuario.DataNascimento.DateTimeToString();
-            model.Sexo = usuario.Sexo;
-
-            foreach (var cartao in Cursor.Select<crt_cartao>(nameof(usu_usuario.usu_id), usuario.Id))
-            {
-                model.Cartoes.Add(new CartaoViewModel()
-                {
-                    Id = cartao.crt_id,
-                    Bandeira = cartao.crt_bandeira,
-                    Numero = cartao.crt_numero,
-                    NomeTitular = cartao.crt_nome_titular,
-                    DataVencimento = cartao.crt_data_vencimento,
-                    CodigoSeguranca = cartao.crt_codigo_seguranca,
-                });
-            }
-
-            foreach (var telefone in Cursor.Select<tel_telefone>(nameof(tel_telefone.usu_id), usuario.Id))
-            {
-                model.Telefones.Add(new TelefoneViewModel()
-                {
-                    Id = telefone.tel_id,
-                    Tipo = telefone.tel_tipo,
-                    Ddd = telefone.tel_ddd,
-                    Numero = telefone.tel_numero,
-                });
-            }
-
-            return View(model);
-
+            db.Entry(model.Usuario).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Configuracao");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Usuario(UsuarioViewModel model) //V
+        [Authorize]
+        public ActionResult EditarTelefone(Telefone model)
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            var usu = new usu_usuario()
-            {
-                usu_id = usuario.Id,
-                usu_nome = model.Nome,
-                usu_sobrenome = model.Sobrenome,
-                usu_senha = model.Senha,
-                usu_email = model.Email,
-                usu_data_nascimento = model.DataNascimento.StringToDateTime(),
-                usu_sexo = model.Sexo,
-            };
-
-            if (!Cursor.Update(usu))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Index");
-            }
-
-            foreach (var telefone in model.Telefones)
-            {
-                var tel = new tel_telefone()
-                {
-                    tel_id = telefone.Id,
-                    usu_id = usuario.Id,
-                    tel_tipo = telefone.Tipo,
-                    tel_ddd = telefone.Ddd,
-                    tel_numero = telefone.Numero,
-
-                };
-
-                foreach (var prop in tel.GetType().GetProperties())
-                {
-                    Debug.WriteLine(prop.GetValue(tel));
-                }
-
-                if (!Cursor.Update(tel))
-                {
-                    TempData["ResultColor"] = "#EEEE00";
-                    TempData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Index");
-                }
-            }
-
-            foreach (var cartao in model.Cartoes)
-            {
-                var crt = new crt_cartao()
-                {
-                    crt_id = cartao.Id,
-                    crt_numero = cartao.Numero,
-                    crt_bandeira = cartao.Bandeira,
-                    crt_codigo_seguranca = cartao.CodigoSeguranca,
-                    crt_data_vencimento = cartao.DataVencimento,
-                    crt_nome_titular = cartao.NomeTitular,
-                    usu_id = usuario.Id,
-                };
-                if (!Cursor.Update(crt))
-                {
-                    TempData["ResultColor"] = "#EEEE00";
-                    TempData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Index");
-                }
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Seus dados foram atualizados";
-            return RedirectToAction("Usuario");
+            db.Entry(model).State = System.Data.Entity.EntityState.Modified;     
+            db.SaveChanges();
+            return RedirectToAction("Configuracao");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarTelefone(List<TelefoneViewModel> model) //V
+        [Authorize]
+        public ActionResult EditarCartao(Cartao model)
         {
+            db.Entry(model).State = System.Data.Entity.EntityState.Modified;
+            db.SaveChanges();
+            return RedirectToAction("Configurar");
+        }
+        
+        [Authorize]
+        public ActionResult ExcluirTelefone(IdViewModel model)
+        {
+            db.Entry(db.Telefone.Find(model.Id)).State = System.Data.Entity.EntityState.Deleted;
+            db.SaveChanges();
+            return RedirectToAction("Configurar");
+        }
 
-            usu_usuario usuario = new usu_usuario();
-            try
-            {
-                usuario = Cursor.SelectMD5<usu_usuario>(Session["user"].ToString())[0];
-            }
-            catch (Exception)
-            {
-                Session.Clear();
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Voca nao esta logado";
-                return RedirectToAction("Index");
-            }
-
-            foreach (var telefone in model)
-            {
-                var tel = new tel_telefone()
-                {
-                    tel_id = telefone.Id,
-                    usu_id = usuario.usu_id,
-                    tel_tipo = telefone.Tipo,
-                    tel_ddd = telefone.Ddd,
-                    tel_numero = telefone.Numero,
-                };
-
-                if (!Cursor.Update(tel))
-                {
-                    TempData["ResultColor"] = "#EEEE00";
-                    TempData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Index");
-                }
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Seus dados foram atualizados";
-            return RedirectToAction("Usuario");
+        [Authorize]
+        public ActionResult ExcluirCartao(IdViewModel model)
+        {
+            db.Entry(db.Cartao.Find(model.Id)).State = System.Data.Entity.EntityState.Deleted;
+            db.SaveChanges();
+            return RedirectToAction("Configurar");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarCartao(List<CartaoViewModel> model) //V
+        [Authorize]
+        public ActionResult AdicionarTelefone(Telefone model)
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            foreach (var cartao in model)
-            {
-                var crt = new crt_cartao()
-                {
-                    crt_id = cartao.Id,
-                    crt_numero = cartao.Numero,
-                    crt_bandeira = cartao.Bandeira,
-                    crt_codigo_seguranca = cartao.CodigoSeguranca,
-                    crt_data_vencimento = cartao.DataVencimento,
-                    crt_nome_titular = cartao.NomeTitular,
-                    usu_id = usuario.Id,
-                };
-                if (!Cursor.Update(crt))
-                {
-                    TempData["ResultColor"] = "#EEEE00";
-                    TempData["Result"] = "Algo deu errado";
-                    return RedirectToAction("Index");
-                }
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Seus dados foram atualizados";
-            return RedirectToAction("Usuario");
-        }
-
-        public ActionResult ExcluirTelefone(int? id) //V
-        {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            if (id == null)
-            {
-                return RedirectToAction("Grupos");
-            }
-
-            if (!Cursor.Delete<tel_telefone>(id ?? 0))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Index");
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Seus dados foram atualizados";
-            return RedirectToAction("Usuario");
-
-        }
-
-        public ActionResult ExcluirCartao(int? id) //V
-        {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            if (id == null)
-            {
-                return RedirectToAction("Grupos");
-            }
-
-            if (!Cursor.Delete<crt_cartao>(id ?? 0))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Index");
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Seus dados foram atualizados";
-            return RedirectToAction("Usuario");
-
+            db.Telefone.Add(model);
+            db.SaveChanges();
+            return RedirectToAction("Configurar");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarTelefone(TelefoneViewModel model) //V
+        [Authorize]
+        public ActionResult AdicionarCartao(Cartao model)
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            var tel = new tel_telefone()
-            {
-                usu_id = usuario.Id,
-                tel_tipo = model.Tipo,
-                tel_ddd = model.Ddd,
-                tel_numero = model.Numero,
-            };
-
-            if (!Cursor.Insert(tel))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Usuario");
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Telefone adicionado com sucesso";
+            db.Cartao.Add(model);
+            db.SaveChanges();
             return RedirectToAction("Usuario");
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AdicionarCartao(CartaoViewModel model) //V
+        [Authorize]
+        public ActionResult Grupos()
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            var crt = new crt_cartao()
-            {
-                usu_id = usuario.Id,
-                crt_bandeira = model.Bandeira,
-                crt_codigo_seguranca = model.CodigoSeguranca,
-                crt_data_vencimento = model.DataVencimento,
-                crt_nome_titular = model.NomeTitular,
-                crt_numero = model.Numero,
-            };
-
-            if (!Cursor.Insert(crt))
-            {
-                TempData["ResultColor"] = "#EEEE00";
-                TempData["Result"] = "Algo deu errado";
-                return RedirectToAction("Usuario");
-            }
-
-            TempData["ResultColor"] = "#32CD32";
-            TempData["Result"] = "Cartao adicionado com sucesso";
-            return RedirectToAction("Usuario");
-        }
-
-        public ActionResult Grupos() //V
-        {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            var model = new GruposViewModel();
-
-            List<uxg_usuario_grupo> uxgs = Cursor.Select<uxg_usuario_grupo>(nameof(uxg_usuario_grupo.usu_id), usuario.Id);
-
-            foreach (var uxg in uxgs)
-            {
-                gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), uxg.gru_id)[0];
-                model.Grupos.Add(new Grupo()
-                {
-                    Id = grupo.gru_id,
-                    Nome = grupo.gru_nome,
-                    Descricao = grupo.gru_descricao,
-                });
-            }
-
+            List<Grupo> model = new List<Grupo>();
+            foreach (var uxg in db.User.Find(User.Identity.GetUserId()).UsuarioGrupos)
+                model.Add(db.Grupo.Find(uxg.GrupoId));
             return View(model);
         }
 
-        [Authorize, Autenticar]
-        public ActionResult CriarGrupo() //V
-        {
-            return View(new CriarGrupoViewModel());
-        }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CriarGrupo(Grupo model) //V
+        public ActionResult CriarGrupo(Grupo model)
         {
-            Grupo gru = new Grupo()
-            {
-                Nome = model.Nome,
-                Descricao = model.Descricao,
-                Plano = false,
-                Cor = model.Cor,
-            };
-            db.Grupos.Add(gru);
+            db.Grupos.Add(model);
             db.SaveChanges();
 
             UsuarioGrupo uxg = new UsuarioGrupo()
@@ -403,18 +172,10 @@ namespace TaskQuest.Controllers
             db.SaveChanges();
 
             return RedirectToAction("Inicio", "Home");
-
         }
 
-        public ActionResult Grupo(int? id) //V
+        public ActionResult Grupo(IdViewModel model) //V
         {
-
-            User usuario = db.Users.Find(User.Identity.GetUserId<int>());
-
-            if (id == null)
-            {
-                return RedirectToAction("Grupos");
-            }
 
             gru_grupo grupo = Cursor.Select<gru_grupo>(nameof(gru_grupo.gru_id), id)[0];
 
