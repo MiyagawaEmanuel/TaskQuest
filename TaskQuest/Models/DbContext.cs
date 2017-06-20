@@ -18,7 +18,7 @@ namespace TaskQuest.Models
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>());
         }
 
-        public virtual DbSet<Cartao> Cartoe { get; set; }
+        public virtual DbSet<Cartao> Cartao { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Mensagem> Mensagen { get; set; }

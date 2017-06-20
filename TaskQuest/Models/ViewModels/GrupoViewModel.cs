@@ -1,44 +1,14 @@
 ﻿using System.Collections.Generic;
+using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels
 {
     public class GrupoViewModel
     {
-        public int Id { get; set; }
 
-        public string Nome { get; set; }
+        public Grupo Grupo = new Grupo();
 
-        public string Descricao { get; set; }
+        public List<User> Integrantes = new List<User>();
 
-        public bool Plano { get; set; }
-
-        public List<IntegranteViewModel> Integrantes = new List<IntegranteViewModel>();
-
-        public AdicionarUsuarioGrupoViewModel adicionarUsuarioGrupoViewModel()
-        {
-            return new AdicionarUsuarioGrupoViewModel()
-            {
-                gru_id = Id,
-            };
-        }
-
-        public EditarIntegranteViewModel criarEditorIntegrante(int usuario_id)
-        {
-            return new EditarIntegranteViewModel()
-            {
-                gru_id = Id,
-                usu_id = usuario_id,
-            };
-        }
-
-    }
-
-    public class IntegranteViewModel
-    {
-        public int Id { get; set; }
-
-        public string Nome { get; set; }
-
-        public bool isAdm { get; set; }
     }
 }

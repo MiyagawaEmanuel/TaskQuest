@@ -1,21 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Web;
+﻿using System.Collections.Generic;
+using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels
 {
-    public class UsuarioViewModel
+    public class ConfiguracaoViewModel
     {
-        User usuario = new User();
+        public User usuario = new User();
 
         public List<Cartao> Cartoes = new List<Cartao>();
 
         public List<Telefone> Telefones = new List<Telefone>();
 
-        public TelefoneViewModel telefoneViewModel = new TelefoneViewModel();
+        public Telefone Telefone = new Telefone();
 
-        public CartaoViewModel cartaoViewModel = new CartaoViewModel();
+        public Cartao Cartao = new Cartao();
 
     }
 }
