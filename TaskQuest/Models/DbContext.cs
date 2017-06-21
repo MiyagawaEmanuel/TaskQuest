@@ -721,11 +721,7 @@ namespace TaskQuest.Models
                 .Property(e => e.UsuarioResponsavelId)
                 .HasColumnName("usu_id_responsavel");
 
-            modelBuilder.Entity<Task>()
-                .Property(e => e.Cor)
-                .HasColumnName("tsk_cor")
-                .HasMaxLength(20)
-                .IsRequired();
+            modelBuilder.Entity<Task>().Ignore(e => e.Cor);
 
             modelBuilder.Entity<Task>()
                 .HasMany(e => e.Antecedencias)
