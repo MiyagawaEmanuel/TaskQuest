@@ -31,17 +31,17 @@ namespace TaskQuest.Controllers
         }
 
         [AllowAnonymous]
-        public ActionResult Index(string returnUrl = null)
+        public ActionAlert Index(string returnUrl = null)
         {
             if (returnUrl != null)
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não está logado";
                 TempData["Class"] = "yellow-alert";
             }
             return View();
         }
 
-        public ActionResult Inicio()
+        public ActionAlert Inicio()
         {
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
@@ -71,7 +71,7 @@ namespace TaskQuest.Controllers
             return View(model);
         }
 
-        public ActionResult Configuracao()
+        public ActionAlert Configuracao()
         {
             var model = new ConfiguracaoViewModel();
             model.usuario = db.Users.Find(User.Identity.GetUserId<int>());
@@ -82,19 +82,19 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Configuracao(ConfiguracaoViewModel model)
+        public ActionAlert Configuracao(ConfiguracaoViewModel model)
         {
 
             if(User.Identity.GetUserId<int>() == model.usuario.Id)
             {
                 db.Entry(model.usuario).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                TempData["Response"] = "Atualizado com sucesso";
+                TempData["Alert"] = "Atualizado com sucesso";
                 TempData["Class"] = "green-alert";
             }
             else
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não tem permissão para entrar nesta página";
                 TempData["Class"] = "yellow-alert";
             }
             
@@ -103,18 +103,18 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarTelefone(Telefone model)
+        public ActionAlert EditarTelefone(Telefone model)
         {
             if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                TempData["Response"] = "Atualizado com sucesso";
+                TempData["Alert"] = "Atualizado com sucesso";
                 TempData["Class"] = "green-alert";
             }
             else
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
             }
 
@@ -123,18 +123,18 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarCartao(Cartao model)
+        public ActionAlert EditarCartao(Cartao model)
         {
             if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                TempData["Response"] = "Atualizado com sucesso";
+                TempData["Alert"] = "Atualizado com sucesso";
                 TempData["Class"] = "green-alert";
             }
             else
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
             }
             return RedirectToAction("Configurar");
@@ -142,19 +142,19 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirTelefone(ButtonViewModel model)
+        public ActionAlert ExcluirTelefone(ButtonViewModel model)
         {
             var telefone = db.Telefone.Find(model.Id);
             if (User.Identity.GetUserId<int>() == telefone.UsuarioId)
             {
                 db.Entry(telefone).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
-                TempData["Response"] = "Atualizado com sucesso";
+                TempData["Alert"] = "Removido com sucesso";
                 TempData["Class"] = "green-alert";
             }
             else
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
             }
 
@@ -163,19 +163,19 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirCartao(ButtonViewModel model)
+        public ActionAlert ExcluirCartao(ButtonViewModel model)
         {
             var cartao = db.Cartao.Find(model.Id);
             if (User.Identity.GetUserId<int>() == cartao.UsuarioId)
             {
                 db.Entry(cartao).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
-                TempData["Response"] = "Atualizado com sucesso";
+                TempData["Alert"] = "Removido com sucesso";
                 TempData["Class"] = "green-alert";
             }
             else
             {
-                TempData["Response"] = "Acesso não autorizado";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
             }
 
@@ -184,45 +184,31 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarTelefone(Telefone model)
+        public ActionAlert AdicionarTelefone(Telefone model)
         {
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
-            {
-                db.Telefone.Add(model);
-                db.SaveChanges();
-                TempData["Response"] = "Adicionado com sucesso";
-                TempData["Class"] = "green-alert";
-            }
-            else
-            {
-                TempData["Response"] = "Acesso não autorizado";
-                TempData["Class"] = "yellow-alert";
-            }
+            model.UsuarioId = User.Identity.GetUserId<int>();
+            db.Telefone.Add(model);
+            db.SaveChanges();
+            TempData["Alert"] = "Criado com sucesso";
+            TempData["Class"] = "green-alert";
 
             return RedirectToAction("Configurar");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarCartao(Cartao model)
+        public ActionAlert AdicionarCartao(Cartao model)
         {
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
-            {
-                db.Cartao.Add(model);
-                db.SaveChanges();
-                TempData["Response"] = "Adicionado com sucesso";
-                TempData["Class"] = "green-alert";
-            }
-            else
-            {
-                TempData["Response"] = "Acesso não autorizado";
-                TempData["Class"] = "yellow-alert";
-            }
+            model.UsuarioId = User.Identity.GetUserId<int>();
+            db.Cartao.Add(model);
+            db.SaveChanges();
+            TempData["Alert"] = "Criado com sucesso";
+            TempData["Class"] = "green-alert";
 
             return RedirectToAction("Usuario");
         }
         
-        public ActionResult Grupos()
+        public ActionAlert Grupos()
         {
             List<Grupo> model = new List<Grupo>();
             foreach (var uxg in db.Users.Find(User.Identity.GetUserId()).UsuarioGrupos)
@@ -232,7 +218,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CriarGrupo(Grupo model)
+        public ActionAlert CriarGrupo(Grupo model)
         {
             db.Grupo.Add(model);
             db.SaveChanges();
@@ -245,12 +231,15 @@ namespace TaskQuest.Controllers
             db.UsuarioGrupo.Add(uxg);
             db.SaveChanges();
 
+            TempData["Alert"] = "Criado com sucesso";
+            TempData["Class"] = "green-alert";
+
             return RedirectToAction("Grupo", "Home", new ButtonViewModel(model.Id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Grupo(ButtonViewModel model) 
+        public ActionAlert Grupo(ButtonViewModel model) 
         {
 
             Grupo grupo = db.Grupo.Find(model.Id);
@@ -263,7 +252,7 @@ namespace TaskQuest.Controllers
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Voce nao pertence a esse grupo";
+                TempData["Alert"] = "Você não tem permissão para entrar nesta página";
                 return RedirectToAction("Grupos");
             }
             
@@ -272,41 +261,43 @@ namespace TaskQuest.Controllers
             grupoViewModel.Grupo = grupo;
 
             foreach (var uxg in grupo.UsuarioGrupos)
-                grupoViewModel.Integrantes.Add(uxg.Usuario);
+            grupoViewModel.Integrantes.Add(uxg.Usuario);
 
             if (usuariogrupo.Administrador)
-                return View("GrupoAdmin", model);
+            return View("GrupoAdmin", model);
 
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarGrupo(GrupoViewModel model)
+        public ActionAlert EditarGrupo(GrupoViewModel model)
         {
 
             if(db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.Grupo.Id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Você não pode executar essa ação";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 return RedirectToAction("Inicio", "Home");
             }
 
             db.Entry(model.Grupo).State = System.Data.Entity.EntityState.Modified;
             db.SaveChanges();
 
+            TempData["Class"] = "green-alert";
+            TempData["Alert"] = "Atualizado com sucesso";
             return RedirectToAction("Grupo", new ButtonViewModel(model.Grupo.Id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) 
+        public ActionAlert AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model) 
         {
 
             if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.gru_id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Você não pode executar essa ação";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 return RedirectToAction("Inicio", "Home");
             }
 
@@ -325,49 +316,53 @@ namespace TaskQuest.Controllers
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Usuário não encontrado";
+                TempData["Alert"] = "Usuário não encontrado";
             }
-
+            
+            TempData["Class"] = "green-alert";
+            TempData["Alert"] = "Integrante adicionado com sucesso";
             return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirIntegranteGrupo(EditarIntegranteViewModel model) //V
+        public ActionAlert ExcluirIntegranteGrupo(EditarIntegranteViewModel model) //V
         {
 
             if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.gru_id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Você não pode executar essa ação";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 return RedirectToAction("Inicio", "Home");
             }
 
             try
             {
                 db.Entry(db.UsuarioGrupo.Where(q => q.UsuarioId == model.usu_id && q.GrupoId == model.gru_id).First())
-                    .State = System.Data.Entity.EntityState.Deleted;
+                .State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
             }
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Usuário não encontrado";
+                TempData["Alert"] = "Usuário não encontrado";
             }
 
+            TempData["Class"] = "green-alert";
+            TempData["Alert"] = "Removido com sucesso";
             return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
 
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TornarAdministrador(EditarIntegranteViewModel model)
+        public ActionAlert TornarAdministrador(EditarIntegranteViewModel model)
         {
 
             if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.gru_id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Você não pode executar essa ação";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 return RedirectToAction("Inicio", "Home");
             }
 
@@ -381,19 +376,21 @@ namespace TaskQuest.Controllers
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Algo deu errado";
+                TempData["Alert"] = "Algo deu errado";
             }
 
+            TempData["Class"] = "green-alert";
+            TempData["Alert"] = "Integrante promovido a Administrador com sucesso";
             return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
         }
 
-        public ActionResult ExcluirGrupo(ButtonViewModel model)
+        public ActionAlert ExcluirGrupo(ButtonViewModel model)
         {
 
             if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.Id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Você não pode executar essa ação";
+                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 return RedirectToAction("Inicio", "Home");
             }
 
@@ -405,9 +402,11 @@ namespace TaskQuest.Controllers
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Result"] = "Algo deu errado";
+                TempData["Alert"] = "Algo deu errado";
             }
 
+            TempData["Class"] = "green-alert";
+            TempData["Alert"] = "Removido com sucesso";
             return RedirectToAction("Grupos", "Home");
 
         }
