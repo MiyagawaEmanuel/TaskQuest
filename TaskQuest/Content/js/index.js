@@ -14,7 +14,7 @@
                 minlength: 3,
                 maxlength: 20
             },
-            RegisterEmail: {
+            Email: {
                 required: true,
                 email: true,
                 maxlength: 50
@@ -29,7 +29,7 @@
                 },
                 date: true
             },
-            RegisterSenha: {
+            Senha: {
                 required: true
             },
             ConfirmarSenha: {
