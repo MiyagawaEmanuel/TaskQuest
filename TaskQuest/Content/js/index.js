@@ -34,7 +34,7 @@
             },
             ConfirmarSenha: {
                 required: true,
-                equalTo: "#RegisterSenha"
+                equalTo: "#Senha"
             },
             Sexo: {
                 required: function (element) {
