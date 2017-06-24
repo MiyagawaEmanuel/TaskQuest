@@ -76,11 +76,11 @@ namespace TaskQuest.ViewModels
 
         public string DataNascimento { get; set; }
         
-        public string RegisterEmail { get; set; }
+        public string Email { get; set; }
 
         public string ConfirmarEmail { get; set; }
 
-        public string RegisterSenha { get; set; }
+        public string Senha { get; set; }
 
         public string ConfirmarSenha { get; set; }
 
