@@ -16,6 +16,8 @@ namespace TaskQuest.Models
 
         public string CodigoSeguranca { get; set; }
 
+        public string Senha { get; set; }
+
         public virtual User Usuario { get; set; }
     }
 }

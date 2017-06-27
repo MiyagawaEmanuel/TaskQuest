@@ -1,6 +1,6 @@
 ﻿$(function () {
 
-    $("#DataNascimento").mask("00/00/0000", { placeholder: "__/__/____" });
+    $("#DataNascimento").mask("00/00/0000", { placeholder: "Dia/Mes/Ano" });
 
     $("#RegisterForm").validate({
         rules: {
@@ -44,13 +44,13 @@
         },
         messages: {
             ConfirmarEmail: {
-                equalTo: "Os emails não conferem."
+                equalTo: "Os emails não são iguais."
             },
             ConfirmarSenha: {
-                equalTo: "As senhas não conferem."
+                equalTo: "As senhas não são iguais."
             },
             DataNascimento: {
-                required: "Digite uma data de nascimento válida."
+                required: "Data de nascimento inválida."
             },
             Sexo: {
                 required: "Digite um gênero válido."

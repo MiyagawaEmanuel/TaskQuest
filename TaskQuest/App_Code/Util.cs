@@ -29,7 +29,7 @@ namespace TaskQuest.App_Code
             else if (hex.Equals("CD2626"))
                 return "cardinal";
             else if (hex.Equals("4F4F4F"))
-                return "emperror";
+                return "emperor";
             else if (hex.Equals("CD950C"))
                 return "pizza";
             else

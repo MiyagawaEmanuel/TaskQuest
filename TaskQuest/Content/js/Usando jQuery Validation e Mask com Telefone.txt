@@ -18,7 +18,7 @@ $("#Form").validate({
     },
     messages: {
         Telefone: {
-            minlength: "Telefone inválido"
+            minlength: "Inválido. Tente no formato de: “(12) 1234 - 1234”"
         }
     }
 });
