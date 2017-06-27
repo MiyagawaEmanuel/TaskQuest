@@ -60,7 +60,7 @@
             },
             ConfirmarEmail: {
                 required: true,
-                equalTo: '#RegisterEmail'
+                equalTo: '#Email'
             },
             DataNascimento: {
                 required: function (element) {

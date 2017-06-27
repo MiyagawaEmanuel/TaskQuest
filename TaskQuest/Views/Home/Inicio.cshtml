@@ -4,20 +4,14 @@
     ViewBag.Title = "Início";
 }
 
-
 @section css
 {
-    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/css/style.css">
-    <link rel="stylesheet" href="~/Content/css/colors.css">
-    <link rel="stylesheet" href="~/Content/css/spectrum.css">
+    <link rel="stylesheet" href="~/Content/css/spectrum.css" />
+    <link rel="stylesheet" href="~/Content/css/colors.css" />
 }
 
 @section js
 {
-    <script src="~/Content/js/jquery.min.js"></script>
-    <script src="~/Content/js/bootstrap.min.js"></script>
     <script src="~/Content/js/spectrum.js"></script>
     <script src="~/Content/js/spectrum.config.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
@@ -41,25 +35,14 @@
     </div>
 
     <div class="container flex-properties-r margintop">
-        <div class="flex-properties-c margin-bottom item group-container">
-            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-            <div class="limit-lines"><spam class="grupo-nome">Recursos Humanos</spam></div>
-        </div>
-
-        <div class="flex-properties-c margin-bottom item group-container">
-            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-            <div class="limit-lines"><spam class="grupo-nome">Grupo de ADS</spam></div>
-        </div>
-
-        <div class="flex-properties-c margin-bottom item group-container">
-            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-            <div class="limit-lines"><spam class="grupo-nome">Projeto Interdisciplinar</spam></div>
-        </div>
-
-        <div class="flex-properties-c item group-container">
-            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-            <div class="limit-lines"><spam class="grupo-nome">Grupo Bom Gosto</spam></div>
-        </div>
+        
+        @foreach (var grupo in Model.Grupos)
+        {
+            <div class="flex-properties-c margin-bottom item group-container">
+                <div class="grupo-elipse" style="background-color: @grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
+                <div class="limit-lines"><spam class="grupo-nome">@grupo.Nome</spam></div>
+            </div>
+        }
 
     </div>
 
@@ -85,70 +68,6 @@
 
         <div class="margin-bottom item">
             <div class="tory-blue-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h4>04/07/2017</h4></div>
-                <div class="select-container">
-                    <select class="form-control">
-                        <option>A Fazer</option>
-                        <option>Fazendo</option>
-                        <option>Feito</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="margin-bottom item">
-            <div class="sea-green-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h4>04/07/2017</h4></div>
-                <div class="select-container">
-                    <select class="form-control">
-                        <option>A Fazer</option>
-                        <option>Fazendo</option>
-                        <option>Feito</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="margin-bottom item">
-            <div class="vivid-violet-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h4>04/07/2017</h4></div>
-                <div class="select-container">
-                    <select class="form-control">
-                        <option>A Fazer</option>
-                        <option>Fazendo</option>
-                        <option>Feito</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="margin-bottom item">
-            <div class="cardinal-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h4>04/07/2017</h4></div>
-                <div class="select-container">
-                    <select class="form-control">
-                        <option>A Fazer</option>
-                        <option>Fazendo</option>
-                        <option>Feito</option>
-                    </select>
-                </div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="emperror-bg filete"></div>
             <div class="quest-body flex-properties-c">
                 <div class="limit-lines"><h4>Relatório Semanal</h4></div>
                 <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
@@ -191,78 +110,8 @@
             </div>
         </div>
 
-        <div class="margin-bottom item">
-            <div class="sea-green-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h1>3</h1></div>
-                <div>04/07/2017</div>
-            </div>
-        </div>
-
-        <div class="margin-bottom item">
-            <div class="vivid-violet-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h1>0</h1></div>
-                <div>04/07/2017</div>
-            </div>
-        </div>
-
-        <div class="margin-bottom item">
-            <div class="cardinal-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h1>4</h1></div>
-                <div>04/07/2017</div>
-            </div>
-        </div>
-
-        <div class="item">
-            <div class="emperror-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h1>4</h1></div>
-                <div>04/07/2017</div>
-            </div>
-        </div>
-
     </div>
 
 </section>
 
-<div class="modal fade" id="modalCriarGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <form id="formCriarGrupo">
-                <div class="modal-header">
-                    <h1 class="modal-title" id="exampleModalLabel">Criar Novo Grupo</h1>
-                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="form-group">
-                        <input type="text" required class="form-control" id="Nome" name="Nome" placeholder="Nome do Grupo">
-                        <label for="Nome"></label>
-                    </div>
-                    <div class="form-group">
-                        <textarea class="form-control" required id="Descricao" name="Descricao" placeholder="Descrição do Grupo"></textarea>
-                        <label for="Descricao"></label>
-                    </div>
-                    <div class="form-group">
-                        <p>Escolha a cor do Grupo</p>
-                        <input type="hidden" id="Cor" name="Cor" value="106494">
-                    </div>
-                </div>
-                <div class="modal-footer">
-                    <input type="submit" class="btn btn-secondary btn-cg" value="Criar">
-                </div>
-            </form>
-        </div>
-    </div>
-</div>
+@Html.Partial("_CriarGrupoPartial", Model.CriarGrupoPartial)

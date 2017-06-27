@@ -1,0 +1,110 @@
+﻿<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link rel="stylesheet" href="~/Content/css/colors.css">
+    <link rel="stylesheet" href="~/Content/css/spectrum.css">
+
+    <title></title>
+</head>
+
+<!-- Início do Layout -->
+
+<header>
+    <div><p class="txtlogo logo-hidden icon-white"><a href="Inicio.html" style="color: white;"><span id="txt-task">Task</span><span id="txt-quest">Quest</span></span></a></p></div>
+    <div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-group" aria-hidden="true"></i></li></div>
+    <div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-check" aria-hidden="true"></i></li></div>
+    <div class="icon-container"><li class="li-hidden"><i class="fa fa-bell" aria-hidden="true"></i></li></div>
+    <div class="icon-container icon-white">
+        <li class="dropdown li-hidden">
+            <a class="header-a" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                <i class="fa fa-bars" aria-hidden="true"></i>
+            </a>
+            <ul class="dropdown-menu">
+                <li><a href="#" data-target="#modalCadastro" data-toggle="modal">Criar Grupo</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Criar Quest</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Visualizar Perfil</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#">Configurações</a></li>
+                <li role="separator" class="divider"></li>
+                <li><a href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
+            </ul>
+        </li>
+    </div>
+</header>
+
+<!-- Fim do Layout -->
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a"><h2>Quest</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads"></div>
+        </div>
+    </div>
+
+    <form>
+        <div class="container flex-properties-c">
+            <div><h1>Nome da Quest</h1></div>
+            <div><p class="justify">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum faucibus ac enim non sodales. Phasellus non turpis dictum, sagittis erat sit amet, luctus dolor. Aenean sed commodo eros, nec viverra ex. Fusce placerat eleifend mollis. Phasellus at nulla scelerisque, volutpat dui ac, varius dui. Cras urna ipsum, tempor nec velit et, lobortis hendrerit massa. In ac risus tempus, accumsan mi ac, pulvinar elit. Quisque ut mi blandit, laoreet est eget, ultricies leo. Maecenas leo lacus, sollicitudin non lorem a, vulputate consectetur neque. Vivamus sit amet pharetra urna. Vestibulum porttitor a felis eu convallis. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed hendrerit nisl et bibendum commodo. Integer et ultricies lacus. In pulvinar augue quis felis placerat, vel consequat purus convallis. Phasellus ullamcorper rutrum purus mollis volutpat.</p></div>
+        </div>
+    </form>
+
+</section>
+
+<section class="pads-bot">
+    <div id="task-container" class="container flex-properties-r margintop"></div>
+</section>
+
+<div class="modal fade" id="modalTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Informações da Task</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="form-group">
+                    <h4 id="NomeTask"></h4>
+                </div>
+                <div class="form-group">
+                    <h4 id="DescricaoTask"></h4>
+                </div>
+                <div class="form-group">
+                    <p>Data de Conclusão</p>
+                    <h4 id="DataConclusao"></h4>
+                </div>
+                <div class="select-container">
+                    <p>Dificuldade</p>
+                    <select id="Dificuldade" class="form-control">
+                        <option value="0">Fácil</option>
+                        <option value="1">Médio</option>
+                        <option value="2">Dicícil</option>
+                    </select>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-secondary btn-cg" data-dismiss="modal">Sair</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="~Content/js/jquery.min.js"></script>
+<script src="~Content/js/bootstrap.min.js"></script>
+<script src="~Content/js/spectrum.js"></script>
+<script src="~Content/js/spectrum.config.js"></script>
+<script src="~Content/js/quest.js"></script>
+
+</body>
+</html>

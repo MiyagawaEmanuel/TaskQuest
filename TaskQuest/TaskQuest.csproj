@@ -250,6 +250,7 @@
     <Content Include="Content\img\gantt.jpg" />
     <Content Include="Content\img\gantt.png" />
     <Content Include="Content\img\gantt2.jpeg" />
+    <Content Include="Content\img\groupicon.png" />
     <Content Include="Content\img\grupo.png" />
     <Content Include="Content\img\header-bg.jpg" />
     <Content Include="Content\img\iphone.png" />
@@ -381,9 +382,7 @@
     <Content Include="Views\Shared\_BalloonPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Views\Configuracao\" />
-    <Folder Include="Views\Grupo\" />
-    <Folder Include="Views\Quest\" />
+    <Content Include="Views\Home\Grupos.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
@@ -395,6 +394,30 @@
     <EmbeddedResource Include="Migrations\201706271341258_InitialMigration.resx">
       <DependentUpon>201706271341258_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_CriarGrupoPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Quest\CriarQuest.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Pendencias.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Home\Feedbacks.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Grupo\Index.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Quest\Quest.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Quest\QuestAdm.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

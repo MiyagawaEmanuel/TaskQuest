@@ -27,6 +27,7 @@ namespace TaskQuest.Controllers
             return View();
         }
 
+        [Authorize]
         public ActionResult Inicio()
         {
 
@@ -57,11 +58,13 @@ namespace TaskQuest.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Feedbacks()
         {
             return View();
         }
 
+        [Authorize]
         public ActionResult Grupos()
         {
             List<Grupo> model = new List<Grupo>();
@@ -70,6 +73,7 @@ namespace TaskQuest.Controllers
             return View(model);
         }
 
+        [Authorize]
         public ActionResult Pendencias()
         {
             return View();

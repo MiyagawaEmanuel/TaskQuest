@@ -111,9 +111,9 @@ namespace TaskQuest.Controllers
                 Sexo = model.Sexo,
                 DataNascimento = model.DataNascimento.StringToDateTime(),
                 Sobrenome = model.Sobrenome,
-                UserName = model.RegisterEmail,
+                UserName = model.Email,
                 Cor = model.Cor.HexToColor(),
-                Email = model.RegisterEmail
+                Email = model.Email
             };
 
             if(user.Cor == null)
@@ -123,7 +123,7 @@ namespace TaskQuest.Controllers
                 return RedirectToAction("Inicio", "Home");
             }
 
-            var result = await UserManager.CreateAsync(user, model.RegisterSenha);
+            var result = await UserManager.CreateAsync(user, model.Senha);
             if (result.Succeeded)
             {
                 var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
