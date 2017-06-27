@@ -1,5 +1,10 @@
 $("#Cor").spectrum({
-    move: function(color) {
+    preferredFormat: "hex",
+    allowEmpty: false,
+    chooseText: "Selecionar",
+    cancelText: "",
+    move: function (color) {
         $("#Cor").val(color.toHex());
-    }
+    },
+    color: '#106494'
 });

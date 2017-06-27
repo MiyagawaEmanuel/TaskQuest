@@ -1,28 +1,268 @@
 ﻿@model TaskQuest.ViewModels.InicioViewModel
 
 @{
-    ViewBag.Title = "Inicio";
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    ViewBag.Title = "Início";
 }
 
-<section>
-    <div class="container">
-        <div class="row inicial">
-            <div class="col-md-4"><a href="/Home/CriarGrupo">Criar Grupo</a></div>
-            <div class="col-md-4"><h1>Grupos</h1></div>
-            <div class="col-md-4"><a href="/Home/Grupos">Ver todos</a></div>
+
+@section css
+{
+    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
+    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
+    <link rel="stylesheet" href="~/Content/css/style.css">
+    <link rel="stylesheet" href="~/Content/css/colors.css">
+    <link rel="stylesheet" href="~/Content/css/spectrum.css">
+}
+
+@section js
+{
+    <script src="~/Content/js/jquery.min.js"></script>
+    <script src="~/Content/js/bootstrap.min.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/inicio.js"></script>
+}
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a"><h2>GRUPOS</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <a href="" data-target="#modalCriarGrupo" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a href="" data-target="#modalCriarGrupo" data-toggle="modal">Criar Grupos</a></h3>
+            </div>
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-caret-down elipse icon-black" aria-hidden="true"></i>
+                <h3><a href="">Ver Todos</a></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container flex-properties-r margintop">
+        <div class="flex-properties-c margin-bottom item group-container">
+            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
+            <div class="limit-lines"><spam class="grupo-nome">Recursos Humanos</spam></div>
         </div>
 
-        <div class="row grupo-nome">
-            @foreach (var grupo in Model.Grupos)
-            {
-                <div class="col-md-3">
-                    <div class="row">
-                        <a href="/Home/Grupo/@grupo.Id"><div class="col-md-12 grupo-elipse"></div></a>
-                        <a href="/Home/Grupo/@grupo.Id"><div class="col-md-12"><h2>@grupo.Nome</h2></div></a>
-                    </div>
-                </div>}
+        <div class="flex-properties-c margin-bottom item group-container">
+            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
+            <div class="limit-lines"><spam class="grupo-nome">Grupo de ADS</spam></div>
         </div>
-        <hr class="quebra">
+
+        <div class="flex-properties-c margin-bottom item group-container">
+            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
+            <div class="limit-lines"><spam class="grupo-nome">Projeto Interdisciplinar</spam></div>
+        </div>
+
+        <div class="flex-properties-c item group-container">
+            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
+            <div class="limit-lines"><spam class="grupo-nome">Grupo Bom Gosto</spam></div>
+        </div>
+
     </div>
+
 </section>
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r margintop">
+        <div class="title-a"><h2>PENDÊNCIAS</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-plus elipse" aria-hidden="true"></i>
+                <h3><a href="CriarQuest.html">Criar Quest</a></h3>
+            </div>
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
+                <h3><a href="">Ver Todas</a></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container flex-properties-r margintop">
+
+        <div class="margin-bottom item">
+            <div class="tory-blue-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h4>04/07/2017</h4></div>
+                <div class="select-container">
+                    <select class="form-control">
+                        <option>A Fazer</option>
+                        <option>Fazendo</option>
+                        <option>Feito</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="sea-green-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h4>04/07/2017</h4></div>
+                <div class="select-container">
+                    <select class="form-control">
+                        <option>A Fazer</option>
+                        <option>Fazendo</option>
+                        <option>Feito</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="vivid-violet-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h4>04/07/2017</h4></div>
+                <div class="select-container">
+                    <select class="form-control">
+                        <option>A Fazer</option>
+                        <option>Fazendo</option>
+                        <option>Feito</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="cardinal-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h4>04/07/2017</h4></div>
+                <div class="select-container">
+                    <select class="form-control">
+                        <option>A Fazer</option>
+                        <option>Fazendo</option>
+                        <option>Feito</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="emperror-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h4>04/07/2017</h4></div>
+                <div class="select-container">
+                    <select class="form-control">
+                        <option>A Fazer</option>
+                        <option>Fazendo</option>
+                        <option>Feito</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r margintop">
+        <div class="title-a"><h2>FEEDBACK</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
+                <h3 class=""><a href="">Ver Todas</a></h3>
+            </div>
+        </div>
+    </div>
+
+    <div class="container flex-properties-r margintop">
+
+        <div class="margin-bottom item">
+            <div class="tory-blue-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h1>5</h1></div>
+                <div><h4>04/07/2017</h4></div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="sea-green-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h1>3</h1></div>
+                <div>04/07/2017</div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="vivid-violet-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h1>0</h1></div>
+                <div>04/07/2017</div>
+            </div>
+        </div>
+
+        <div class="margin-bottom item">
+            <div class="cardinal-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h1>4</h1></div>
+                <div>04/07/2017</div>
+            </div>
+        </div>
+
+        <div class="item">
+            <div class="emperror-bg filete"></div>
+            <div class="quest-body flex-properties-c">
+                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
+                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
+                <div><h1>4</h1></div>
+                <div>04/07/2017</div>
+            </div>
+        </div>
+
+    </div>
+
+</section>
+
+<div class="modal fade" id="modalCriarGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="formCriarGrupo">
+                <div class="modal-header">
+                    <h1 class="modal-title" id="exampleModalLabel">Criar Novo Grupo</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="Nome" name="Nome" placeholder="Nome do Grupo">
+                        <label for="Nome"></label>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" required id="Descricao" name="Descricao" placeholder="Descrição do Grupo"></textarea>
+                        <label for="Descricao"></label>
+                    </div>
+                    <div class="form-group">
+                        <p>Escolha a cor do Grupo</p>
+                        <input type="hidden" id="Cor" name="Cor" value="106494">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-secondary btn-cg" value="Criar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>

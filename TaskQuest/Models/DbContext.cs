@@ -649,11 +649,6 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<Telefone>()
-                .Property(e => e.Ddd)
-                .HasColumnName("tel_ddd")
-                .IsRequired();
-
-            modelBuilder.Entity<Telefone>()
                 .Property(e => e.Numero)
                 .HasColumnName("tel_numero")
                 .IsRequired();
@@ -699,18 +694,14 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<Task>()
-                .Property(e => e.Duracao)
-                .HasColumnName("tsk_duracao")
-                .IsRequired();
-
-            modelBuilder.Entity<Task>()
                 .Property(e => e.DataCriacao)
                 .HasColumnName("tsk_data_criacao")
                 .IsRequired();
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.DataConclusao)
-                .HasColumnName("tsk_data_conclusao");
+                .HasColumnName("tsk_data_conclusao")
+                .IsRequired();
 
             modelBuilder.Entity<Task>()
                 .Property(e => e.RequerVerificacao)

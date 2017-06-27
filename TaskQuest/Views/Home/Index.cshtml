@@ -1,6 +1,6 @@
 ﻿@model TaskQuest.ViewModels.LoginViewModel
 
-@{ 
+@{
     Layout = null;
 }
 
@@ -29,6 +29,8 @@
     <link rel="stylesheet" href="~/Content/css/main.css">
     <link rel='stylesheet' href='~/Content/css/spectrum.css' />
 
+
+    <title>TaskQuest</title>
 </head>
 
 <body>
@@ -36,11 +38,6 @@
     <header class="navbar navbar-inverse navbar-fixed-top open">
         <div class="container">
             <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
                 <a class="logo" href="index.html"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
             </div>
             <div class="navbar-collapse collapse">
@@ -155,7 +152,7 @@
 
 
     <!--Pricing-->
-    <section id="pricing" class="pad-lg2">
+    <section id="pricing">
         <div class="container">
             <div class="row margin-40">
                 <div class="col-sm-8 col-sm-offset-2 text-center">
@@ -165,45 +162,41 @@
             </div>
 
             <div class="row margin-50">
-                <div class="centralize-h-1">
-                    <div class="centralize-h-2">
 
-                        <div class="col-md-6 pricing-container wow fadeInUp" data-wow-delay="0.1s">
-                            <ul class="list-unstyled pricing-table text-center">
-                                <li class="headline"><h5 class="white">Plano Free</h5></li>
-                                <li class="price">
-                                    <div class="amount">Grátis</div>
-                                </li>
-                                <li class="info">As funcionalidades básicas do sistema</li>
-                                <li class="features first">Crie grupos e tarefas</li>
-                                <li class="features">Mande mensagens para integrantes do grupo</li>
-                                <li class="features">Organize suas tarefas</li>
-                                <li class="features last btn btn-secondary btn-wide"><a href="#">Começar</a></li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-6 pricing-container wow fadeInUp" data-wow-delay="0.3s">
-                            <ul class="list-unstyled pricing-table text-center">
-                                <li class="headline"><h5 class="white">User Premium</h5></li>
-                                <li class="price">
-                                    <div class="amount">
-                                        R$100
-                                        <small>/m</small>
-                                    </div>
-                                </li>
-                                <li class="info">Adiciona funcionalidades ao sistema</li>
-                                <li class="features first">Participe de infinitos de grupos</li>
-                                <li class="features">Seja administrador de todos eles</li>
-                                <li class="features">Visualize o progresso das atividades do grupo</li>
-                                <li class="features last btn btn-secondary btn-wide"><a href="#">Começar</a></li>
-                            </ul>
-                        </div>
-
-                    </div>
+                <div class="col-md-6 pricing-container wow fadeInUp" data-wow-delay="0.1s">
+                    <ul class="list-unstyled pricing-table text-center">
+                        <li class="headline"><h5 class="white">Plano Free</h5></li>
+                        <li class="price">
+                            <div class="amount">Grátis</div>
+                        </li>
+                        <li class="info">As funcionalidades básicas do sistema</li>
+                        <li class="features first">Crie grupos e tarefas</li>
+                        <li class="features">Mande mensagens para integrantes do grupo</li>
+                        <li class="features">Organize suas tarefas</li>
+                        <li class="features last btn btn-secondary btn-wide"><a href="#">Começar</a></li>
+                    </ul>
                 </div>
-            </div>
 
+                <div class="col-md-6 pricing-container wow fadeInUp" data-wow-delay="0.3s">
+                    <ul class="list-unstyled pricing-table text-center">
+                        <li class="headline"><h5 class="white">User Premium</h5></li>
+                        <li class="price">
+                            <div class="amount">
+                                R$100
+                                <small>/m</small>
+                            </div>
+                        </li>
+                        <li class="info">Adiciona funcionalidades ao sistema</li>
+                        <li class="features first">Participe de infinitos de grupos</li>
+                        <li class="features">Seja administrador de todos eles</li>
+                        <li class="features">Visualize o progresso das atividades do grupo</li>
+                        <li class="features last btn btn-secondary btn-wide"><a href="#">Começar</a></li>
+                    </ul>
+                </div>
+
+            </div>
         </div>
+
     </section>
 
 
@@ -237,18 +230,15 @@
             <div class="row">
                 <ul class="list-inline social social2">
                     <div class="col-md-4 marginsocial">
-                        <li class="marginicon">Sobre a empresa</li>
                         <li><a href="#"><i class="fa fa-facebook tamanho"></i></a></li>
                     </div>
                     <div class="col-md-4 marginsocial">
-                        <li class="marginicon">Produtos</li>
                         <li><a href="#"><i class="fa fa-twitter tamanho"></i></a></li>
                     </div>
                     <div class="col-md-4 marginsocial">
-                        <li class="marginicon">Institucional</li>
                         <li><a href="#"><i class="fa fa-pinterest tamanho"></i></a></li>
                     </div>
-                    <div class="col-sm-4 text-center col-md-12">
+                    <div class="col-sm-4 copyright col-md-12">
                         <p class="cpright">
                             <small>
                                 Copyright &copy; 2017. Todos os direitos reservados.

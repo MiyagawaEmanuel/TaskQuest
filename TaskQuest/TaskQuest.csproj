@@ -175,14 +175,7 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\crt_cartao.cs" />
-    <Compile Include="App_Code\Cursor.cs" />
-    <Compile Include="App_Code\gru_grupo.cs" />
-    <Compile Include="App_Code\Autenticar.cs" />
-    <Compile Include="App_Code\tel_telefone.cs" />
-    <Compile Include="App_Code\usu_usuario.cs" />
     <Compile Include="App_Code\Util.cs" />
-    <Compile Include="App_Code\uxg_usuario_grupo.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Identity\ApplicationCookieIdentityValidator.cs" />
@@ -192,14 +185,17 @@
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\Startup.Auth.cs" />
     <Compile Include="Controllers\AccountController.cs" />
+    <Compile Include="Controllers\ConfiguracaoController.cs" />
     <Compile Include="Controllers\FileController.cs" />
+    <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706190112518_InitialMigration.cs" />
-    <Compile Include="Migrations\201706190112518_InitialMigration.Designer.cs">
-      <DependentUpon>201706190112518_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201706271341258_InitialMigration.cs" />
+    <Compile Include="Migrations\201706271341258_InitialMigration.Designer.cs">
+      <DependentUpon>201706271341258_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -236,12 +232,14 @@
   <ItemGroup>
     <Content Include="Content\css\animate.css" />
     <Content Include="Content\css\balloon.css" />
+    <Content Include="Content\css\bootstrap.css" />
     <Content Include="Content\css\bootstrap.min.css" />
     <Content Include="Content\css\colors.css" />
-    <Content Include="Content\css\estilo.css" />
+    <Content Include="Content\css\configuracoes.css" />
     <Content Include="Content\css\font-awesome.css" />
     <Content Include="Content\css\font-awesome.min.css" />
-    <Content Include="Content\css\ie.css" />
+    <Content Include="Content\css\quest-adm.css" />
+    <Content Include="Content\css\style.css" />
     <Content Include="Content\fonts\fontawesome-webfont.svg" />
     <Content Include="Content\img\equipe.jpg" />
     <Content Include="Content\img\equipe2.jpg" />
@@ -261,34 +259,104 @@
     <Content Include="Content\img\pic03.jpg" />
     <Content Include="Content\img\press-01.jpg" />
     <Content Include="Content\img\press-02.jpg" />
-    <Content Include="Content\css\jquery-ui.css" />
-    <Content Include="Content\css\layout.css" />
     <Content Include="Content\css\main.css" />
     <Content Include="Content\css\spectrum.css" />
-    <Content Include="Content\css\style.css" />
     <Content Include="Content\js\balloon.js" />
+    <Content Include="Content\js\bootstrap.js" />
     <Content Include="Content\js\bootstrap.min.js" />
+    <Content Include="Content\js\canvas\canvasjs.min.js" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\basic-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-date-time-axis.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-line-customization.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-null%28empty%29-data.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-stripline.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-xy-zoom-type.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\line-chart-with-zooming.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\multi-series-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\01-line-chart\multiple-charts-in-one-page.html" />
+    <Content Include="Content\js\canvas\examples\02-column-chart\basic-column-chart.html" />
+    <Content Include="Content\js\canvas\examples\02-column-chart\column-chart-with-index-label-customization.html" />
+    <Content Include="Content\js\canvas\examples\02-column-chart\multi-series-column-chart.html" />
+    <Content Include="Content\js\canvas\examples\03-area-chart\area-chart-with-date-time-axis.html" />
+    <Content Include="Content\js\canvas\examples\03-area-chart\area-chart-with-line-thickness.html" />
+    <Content Include="Content\js\canvas\examples\03-area-chart\area-chart-with-opacity.html" />
+    <Content Include="Content\js\canvas\examples\03-area-chart\area-chart-with-xy-zoom-type.html" />
+    <Content Include="Content\js\canvas\examples\03-area-chart\basic-area-chart.html" />
+    <Content Include="Content\js\canvas\examples\04-pie-chart\basic-pie-chart.html" />
+    <Content Include="Content\js\canvas\examples\04-pie-chart\pie-chart-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\05-bar-chart\bar-chart-with-stripline.html" />
+    <Content Include="Content\js\canvas\examples\05-bar-chart\basic-bar-chart.html" />
+    <Content Include="Content\js\canvas\examples\06-doughnut-chart\basic-doughnut-chart.html" />
+    <Content Include="Content\js\canvas\examples\06-doughnut-chart\doughnut-chart-with-explode-on-click-disabled.html" />
+    <Content Include="Content\js\canvas\examples\06-doughnut-chart\doughnut-chart-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\07-spline-chart\basic-spline-chart.html" />
+    <Content Include="Content\js\canvas\examples\07-spline-chart\spline-chart-with-marker-customization.html" />
+    <Content Include="Content\js\canvas\examples\08-bubble-chart\basic-bubble-chart.html" />
+    <Content Include="Content\js\canvas\examples\08-bubble-chart\bubble-chart-with-tooltip-customization.html" />
+    <Content Include="Content\js\canvas\examples\09-stacked-column-chart\basic-stacked-column-chart.html" />
+    <Content Include="Content\js\canvas\examples\09-stacked-column-chart\stacked-column-with-total-shown-on-top.html" />
+    <Content Include="Content\js\canvas\examples\10-stacked-bar-chart\basic-stacked-bar-chart.html" />
+    <Content Include="Content\js\canvas\examples\10-stacked-bar-chart\stacked-bar-chart-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\11-stacked-area-chart\basic -stacked-area-chart.html" />
+    <Content Include="Content\js\canvas\examples\11-stacked-area-chart\stacked-area-chart-with-shared-tooltip.html" />
+    <Content Include="Content\js\canvas\examples\12-scatter-chart\basic-scatter-chart.html" />
+    <Content Include="Content\js\canvas\examples\12-scatter-chart\multi-series-scatter-chart.html" />
+    <Content Include="Content\js\canvas\examples\13-candlestick-chart\basic-candle-stick-chart.html" />
+    <Content Include="Content\js\canvas\examples\13-candlestick-chart\candle-stick-chart-with-rising-color-and-tooltip-customization.html" />
+    <Content Include="Content\js\canvas\examples\14-ohlc%28stock%29-chart\basic-ohlc-chart.html" />
+    <Content Include="Content\js\canvas\examples\14-ohlc%28stock%29-chart\ohlc-chart-with-tooltip-customization.html" />
+    <Content Include="Content\js\canvas\examples\15-step-line-chart\basic-step-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\15-step-line-chart\multi-series-step-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\16-step-area-chart\basic-step-area-chart.html" />
+    <Content Include="Content\js\canvas\examples\17-spline-area-chart\basic-spline-area-chart.html" />
+    <Content Include="Content\js\canvas\examples\17-spline-area-chart\spline-area-chart-with-stripline.html" />
+    <Content Include="Content\js\canvas\examples\18-range-bar-chart\basic-range-bar-chart.html" />
+    <Content Include="Content\js\canvas\examples\18-range-bar-chart\range-bar-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\19-range-column-chart\basic-range-column-chart.html" />
+    <Content Include="Content\js\canvas\examples\19-range-column-chart\range-column-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\20-range-area-chart\basic-range-area-chart.html" />
+    <Content Include="Content\js\canvas\examples\20-range-area-chart\range-area-with-null-data.html" />
+    <Content Include="Content\js\canvas\examples\21-range-spline-area-chart\basic-range-spline-area_-chart.html" />
+    <Content Include="Content\js\canvas\examples\21-range-spline-area-chart\range-spline-area-with-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\22-stacked-area-100-chart\basic-stacked-area-100-chart.html" />
+    <Content Include="Content\js\canvas\examples\22-stacked-area-100-chart\stacked-area-100-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\23-stacked-bar-100-chart\basic-stacked-bar-100-chart.html" />
+    <Content Include="Content\js\canvas\examples\23-stacked-bar-100-chart\stacked-bar-100-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\24-stacked-column-100-chart\basic-stacked-column-100-chart.html" />
+    <Content Include="Content\js\canvas\examples\24-stacked-column-100-chart\stacked-column-100-with-index-label.html" />
+    <Content Include="Content\js\canvas\examples\25 -jquery-plugin\basic-jquery-line-chart.html" />
+    <Content Include="Content\js\canvas\examples\25 -jquery-plugin\multiple-charts-in-one-page.html" />
+    <Content Include="Content\js\canvas\examples\26-some-common-options-across-all-chart-types\chart-with-animation.html" />
+    <Content Include="Content\js\canvas\examples\26-some-common-options-across-all-chart-types\combination-charts.html" />
+    <Content Include="Content\js\canvas\examples\26-some-common-options-across-all-chart-types\culture.html" />
+    <Content Include="Content\js\canvas\examples\26-some-common-options-across-all-chart-types\export-chart.html" />
+    <Content Include="Content\js\canvas\examples\26-some-common-options-across-all-chart-types\hide-and-unhide-data-series-from-legend.html" />
+    <Content Include="Content\js\canvas\instruction.txt" />
+    <Content Include="Content\js\canvas\jquery.canvasjs.min.js" />
+    <Content Include="Content\js\canvas\license.txt" />
+    <Content Include="Content\js\change-modal.js" />
+    <Content Include="Content\js\codespec.js" />
+    <Content Include="Content\js\configuracoes.js" />
+    <Content Include="Content\js\criar-quest.js" />
+    <Content Include="Content\js\databinder.js" />
+    <Content Include="Content\js\graphics.js" />
+    <Content Include="Content\js\inicio.js" />
+    <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Content\js\jquery.mask.js" />
     <Content Include="Content\js\jquery.validate.js" />
-    <Content Include="Content\js\spectrum.config.js" />
-    <Content Include="Content\js\graphics.js" />
-    <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\main.js" />
     <Content Include="Content\js\modernizr-2.7.1.js" />
+    <Content Include="Content\js\quest-adm.js" />
+    <Content Include="Content\js\quest.js" />
+    <Content Include="Content\js\spectrum.config.js" />
+    <Content Include="Content\js\jquery.min.js" />
     <Content Include="Content\js\spectrum.js" />
-    <Content Include="Content\js\tabs.js" />
-    <Content Include="Content\js\Usando jQuery Validation e Mask com Telefone.txt" />
     <Content Include="Content\js\wow.min.js" />
     <Content Include="favicon.ico" />
-    <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
-    <Content Include="fonts\glyphicons-halflings-regular.woff2" />
-    <Content Include="fonts\glyphicons-halflings-regular.woff" />
-    <Content Include="fonts\glyphicons-halflings-regular.ttf" />
-    <Content Include="fonts\glyphicons-halflings-regular.eot" />
     <Content Include="Content\img\script26mar.zip" />
     <Content Include="Content\img\Thumbs.db" />
     <Content Include="Content\fonts\fontawesome-webfont.eot" />
@@ -297,23 +365,6 @@
     <Content Include="Content\fonts\fontawesome-webfont.woff2" />
     <Content Include="Content\fonts\FontAwesome.otf" />
     <Content Include="Content\js\index.js" />
-    <None Include="Scripts\jquery-3.1.1.intellisense.js" />
-    <Content Include="Scripts\bootstrap.js" />
-    <Content Include="Scripts\bootstrap.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.js" />
-    <Content Include="Scripts\jquery-3.1.1.min.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.js" />
-    <Content Include="Scripts\jquery-3.1.1.slim.min.js" />
-    <None Include="Scripts\jquery.validate-vsdoc.js" />
-    <Content Include="Scripts\jquery.validate.js" />
-    <Content Include="Scripts\jquery.validate.min.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.js" />
-    <Content Include="Scripts\jquery.validate.unobtrusive.min.js" />
-    <Content Include="Scripts\modernizr-2.8.3.js" />
-    <Content Include="Scripts\respond.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.js" />
-    <Content Include="Scripts\respond.matchmedia.addListener.min.js" />
-    <Content Include="Scripts\respond.min.js" />
     <Content Include="Web.config" />
     <Content Include="Web.Debug.config">
       <DependentUpon>Web.config</DependentUpon>
@@ -325,40 +376,24 @@
     <Content Include="Views\_ViewStart.cshtml" />
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
-    <Content Include="Views\Home\About.cshtml" />
-    <Content Include="Views\Home\Contact.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_AdicionarCartaoPartial.cshtml" />
-    <Content Include="Views\Shared\_AdicionarTelefonePartial.cshtml" />
-    <Content Include="Views\Shared\_AdicionarUsuarioGrupoPartial.cshtml" />
-    <Content Include="Views\Shared\_CartoesPartial.cshtml" />
-    <Content Include="Views\Shared\_ExcluirIntegranteGrupoPartial.cshtml" />
     <Content Include="Views\Shared\_RegisterPartial.cshtml" />
-    <Content Include="Views\Shared\_TelefonesPartial.cshtml" />
-    <Content Include="Views\Shared\_TornarAdministrador.cshtml" />
-    <Content Include="Views\Home\CriarGrupo.cshtml" />
-    <Content Include="Views\Home\Grupo.cshtml" />
-    <Content Include="Views\Home\GrupoAdmin.cshtml" />
-    <Content Include="Views\Home\Grupos.cshtml" />
-    <Content Include="Views\Home\Inicio.cshtml" />
-    <Content Include="Views\Home\Usuario.cshtml" />
     <Content Include="Views\Shared\_BalloonPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="App_Data\" />
+    <Folder Include="Views\Configuracao\" />
+    <Folder Include="Views\Grupo\" />
+    <Folder Include="Views\Quest\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.1.slim.min.map" />
+    <Content Include="Views\Home\Inicio.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="Scripts\jquery-3.1.1.min.map" />
-  </ItemGroup>
-  <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706190112518_InitialMigration.resx">
-      <DependentUpon>201706190112518_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201706271341258_InitialMigration.resx">
+      <DependentUpon>201706271341258_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

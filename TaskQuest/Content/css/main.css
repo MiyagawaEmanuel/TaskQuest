@@ -189,6 +189,15 @@ a:hover, a:focus {
 /* ==========================================================================
    Colors em Sass
    ========================================================================== */
+
+.white{
+    color: white;
+}
+
+.black{
+    color: black;
+}
+
 /* ==========================================================================
    Nav Styles
    ========================================================================== */
@@ -404,9 +413,14 @@ hr.line {
   padding-right: 20px; }
 
 footer {
-  color: #ffffff;
-  background-color: #70cbce;
-  padding: 40px 0; }
+    color: #ffffff;
+    background-color: #106494;
+    padding: 40px 0;
+}
+
+.copyright{
+    width: 100%;
+}
 
 .social li a:hover {
   opacity: 0.5; }
@@ -439,11 +453,6 @@ footer {
 /* ==========================================================================
    Pricing tables
    ========================================================================== */
-.centralize-h-1 {
-  left: 50%; }
-
-.centralize-h-2 {
-  left: -50%; }
 
 #pricing {
   background: #70cbce; }
@@ -490,6 +499,10 @@ footer {
   font-weight: bold;
   padding-bottom: 20px;
   padding-top: 20px; }
+
+.pricing-container{
+    margin-bottom: 2%;
+}
 
 .pricing-table:hover li.price {
   background: #303236;

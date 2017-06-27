@@ -114,8 +114,8 @@ C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\p
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.resources.dll
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Razor.resources.dll
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
-C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.dll
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.pdb
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csprojResolveAssemblyReference.cache
+C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
+C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
