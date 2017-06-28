@@ -1,21 +1,14 @@
 ﻿@model TaskQuest.ViewModels.InicioViewModel
 
-@{
-    ViewBag.Title = "Início";
+@section css{
+    <link rel="stylesheet" href="~/Content/css/spectrum.css">
 }
 
-@section css
-{
-    <link rel="stylesheet" href="~/Content/css/spectrum.css" />
-    <link rel="stylesheet" href="~/Content/css/colors.css" />
-}
-
-@section js
-{
-    <script src="~/Content/js/spectrum.js"></script>
-    <script src="~/Content/js/spectrum.config.js"></script>
-    <script src="~/Content/js/jquery.validate.js"></script>
-    <script src="~/Content/js/inicio.js"></script>
+@section js{
+    <script src="~Content/js/spectrum.js"></script>
+    <script src="~Content/js/spectrum.config.js"></script>
+    <script src="~Content/js/jquery.validate.js"></script>
+    <script src="~Content/js/inicio.js"></script>
 }
 
 <section class="pads-bot">
@@ -36,13 +29,12 @@
 
     <div class="container flex-properties-r margintop">
         
-        @foreach (var grupo in Model.Grupos)
-        {
-            <div class="flex-properties-c margin-bottom item group-container">
-                <div class="grupo-elipse" style="background-color: @grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
-                <div class="limit-lines"><spam class="grupo-nome">@grupo.Nome</spam></div>
-            </div>
-        }
+    @foreach (var grupo in Model.Grupos){
+        <div class="flex-properties-c margin-bottom item group-container">
+            <div class="grupo-elipse" style="background-color: @grupo.Cor"><img src="img/groupicon.png"></div>
+            <div class="limit-lines"><spam class="grupo-nome">@grupo.Nome</spam></div>
+        </div>
+    }
 
     </div>
 
@@ -66,12 +58,13 @@
 
     <div class="container flex-properties-r margintop">
 
+    @foreach (var task in Model.Pendencias){
         <div class="margin-bottom item">
-            <div class="tory-blue-bg filete"></div>
+            <div class="filete" style="background-color: @task.Quest.Cor"></div>
             <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h4>04/07/2017</h4></div>
+                <div class="limit-lines"><h4>@task.Nome</h4></div>
+                <div class="limit-lines"><h4>@task.Quest.Descricao</h4></div>
+                <div><h4>task.DataConclusao</h4></div>
                 <div class="select-container">
                     <select class="form-control">
                         <option>A Fazer</option>
@@ -81,6 +74,7 @@
                 </div>
             </div>
         </div>
+    }
 
     </div>
 
@@ -100,18 +94,19 @@
 
     <div class="container flex-properties-r margintop">
 
+    @foreach (var feb in Model.Feedbacks){
         <div class="margin-bottom item">
-            <div class="tory-blue-bg filete"></div>
+            <div class="filete" style="background-color: @feb.Cor"></div>
             <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                <div><h1>5</h1></div>
-                <div><h4>04/07/2017</h4></div>
+                <div class="limit-lines"><h4>@feb.Nome</h4></div>
+                <div class="limit-lines"><h4>@feb.Resposta</h4></div>
+                <div><h1>@feb.Nota</h1></div>
+                <div><h4>feb.DataConclusao</h4></div>
             </div>
         </div>
+    }
 
     </div>
 
 </section>
-
 @Html.Partial("_CriarGrupoPartial", Model.CriarGrupoPartial)

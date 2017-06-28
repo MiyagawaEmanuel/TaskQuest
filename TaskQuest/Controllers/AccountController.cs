@@ -112,16 +112,9 @@ namespace TaskQuest.Controllers
                 DataNascimento = model.DataNascimento.StringToDateTime(),
                 Sobrenome = model.Sobrenome,
                 UserName = model.Email,
-                Cor = model.Cor.HexToColor(),
+                Cor = model.Cor,
                 Email = model.Email
             };
-
-            if(user.Cor == null)
-            {
-                TempData["Response"] = "Cor inválida";
-                TempData["Class"] = "yellow-alert";
-                return RedirectToAction("Inicio", "Home");
-            }
 
             var result = await UserManager.CreateAsync(user, model.Senha);
             if (result.Succeeded)

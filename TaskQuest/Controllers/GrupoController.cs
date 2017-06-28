@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System;
 using System.Linq;
 using System.Web.Mvc;
 using TaskQuest.Models;
@@ -30,12 +31,12 @@ namespace TaskQuest.Controllers
             TempData["Alert"] = "Criado com sucesso";
             TempData["Class"] = "green-alert";
 
-            return RedirectToAction("Grupo", "Home", new ButtonViewModel(model.Id));
+            return RedirectToAction("Grupo", "Home");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Grupo(ButtonViewModel model)
+        public ActionResult Grupo(LinkViewModel model)
         {
 
             Grupo grupo = db.Grupo.Find(model.Id);
@@ -82,7 +83,7 @@ namespace TaskQuest.Controllers
 
             TempData["Class"] = "green-alert";
             TempData["Alert"] = "Atualizado com sucesso";
-            return RedirectToAction("Grupo", new ButtonViewModel(model.Grupo.Id));
+            return RedirectToAction("Grupo");
         }
 
         [HttpPost]
@@ -117,7 +118,7 @@ namespace TaskQuest.Controllers
 
             TempData["Class"] = "green-alert";
             TempData["Alert"] = "Integrante adicionado com sucesso";
-            return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
+            return RedirectToAction("Grupo");
         }
 
         [HttpPost]
@@ -146,7 +147,7 @@ namespace TaskQuest.Controllers
 
             TempData["Class"] = "green-alert";
             TempData["Alert"] = "Removido com sucesso";
-            return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
+            return RedirectToAction("Grupo");
 
         }
 
@@ -177,13 +178,13 @@ namespace TaskQuest.Controllers
 
             TempData["Class"] = "green-alert";
             TempData["Alert"] = "Integrante promovido a Administrador com sucesso";
-            return RedirectToAction("Grupo", new ButtonViewModel(model.gru_id));
+            return RedirectToAction("Grupo");
         }
 
-        public ActionResult ExcluirGrupo(ButtonViewModel model)
+        public ActionResult ExcluirGrupo(LinkViewModel model)
         {
 
-            if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.Id).First().Administrador)
+            if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == Convert.ToInt32(model.Id)).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";

@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Security.Cryptography;
 using System.Text;
+using System.Web.Mvc;
 
 namespace TaskQuest.App_Code
 {
@@ -16,24 +17,6 @@ namespace TaskQuest.App_Code
         public static string DateTimeToString(this DateTime date)
         {
             return date.ToString("yyyy-MM-dd");
-        }
-
-        public static string HexToColor(this string hex)
-        {
-            if (hex.Equals("106494"))
-                return "tory-blue";
-            else if (hex.Equals("2E8B57"))
-                return "sea-green";
-            else if (hex.Equals("7A378B"))
-                return "vivid-violet";
-            else if (hex.Equals("CD2626"))
-                return "cardinal";
-            else if (hex.Equals("4F4F4F"))
-                return "emperor";
-            else if (hex.Equals("CD950C"))
-                return "pizza";
-            else
-                return null;
         }
 
         public static string Hash(string s)

@@ -23,8 +23,6 @@ namespace TaskQuest.Models
         public int Status { get; set; }
 
         public int Dificuldade { get; set; }
-        
-        public string Cor { get; set; }
 
         public DateTime DataCriacao { get; set; }
 

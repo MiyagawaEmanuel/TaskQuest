@@ -23,12 +23,12 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult Configuracao(ConfiguracaoViewModel model)
+        public ActionResult EditarUsuario(User model)
         {
 
-            if (User.Identity.GetUserId<int>() == model.usuario.Id)
+            if (User.Identity.GetUserId<int>() == model.Id)
             {
-                db.Entry(model.usuario).State = System.Data.Entity.EntityState.Modified;
+                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
                 TempData["Alert"] = "Atualizado com sucesso";
                 TempData["Class"] = "green-alert";
@@ -44,7 +44,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarTelefone(Telefone model)
+        public ActionResult EditarTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
             if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
@@ -64,7 +64,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarCartao(Cartao model)
+        public ActionResult EditarCartao([Bind(Prefix = "Item2")] Cartao model)
         {
             if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
@@ -83,7 +83,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirTelefone(ButtonViewModel model)
+        public ActionResult ExcluirTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
             var telefone = db.Telefone.Find(model.Id);
             if (User.Identity.GetUserId<int>() == telefone.UsuarioId)
@@ -104,7 +104,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirCartao(ButtonViewModel model)
+        public ActionResult ExcluirCartao([Bind(Prefix = "Item2")] Cartao model)
         {
             var cartao = db.Cartao.Find(model.Id);
             if (User.Identity.GetUserId<int>() == cartao.UsuarioId)

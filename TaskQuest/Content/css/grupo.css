@@ -1,0 +1,38 @@
+#chartContainer{
+	height: 300px; 
+	width: 100%;
+	margin-top: 1%;
+}
+
+.flex-properties-g{
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}
+
+.flex-properties-g i{
+	font-size: 30px;
+}
+
+.bull{
+	color: #106494;
+	font-size: 25px;
+}
+
+.questlist-g{
+	display: flex;
+	align-items: center;
+}
+
+.bull{
+	margin-right: 1%;
+}
+
+@media (max-width: 600px){
+	.flex-properties-g{
+		flex-direction: column;
+	}
+	#ExcluirIntegrante{
+		margin-bottom: 5%;
+	}
+}

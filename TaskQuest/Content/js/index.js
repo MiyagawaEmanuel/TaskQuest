@@ -42,6 +42,13 @@
     $("#DataNascimento").mask("00/00/0000", { placeholder: "Dia/Mes/Ano" });
 
     $("#RegisterForm").validate({
+        errorPlacement: function (error, element) {
+            $(element)
+                .closest("form")
+                .find("label[for='" + element.attr("id") + "']")
+                .append(error);
+        },
+        errorElement: "span",
         rules: {
             Nome: {
                 required: true,
@@ -98,6 +105,13 @@
     });
 
     $("#LoginForm").validate({
+        errorPlacement: function (error, element) {
+            $(element)
+                .closest("form")
+                .find("label[for='" + element.attr("id") + "']")
+                .append(error);
+        },
+        errorElement: "span",
         rules: {
             LoginEmail: {
                 required: true,

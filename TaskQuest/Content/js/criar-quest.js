@@ -25,18 +25,18 @@ var quest = {
 	},
 
 	remove: function(index){
-		this.tasks.splice(0, index+1);
+		this.tasks.splice(index, 1);
 	},
 
 	get: function(index){
 		return this.tasks[index];
 	},
 
-	set: function(prop, doc){
-		this[prop] = doc;
+	set: function(index, doc){
+		this.tasks[index] = doc;
 	},
 
-	set: function(index, prop, doc){
+	setProp: function(index, prop, doc){
 		this.tasks[index][prop] = doc;
 	},
 
@@ -66,7 +66,7 @@ var quest = {
 										"<h4 class='DataConclusao'>"+this.get(len)["DataConclusao"].split('-').reverse().join('/')+"</h4>"+
 									"</div>"+
 									"<div class='select-container'>"+
-										"<select id='Status' class='form-control' onchange='mudarStatus("+len+")'>"+ 
+										"<select class='form-control Status' onchange='mudarStatus("+len+")'>"+ 
 											"<option value='0'>A Fazer</option>"+
 											"<option value='1'>Fazendo</option>"+
 											"<option value='2'>Feito</option>"+
@@ -81,7 +81,7 @@ var quest = {
 }
 
 function mudarStatus(index){
-	quest.set(index, "Status", $("#"+index+" #Status").val());
+	quest.setProp(index, "Status", $("#"+index+" .Status").val());
 }
 
 function submit(id, action){
@@ -93,8 +93,8 @@ function showAtualizarTaskModal(index){
 	$("#DescricaoTaskAtualizar").text(quest.get(index)["Descricao"]);
 	$("#DataConclusaoAtualizar").val(quest.get(index)["DataConclusao"].split('/').reverse().join('-'));
 	$("#DificuldadeAtualizar").val(quest.get(index)["Dificuldade"])
-	$("#AtualizarTask").val(index);
-	$("#ExcluirTask").val(index);
+	$("#AtualizarTask").data('index', index);
+	$("#ExcluirTask").data('index', index);
 	$("#modalAtualizarTask").modal('show');
 }
 
@@ -129,6 +129,7 @@ $(document).ready(function() {
 
 	$('#formQuest').on("submit",function(e) {
 		e.preventDefault();
+		alert('oi');
         //Colocar a lógica do ajax aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
     });
 
@@ -150,11 +151,12 @@ $(document).ready(function() {
 	$('#AtualizarTask').click(function(event) {
 		event.preventDefault();
 		if($("#formAtualizarTaskModal").valid()){
-			quest.set(this.value, {
+			quest.set($("#AtualizarTask").data('index'), {
 				'Nome': $('#NomeTaskAtualizar').val(),
 				'Descricao': $('#DescricaoTaskAtualizar').val(),
 				'DataConclusao': $('#DataConclusaoAtualizar').val(),
-				'Dificuldade' : $('#DificuldadeAtualizar').val()
+				'Dificuldade' : $('#DificuldadeAtualizar').val(),
+				'Status' : $('#'+$("#AtualizarTask").data('index')+' .Status').val() 
 			})
 			quest.render();
 			$('#modalAtualizarTask').modal('hide');	
@@ -163,7 +165,7 @@ $(document).ready(function() {
 
 	$('#ExcluirTask').click(function(){
 		event.preventDefault();
-		quest.remove(this.value);
+		quest.remove($('#ExcluirTask').data('index'));
 		quest.render();
 		$('#modalAtualizarTask').modal('hide');	
 	});

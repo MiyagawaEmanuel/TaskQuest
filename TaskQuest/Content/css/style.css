@@ -10,6 +10,14 @@
 
 /* Layout CSS */
 
+input:focus{
+	border-color: #106494 !important;
+}
+
+textarea:focus{
+	border-color: #106494 !important;
+}
+
 header{
 	height: 130px;
 	background-color: #106494;

@@ -189,6 +189,7 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\Html.cs" />
     <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
@@ -209,7 +210,7 @@
     <Compile Include="Models\Feedback.cs" />
     <Compile Include="Models\Grupo.cs" />
     <Compile Include="Models\IdentityModels.cs" />
-    <Compile Include="Models\ViewModels\ButtonViewModel.cs" />
+    <Compile Include="Models\ViewModels\LinkViewModel.cs" />
     <Compile Include="Models\ViewModels\ConfiguracaoViewModel.cs" />
     <Compile Include="Models\ViewModels\ManageViewModels.cs" />
     <Compile Include="Models\Mensagem.cs" />
@@ -345,6 +346,7 @@
     <Content Include="Content\js\jquery-1.11.0.min.js" />
     <Content Include="Content\js\jquery.mask.js" />
     <Content Include="Content\js\jquery.validate.js" />
+    <Content Include="Content\js\link.js" />
     <Content Include="Content\js\main.js" />
     <Content Include="Content\js\modernizr-2.7.1.js" />
     <Content Include="Content\js\quest-adm.js" />
@@ -378,7 +380,7 @@
     <Content Include="Views\Shared\Error.cshtml" />
     <Content Include="Views\Shared\_Layout.cshtml" />
     <Content Include="Views\Home\Index.cshtml" />
-    <Content Include="Views\Shared\_RegisterPartial.cshtml" />
+    <Content Include="Views\Home\_RegisterPartial.cshtml" />
     <Content Include="Views\Shared\_BalloonPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -418,6 +420,24 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Quest\QuestAdm.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\_EditarTelefonePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\_EditarCartaoPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\_AdicionarCartaoPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\_AdicionarTelefonePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Configuracao\_EditarUsuarioPartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Views\Shared\_LinkPartial.cshtml" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

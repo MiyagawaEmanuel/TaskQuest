@@ -1,6 +1,4 @@
-﻿@model TaskQuest.ViewModels.LoginViewModel
-
-@{
+﻿@{
     Layout = null;
 }
 
@@ -20,14 +18,14 @@
     <meta property="og:description" content="">
 
     <!-- Styles -->
-    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/css/animate.css">
+    <link rel="stylesheet" href="Content/css/font-awesome.min.css">
+    <link rel="stylesheet" href="Content/css/animate.css">
     <link href='http://fonts.googleapis.com/css?family=Raleway:400,100,200,300,500,600,700,800,900|Montserrat:400,700'
           rel='stylesheet' type='text/css'>
-    <link href="~/Content/css/balloon.css" rel="stylesheet" />
-    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/css/main.css">
-    <link rel='stylesheet' href='~/Content/css/spectrum.css' />
+    <link href="Content/css/balloon.css" rel="stylesheet" />
+    <link rel="stylesheet" href="Content/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Content/css/main.css">
+    <link rel='stylesheet' href='Content/css/spectrum.css' />
 
 
     <title>TaskQuest</title>
@@ -38,14 +36,30 @@
     <header class="navbar navbar-inverse navbar-fixed-top open">
         <div class="container">
             <div class="navbar-header">
-                <a class="logo" href="index.html"><img src="~/Content/img/kakaka.png" alt="Logo"></a>
+                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <p class="txtlogo logo-hidden icon-white">
+                    <a href="Inicio.html" style="color: white;">
+                        <span id="txt-task">Task</span><span id="txt-quest">Quest</span></span>
+                    </a>
+                </p>
             </div>
+
             <div class="navbar-collapse collapse">
                 <form action="/Account/Login" method="post" class="Form" id="LoginForm">
                     @Html.AntiForgeryToken()
                     <ul class="nav navbar-nav navbar-right inputs">
-                        <li><input type="text" class="form-control login" placeholder="Email" name="LoginEmail" id="LoginEmail"></li>
-                        <li><input type="password" class="form-control login" placeholder="Senha" name="LoginSenha" id="LoginSenha"></li>
+                        <li>
+                            <input type="text" class="form-control login" placeholder="Email" name="LoginEmail" id="LoginEmail">
+                            <label for="LoginEmail"></label>
+                        </li>
+                        <li>
+                            <input type="password" class="form-control login" placeholder="Senha" name="LoginSenha" id="LoginSenha">
+                            <label for="LoginSenha"></label>
+                        </li>
                         <li>
                             <input type="submit" class="btn btn-primary btn-lg btn-header darkblue-bg" value="Entrar" />
                             <a href="" id="forget">Esqueceu sua senha?</a>
@@ -55,9 +69,6 @@
             </div>
         </div>
     </header>
-
-    @Html.Partial("_RegisterPartial")
-
     <section id="banner-grupo-trabalho">
         <div class="container">
             <div class="row header-info">
@@ -69,7 +80,7 @@
                         equipes
                     </p>
                     <div>
-                        <a href="#invite" class="btn btn-primary btn-lg scroll text-left wow fadeInUp">Inscreva-se</a>
+                        <a href="#invite" class="btn btn-primary btn-lg btn-blue scroll text-left wow fadeInUp">Inscreva-se</a>
                     </div>
                 </div>
             </div>
@@ -212,7 +223,7 @@
 
                     <div class="row">
                         <div class="col-sm-8 col-sm-offset-2 col-md-6 col-md-offset-3">
-                            <button type="submit" class="btn btn-primary btn-lg " data-toggle="modal"
+                            <button type="submit" class="btn btn-primary btn-lg btn-blue" data-toggle="modal"
                                     data-target="#modalCadastro">
                                 Começar
                             </button>
@@ -252,25 +263,21 @@
         </div>
     </footer>
 
-    @if (TempData["Response"] != null)
-    {
-        @Html.Partial("_BalloonPartial", new Tuple<string, string>(TempData["Response"].ToString(), ""))
-    }
+    @Html.Partial("_RegisterPartial")
 
     <!-- Javascript
     ================================================== -->
     <!-- Placed at the end of the document so the pages load faster -->
     <!--<script src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="~Content/js/jquery-1.11.0.min.js"><\/script>')</script>-->
-    <script src="~/Content/js/jquery.min.js"></script>
-    <script src="~/Content/js/wow.min.js"></script>
-    <script src="~/Content/js/bootstrap.min.js"></script>
-    <script src='~/Content/js/spectrum.js'></script>
-    <script src="~/Content/js/main.js"></script>
-    <script src="~/Content/js/spectrum.config.js"></script>
-    <script src="~/Content/js/jquery.validate.js"></script>
-    <script src="~/Content/js/jquery.mask.js"></script>
-    <script src="~/Content/js/index.js"></script>
-    <script src="~/Content/js/balloon.js"></script>
+    <script src="~Content/js/jquery.min.js"></script>
+    <script src="~Content/js/wow.min.js"></script>
+    <script src="~Content/js/bootstrap.min.js"></script>
+    <script src="~Content/js/spectrum.js"></script>
+    <script src="~Content/js/spectrum.config.js"></script>
+    <script src="~Content/js/jquery.validate.js"></script>
+    <script src="~Content/js/jquery.mask.js"></script>
+    <script src="~Content/js/index.js"></script>
+    <script src="~Content/js/balloon.js"></script>
 </body>
 </html>
