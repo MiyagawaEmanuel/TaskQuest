@@ -44,10 +44,10 @@
         <h1>Telefones</h1>
         <li class="li-hidden icon-black"><a href="#" data-target="#modalTelefone" data-toggle="modal" title="Adicionar Telefone"><i class="fa fa-plus" aria-hidden="true"></i></a></li>
     </div>
-@for (int x = 0; x < Model.Telefones.Count; x++)
-{
-    @Html.Partial("_EditarTelefonePartial", new Tuple<int, TaskQuest.Models.Telefone>(x, Model.Telefones[x]))
-}
+    @for (int x = 0; x < Model.Telefones.Count; x++)
+    {
+        @Html.Partial("_EditarTelefonePartial", new Tuple<int, TaskQuest.Models.Telefone>(x, Model.Telefones[x]))
+    }
 </section>
 
 <hr class="container quebra">

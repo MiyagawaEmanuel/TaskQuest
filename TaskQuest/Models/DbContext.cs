@@ -684,6 +684,11 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<Task>()
+                .Property(e => e.Descricao)
+                .HasColumnName("tsk_descricao")
+                .IsRequired();
+
+            modelBuilder.Entity<Task>()
                 .Property(e => e.Status)
                 .HasColumnName("tsk_status")
                 .IsRequired();

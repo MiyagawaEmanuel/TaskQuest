@@ -10,5 +10,14 @@ namespace TaskQuest.ViewModels
 
         public List<User> Integrantes = new List<User>();
 
+        public List<Quest> Quests = new List<Quest>();
+
+        public AdicionarIntegranteViewModel(Id){
+        	return new AdicionarIntegranteViewModel()
+        	{
+        		gru_id = this.Grupo.Id
+        	};
+        }
+
     }
 }

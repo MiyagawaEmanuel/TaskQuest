@@ -61,9 +61,9 @@ namespace TaskQuest.Controllers
                 grupoViewModel.Integrantes.Add(uxg.Usuario);
 
             if (usuariogrupo.Administrador)
-                return View("GrupoAdmin", model);
+                return View("GrupoAdmin", grupoViewModel);
 
-            return View(model);
+            return View(grupoViewModel);
         }
 
         [HttpPost]
@@ -88,7 +88,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarUsuarioGrupoViewModel model)
+        public ActionResult AdicionarUsuarioGrupo(AdicionarIntegranteViewModel model)
         {
 
             if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.gru_id).First().Administrador)

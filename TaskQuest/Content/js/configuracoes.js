@@ -73,7 +73,7 @@ $(function () {
 
 	$('.TelefoneNumero').mask('(00) 0000 00000', options);
 
-	$("#formTelefone").validate({
+	var validateTelefone = {
 		errorPlacement: function(error, element) {
 			$( element )
 			.closest( "form" )
@@ -97,7 +97,12 @@ $(function () {
 				minlength: "Telefone inválido."
 			}
 		}
-	});
+	};
+
+	var telefoneLen = $('[data-telefones-length]').attr('data-telefones-length');
+	for(x = 0; x < telefoneLen; x++){
+		$("#formTelefone"+x).validate(validateTelefone);
+	}
 
 	$("#formTelefoneModal").validate({
 		errorPlacement: function(error, element) {
@@ -128,7 +133,7 @@ $(function () {
 
 	$('.CodigoSeguranca').mask('000');
 
-	$('#formCartao').validate({
+	var validateCartao = {
 		errorPlacement: function(error, element) {
 			$( element )
 			.closest( "form" )
@@ -168,7 +173,12 @@ $(function () {
 				maxlength: 40
 			}
 		},
-	});
+	};
+
+	var cartaoLen = $('[data-cartoes-length]').attr('data-cartoes-length');
+	for(x = 0; x < cartaoLen; x++){
+		$('#formCartao'+x).validate(validateCartao);
+	}
 
 	$('#formCartaoModal').validate({
 		errorPlacement: function(error, element) {

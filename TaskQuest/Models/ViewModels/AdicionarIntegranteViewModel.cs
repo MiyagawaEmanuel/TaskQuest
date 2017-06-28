@@ -1,6 +1,6 @@
 ﻿namespace TaskQuest.ViewModels
 {
-    public class AdicionarUsuarioGrupoViewModel
+    public class AdicionarIntegranteViewModel
     {
         public string Email { get; set; }
 

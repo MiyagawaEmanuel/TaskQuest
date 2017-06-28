@@ -1,47 +1,27 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-	<meta charset="utf-8">
-	<meta name="viewport" content="width=device-width, user-scalable=no">
+@model TaskQuest.ViewModels.GrupoViewModel
 
-	<link rel="stylesheet" href="css/bootstrap.css">
-	<link rel="stylesheet" href="css/font-awesome.min.css">
-	<link rel="stylesheet" href="css/style.css">
+@{
+	ViewBag.Title = "Grupo":
+}
+
+@section css
+{
 	<link rel="stylesheet" href="css/grupo.css">
-	<link rel="stylesheet" href="css/colors.css">
 	<link rel="stylesheet" href="css/spectrum.css">
-	<link rel="stylesheet" href="css/jquery-ui.css">
-	
-	<title></title>
-</head>
+	<link rel="stylesheet" href="css/jquery-ui.css">	
+}
 
-<!-- Início do Layout -->
-
-<header>
-	<div><p class="txtlogo logo-hidden icon-white"><a href="Inicio.html"><span id="txt-task">Task</span><span id="txt-quest">Quest</span></span></a></p></div>
-	<div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-group" aria-hidden="true"></i></li></div>
-	<div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-check" aria-hidden="true"></i></li></div>
-	<div class="icon-container"><li class="li-hidden"><i class="fa fa-bell" aria-hidden="true"></i></li></div>
-	<div class="icon-container icon-white">
-		<li class="dropdown li-hidden">
-			<a class="header-a" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars" aria-hidden="true"></i>
-			</a>
-			<ul class="dropdown-menu">
-				<li><a href="#" data-target="#modalCadastro" data-toggle="modal">Criar Grupo</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">Criar Quest</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">Visualizar Perfil</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#">Configurações</a></li>
-				<li role="separator" class="divider"></li>
-				<li><a href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
-			</ul>
-		</li>
-	</div>
-</header>
-
-<!-- Fim do Layout -->
+@section js
+{
+	<script src="js/spectrum.js"></script>
+	<script src="js/canvas/canvasjs.min.js"></script>
+	<script src="js/graphics.js"></script>
+	<script src="js/spectrum.config.js"></script>
+	<script src="js/jquery-ui/jquery-ui.js"></script>
+	<script src="js/tabs.js"></script>
+	<script src="js/jquery.validate.js"></script>
+	<script src="js/grupo.js"></script>	
+}
 
 <section class="pads-bot">
 
@@ -70,12 +50,12 @@
 <hr class="container quebra"></hr>
 
 <section class="container flex-properties-g">
-		<div>
-			<div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-		</div>
-		<div><h3>Grupo Bom Gosto</h3></div>
-		<div><h3>20 integrantes</h3></div>
-		<div><abbr title="Adicionar Integrante"><i class="fa fa-plus" aria-hidden="true" data-target="#modalAdicionarIntegrante" data-toggle="modal"></i></abbr></div>
+	<div>
+		<div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
+	</div>
+	<div><h3>@Model.Grupo.Nome</h3></div>
+	<div><h3>@Model.Integrantes.Count integrantes</h3></div>
+	<div><i class="fa fa-plus" aria-hidden="true" data-target="#modalAdicionarIntegrante" data-toggle="modal"></i></div>
 </section>
 
 <hr class="container quebra"></hr>
@@ -86,53 +66,28 @@
 			<li><a href="#integrantes">Integrantes</a></li>
 			<li><a href="#quests">Quests</a></li>
 		</ul>
+        <div id="integrantes">
+            @foreach (var integrante in Model.Integrantes)
+            {
+                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; @integrante.Nome</h4>
+            }
+        </div>
 
-		<div id="integrantes">
-			<h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; Bruno Ribeiro dos Santos</h4>
-			<h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; Emanuel Hiroshi Miyagawa</h4>
-			<h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; Vinícius Venéreo</h4>
-			<h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; Fernanda Visintainer</h4>
-			<h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; Michelle Golob</h4>
-		</div>
-
-		<div id="quests">
-			<div class="quest-container icon-black questlist-g"><i class="fa fa-circle bull" aria-hidden="true"></i><a href=""><h4 class="quest-container">Fazer Documento FETEPS</h4></a></div>
-			<div class="quest-container icon-black questlist-g"><i class="fa fa-circle bull" aria-hidden="true"></i><a href=""><h4 class="quest-container">Fazer Wireframes</h4></a></div>
-			<div class="quest-container icon-black questlist-g"><i class="fa fa-circle bull" aria-hidden="true"></i><a href=""><h4 class="quest-container">Elaborar PSD da Página Inicial</h4></a></div>
-			<div class="quest-container icon-black questlist-g"><i class="fa fa-circle bull" aria-hidden="true"></i><a href=""><h4 class="quest-container">Criar e entregar Relatório de Recrutamento</h4></a></div>
-			<div class="quest-container icon-black questlist-g"><i class="fa fa-circle bull" aria-hidden="true"></i><a href=""><h4 class="quest-container">Reunir com os integrantes do Grupo Bom Gosto</h4></a></div>
-		</div>
+        <div id="quests">
+            @foreach (var quest in Model.Grupo.Quests)
+            {
+                <div class="quest-container icon-black questlist-g">
+                    <i class="fa fa-circle bull" aria-hidden="true"></i>
+                    <a href=""><h4 class="quest-container">@quest.Nome</h4></a>
+                </div>
+            }
+        </div>
 	</div>
 </section>
 
 <hr class="container quebra"></hr>
 
-
-
-
-<div class="modal fade" id="modalAdicionarIntegrante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-	<div class="modal-dialog" role="document">
-		<div class="modal-content">
-			<div class="modal-header">
-				<h1 class="modal-title" id="exampleModalLabel">Adicionar Integrante</h1>
-				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
-					<span aria-hidden="true">&times;</span>
-				</button>
-			</div>
-			<form id="formAdicionarIntegrante">
-				<div class="modal-body">
-					<div class="form-group">
-						<input class="form-control" id="EmailIntegrante" name="EmailIntegrante" placeholder="E-mail">
-						<label for="EmailIntegrante"></label>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<input id="AdicionarIntegrante" type="submit" class="btn btn-secondary btn-cg" value="Adicionar">
-				</div>
-			</form>
-		</div>
-	</div>
-</div>
+@Html.Partial("_AdicionarIntegranteViewModelPartial", Model.AdicionarIntegranteViewModel(Model.Grupo.Id))
 
 <div class="modal fade" id="modalOpcoesIntegrantes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">
@@ -146,17 +101,3 @@
 		</div>
 	</div>
 </div>
-
-<script src="js/jquery.min.js"></script>
-<script src="js/bootstrap.min.js"></script>
-<script src="js/spectrum.js"></script>
-<script src="js/canvas/canvasjs.min.js"></script>
-<script src="js/graphics.js"></script>
-<script src="js/spectrum.config.js"></script>
-<script src="js/jquery-ui/jquery-ui.js"></script>
-<script src="js/tabs.js"></script>
-<script src="js/jquery.validate.js"></script>
-<script src="js/grupo.js"></script>
-
-</body>
-</html>
