@@ -1,281 +1,64 @@
-﻿<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, user-scalable=no">
+﻿@model List<TaskQuest.Models.Task>
 
-    <link rel="stylesheet" href="~/Content/css/bootstrap.min.css">
-    <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
-    <link rel="stylesheet" href="~/Content/css/style.css">
-    <link rel="stylesheet" href="~/Content/css/colors.css">
-    <link rel="stylesheet" href="~/Content/css/spectrum.css">
-    
-    <title></title>
-</head>
+@{ 
+    ViewBag.Title = "Pendências";
+}
 
+@section js 
+{
+    <script src="~/Content/js/link.js"></script>
+}
 
-<body>
+<section class="pads-bot">
 
-    <!-- Início do Layout -->
-
-    <header>
-        <div><p class="txtlogo logo-hidden icon-white"><a href="Inicio.html"><span id="txt-task">Task</span><span id="txt-quest">Quest</span></span></a></p></div>
-        <div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-group" aria-hidden="true"></i></li></div>
-        <div class="icon-container mobile-hidden"><li class="li-hidden"><i class="fa fa-check" aria-hidden="true"></i></li></div>
-        <div class="icon-container"><li class="li-hidden"><i class="fa fa-bell" aria-hidden="true"></i></li></div>
-        <div class="icon-container icon-white">
-            <li class="dropdown li-hidden">
-                <a class="header-a" href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false"><i class="fa fa-bars" aria-hidden="true"></i>
-                </a>
-                <ul class="dropdown-menu">
-                    <li><a href="#" data-target="#modalCadastro" data-toggle="modal">Criar Grupo</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Criar Quest</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Visualizar Perfil</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#">Configurações</a></li>
-                    <li role="separator" class="divider"></li>
-                    <li><a href="#"><i class="fa fa-minus-circle" aria-hidden="true"></i> Sair</a></li>
-                </ul>
-            </li>
+    <div class="flex-properties-r">
+        <div class="title-a"><h2>PENDÊNCIAS</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-plus elipse" aria-hidden="true"></i>
+                <h3><a href="/Quest/CriarQuest/Usuario">Criar Quest</a></h3>
+            </div>
+            <div class="flex-properties-r pads"></div>
         </div>
-    </header>
+    </div>
 
-    <section class="pads-bot">
+    <div class="container flex-properties-r margintop">
 
-        <div class="flex-properties-r">
-            <div class="title-a"><h2>PENDÊNCIAS</h2></div>
-            <div class="title-b">
-                <div class="flex-properties-r pads icon-black">
-                    <i class="fa fa-plus elipse" aria-hidden="true"></i>
-                    <h3><a href="CriarQuest.html">Criar Quest</a></h3>
-                </div>
-                <div class="flex-properties-r pads icon-black">
-                    <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
-                    <h3><a href="">Ver Todas</a></h3>
-                </div>
-            </div>
-        </div>
-
-        <div class="container flex-properties-r margintop">
-
+        @for (int x = 0; x < Model.Count; x++)
+        {
+            @Html.Partial("_LinkPartial", Html.LinkViewModel("Tsk"+x, Model[x].Quest.Id.ToString(), "/Quest"))
             <div class="margin-bottom item">
-                <div class="tory-blue-bg filete"></div>
+                <a onclick="link('Tsk@x')"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
                 <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
+                    <div class="limit-lines"><h4>@Model[x].Nome</h4></div>
+                    <div class="limit-lines"><h4>@Model[x].Descricao</h4></div>
+                    <div><h4>@Model[x].DataConclusao</h4></div>
                     <div class="select-container">
                         <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
+                            @if (Model[x].Status == 0)
+                            {
+                                <option selected>A Fazer</option>
+                                <option>Fazendo</option>
+                                <option>Feito</option>
+                            }
+                            else if (Model[x].Status == 1)
+                            {
+                                <option>A Fazer</option>
+                                <option selected>Fazendo</option>
+                                <option>Feito</option>
+                            }
+                            else if (Model[x].Status == 2)
+                            {
+                                <option>A Fazer</option>
+                                <option>Fazendo</option>
+                                <option selected>Feito</option>
+                            }
                         </select>
                     </div>
                 </div>
             </div>
+        }
 
-            <div class="margin-bottom item">
-                <div class="sea-green-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+    </div>
 
-            <div class="margin-bottom item">
-                <div class="vivid-violet-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="margin-bottom item">
-                <div class="cardinal-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="item">
-                <div class="emperror-bg filete"></div>
-                <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>Relatório Semanal</h4></div>
-                    <div class="limit-lines"><h4>Os relatórios foram entregues.</h4></div>
-                    <div><h4>04/07/2017</h4></div>
-                    <div class="select-container">
-                        <select class="form-control">
-                            <option>A Fazer</option>
-                            <option>Fazendo</option>
-                            <option>Feito</option>
-                        </select>
-                    </div>
-                </div>
-            </div>  
-
-        </div>
-
-    </section>
-
-    <script src="~Content/js/jquery.min.js"></script>
-    <script src="~Content/js/bootstrap.min.js"></script>
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
-
-</body>
-</html>
+</section>

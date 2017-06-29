@@ -32,7 +32,7 @@
     <div class="container flex-properties-r margintop">
         
     @for (int x = 0;x < Model.Grupos.Count; x++){
-        @Html.Partial("_LinkPartial", new LinkViewModel("Grupo"+x, Model.Grupo[x].Id, "/Grupo"))
+        @Html.Partial("_LinkPartial", @Html.LinkViewModel("Grupo"+x, Model.Grupos[x].Id.ToString(), "/Grupo"))
         <a onclick="link('Grupo@x')">
             <div class="flex-properties-c margin-bottom item group-container">
                 <div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img src="img/groupicon.png"></div>
@@ -64,7 +64,7 @@
     <div class="container flex-properties-r margintop">
 
     @for (int x = 0; x < Model.Pendencias.Count; x++){
-        @Html.Partial("_LinkPartial", new LinkViewModel("Task"+x, Model.Pendencias[x].Id, "/Quest"))
+        @Html.Partial("_LinkPartial", @Html.LinkViewModel("Task"+x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
         <div class="margin-bottom item">
            <a onclick="link('Task@x')"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
             <div class="quest-body flex-properties-c">
@@ -100,14 +100,16 @@
 
     <div class="container flex-properties-r margintop">
 
-    @foreach (var feb in Model.Feedbacks){
+    @for (int x = 0; x < Model.Feedbacks.Count; x++)
+    {
+        @Html.Partial("_LinkPartial", @Html.LinkViewModel("Feb" + x, Model.Feedbacks[x].Task.Quest.Id.ToString(), "/Quest"))
         <div class="margin-bottom item">
-            <div class="filete" style="background-color: @feb.Cor"></div>
+            <a onclick="link('Feb@x')"><div class="filete" style="background-color: @Model.Feedbacks[x].Task.Quest.Cor"></div></a>
             <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>@feb.Nome</h4></div>
-                <div class="limit-lines"><h4>@feb.Resposta</h4></div>
-                <div><h1>@feb.Nota</h1></div>
-                <div><h4>feb.DataConclusao</h4></div>
+                <a class="icon-black" onclick="link('Feb@x')"><div class="limit-lines"><h4>@Model.Feedbacks[x].Task.Nome</h4></div></a>
+                <div class="limit-lines"><h4>@Model.Feedbacks[x].Resposta</h4></div>
+                <div><h1>@Model.Feedbacks[x].Nota</h1></div>
+                <div><h4>@Model.Feedbacks[x].Task.DataConclusao</h4></div>
             </div>
         </div>
     }
@@ -115,4 +117,4 @@
     </div>
 
 </section>
-@Html.Partial("_CriarGrupoPartial", Model.CriarGrupoPartial)
+@Html.Partial("_CriarGrupoPartial", Html.Grupo())

@@ -4,30 +4,36 @@
     ViewBag.Title = "Feedbacks";
 }
 
+@section js
+{
+    <script src="~/Content/js/link.js"></script>
+}
+
 <section class="pads-bot">
 
     <div class="flex-properties-r">
         <div class="title-a"><h2>FEEDBACK</h2></div>
         <div class="title-b">
-            <div class="flex-properties-r pads icon-black">
-                <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
-                <h3 class=""><a href="">Ver Todas</a></h3>
-            </div>
+            <div class="flex-properties-r pads"></div>
         </div>
     </div>
 
     <div class="container flex-properties-r margintop">
-
-        <div class="margin-bottom item">
-            <div class="tory-blue-bg filete"></div>
-            <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>Fazer Diagramas</h4></div>
-                <div class="limit-lines"><h4>Ficou muito bom, parabéns :)</h4></div>
-                <div><h1>5</h1></div>
-                <div>04/07/2017</div>
+            
+        @for (int x = 0; x < Model.Count; x++)
+        {
+            @Html.Partial("_LinkPartial", Html.LinkViewModel("Feb"+x, Model[x].Task.Quest.Id.ToString(), "/Quest"))
+            <div class="margin-bottom item">
+                <a onclick="link('Feb@x')"><div class="filete" style="background-color: @Model[x].Task.Quest.Cor"></div></a>
+                <div class="quest-body flex-properties-c">
+                    <a class="icon-black" onclick="link('Feb@x')"><div class="limit-lines"><h4>@Model[x].Task.Nome</h4></div></a>
+                    <div class="limit-lines"><h4>@Model[x].Resposta</h4></div>
+                    <div><h1>@Model[x].Nota</h1></div>
+                    <div>@Model[x].Task.DataConclusao</div>
+                </div>
             </div>
-        </div>
-
+        }
+        
     </div>
 
 </section>

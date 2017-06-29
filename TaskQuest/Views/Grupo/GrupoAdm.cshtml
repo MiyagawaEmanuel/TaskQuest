@@ -1,26 +1,27 @@
 @model TaskQuest.ViewModels.GrupoViewModel
 
 @{
-	ViewBag.Title = "Grupo":
+    ViewBag.Title = "Grupo";
 }
 
 @section css
 {
-	<link rel="stylesheet" href="css/grupo.css">
-	<link rel="stylesheet" href="css/spectrum.css">
-	<link rel="stylesheet" href="css/jquery-ui.css">	
+	<link rel="stylesheet" href="~/Content/css/grupo.css">
+	<link rel="stylesheet" href="~/Content/css/spectrum.css">
+	<link rel="stylesheet" href="~/Content/css/jquery-ui.css">	
 }
 
 @section js
 {
-	<script src="js/spectrum.js"></script>
-	<script src="js/canvas/canvasjs.min.js"></script>
-	<script src="js/graphics.js"></script>
-	<script src="js/spectrum.config.js"></script>
-	<script src="js/jquery-ui/jquery-ui.js"></script>
-	<script src="js/tabs.js"></script>
-	<script src="js/jquery.validate.js"></script>
-	<script src="js/grupo.js"></script>	
+	<script src="~/Content/js/spectrum.js"></script>
+	<script src="~/Content/js/canvas/canvasjs.min.js"></script>
+	<script src="~/Content/js/graphics.js"></script>
+	<script src="~/Content/js/spectrum.config.js"></script>
+	<script src="~/Content/js/jquery-ui/jquery-ui.js"></script>
+	<script src="~/Content/js/tabs.js"></script>
+	<script src="~/Content/js/jquery.validate.js"></script>
+	<script src="~/Content/js/grupo.js"></script>	
+    <script src="~/Content/js/link.js"></script>
 }
 
 <section class="pads-bot">
@@ -47,7 +48,7 @@
 	</div>
 </section>
 
-<hr class="container quebra"></hr>
+<hr class="container quebra">
 
 <section class="container flex-properties-g">
 	<div>
@@ -58,7 +59,7 @@
 	<div><i class="fa fa-plus" aria-hidden="true" data-target="#modalAdicionarIntegrante" data-toggle="modal"></i></div>
 </section>
 
-<hr class="container quebra"></hr>
+<hr class="container quebra">
 
 <section class="container">
 	<div id="tabs">
@@ -74,18 +75,19 @@
         </div>
 
         <div id="quests">
-            @foreach (var quest in Model.Grupo.Quests)
+            @for (int x = 0; x < Model.Grupo.Quests.Count; x++)
             {
+                @Html.Partial("", Html.LinkViewModel("Qst"+x, Model.Grupo.Quests.ToList()[x].Id.ToString(), "/Grupo"))
                 <div class="quest-container icon-black questlist-g">
                     <i class="fa fa-circle bull" aria-hidden="true"></i>
-                    <a href=""><h4 class="quest-container">@quest.Nome</h4></a>
+                    <a onclick="link('Qst@x')"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
         </div>
 	</div>
 </section>
 
-<hr class="container quebra"></hr>
+<hr class="container quebra">
 
 @Html.Partial("_AdicionarIntegranteViewModelPartial", Model.AdicionarIntegranteViewModel(Model.Grupo.Id))
 

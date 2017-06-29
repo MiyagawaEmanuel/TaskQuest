@@ -12,7 +12,7 @@ namespace TaskQuest
             routes.MapRoute(
                 "CriarQuest",
                 "Quest/CriarQuest/{tipo}",
-                new {controller = "Quest", action = "CriarQuest", tipo = UrlParameter.Optional }
+                new {controller = "Quest", action = "CriarQuest", tipo = "" }
             );
 
             routes.MapRoute(

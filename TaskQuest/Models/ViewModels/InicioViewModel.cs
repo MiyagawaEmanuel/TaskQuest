@@ -11,7 +11,6 @@ namespace TaskQuest.ViewModels
 
         public List<Feedback> Feedbacks = new List<Feedback>();
 
-        public Grupo CriarGrupoPartial = new Grupo();
     }
     
 }
