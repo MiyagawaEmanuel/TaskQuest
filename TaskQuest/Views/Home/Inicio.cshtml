@@ -2,13 +2,15 @@
 
 @section css{
     <link rel="stylesheet" href="~/Content/css/spectrum.css">
-}
+} 
 
 @section js{
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
-    <script src="~Content/js/jquery.validate.js"></script>
-    <script src="~Content/js/inicio.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/inicio.js"></script>
+    <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
 }
 
 <section class="pads-bot">
@@ -22,18 +24,21 @@
             </div>
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-caret-down elipse icon-black" aria-hidden="true"></i>
-                <h3><a href="">Ver Todos</a></h3>
+                <h3><a href="/Home/Grupos">Ver Todos</a></h3>
             </div>
         </div>
     </div>
 
     <div class="container flex-properties-r margintop">
         
-    @foreach (var grupo in Model.Grupos){
-        <div class="flex-properties-c margin-bottom item group-container">
-            <div class="grupo-elipse" style="background-color: @grupo.Cor"><img src="img/groupicon.png"></div>
-            <div class="limit-lines"><spam class="grupo-nome">@grupo.Nome</spam></div>
-        </div>
+    @for (int x = 0;x < Model.Grupos.Count; x++){
+        @Html.Partial("_LinkPartial", new LinkViewModel("Grupo"+x, Model.Grupo[x].Id, "/Grupo"))
+        <a onclick="link('Grupo@x')">
+            <div class="flex-properties-c margin-bottom item group-container">
+                <div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img src="img/groupicon.png"></div>
+                <div class="limit-lines"><spam class="grupo-nome">@Model.Grupos[x].Nome</spam></div>
+            </div>
+        </a>
     }
 
     </div>
@@ -47,24 +52,25 @@
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-plus elipse" aria-hidden="true"></i>
-                <h3><a href="CriarQuest.html">Criar Quest</a></h3>
+                <h3><a href="/Quest/CriarQuest/Usuario">Criar Quest</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
-                <h3><a href="">Ver Todas</a></h3>
+                <h3><a href="/Home/Pendencias">Ver Todas</a></h3>
             </div>
         </div>
     </div>
 
     <div class="container flex-properties-r margintop">
 
-    @foreach (var task in Model.Pendencias){
+    @for (int x = 0; x < Model.Pendencias.Count; x++){
+        @Html.Partial("_LinkPartial", new LinkViewModel("Task"+x, Model.Pendencias[x].Id, "/Quest"))
         <div class="margin-bottom item">
-            <div class="filete" style="background-color: @task.Quest.Cor"></div>
+           <a onclick="link('Task@x')"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
             <div class="quest-body flex-properties-c">
-                <div class="limit-lines"><h4>@task.Nome</h4></div>
-                <div class="limit-lines"><h4>@task.Descricao</h4></div>
-                <div><h4>task.DataConclusao</h4></div>
+                <a onclick="link('Task@x')" class="icon-black"><div class="limit-lines"><h4>@Model.Pendencias[x].Nome</h4></div></a>
+                <div class="limit-lines"><h4>@Model.Pendencias[x].Descricao</h4></div>
+                <div><h4>@Model.Pendencias[x].DataConclusao</h4></div>
                 <div class="select-container">
                     <select class="form-control">
                         <option>A Fazer</option>
@@ -87,7 +93,7 @@
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
-                <h3 class=""><a href="">Ver Todas</a></h3>
+                <h3><a href="/Home/Feedbacks">Ver Todas</a></h3>
             </div>
         </div>
     </div>

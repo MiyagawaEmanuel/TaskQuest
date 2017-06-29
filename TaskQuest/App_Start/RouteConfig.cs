@@ -10,6 +10,12 @@ namespace TaskQuest
             routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
             
             routes.MapRoute(
+                "CriarQuest",
+                "Quest/CriarQuest/{tipo}",
+                new {controller = "Quest", action = "CriarQuest", tipo = UrlParameter.Optional }
+            );
+
+            routes.MapRoute(
                 "Default",
                 "{controller}/{action}/{id}",
                 new {controller = "Home", action = "Index", id = UrlParameter.Optional}

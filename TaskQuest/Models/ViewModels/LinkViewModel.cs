@@ -1,7 +1,7 @@
-﻿namespace TaskQuest.ViewModels
+namespace TaskQuest.ViewModels
 {
     public class LinkViewModel
-    {
+    { 
 
         public LinkViewModel() { }
 
