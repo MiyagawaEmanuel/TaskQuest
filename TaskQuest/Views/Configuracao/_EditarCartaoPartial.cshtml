@@ -1,11 +1,12 @@
 ﻿@model Tuple<int, TaskQuest.Models.Cartao>
 
-<form id="formCartao@Model.Item1" method="post">
+<form id="@Html.LinkId("formCartao"+@Model.Item1)" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" value="@Model.Item2.Id" name="Item2.Id" id="Item2.Id" />
+    <input type="hidden" value="@Html.LinkId(Model.Item2.Id.ToString())" name="Item2.Id" id="Item2.Id" />
+    <input type="hidden" value="@Html.LinkId(Model.Item2.UsuarioId.ToString())" name="Item2.UsuarioId" id="Item2.UsuarioId" />
     <div class="flex-properties-r">
         <li class="li-hidden icon-black">
-            <a onclick="submit('formCartao@Model.Item1', '/Configuracao/EditarCartao')" title="Salvar">
+            <a onclick="submit('@Html.LinkId("formCartao"+@Model.Item1)', '/Configuracao/EditarCartao')" title="Salvar">
                 <i class="fa fa-save" aria-hidden="true"></i>
             </a>
         </li>
@@ -37,7 +38,7 @@
         </div>
 
         <li class="li-hidden icon-black">
-            <a onclick="submit('formCartao@Model.Item1', '/Configuracao/ExcluirCartao')">
+            <a onclick="submit('@Html.LinkId("formCartao"+@Model.Item1)', '/Configuracao/ExcluirCartao')">
                 <i class="fa fa-remove" aria-hidden="true"></i>
             </a>
         </li>

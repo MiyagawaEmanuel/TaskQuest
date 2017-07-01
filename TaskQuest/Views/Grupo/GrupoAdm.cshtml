@@ -30,8 +30,9 @@
 		<div class="title-a"><h2>Grupo</h2></div>
 		<div class="title-b">
 			<div class="flex-properties-r pads icon-black">
-				<a href="CriarQuest.html"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-				<h3><a href="CriarQuest.html">Criar Quest</a></h3>
+				@Html.Partial("_LinkPartial", Html.LinkViewModel("CriarQuest", Model.Grupo.Id.ToString(), "/Quest/CriarQuest"))
+                <a onclick="link('CriarQuest')"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="link('CriarQuest')">Criar Quest</a></h3>
 			</div>
 			<div class="flex-properties-r pads icon-black">
 				<a href="Inicio.html"><i class="fa fa-times elipse" aria-hidden="true"></i></a>
@@ -55,7 +56,14 @@
 		<div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
 	</div>
 	<div><h3>@Model.Grupo.Nome</h3></div>
-	<div><h3>@Model.Integrantes.Count integrantes</h3></div>
+    @if (@Model.Integrantes.Count == 1)
+    {
+        <div><h3>@Model.Integrantes.Count Integrante</h3></div>
+    }
+    else
+    {
+        <div><h3>@Model.Integrantes.Count Integrantes</h3></div>
+    }
 	<div><i class="fa fa-plus" aria-hidden="true" data-target="#modalAdicionarIntegrante" data-toggle="modal"></i></div>
 </section>
 
@@ -77,10 +85,9 @@
         <div id="quests">
             @for (int x = 0; x < Model.Grupo.Quests.Count; x++)
             {
-                @Html.Partial("", Html.LinkViewModel("Qst"+x, Model.Grupo.Quests.ToList()[x].Id.ToString(), "/Grupo"))
                 <div class="quest-container icon-black questlist-g">
                     <i class="fa fa-circle bull" aria-hidden="true"></i>
-                    <a onclick="link('Qst@x')"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
+                    <a href="@Html.LinkId("/CriarQuest/Grupo/"+Model.Grupo.Quests.ToList()[x].Id)"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
         </div>
@@ -89,7 +96,7 @@
 
 <hr class="container quebra">
 
-@Html.Partial("_AdicionarIntegranteViewModelPartial", Model.AdicionarIntegranteViewModel(Model.Grupo.Id))
+@Html.Partial("_AdicionarIntegrantePartial", Model.AdicionarIntegranteViewModel(Model.Grupo.Id))
 
 <div class="modal fade" id="modalOpcoesIntegrantes" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
 	<div class="modal-dialog" role="document">

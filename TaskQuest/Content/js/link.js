@@ -1,3 +1,3 @@
 ﻿function link (id){
-    $(id).submit();
+    $("#"+id.id).submit();
 }

@@ -10,8 +10,8 @@ namespace TaskQuest.App_Code
 
         public static DateTime StringToDateTime(this string @string)
         {
-            var aux = @string.Split('/');
-            return new DateTime(Convert.ToInt32(aux[2]), Convert.ToInt32(aux[1]), Convert.ToInt32(aux[0]));
+            var aux = @string.Split('-');
+            return new DateTime(Convert.ToInt32(aux[0]), Convert.ToInt32(aux[1]), Convert.ToInt32(aux[2]));
         }
 
         public static string DateTimeToString(this DateTime date)

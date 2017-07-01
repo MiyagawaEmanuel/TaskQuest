@@ -30,6 +30,7 @@ namespace TaskQuest.Migrations
                         tsk_id = c.Int(nullable: false, identity: true),
                         qst_id = c.Int(nullable: false),
                         tsk_nome = c.String(nullable: false, maxLength: 45, storeType: "nvarchar"),
+                        tsk_descricao = c.String(nullable: false, unicode: false),
                         tsk_status = c.Int(nullable: false),
                         tsk_dificuldade = c.Int(nullable: false),
                         tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -202,7 +203,7 @@ namespace TaskQuest.Migrations
                         feb_relatorio = c.String(nullable: false, maxLength: 150, storeType: "nvarchar"),
                         feb_nota = c.Int(nullable: false),
                         feb_resposta = c.String(maxLength: 120, storeType: "nvarchar"),
-                        feb_data_conclusao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
+                        feb_data_conclusao = c.DateTime(nullable: false, precision: 0),
                         tsk_id = c.Int(nullable: false),
                         usu_id_responsavel = c.Int(nullable: false),
                     })

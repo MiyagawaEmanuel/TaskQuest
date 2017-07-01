@@ -33,12 +33,14 @@
         @for (int x = 0; x < Model.Count; x++)
         {
             @Html.Partial("_LinkPartial", Html.LinkViewModel("Gru"+x, Model[x].Id.ToString(), "/Grupo"))
+            <div class="flex-properties-c margin-bottom item group-container">
+                <a onclick="link(@Html.LinkId("Gru"+x))">
+                    <div class="grupo-elipse" style="background-color: @Model[x].Cor"><img src="~/Content/img/groupicon.png"></div>
+                    <div class="icon-black"><spam class="grupo-nome">@Model[x].Nome</spam></div>
+                </a>
+            </div>
         }
-        <div class="flex-properties-c margin-bottom item group-container">
-            <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
-            <div><spam class="grupo-nome">Recursos Humanos</spam></div>
-        </div>
-
+        
     </div>
 
 </section>

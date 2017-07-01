@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using TaskQuest.Models;
@@ -23,7 +24,8 @@ namespace TaskQuest.Controllers
             UsuarioGrupo uxg = new UsuarioGrupo()
             {
                 UsuarioId = User.Identity.GetUserId<int>(),
-                GrupoId = model.Id
+                GrupoId = model.Id,
+                Administrador = true
             };
             db.UsuarioGrupo.Add(uxg);
             db.SaveChanges();
@@ -31,15 +33,22 @@ namespace TaskQuest.Controllers
             TempData["Alert"] = "Criado com sucesso";
             TempData["Class"] = "green-alert";
 
-            return RedirectToAction("Grupo", "Home");
+            return RedirectToAction("Inicio", "Home");
         }
 
-        [HttpPost]
+        [AcceptVerbs(HttpVerbs.Get)]
+        private ActionResult Index(int id)
+        {
+            return Index(new LinkViewModel(id.ToString()));
+        }
+
         [ValidateAntiForgeryToken]
-        public ActionResult Grupo(LinkViewModel model)
+        [AcceptVerbs(HttpVerbs.Post)]
+        public ActionResult Index(LinkViewModel model)
         {
 
-            Grupo grupo = db.Grupo.Find(model.Id);
+            Grupo grupo = db.Grupo.Find(Convert.ToInt32(model.Hash));
+
             UsuarioGrupo usuariogrupo;
 
             try
@@ -49,8 +58,8 @@ namespace TaskQuest.Controllers
             catch
             {
                 TempData["Class"] = "yellow-alert";
-                TempData["Alert"] = "Você não tem permissão para entrar nesta página";
-                return RedirectToAction("Grupos");
+                TempData["Alert"] = "Você não tem permissão para entrar nessa página ";
+                return RedirectToAction("Inicio", "Home");
             }
 
             GrupoViewModel grupoViewModel = new GrupoViewModel();
@@ -61,7 +70,7 @@ namespace TaskQuest.Controllers
                 grupoViewModel.Integrantes.Add(uxg.Usuario);
 
             if (usuariogrupo.Administrador)
-                return View("GrupoAdmin", grupoViewModel);
+                return View("GrupoAdm", grupoViewModel);
 
             return View(grupoViewModel);
         }
@@ -88,10 +97,10 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarUsuarioGrupo(AdicionarIntegranteViewModel model)
+        public ActionResult AdicionarIntegrante(AdicionarIntegranteViewModel model)
         {
-
-            if (db.UsuarioGrupo.Where(q => q.UsuarioId == User.Identity.GetUserId<int>() && q.GrupoId == model.gru_id).First().Administrador)
+            var user = db.Users.Find(User.Identity.GetUserId<int>());
+            if (!db.UsuarioGrupo.Where(q => q.UsuarioId == user.Id && q.GrupoId == model.gru_id).First().Administrador)
             {
                 TempData["Class"] = "yellow-alert";
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";
@@ -100,6 +109,7 @@ namespace TaskQuest.Controllers
 
             try
             {
+                Debug.WriteLine(model.Email + "-------------------------------------------");
                 User usuario = db.Users.Where(q => q.Email == model.Email).First();
                 UsuarioGrupo usuarioGrupo = new UsuarioGrupo()
                 {
@@ -114,11 +124,12 @@ namespace TaskQuest.Controllers
             {
                 TempData["Class"] = "yellow-alert";
                 TempData["Alert"] = "Usuário não encontrado";
+                return Index(model.gru_id);
             }
 
             TempData["Class"] = "green-alert";
             TempData["Alert"] = "Integrante adicionado com sucesso";
-            return RedirectToAction("Grupo");
+            return Index(model.gru_id);
         }
 
         [HttpPost]

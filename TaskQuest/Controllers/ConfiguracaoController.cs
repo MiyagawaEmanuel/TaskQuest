@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 using System.Linq;
 using System.Web.Mvc;
 using TaskQuest.Models;
@@ -12,7 +13,7 @@ namespace TaskQuest.Controllers
 
         private DbContext db = new DbContext();
 
-        public ActionResult Configuracao()
+        public ActionResult Index()
         {
             var model = new ConfiguracaoViewModel();
             model.usuario = db.Users.Find(User.Identity.GetUserId<int>());
@@ -37,6 +38,7 @@ namespace TaskQuest.Controllers
             {
                 TempData["Alert"] = "Você não tem permissão para entrar nesta página";
                 TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
             }
 
             return RedirectToAction("Configuracao");
@@ -46,6 +48,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditarTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
+
             if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
@@ -57,9 +60,10 @@ namespace TaskQuest.Controllers
             {
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Configuracao");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -77,18 +81,18 @@ namespace TaskQuest.Controllers
             {
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
             }
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
-            var telefone = db.Telefone.Find(model.Id);
-            if (User.Identity.GetUserId<int>() == telefone.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
-                db.Entry(telefone).State = System.Data.Entity.EntityState.Deleted;
+                db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
                 TempData["Alert"] = "Removido com sucesso";
                 TempData["Class"] = "green-alert";
@@ -97,19 +101,19 @@ namespace TaskQuest.Controllers
             {
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirCartao([Bind(Prefix = "Item2")] Cartao model)
         {
-            var cartao = db.Cartao.Find(model.Id);
-            if (User.Identity.GetUserId<int>() == cartao.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId)
             {
-                db.Entry(cartao).State = System.Data.Entity.EntityState.Deleted;
+                db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
                 TempData["Alert"] = "Removido com sucesso";
                 TempData["Class"] = "green-alert";
@@ -118,9 +122,10 @@ namespace TaskQuest.Controllers
             {
                 TempData["Alert"] = "Você não tem permissão para realizar essa ação";
                 TempData["Class"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
             }
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -133,7 +138,7 @@ namespace TaskQuest.Controllers
             TempData["Alert"] = "Criado com sucesso";
             TempData["Class"] = "green-alert";
 
-            return RedirectToAction("Configurar");
+            return RedirectToAction("Index");
         }
 
         [HttpPost]
@@ -146,7 +151,7 @@ namespace TaskQuest.Controllers
             TempData["Alert"] = "Criado com sucesso";
             TempData["Class"] = "green-alert";
 
-            return RedirectToAction("Usuario");
+            return RedirectToAction("Index");
         }
     }
 }

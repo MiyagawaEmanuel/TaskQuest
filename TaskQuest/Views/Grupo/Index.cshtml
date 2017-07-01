@@ -13,12 +13,12 @@ ViewBag.Title = "Grupo";
 
 @section js
 {
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/canvas/canvasjs.min.js"></script>
-    <script src="~Content/js/graphics.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
-    <script src="~Content/js/jquery-ui/jquery-ui.js"></script>
-    <script src="~Content/js/tabs.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/canvas/canvasjs.min.js"></script>
+    <script src="~/Content/js/graphics.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/js/tabs.js"></script>
 }
 
 <section class="pads-bot">
@@ -48,7 +48,15 @@ ViewBag.Title = "Grupo";
         <div class="grupo-elipse tory-blue-bg"><img src="img/groupicon.png"></div>
     </div>
     <div><h3>@Model.Grupo.Nome</h3></div>
-    <div><h3>@Model.Integrantes.Count Integrantes</h3></div>
+    @if (@Model.Integrantes.Count == 1)
+    {
+        <div><h3>@Model.Integrantes.Count Integrante</h3></div>
+    }
+    else
+    {
+        <div><h3>@Model.Integrantes.Count Integrantes</h3></div>
+    }
+    
 </section>
 
 <hr class="container quebra">

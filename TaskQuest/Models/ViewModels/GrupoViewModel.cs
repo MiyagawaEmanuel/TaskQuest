@@ -10,8 +10,6 @@ namespace TaskQuest.ViewModels
 
         public List<User> Integrantes = new List<User>();
 
-        public List<Quest> Quests = new List<Quest>();
-
         public AdicionarIntegranteViewModel AdicionarIntegranteViewModel(int Id){
             var aux = new AdicionarIntegranteViewModel()
             {

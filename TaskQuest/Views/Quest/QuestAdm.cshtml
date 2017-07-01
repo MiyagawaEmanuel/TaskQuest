@@ -1,4 +1,6 @@
-﻿@{
+﻿@model int
+
+@{
     ViewBag.Title = "Quest";
 }
 
@@ -10,11 +12,14 @@
 
 @section js
 {
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
-    <script src="~Content/js/jquery.validate.js"></script>
-    <script src="~Content/js/quest-adm.js"></script>   
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/quest-adm.js"></script>   
 }
+
+@Html.AntiForgeryToken()
+<input type="hidden" id="Hash" value="@Model" />
 
 <section class="pads-bot">
 
@@ -170,3 +175,5 @@
         </div>
     </div>
 </div>
+
+<span class="balloon" style="display: none"></span>

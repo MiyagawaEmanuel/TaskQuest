@@ -120,8 +120,6 @@ C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\D
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
 C:\Users\Emanuel\documents\visual studio 2017\Projects\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csprojResolveAssemblyReference.cache
-C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
-C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.dll
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.pdb
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\ApplicationInsights.config
@@ -240,3 +238,6 @@ C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.Razor.resource
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.resources.dll
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Deployment.resources.dll
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Razor.resources.dll
+C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
+C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
+C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.CorrigindoQuest.resources

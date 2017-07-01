@@ -9,8 +9,7 @@ namespace TaskQuest
     {
         public static MvcHtmlString ToHtmlDate(this HtmlHelper helper, DateTime dateTime)
         {
-            var aux = dateTime.ToString().Split('/');
-            return new MvcHtmlString(aux[2] + "/" + aux[1] + "/" + aux[0]);
+            return new MvcHtmlString(dateTime.ToString("yyyy-MM-dd"));
         }
 
         public static LinkViewModel LinkViewModel(this HtmlHelper helper, string id, string hash, string action)
@@ -21,6 +20,11 @@ namespace TaskQuest
         public static Grupo Grupo(this HtmlHelper helper)
         {
             return new Grupo();
+        }
+
+        public static string LinkId(this HtmlHelper helper, string @string)
+        {
+            return @string;
         }
     }
 }

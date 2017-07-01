@@ -45,11 +45,9 @@ namespace TaskQuest.Controllers
                         if (tsk.Status != 2)
                             model.Pendencias.Add(tsk);
 
-            foreach (var gru in model.Grupos)
-                foreach (var qst in gru.Quests)
-                    foreach (var tsk in qst.Tasks)
-                        if (tsk.Status != 2)
-                            model.Pendencias.Add(tsk);
+            foreach (var qst in user.Quests)
+                foreach (var tsk in qst.Tasks)
+                    model.Pendencias.Add(tsk);
 
             foreach (var tsk in model.Pendencias)
                 foreach (var feb in tsk.Feedbacks)
@@ -68,7 +66,7 @@ namespace TaskQuest.Controllers
         public ActionResult Grupos()
         {
             List<Grupo> model = new List<Grupo>();
-            foreach (var uxg in db.Users.Find(User.Identity.GetUserId()).UsuarioGrupos)
+            foreach (var uxg in db.Users.Find(User.Identity.GetUserId<int>()).UsuarioGrupos)
                 model.Add(db.Grupo.Find(uxg.GrupoId));
             return View(model);
         }

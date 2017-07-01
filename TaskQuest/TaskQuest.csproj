@@ -194,9 +194,13 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201706271341258_InitialMigration.cs" />
-    <Compile Include="Migrations\201706271341258_InitialMigration.Designer.cs">
-      <DependentUpon>201706271341258_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201706291117216_InitialMigration.cs" />
+    <Compile Include="Migrations\201706291117216_InitialMigration.Designer.cs">
+      <DependentUpon>201706291117216_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\201706292300141_Corrigindo-Quest.cs" />
+    <Compile Include="Migrations\201706292300141_Corrigindo-Quest.Designer.cs">
+      <DependentUpon>201706292300141_Corrigindo-Quest.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -220,6 +224,7 @@
     <Compile Include="Models\Semana.cs" />
     <Compile Include="Models\Task.cs" />
     <Compile Include="Models\Telefone.cs" />
+    <Compile Include="Models\ViewModels\QuestViewModel.cs" />
     <Compile Include="Models\ViewModels\UploadViewModel.cs" />
     <Compile Include="Models\UsuarioGrupo.cs" />
     <Compile Include="Models\ViewModels\CriarGrupoViewModel.cs" />
@@ -393,11 +398,6 @@
     <Content Include="Views\Home\Inicio.cshtml" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201706271341258_InitialMigration.resx">
-      <DependentUpon>201706271341258_InitialMigration.cs</DependentUpon>
-    </EmbeddedResource>
-  </ItemGroup>
-  <ItemGroup>
     <Content Include="Views\Shared\_CriarGrupoPartial.cshtml" />
   </ItemGroup>
   <ItemGroup>
@@ -441,7 +441,15 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="Views\Grupo\GrupoAdm.cshtml" />
-    <Content Include="Views\Grupo\_AdicionarIntegranteViewModelPartial.cshtml" />
+    <Content Include="Views\Grupo\_AdicionarIntegrantePartial.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201706291117216_InitialMigration.resx">
+      <DependentUpon>201706291117216_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\201706292300141_Corrigindo-Quest.resx">
+      <DependentUpon>201706292300141_Corrigindo-Quest.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

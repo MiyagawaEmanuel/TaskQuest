@@ -572,7 +572,7 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
-                .Property(e => e.DataCricao)
+                .Property(e => e.DataCriacao)
                 .HasColumnName("qst_data_criacao")
                 .IsRequired();
 

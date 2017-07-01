@@ -39,8 +39,6 @@
     );
     wow.init();
 
-    $("#DataNascimento").mask("00/00/0000", { placeholder: "Dia/Mes/Ano" });
-
     $("#RegisterForm").validate({
         errorPlacement: function (error, element) {
             $(element)
@@ -70,10 +68,9 @@
                 equalTo: '#Email'
             },
             DataNascimento: {
-                required: function (element) {
-                    return new Date($("#DataNascimento").val().split("/").reverse().join("-")) < Date.now();
-                },
-                date: true
+                required: true,
+                date: true,
+                pastDate: true,
             },
             Senha: {
                 required: true

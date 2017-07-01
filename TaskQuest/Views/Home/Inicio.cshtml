@@ -20,7 +20,7 @@
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a href="" data-target="#modalCriarGrupo" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a href="" data-target="#modalCriarGrupo" data-toggle="modal">Criar Grupos</a></h3>
+                <h3><a href="" data-target="#modalCriarGrupo" data-toggle="modal">Criar Grupo</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-caret-down elipse icon-black" aria-hidden="true"></i>
@@ -31,14 +31,12 @@
 
     <div class="container flex-properties-r margintop">
         
-    @for (int x = 0;x < Model.Grupos.Count; x++){
-        @Html.Partial("_LinkPartial", @Html.LinkViewModel("Grupo"+x, Model.Grupos[x].Id.ToString(), "/Grupo"))
-        <a onclick="link('Grupo@x')">
-            <div class="flex-properties-c margin-bottom item group-container">
-                <div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img src="img/groupicon.png"></div>
-                <div class="limit-lines"><spam class="grupo-nome">@Model.Grupos[x].Nome</spam></div>
+    @for (int x = 0;x < (Model.Grupos.Count >= 5 ? 5 : Model.Grupos.Count); x++){
+        @Html.Partial("_LinkPartial", @Html.LinkViewModel("Grupo"+x, Model.Grupos[x].Id.ToString(), "/Grupo/Index"))
+            <div class="flex-properties-c margin-bottom item">
+                <a onclick="link(@Html.LinkId("Grupo"+x))"><div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img src="~/Content/img/groupicon.png"></div></a>
+                <div class="limit-lines icon-black"><a onclick='link(@Html.LinkId("Grupo"+x))' class="grupo-nome">@Model.Grupos[x].Nome</a></div>
             </div>
-        </a>
     }
 
     </div>
@@ -51,8 +49,8 @@
         <div class="title-a"><h2>PENDÊNCIAS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
-                <i class="fa fa-plus elipse" aria-hidden="true"></i>
-                <h3><a href="/Quest/CriarQuest/Usuario">Criar Quest</a></h3>
+                <a href="/Quest/CriarQuest"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 <i class="fa fa-caret-down elipse" aria-hidden="true"></i>
@@ -63,12 +61,12 @@
 
     <div class="container flex-properties-r margintop">
 
-    @for (int x = 0; x < Model.Pendencias.Count; x++){
+    @for (int x = 0; x < (Model.Pendencias.Count >= 5 ? 5 : Model.Pendencias.Count); x++){
         @Html.Partial("_LinkPartial", @Html.LinkViewModel("Task"+x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
         <div class="margin-bottom item">
-           <a onclick="link('Task@x')"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
+           <a onclick="link(@Html.LinkId("Task"+x))"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
             <div class="quest-body flex-properties-c">
-                <a onclick="link('Task@x')" class="icon-black"><div class="limit-lines"><h4>@Model.Pendencias[x].Nome</h4></div></a>
+                <a onclick="link(@Html.LinkId("Task"+x))" class="icon-black"><div class="limit-lines"><h4>@Model.Pendencias[x].Nome</h4></div></a>
                 <div class="limit-lines"><h4>@Model.Pendencias[x].Descricao</h4></div>
                 <div><h4>@Model.Pendencias[x].DataConclusao</h4></div>
                 <div class="select-container">
@@ -100,13 +98,13 @@
 
     <div class="container flex-properties-r margintop">
 
-    @for (int x = 0; x < Model.Feedbacks.Count; x++)
+    @for (int x = 0; x < (Model.Feedbacks.Count >= 5 ? 5 : Model.Feedbacks.Count); x++)
     {
         @Html.Partial("_LinkPartial", @Html.LinkViewModel("Feb" + x, Model.Feedbacks[x].Task.Quest.Id.ToString(), "/Quest"))
         <div class="margin-bottom item">
-            <a onclick="link('Feb@x')"><div class="filete" style="background-color: @Model.Feedbacks[x].Task.Quest.Cor"></div></a>
+            <a onclick="link(@Html.LinkId("Feb"+x))"><div class="filete" style="background-color: @Model.Feedbacks[x].Task.Quest.Cor"></div></a>
             <div class="quest-body flex-properties-c">
-                <a class="icon-black" onclick="link('Feb@x')"><div class="limit-lines"><h4>@Model.Feedbacks[x].Task.Nome</h4></div></a>
+                <a class="icon-black" onclick="link(@Html.LinkId("Feb"+x))"><div class="limit-lines"><h4>@Model.Feedbacks[x].Task.Nome</h4></div></a>
                 <div class="limit-lines"><h4>@Model.Feedbacks[x].Resposta</h4></div>
                 <div><h1>@Model.Feedbacks[x].Nota</h1></div>
                 <div><h4>@Model.Feedbacks[x].Task.DataConclusao</h4></div>

@@ -1,23 +1,12 @@
-/*
-	Daí no razor isso vira um construtor:
-
-	function Quest(){
-
-		!!!!!!!!!!!!!fazer o get ou sei lá do Controller
-
-		<o que está dentro de quest agora>
-	}
-
-	no evento ready:
-
-	var quest = Quest();
-*/
-
+function showBalloon(alert, classe) {
+    $(".balloon").addClass(classe);
+    $(".balloon").text(alert);
+    $(".balloon").css("display", "block");
+    $(".balloon").delay(4000).fadeOut(2000);
+}
 
 var quest = {
-
-	Nome: 'Fazer as coisa',
-	Descricao: 'Fazer as coisa',
+    
 	tasks: [],
 
 	add: function(task){
@@ -45,38 +34,38 @@ var quest = {
 	},
 
 
-	render: function(){
-		$('#Nome').val(this.Nome);
-		$('#Descricao').text(this.Descricao);
-		$('#task-container div').remove();
-		for(var x = 0; x < this.tasks.length; x++){
-			var content = 	"<div class='margin-bottom item' id="+x+">"+
-								"<a onclick='showAtualizarTaskModal("+x+")'><div class='tory-blue-bg filete'></div></a>"+
-								"<div class='quest-body flex-properties-c'>"+
-									"<div class='icon-black limit-lines'>"+
-										"<a onclick='showAtualizarTaskModal("+x+")'>"+
-											"<h4 class='Nome'>"+this.get(x)['Nome']+"</h4>"+
-										"</a>"+
-									"</div>"+
-									"<div class='limit-lines'>"+
-										"<h4 class='Descricao'>"+this.get(x)["Descricao"]+"</h4>"+
-									"</div>"+
-									"<div>"+
-										"<h4 class='DataConclusao'>"+this.get(x)["DataConclusao"].split('-').reverse().join('/')+"</h4>"+
-									"</div>"+
-									"<div class='select-container'>"+
-										"<select class='form-control Status' onchange='mudarStatus("+x+")'>"+ 
-											"<option value='0'>A Fazer</option>"+
-											"<option value='1'>Fazendo</option>"+
-											"<option value='2'>Feito</option>"+
-										"</select>"+
-									"</div>"+
-								"</div>"+
-							"</div>";
-			$("#task-container").append(content);
-			$('#'+x+' .Status').val(this.get(x)["Status"]);
-		}
-	}
+    render: function () {
+        $('#task-container div').remove();
+        var len = this.tasks.length - 1;
+        var cor = $("#Cor").val();
+        for (var x = 0; x < this.tasks.length; x++) {
+            var content = "<div class='margin-bottom item' id=" + x + ">" +
+                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + cor + "'></div></a>" +
+                "<div class='quest-body flex-properties-c'>" +
+                "<div class='icon-black limit-lines'>" +
+                "<a onclick='showAtualizarTaskModal(" + x + ")'>" +
+                "<h4 class='Nome'>" + this.get(x)['Nome'] + "</h4>" +
+                "</a>" +
+                "</div>" +
+                "<div class='limit-lines'>" +
+                "<h4 class='Descricao'>" + this.get(x)["Descricao"] + "</h4>" +
+                "</div>" +
+                "<div>" +
+                "<h4 class='DataConclusao'>" + this.get(x)["DataConclusao"].split('-').reverse().join('/') + "</h4>" +
+                "</div>" +
+                "<div class='select-container'>" +
+                "<select class='form-control Status' onchange='mudarStatus(" + x + ")'>" +
+                "<option value='0'>A Fazer</option>" +
+                "<option value='1'>Fazendo</option>" +
+                "<option value='2'>Feito</option>" +
+                "</select>" +
+                "</div>" +
+                "</div>" +
+                "</div>";
+            $("#task-container").append(content);
+            $('#Status').val(this.get(len)["Status"]);
+        }
+    }
 }
 
 function mudarStatus(index){
@@ -144,6 +133,22 @@ function showFeedbackModal(index){
 
 $(document).ready(function() {
 
+    oi = new Object;
+
+    $.ajax({
+        contentType: 'application/json;',
+        type: "POST",
+        url: "/Quest/GetQuests",
+        data: JSON.stringify({
+            "Hash": $("#Hash").val()
+        }),
+        success: function (result) {
+            oi = result;
+        },
+        error: function () {
+            showBalloon("Algo deu errado", "yellow-alert");
+        }
+    });
 	quest.render();
 
 	$("form").on('keyup keydown submit click focusout onfocus', function(){

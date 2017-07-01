@@ -21,7 +21,7 @@ namespace TaskQuest.Models
 
         public string Cor { get; set; }
 
-        public DateTime DataCricao { get; set; }
+        public DateTime DataCriacao { get; set; }
 
         public string Descricao { get; set; }
 

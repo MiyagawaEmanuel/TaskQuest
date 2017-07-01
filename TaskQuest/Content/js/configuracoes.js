@@ -1,4 +1,4 @@
-function submit(id, action){
+function submit(id, action) {
 	$('#' + id).attr('action', action).submit();
 }
 

@@ -1,4 +1,6 @@
-﻿@{
+﻿@model int?
+
+@{
     ViewBag.Title = "Criar Quest";
 }
 
@@ -9,10 +11,10 @@
 
 @section js
 {
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
-    <script src="~Content/js/jquery.validate.js"></script>
-    <script src="~Content/js/criar-quest.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/criar-quest.js"></script>
 }
 
 <section class="pads-bot">
@@ -32,6 +34,10 @@
     </div>
 
     <form id="formQuest">
+        @if (Model != null)
+        {
+            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Html.LinkId(Convert.ToString(Model))" />
+        }
         <div class="container flex-properties-c">
             <div class="form-container">
                 <input type="text" class="form-control" placeholder="Nome da Quest" id="Nome" name="Nome">
@@ -40,6 +46,10 @@
             <div class="form-container">
                 <textarea type="text" class="form-control" placeholder="Descrição da Quest" id="Descricao" name="Descricao"></textarea>
                 <label for="Descricao"></label>
+            </div>
+            <div class="form-container">
+                <p>Escolha a cor do seu grupo.</p>
+                <input type="hidden" name="Cor" id="Cor" value="#106494">
             </div>
         </div>
     </form>
@@ -130,3 +140,5 @@
         </div>
     </div>
 </div>
+
+<span class="balloon" style="display: none"></span>

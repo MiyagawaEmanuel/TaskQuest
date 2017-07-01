@@ -7,13 +7,13 @@ namespace TaskQuest.Migrations
     using System.Resources;
     
     [GeneratedCode("EntityFramework.Migrations", "6.1.3-40302")]
-    public sealed partial class InitialMigration : IMigrationMetadata
+    public sealed partial class CorrigindoQuest : IMigrationMetadata
     {
-        private readonly ResourceManager Resources = new ResourceManager(typeof(InitialMigration));
+        private readonly ResourceManager Resources = new ResourceManager(typeof(CorrigindoQuest));
         
         string IMigrationMetadata.Id
         {
-            get { return "201706271341258_InitialMigration"; }
+            get { return "201706292300141_Corrigindo-Quest"; }
         }
         
         string IMigrationMetadata.Source

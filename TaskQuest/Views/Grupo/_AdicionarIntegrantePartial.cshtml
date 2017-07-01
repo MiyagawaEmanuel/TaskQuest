@@ -10,10 +10,11 @@
 				</button>
 			</div>
 			<form id="formAdicionarIntegrante" action="/Grupo/AdicionarIntegrante" method="post">
+                @Html.AntiForgeryToken()
 				<input type="hidden" name="gru_id" value="@Model.gru_id">
 				<div class="modal-body">
 					<div class="form-group">
-						<input class="form-control" id="EmailIntegrante" name="EmailIntegrante" placeholder="E-mail">
+						<input class="form-control" id="Email" name="Email" placeholder="E-mail">
 						<label for="EmailIntegrante"></label>
 					</div>
 				</div>
