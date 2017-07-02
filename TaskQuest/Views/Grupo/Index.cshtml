@@ -47,7 +47,7 @@ ViewBag.Title = "Grupo";
 
 <section class="container flex-properties-g">
     <div>
-        <div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
+        <div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img alt="Grupo" src="~/Content/img/groupicon.png"></div>
     </div>
     <div><h3>@Model.Grupo.Nome</h3></div>
     @if (@Model.Integrantes.Count == 1)
@@ -67,7 +67,7 @@ ViewBag.Title = "Grupo";
     <div id="tabs">
         <ul>
             <li><a href="#integrantes">Integrantes</a></li>
-            <li><a href="#quests">Quests</a></li>
+            <li><a href="#quests" lang="en">Quests</a></li>
         </ul>
         <div id="integrantes">
             @foreach (var integrante in Model.Integrantes)

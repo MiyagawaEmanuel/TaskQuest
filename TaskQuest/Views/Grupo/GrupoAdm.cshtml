@@ -32,7 +32,7 @@
 			<div class="flex-properties-r pads icon-black">
 				@Html.Partial("_LinkPartial", Html.LinkViewModel("CriarQuest", Model.Grupo.Id.ToString(), "/Quest/CriarQuest"))
                 <a onclick="link(CriarQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a onclick="link(CriarQuest)">Criar Quest</a></h3>
+                <h3><a onclick="link(CriarQuest)">Criar <span lang="en">Quest</span></a></h3>
 			</div>
 			<div class="flex-properties-r pads icon-black">
                 @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirGrupo", Model.Grupo.Id.ToString(), "/Grupo/ExcluirGrupo"))
@@ -54,7 +54,7 @@
 
 <section class="container flex-properties-g">
 	<div>
-		<div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
+		<div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img alt="Grupo" src="~/Content/img/groupicon.png"></div>
 	</div>
 	<div><h3>@Model.Grupo.Nome</h3></div>
     @if (@Model.Integrantes.Count == 1)
