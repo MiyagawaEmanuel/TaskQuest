@@ -172,7 +172,7 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<User>()
                 .HasMany(e => e.Feedbacks)
-                .WithRequired(e => e.UsuarioResponsavel)
+                .WithOptional(e => e.UsuarioResponsavel)
                 .HasForeignKey(e => e.UsuarioResponsavelId)
                 .WillCascadeOnDelete(true);
 
@@ -397,8 +397,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Relatorio)
                 .HasColumnName("feb_relatorio")
-                .HasMaxLength(150)
-                .IsRequired();
+                .HasMaxLength(120);
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Resposta)
@@ -422,8 +421,7 @@ namespace TaskQuest.Models
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.UsuarioResponsavelId)
-                .HasColumnName("usu_id_responsavel")
-                .IsRequired();
+                .HasColumnName("usu_id_responsavel");
 
             /*
                 Configurando a tabela Grupo 

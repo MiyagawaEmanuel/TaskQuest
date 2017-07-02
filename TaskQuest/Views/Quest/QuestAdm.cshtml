@@ -12,10 +12,10 @@
 
 @section js
 {
-    <script src="~/Content/js/spectrum.js"></script>
-    <script src="~/Content/js/spectrum.config.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
-    <script src="~/Content/js/quest-adm.js"></script>   
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/quest-adm.js"></script>
+    <script src="~/Content/js/link.js"></script>
 }
 
 @Html.AntiForgeryToken()
@@ -35,8 +35,9 @@
                 <h3><a href="" data-target="#modalAdicionarTask" data-toggle="modal">Adicionar Task</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
-                <a href="/Quest/ExcluirQuest/blablabla" ><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a href="/Quest/ExcluirQuest/blablabla" >Excluir Quest</a></h3>
+                @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirQuest", Model.ToString(), "/Quest/ExcluirQuest"))
+                <a onclick="link(ExcluirQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="link(ExcluirQuest)">Excluir Quest</a></h3>
             </div>
         </div>
     </div>
@@ -50,6 +51,10 @@
             <div class="form-container">
                 <textarea type="text" class="form-control" placeholder="Descrição da Quest" id="Descricao" name="Descricao"></textarea>
                 <label for="Descricao"></label>
+            </div>
+            <div class="form-container">
+                <p>Escolha a cor da Quest.</p>
+                <input type="hidden" name="Cor" id="Cor">
             </div>
         </div>
     </form>

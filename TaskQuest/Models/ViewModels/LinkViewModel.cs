@@ -1,3 +1,5 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace TaskQuest.ViewModels
 {
     public class LinkViewModel
@@ -19,6 +21,7 @@ namespace TaskQuest.ViewModels
 
         public string Id { get; set; }
 
+        [Required]
         public string Hash { get; set; }
 
         public string Action { get; set; }

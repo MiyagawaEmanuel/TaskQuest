@@ -4,9 +4,14 @@
     ViewBag.Title = "Pendências";
 }
 
+@section css{
+    <link rel="stylesheet" href="~/Content/css/balloon.css"/>
+}
+
 @section js 
 {
     <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
 }
 
 <section class="pads-bot">
@@ -28,30 +33,30 @@
         {
             @Html.Partial("_LinkPartial", Html.LinkViewModel("Tsk"+x, Model[x].Quest.Id.ToString(), "/Quest"))
             <div class="margin-bottom item">
-                <a onclick="link('Tsk@x')"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
+                <a onclick="link(@Html.LinkId("Tsk"+x))"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
                 <div class="quest-body flex-properties-c">
-                    <div class="limit-lines"><h4>@Model[x].Nome</h4></div>
+                    <div class="limit-lines icon-black"><a onclick="link(@Html.LinkId("Tsk"+x))"><h4>@Model[x].Nome</h4></a></div>
                     <div class="limit-lines"><h4>@Model[x].Descricao</h4></div>
                     <div><h4>@Model[x].DataConclusao</h4></div>
                     <div class="select-container">
-                        <select class="form-control">
+                        <select id="@Model[x].Id" class="form-control" onchange="mudarStatus(this)">
                             @if (Model[x].Status == 0)
                             {
-                                <option selected>A Fazer</option>
-                                <option>Fazendo</option>
-                                <option>Feito</option>
+                                <option selected value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option value="2">Feito</option>
                             }
                             else if (Model[x].Status == 1)
                             {
-                                <option>A Fazer</option>
-                                <option selected>Fazendo</option>
-                                <option>Feito</option>
+                                <option value="0">A Fazer</option>
+                                <option selected value="1">Fazendo</option>
+                                <option value="2">Feito</option>
                             }
                             else if (Model[x].Status == 2)
                             {
-                                <option>A Fazer</option>
-                                <option>Fazendo</option>
-                                <option selected>Feito</option>
+                                <option value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option selected value="2">Feito</option>
                             }
                         </select>
                     </div>
@@ -62,3 +67,5 @@
     </div>
 
 </section>
+
+<span id="BalloonStatus" class="balloon" style="display: none"></span>

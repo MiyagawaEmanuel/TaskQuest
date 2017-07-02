@@ -12,7 +12,7 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a"><h2>FEEDBACK</h2></div>
+        <div class="title-a"><h2>FEEDBACKS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads"></div>
         </div>
@@ -24,9 +24,9 @@
         {
             @Html.Partial("_LinkPartial", Html.LinkViewModel("Feb"+x, Model[x].Task.Quest.Id.ToString(), "/Quest"))
             <div class="margin-bottom item">
-                <a onclick="link('Feb@x')"><div class="filete" style="background-color: @Model[x].Task.Quest.Cor"></div></a>
-                <div class="quest-body flex-properties-c">
-                    <a class="icon-black" onclick="link('Feb@x')"><div class="limit-lines"><h4>@Model[x].Task.Nome</h4></div></a>
+                <a onclick="link(@Html.LinkId("Feb"+x))"><div class="filete" style="background-color: @Model[x].Task.Quest.Cor"></div></a>
+                <div class="quest-body flex-properties-c icon-black">
+                    <a class="icon-black" onclick="link(@Html.LinkId("Feb"+x))"><div class="limit-lines"><h4>@Model[x].Task.Nome</h4></div></a>
                     <div class="limit-lines"><h4>@Model[x].Resposta</h4></div>
                     <div><h1>@Model[x].Nota</h1></div>
                     <div>@Model[x].Task.DataConclusao</div>

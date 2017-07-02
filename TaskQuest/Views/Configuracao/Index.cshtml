@@ -34,7 +34,7 @@
 
 <section class="container">
     <div><h1 class="title">Informações Pessoais</h1></div>
-    @Html.Partial("_EditarUsuarioPartial", Model.usuario)
+    @Html.Partial("_EditarUsuarioPartial", Html.EditarUsuarioViewModel(Model.usuario))
 </section>
 
 <hr class="container quebra">

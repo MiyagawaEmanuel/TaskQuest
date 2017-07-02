@@ -109,8 +109,8 @@ textarea {
 .title-a {
     width: 30%;
     background-color: white;
-    border-bottom: 1px solid rgba(0,0,0,0.1);
-    border-top: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1.8px solid rgba(0,0,0,0.1);
+    border-top: 1.8px solid rgba(0,0,0,0.1);
     color: #106494;
 }
 
@@ -157,14 +157,19 @@ textarea {
     text-decoration: none;
 }
 
-    .limit-lines h4 {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
-        -webkit-line-clamp: 2;
-        line-height: 1.1;
-    }
+.quest-body a{
+    width: 100%;
+}
+
+.limit-lines{
+    width: 80%;
+    margin: 0 auto;
+}
+
+.limit-lines h4 {
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
 
 .elipse {
     background-color: white;

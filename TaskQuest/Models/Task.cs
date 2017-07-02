@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 
 namespace TaskQuest.Models
 {
@@ -18,16 +19,25 @@ namespace TaskQuest.Models
 
         public int QuestId { get; set; }
 
+        [Required]
+        [StringLength(40, MinimumLength = 3)]
         public string Nome { get; set; }
 
+        [Required]
+        [StringLength(120, MinimumLength = 3)]
         public string Descricao { get; set; }
 
+        [Required]
+        [Range(0, 2)]
         public int Status { get; set; }
 
+        [Required]
+        [Range(0, 5)]
         public int Dificuldade { get; set; }
 
         public DateTime DataCriacao { get; set; }
 
+        [Required]
         public DateTime DataConclusao { get; set; }
 
         public bool RequerVerificacao { get; set; }

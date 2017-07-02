@@ -240,4 +240,3 @@ C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Deplo
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\bin\pt-br\System.Web.WebPages.Razor.resources.dll
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.InitialMigration.resources
 C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.csproj.GenerateResource.Cache
-C:\Users\Emanuel\Desktop\TaskQuest\TaskQuest\obj\Debug\TaskQuest.Migrations.CorrigindoQuest.resources

@@ -26,5 +26,20 @@ namespace TaskQuest
         {
             return @string;
         }
+
+        public static AdicionarIntegranteViewModel AdicionarIntegranteViewModel(this HtmlHelper helper, int Id)
+        {
+            var aux = new AdicionarIntegranteViewModel()
+            {
+                GrupoId = Id
+            };
+            return aux;
+        }
+
+        public static EditarUsuarioViewModel EditarUsuarioViewModel(this HtmlHelper helper, User user)
+        {
+            return new EditarUsuarioViewModel(user);
+        }
+
     }
 }

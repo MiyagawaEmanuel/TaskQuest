@@ -1,11 +1,14 @@
-﻿namespace TaskQuest.ViewModels
+﻿using System.ComponentModel.DataAnnotations;
+
+namespace TaskQuest.ViewModels
 {
     public class EditarIntegranteViewModel
     {
+    	[Required]
+        public int UserId { get; set; }
 
-        public int usu_id { get; set; }
-
-        public int gru_id { get; set; }
+        [Required]
+        public int GrupoId { get; set; }
         
     }
 }

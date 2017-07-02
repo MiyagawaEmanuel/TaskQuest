@@ -7,40 +7,38 @@ function showBalloon(alert, classe) {
 
 var quest = {
     
-	tasks: [],
+    TasksViewModel: [],
 
 	add: function(task){
-		this.tasks.push(task);
+        this.TasksViewModel.push(task);
 	},
 
 	remove: function(index){
-		this.tasks.splice(index, 1);
+        this.TasksViewModel.splice(index, 1);
 	},
 
 	get: function(index){
-		return this.tasks[index];
+        return this.TasksViewModel[index];
 	},
 
 	set: function(index, doc){
-		this.tasks[index] = doc;
+        this.TasksViewModel[index] = doc;
 	},
 
 	setProp: function(index, prop, doc){
-		this.tasks[index][prop] = doc;
+        this.TasksViewModel[index][prop] = doc;
 	},
 
 	getAll: function(){
-		return this.tasks;
+        return this.TasksViewModel;
 	},
 
 
     render: function () {
         $('#task-container div').remove();
-        var len = this.tasks.length - 1;
-        var cor = $("#Cor").val();
-        for (var x = 0; x < this.tasks.length; x++) {
+        for (var x = 0; x < this.TasksViewModel.length; x++) {
             var content = "<div class='margin-bottom item' id=" + x + ">" +
-                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + cor + "'></div></a>" +
+                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + quest.Cor + "'></div></a>" +
                 "<div class='quest-body flex-properties-c'>" +
                 "<div class='icon-black limit-lines'>" +
                 "<a onclick='showAtualizarTaskModal(" + x + ")'>" +
@@ -63,14 +61,17 @@ var quest = {
                 "</div>" +
                 "</div>";
             $("#task-container").append(content);
-            $('#Status').val(this.get(len)["Status"]);
+            $('#'+x+' .Status').val(this.get(x)["Status"]);
+            $('#Nome').val(quest.Nome);
+            $("#Descricao").val(quest.Descricao);
+            $("#Cor").val(quest.Cor);
         }
     }
 }
 
 function mudarStatus(index){
 	var status = $("#"+index+" .Status").val();
-	quest.setProp(index, "Status", status);
+	quest.setProp(index, "Status", parseInt(status));
 	if(quest.get(index)['Feedback'] != undefined)
 		if(status == 0 || status == 1)
 			quest.setProp(index, 'Feedback', undefined);
@@ -89,8 +90,8 @@ function showAtualizarTaskModal(index){
 	$("#ExcluirTask").data('index', index);
 
 	$('#Feedback div').remove();
-	if(quest.get(index)['Status'] === '2'){
-		if(quest.get(index)['Feedback'] === undefined){
+	if(quest.get(index)['Status'] === 2){
+        if (quest.get(index)['Feedback'] === undefined || quest.get(index)['Feedback'] === null){
 			var content = "<div class='icon-black'><a onclick='showFeedbackModal("+index+")'><h4>Criar Feedback<h4></a></div>";
 			$("#Feedback").append(content);
 		}
@@ -111,7 +112,7 @@ function showAtualizarTaskModal(index){
 									"</select>"+
 								"</div>";
 			$('#Feedback').append(content);
-			$('#AtualizarTextoFeedback').val(quest.get(index)['Feedback']['Texto']);
+			$('#AtualizarTextoFeedback').val(quest.get(index)['Feedback']['Resposta']);
 			$('#AtualizarNota').val(quest.get(index)['Feedback']['Nota']);
 		}
 	}
@@ -133,8 +134,6 @@ function showFeedbackModal(index){
 
 $(document).ready(function() {
 
-    oi = new Object;
-
     $.ajax({
         contentType: 'application/json;',
         type: "POST",
@@ -143,13 +142,27 @@ $(document).ready(function() {
             "Hash": $("#Hash").val()
         }),
         success: function (result) {
-            oi = result;
+            quest.Id = result.Id
+            quest.Nome = result.Nome;
+            quest.Descricao = result.Descricao;
+            quest.Cor = result.Cor;
+            quest.TasksViewModel = result.TasksViewModel;
+            quest.render();
+            $("#Cor").spectrum({
+                preferredFormat: "hex",
+                allowEmpty: false,
+                chooseText: "Selecionar",
+                cancelText: "",
+                move: function (color) {
+                    $("#Cor").val(color.toHex());
+                },
+                color: quest.Cor,
+            });
         },
         error: function () {
             showBalloon("Algo deu errado", "yellow-alert");
         }
     });
-	quest.render();
 
 	$("form").on('keyup keydown submit click focusout onfocus', function(){
 		var errors = $('[aria-invalid=true]');
@@ -177,9 +190,25 @@ $(document).ready(function() {
 	})
 
 	$('#formQuest').on("submit",function(e) {
-		e.preventDefault();
-		alert('oi');
-        //Colocar a l√≥gica do ajax aqui!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+        e.preventDefault();
+        quest.Nome = $("#Nome").val();
+        quest.Descricao = $("#Descricao").val();
+        quest.Cor = $("#Cor").val();
+        $.ajax({
+            contentType: 'application/json;',
+            type: "POST",
+            url: "/Quest/AtualizarQuest",
+            data: JSON.stringify(quest),
+            success: function (result) {
+                if (result == "true")
+                    window.location.href = "/Home/Inicio";
+                else
+                    showBalloon("Formul·rio inv·lido", "yellow-alert");
+            },
+            error: function () {
+                showBalloon("Algo deu errado", "yellow-alert");
+            }
+        });
     });
 
 	$('#AdicionarTask').click(function(event) {
@@ -191,7 +220,10 @@ $(document).ready(function() {
 				'DataConclusao': $('#DataConclusao').val(),
 				'Dificuldade' : $('#Dificuldade').val(),
 				'Status': 0
-			});
+            });
+            quest.Nome = $("#Nome").val();
+            quest.Descricao = $("#Descricao").val();
+            quest.Cor = $("#Cor").val();
 			quest.render()
 			$('#modalAdicionarTask').modal('hide');		
 		}
@@ -201,28 +233,19 @@ $(document).ready(function() {
 		event.preventDefault();
 		if($("#formAtualizarTaskModal").valid()){
 			var index = $("#AtualizarTask").data('index');
-			if(quest.get(index)['Feedback'] == undefined){
-				quest.set(index, {
-					'Nome': $('#NomeTaskAtualizar').val(),
-					'Descricao': $('#DescricaoTaskAtualizar').val(),
-					'DataConclusao': $('#DataConclusaoAtualizar').val(),
-					'Dificuldade' : $('#DificuldadeAtualizar').val(),
-					'Status' : $('#'+index+' .Status').val() 
-				})
+            if (quest.get(index)['Feedback'] != undefined && quest.get(index)['Feedback'] != null){
+                quest.TasksViewModel[index].Feedback.Resposta = $('#AtualizarTextoFeedback').val();
+                quest.TasksViewModel[index].Feedback.Nota = $('#AtualizarNota').val();
 			}
-			else{
-				quest.set(index, {
-					'Nome': $('#NomeTaskAtualizar').val(),
-					'Descricao': $('#DescricaoTaskAtualizar').val(),
-					'DataConclusao': $('#DataConclusaoAtualizar').val(),
-					'Dificuldade' : $('#DificuldadeAtualizar').val(),
-					'Status' : $('#'+index+' .Status').val(),
-					'Feedback': {
-						'Texto': $('#AtualizarTextoFeedback').val(),
-						'Nota': $('#AtualizarNota').val()
-					}
-				})
-			}
+
+            quest.TasksViewModel[index].Nome = $('#NomeTaskAtualizar').val();
+            quest.TasksViewModel[index].Descricao = $('#DescricaoTaskAtualizar').val();
+            quest.TasksViewModel[index].DataConclusao = $('#DataConclusaoAtualizar').val();
+            quest.TasksViewModel[index].Dificuldade = $('#DificuldadeAtualizar').val();
+
+            quest.Nome = $("#Nome").val();
+            quest.Descricao = $("#Descricao").val();
+            quest.Cor = $("#Cor").val();
 			quest.render();
 			$('#modalAtualizarTask').modal('hide');
 		}
@@ -230,7 +253,10 @@ $(document).ready(function() {
 
 	$('#ExcluirTask').click(function(){
 		event.preventDefault();
-		quest.remove($('#ExcluirTask').data('index'));
+        quest.remove($('#ExcluirTask').data('index'));
+        quest.Nome = $("#Nome").val();
+        quest.Descricao = $("#Descricao").val();
+        quest.Cor = $("#Cor").val();
 		quest.render();
 		$('#modalAtualizarTask').modal('hide');	
 	});
@@ -238,7 +264,7 @@ $(document).ready(function() {
 	$('#CriarFeedback').click(function(){
 		event.preventDefault();
 		quest.setProp($('#CriarFeedback').data('index'), 'Feedback', {
-			'Texto': $('#TextoFeedback').val(),
+			'Resposta': $('#TextoFeedback').val(),
 			'Nota': $('#Nota').val()
 		});
 		$('#modalCriarFeedback').modal('hide');

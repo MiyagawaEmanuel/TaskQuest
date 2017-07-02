@@ -11,7 +11,7 @@
 			</div>
 			<form id="formAdicionarIntegrante" action="/Grupo/AdicionarIntegrante" method="post">
                 @Html.AntiForgeryToken()
-				<input type="hidden" name="gru_id" value="@Model.gru_id">
+				<input type="hidden" name="GrupoId" value="@Model.GrupoId">
 				<div class="modal-body">
 					<div class="form-group">
 						<input class="form-control" id="Email" name="Email" placeholder="E-mail">

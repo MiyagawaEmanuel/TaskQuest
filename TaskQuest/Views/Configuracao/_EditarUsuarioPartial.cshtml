@@ -1,8 +1,7 @@
-﻿@model TaskQuest.Models.User
+﻿@model TaskQuest.ViewModels.EditarUsuarioViewModel
 
 <form id="formUsuario" action="/Configuracao/EditarUsuario" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" value="@Model.Id" name="Id" id="Id" />
     <div class="flex-properties-r">
         <div>
             <input type="text" class="form-control" value="@Model.Nome" name="Nome" id="Nome" required>
@@ -13,7 +12,7 @@
             <label for="Sobrenome"></label>
         </div>
         <div>
-            <input type="date" class="form-control" name="DataNascimento" id="DataNascimento" value="@Html.ToHtmlDate(Model.DataNascimento)" required>
+            <input type="date" class="form-control" name="DataNascimento" id="DataNascimento" value="@Model.DataNascimento" required>
             <label for="DataNascimento"></label>
         </div>
         <div>
@@ -21,17 +20,17 @@
             <label for="Email"></label>
         </div>
         <div>
-            <input type="password" class="form-control" value="@Model.PasswordHash" name="PasswordHash" id="Senha" required>
+            <input type="password" class="form-control" value="@Model.Senha" name="Senha" id="Senha" required>
             <label for="Senha"></label>
         </div>
         <div>
-            <input type="password" class="form-control" name="ConfirmarSenha" id="ConfirmarSenha" required>
+            <input type="password" class="form-control" value="@Model.ConfirmarSenha" name="ConfirmarSenha" id="ConfirmarSenha" required>
             <label for="ConfirmarSenha"></label>
         </div>
     </div>
     <div class="color-container">
         <p>Escolha sua cor</p>
-        <input type="hidden" id="Cor" name="Cor" value="#106494">
+        <input type="hidden" id="Cor" name="Cor" value="@Model.Cor">
     </div>
     <div class="btn-container"><input type="submit" class="btn btn-secondary btn-cg" value="Salvar" /></div>
 </form>

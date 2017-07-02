@@ -1,15 +1,35 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System.Diagnostics;
 using System.Linq;
+using System.Web;
 using System.Web.Mvc;
+using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
+using TaskQuest.App_Code;
+using System.Data.Entity.Infrastructure;
 
 namespace TaskQuest.Controllers
 {
     [Authorize]
     public class ConfiguracaoController : Controller
     {
+        
+        private ApplicationUserManager _userManager;
+
+        public ConfiguracaoController() { }
+
+        public ConfiguracaoController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
+        {
+            UserManager = userManager;
+        }
+
+        public ApplicationUserManager UserManager
+        {
+            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            private set => _userManager = value;
+        }
 
         private DbContext db = new DbContext();
 
@@ -24,24 +44,51 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarUsuario(User model)
+        public ActionResult EditarUsuario(EditarUsuarioViewModel model)
         {
-
-            if (User.Identity.GetUserId<int>() == model.Id)
+            if (ModelState.IsValid)
             {
-                db.Entry(model).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+
+                User user = (User)UserManager.FindById(User.Identity.GetUserId<int>());
+
+                user.Nome = model.Nome;
+                user.Sobrenome = model.Sobrenome;
+                user.Email = model.Email;
+                user.UserName = model.Email;
+                user.DataNascimento = model.DataNascimento.StringToDateTime();
+                user.Cor = model.Cor;
+                user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Senha);
+
+                bool saveFailed;
+                do
+                {
+                    saveFailed = false;
+                    try
+                    {
+                        UserManager.Update(user);
+                    }
+                    catch (DbUpdateConcurrencyException ex)
+                    {
+                        saveFailed = true;
+
+                        // Update original values from the database 
+                        var entry = ex.Entries.Single();
+                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                    }
+
+                } while (saveFailed);
+                
                 TempData["Alert"] = "Atualizado com sucesso";
                 TempData["Class"] = "green-alert";
+
+                return RedirectToAction("Index");
             }
             else
             {
-                TempData["Alert"] = "Você não tem permissão para entrar nesta página";
+                TempData["Alert"] = "Formulário Inválido";
                 TempData["Class"] = "yellow-alert";
-                return RedirectToAction("Index", "Home");
+                return RedirectToAction("Index");
             }
-
-            return RedirectToAction("Configuracao");
         }
 
         [HttpPost]
@@ -49,7 +96,7 @@ namespace TaskQuest.Controllers
         public ActionResult EditarTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
 
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId && ModelState.IsValid)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -70,7 +117,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditarCartao([Bind(Prefix = "Item2")] Cartao model)
         {
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId && ModelState.IsValid)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
@@ -90,7 +137,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirTelefone([Bind(Prefix = "Item2")] Telefone model)
         {
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId && ModelState.IsValid)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
@@ -111,7 +158,7 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirCartao([Bind(Prefix = "Item2")] Cartao model)
         {
-            if (User.Identity.GetUserId<int>() == model.UsuarioId)
+            if (User.Identity.GetUserId<int>() == model.UsuarioId && ModelState.IsValid)
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
@@ -132,24 +179,42 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AdicionarTelefone(Telefone model)
         {
-            model.UsuarioId = User.Identity.GetUserId<int>();
-            db.Telefone.Add(model);
-            db.SaveChanges();
-            TempData["Alert"] = "Criado com sucesso";
-            TempData["Class"] = "green-alert";
+            if (ModelState.IsValid)
+            {
+                model.UsuarioId = User.Identity.GetUserId<int>();
+                db.Telefone.Add(model);
+                db.SaveChanges();
+                TempData["Alert"] = "Criado com sucesso";
+                TempData["Class"] = "green-alert";
+            }
+            else
+            {
+                TempData["Alert"] = "Formulário inválido";
+                TempData["Class"] = "yellow-alert";
+            }
 
             return RedirectToAction("Index");
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult AdicionarCartao(Cartao model)
         {
-            model.UsuarioId = User.Identity.GetUserId<int>();
-            db.Cartao.Add(model);
-            db.SaveChanges();
-            TempData["Alert"] = "Criado com sucesso";
-            TempData["Class"] = "green-alert";
+            if (ModelState.IsValid)
+            {
+                model.UsuarioId = User.Identity.GetUserId<int>();
+                db.Cartao.Add(model);
+                db.SaveChanges();
+                TempData["Alert"] = "Criado com sucesso";
+                TempData["Class"] = "green-alert";
+            }
+            else
+            {
+                TempData["Alert"] = "Formulário inválido";
+                TempData["Class"] = "green-alert";
+            }
+
 
             return RedirectToAction("Index");
         }

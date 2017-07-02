@@ -7,6 +7,7 @@ using TaskQuest.Identity;
 using System.Web;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
+using System.Diagnostics;
 
 namespace TaskQuest.Controllers
 {
@@ -42,12 +43,11 @@ namespace TaskQuest.Controllers
             foreach (var gru in model.Grupos)
                 foreach (var qst in gru.Quests)
                     foreach (var tsk in qst.Tasks)
-                        if (tsk.Status != 2)
                             model.Pendencias.Add(tsk);
 
             foreach (var qst in user.Quests)
                 foreach (var tsk in qst.Tasks)
-                    model.Pendencias.Add(tsk);
+                        model.Pendencias.Add(tsk);
 
             foreach (var tsk in model.Pendencias)
                 foreach (var feb in tsk.Feedbacks)
@@ -59,7 +59,31 @@ namespace TaskQuest.Controllers
         [Authorize]
         public ActionResult Feedbacks()
         {
-            return View();
+
+            List<Feedback> model = new List<Feedback>();
+            List<Grupo> grupos = new List<Grupo>();
+            List<Task> tasks = new List<Task>();
+
+            User user = db.Users.Find(User.Identity.GetUserId<int>());
+
+            foreach (var uxg in user.UsuarioGrupos)
+                foreach (var gru in db.Grupo.Where(q => q.Id == uxg.GrupoId).ToArray())
+                    grupos.Add(gru);
+
+            foreach (var gru in grupos)
+                foreach (var qst in gru.Quests)
+                    foreach (var tsk in qst.Tasks)
+                        tasks.Add(tsk);
+
+            foreach (var qst in user.Quests)
+                foreach (var tsk in qst.Tasks)
+                    tasks.Add(tsk);
+
+            foreach (var tsk in tasks)
+                foreach (var feb in tsk.Feedbacks)
+                    model.Add(feb);
+
+            return View(model);
         }
 
         [Authorize]
@@ -74,7 +98,24 @@ namespace TaskQuest.Controllers
         [Authorize]
         public ActionResult Pendencias()
         {
-            return View();
+            List<Task> model = new List<Task>();
+
+            User user = db.Users.Find(User.Identity.GetUserId<int>());
+
+            List<Grupo> grupos = new List<Grupo>();
+            foreach (var uxg in user.UsuarioGrupos)
+                grupos.Add(uxg.Grupo);
+
+            foreach (var gru in grupos)
+                foreach (var qst in gru.Quests)
+                    foreach (var tsk in qst.Tasks)
+                        model.Add(tsk);
+
+            foreach (var qst in user.Quests)
+                foreach (var tsk in qst.Tasks)
+                    model.Add(tsk);
+
+            return View(model);
         }
 
     }
