@@ -24,20 +24,20 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a"><h2 lang="en">Quest</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Quest</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a onclick="submit('formQuest', '/Quest/AtualizarQuest')"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a onclick="submit('formQuest', '/Quest/AtualizarQuest')">Atualizar <span lang="en">Quest</span></a></h3>
+                <h3><a onclick="submit('formQuest', '/Quest/AtualizarQuest')">Atualizar Quest</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 <a href="" data-target="#modalAdicionarTask" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a href="" data-target="#modalAdicionarTask" data-toggle="modal">Adicionar <span lang="en">Task</span></a></h3>
+                <h3><a href="" data-target="#modalAdicionarTask" data-toggle="modal">Adicionar Task</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirQuest", Model.ToString(), "/Quest/ExcluirQuest"))
                 <a onclick="link(ExcluirQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a onclick="link(ExcluirQuest)">Excluir <span lang="en">Quest</span></a></h3>
+                <h3><a onclick="link(ExcluirQuest)">Excluir Quest</a></h3>
             </div>
         </div>
     </div>
@@ -53,7 +53,7 @@
                 <label for="Descricao"></label>
             </div>
             <div class="form-container">
-                <p>Escolha a cor da <span lang="en">Quest</span>.</p>
+                <p>Escolha a cor da Quest.</p>
                 <input type="hidden" name="Cor" id="Cor">
             </div>
         </div>
@@ -69,7 +69,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title" id="exampleModalLabel">Adicionar <span lang="en">Task</span></h1>
+                <h1 class="modal-title" id="exampleModalLabel">Adicionar Task</h1>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
@@ -85,7 +85,7 @@
                         <label for="DescricaoTask"></label>
                     </div>
                     <div class="form-group">
-                        <p>Escolha a data de conclusão da <span lang="en">Task</span></p>
+                        <p>Escolha a data de conclusão da Task</p>
                         <input class="form-control" type="date" id="DataConclusao" name="DataConclusao">
                         <label for="DataConclusao"></label>
                     </div>
@@ -112,7 +112,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h1 class="modal-title" id="exampleModalLabel">Atualizar <span lang="en">Task</span></h1>
+                <h1 class="modal-title" id="exampleModalLabel">Atualizar Task</h1>
             </div>
             <form id="formAtualizarTaskModal">
                 <div class="modal-body">
@@ -125,7 +125,7 @@
                         <label for="DescricaoTaskAtualizar"></label>
                     </div>
                     <div class="form-group">
-                        <p>Escolha a data de conclusão da <span lang="en">Task</span></p>
+                        <p>Escolha a data de conclusão da Task</p>
                         <input class="form-control" type="date" id="DataConclusaoAtualizar" name="DataConclusaoAtualizar">
                         <label for="DataConclusaoAtualizar"></label>
                     </div>
@@ -154,12 +154,12 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h1 class="modal-title" id="exampleModalLabel">Criar <span lang="en">Feedback</span></h1>
+                <h1 class="modal-title" id="exampleModalLabel">Criar Feedback</h1>
             </div>
             <form id="formCriarFeedback">
                 <div class="modal-body">
                     <div class="form-group">
-                        <textarea class="form-control" id="TextoFeedback" name="TextoFeedback" placeholder="Texto de Feedback"></textarea>
+                        <textarea class="form-control" id="TextoFeedback" name="TextoFeedback" placeholder="Texto do Feedback"></textarea>
                         <label for="TextoFeedback"></label>
                     </div>
                     <div class="select-container">

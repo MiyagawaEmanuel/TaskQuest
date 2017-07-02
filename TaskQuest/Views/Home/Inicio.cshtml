@@ -21,7 +21,7 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a"><h2>GRUPOS</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>GRUPOS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a href="" data-target="#modalCriarGrupo" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
@@ -39,7 +39,7 @@
     @for (int x = 0;x < (Model.Grupos.Count >= 5 ? 5 : Model.Grupos.Count); x++){
         @Html.Partial("_LinkPartial", @Html.LinkViewModel("Grupo"+x, Model.Grupos[x].Id.ToString(), "/Grupo/Index"))
             <div class="flex-properties-c margin-bottom item">
-                <a onclick="link(@Html.LinkId("Grupo"+x))"><div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img alt="Grupo" src="~/Content/img/groupicon.png"></div></a>
+                <a onclick="link(@Html.LinkId("Grupo"+x))"><div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor"><img src="~/Content/img/groupicon.png"></div></a>
                 <div class="limit-lines icon-black"><a onclick='link(@Html.LinkId("Grupo"+x))' class="grupo-nome">@Model.Grupos[x].Nome</a></div>
             </div>
     }
@@ -51,11 +51,11 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r margintop">
-        <div class="title-a"><h2>PENDÊNCIAS</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>PENDÊNCIAS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a href="/Quest/CriarQuest"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a href="/Quest/CriarQuest">Criar <span lang="en">Quest</span></a></h3>
+                <h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
                 <a href="/Home/Pendencias"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
@@ -110,7 +110,7 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r margintop">
-        <div class="title-a"><h2 lang="en">FEEDBACKS</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>FEEDBACKS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a href="/Home/Feedbacks"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>

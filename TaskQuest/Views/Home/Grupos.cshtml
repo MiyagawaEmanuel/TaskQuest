@@ -18,7 +18,7 @@
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a"><h2>GRUPOS</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>GRUPOS</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a href="" data-target="#modalCadastro" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
@@ -35,7 +35,7 @@
             @Html.Partial("_LinkPartial", Html.LinkViewModel("Gru"+x, Model[x].Id.ToString(), "/Grupo"))
             <div class="flex-properties-c margin-bottom item group-container">
                 <a onclick="link(@Html.LinkId("Gru"+x))">
-                    <div class="grupo-elipse" style="background-color: @Model[x].Cor"><img alt="Grupo" src="~/Content/img/groupicon.png"></div>
+                    <div class="grupo-elipse" style="background-color: @Model[x].Cor"><img src="~/Content/img/groupicon.png"></div>
                     <div class="icon-black"><spam class="grupo-nome">@Model[x].Nome</spam></div>
                 </a>
             </div>
