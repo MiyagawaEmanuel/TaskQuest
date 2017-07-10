@@ -1,13 +1,10 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
-using TaskQuest.App_Code;
 using System.Data.Entity.Infrastructure;
 
 namespace TaskQuest.Controllers
@@ -29,12 +26,12 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                return View("CriarQuest", Convert.ToInt32(model.Hash));
+                return View("CriarQuest", model.Hash);
             }
             else
             {
-                TempData["Alert"] = "Formulário inválido";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Formulário inválido";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Inicio", "Home");
             }
         }
@@ -65,8 +62,8 @@ namespace TaskQuest.Controllers
                     db.Quest.Add(quest);
                     db.SaveChanges();
 
-                    TempData["Alert"] = "Criado com sucesso";
-                    TempData["Class"] = "green-alert";
+                    TempData["Alerta"] = "Criado com sucesso";
+                    TempData["Classe"] = "green-alert";
 
                     return "true";
                 }
@@ -88,20 +85,31 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-                var quest = db.Quest.Find(Convert.ToInt32(model.Hash));
-                int user_id = User.Identity.GetUserId<int>();
-
-                if (quest.UsuarioCriadorId == user_id || quest.GrupoCriador.UsuarioGrupos.Where(q => q.UsuarioId == user_id && q.Administrador).Any())
+                var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
+                var aux = quests.Where(q => q.HashId == model.Hash);
+                if (aux.Any())
                 {
-                    return View("QuestAdm", quest.Id);
-                }
+                    var quest = aux.First().Quest;
+                    int user_id = User.Identity.GetUserId<int>();
 
-                return View("Quest", quest.Id);
+                    if (quest.UsuarioCriadorId == user_id || User.Identity.HasClaim(model.Hash, "Adm"))
+                    {
+                        return View("QuestAdm", Util.Hash(quest.Id.ToString()));
+                    }
+
+                    return View("Quest", Util.Hash(quest.Id.ToString()));
+                }
+                else
+                {
+                    TempData["Alerta"] = "Algo deu errado";
+                    TempData["Classe"] = "yellow-alert";
+                    return RedirectToAction("Inicio", "Home");
+                }
             }
             else
             {
-                TempData["Alert"] = "Formulário inválido";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Formulário inválido";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Inicio", "Home");
             }
 
@@ -110,140 +118,162 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public JsonResult GetQuests(string Hash)
         {
-            QuestViewModel quest = new QuestViewModel(db.Quest.Find(Convert.ToInt32(Hash)));
-            quest.TasksViewModel = new List<TaskViewModel>();
-            foreach (var tsk in db.Task.Where(q => q.QuestId == quest.Id).ToList())
+            var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
+            var aux = quests.Where(q => q.HashId == Hash);
+            if (aux.Any())
             {
-                quest.TasksViewModel.Add(new TaskViewModel()
+                QuestViewModel quest = new QuestViewModel(aux.First().Quest);
+                quest.TasksViewModel = new List<TaskViewModel>();
+                foreach (var tsk in db.Task.Where(q => q.QuestId == quest.Id).ToList())
                 {
-                    Id = tsk.Id,
-                    QuestId = tsk.QuestId,
-                    Nome = tsk.Nome,
-                    Descricao = tsk.Descricao,
-                    DataConclusao = tsk.DataConclusao.ToString("yyyy-MM-dd"),
-                    Dificuldade = tsk.Dificuldade,
-                    Status = tsk.Status
-                });
-
-
-                var aux = db.Feedback.Where(q => q.TaskId == tsk.Id);
-                if (aux.Any())
-                {
-                    var feb = aux.OrderByDescending(q => q.DataConclusao).First();
-                    quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
+                    quest.TasksViewModel.Add(new TaskViewModel()
                     {
-                        Id = feb.Id,
-                        Nota = feb.Nota,
-                        Resposta = feb.Resposta,
-                        TaskId = feb.TaskId
-                    };
+                        Id = tsk.Id,
+                        QuestId = tsk.QuestId,
+                        Nome = tsk.Nome,
+                        Descricao = tsk.Descricao,
+                        DataConclusao = tsk.DataConclusao.ToString("yyyy-MM-dd"),
+                        Dificuldade = tsk.Dificuldade,
+                        Status = tsk.Status
+                    });
+
+
+                    var aux2 = db.Feedback.Where(q => q.TaskId == tsk.Id);
+                    if (aux2.Any())
+                    {
+                        var feb = aux2.OrderByDescending(q => q.DataCriacao).First();
+                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
+                        {
+                            Id = feb.Id,
+                            Nota = feb.Nota,
+                            Resposta = feb.Resposta,
+                            TaskId = feb.TaskId
+                        };
+                    }
+
                 }
 
+                return Json(quest);
             }
-
-            return Json(quest);
+            else
+            {
+                return null;
+            }
         }
 
         [HttpPost]
         public string AtualizarQuest(QuestViewModel model)
         {
+            
+            Quest quest = db.Quest.Find(model.Id);
+            quest.Nome = model.Nome;
+            quest.Descricao = model.Descricao;
+            quest.Cor = model.Cor;
+            db.Entry(quest).State = System.Data.Entity.EntityState.Modified;
 
-            if (ModelState.IsValid)
+            foreach (var tsk in model.TasksViewModel)
             {
-                Quest quest = db.Quest.Find(model.Id);
-                quest.Nome = model.Nome;
-                quest.Descricao = model.Descricao;
-                quest.Cor = model.Cor;
-                db.Entry(quest).State = System.Data.Entity.EntityState.Modified;
-
-                foreach (var tsk in model.TasksViewModel)
+                var task = db.Task.Find(tsk.Id);
+                if (task != null)
                 {
-                    var task = db.Task.Find(tsk.Id);
-                    if (task != null)
-                    {
-                        task.Nome = tsk.Nome;
-                        task.Descricao = tsk.Descricao;
-                        task.Dificuldade = tsk.Dificuldade;
-                        task.Status = tsk.Status;
-                        task.DataConclusao = tsk.DataConclusao.StringToDateTime();
-                        db.Entry(task).State = System.Data.Entity.EntityState.Modified;
-
-                    }
-                    else
-                    {
-                        Task aux = new Task()
-                        {
-                            Nome = tsk.Nome,
-                            Descricao = tsk.Descricao,
-                            Dificuldade = tsk.Dificuldade,
-                            Status = tsk.Status,
-                            DataConclusao = tsk.DataConclusao.StringToDateTime(),
-                            QuestId = model.Id,
-                        };
-                        db.Task.Add(aux);
-                    }
-
-                    if (tsk.Feedback != null)
-                    {
-                        if (!db.Feedback.Where(q => q.TaskId == tsk.Id).Any())
-                        {
-                            Feedback feedback = new Feedback()
-                            {
-                                TaskId = tsk.Id,
-                                Resposta = tsk.Feedback.Resposta,
-                                Nota = tsk.Feedback.Nota,
-                                DataConclusao = DateTime.Now
-                            };
-                            db.Feedback.Add(feedback);
-                        }
-                    }
-                    else
-                        foreach (var feb in db.Feedback.Where(q => q.TaskId == tsk.Id))
-                            db.Feedback.Remove(feb);
+                    task.Nome = tsk.Nome;
+                    task.Descricao = tsk.Descricao;
+                    task.Dificuldade = tsk.Dificuldade;
+                    task.Status = tsk.Status;
+                    task.DataConclusao = tsk.DataConclusao.StringToDateTime();
+                    db.Entry(task).State = System.Data.Entity.EntityState.Modified;
 
                 }
-
-                foreach (var task in db.Task.Where(q => q.QuestId == model.Id))
-                    if (!model.TasksViewModel.Where(q => q.Id == task.Id).Any())
-                        db.Task.Remove(task);
-
-                bool saveFailed;
-                do
+                else
                 {
-                    saveFailed = false;
-                    try
+                    Task aux = new Task()
                     {
-                        db.SaveChanges();
-                    }
-                    catch (DbUpdateConcurrencyException ex)
+                        Nome = tsk.Nome,
+                        Descricao = tsk.Descricao,
+                        Dificuldade = tsk.Dificuldade,
+                        Status = tsk.Status,
+                        DataConclusao = tsk.DataConclusao.StringToDateTime(),
+                        QuestId = model.Id,
+                    };
+                    db.Task.Add(aux);
+                }
+
+                if (tsk.Feedback != null)
+                {
+                    if (!db.Feedback.Where(q => q.TaskId == tsk.Id).Any())
                     {
-                        saveFailed = true;
-
-                        // Update original values from the database 
-                        var entry = ex.Entries.Single();
-                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                        Feedback feedback = new Feedback()
+                        {
+                            TaskId = tsk.Id,
+                            Resposta = tsk.Feedback.Resposta,
+                            Nota = tsk.Feedback.Nota,
+                            DataCriacao = DateTime.Now
+                        };
+                        db.Feedback.Add(feedback);
                     }
+                    else
+                    {
+                        Feedback feedback = db.Feedback.Find(tsk.Feedback.Id);
+                        feedback.Resposta = tsk.Feedback.Resposta;
+                        feedback.Nota = tsk.Feedback.Nota;
+                        feedback.DataCriacao = DateTime.Now;
+                        db.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+                    }
+                }
+                else
+                    foreach (var feb in db.Feedback.Where(q => q.TaskId == tsk.Id))
+                        db.Feedback.Remove(feb);
 
-                } while (saveFailed);
-
-                TempData["Alert"] = "Atualizado com sucesso";
-                TempData["Class"] = "green-alert";
-                return "true";
             }
-            else
-                return "false";
+
+            foreach (var task in db.Task.Where(q => q.QuestId == model.Id))
+                if (!model.TasksViewModel.Where(q => q.Id == task.Id).Any())
+                    db.Task.Remove(task);
+
+            bool saveFailed;
+            do
+            {
+                saveFailed = false;
+                try
+                {
+                    db.SaveChanges();
+                }
+                catch (DbUpdateConcurrencyException ex)
+                {
+                    saveFailed = true;
+
+                    // Update original values from the database 
+                    var entry = ex.Entries.Single();
+                    entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                }
+
+            } while (saveFailed);
+
+            TempData["Alerta"] = "Atualizado com sucesso";
+            TempData["Classe"] = "green-alert";
+            return "true";
+
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirQuest(LinkViewModel model)
         {
-            db.Quest.Remove(db.Quest.Find(Convert.ToInt32(model.Hash)));
-            db.SaveChanges();
+            var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
+            var aux = quests.Where(q => q.HashId == model.Hash);
+            if (aux.Any())
+            {
+                db.Quest.Remove(aux.First().Quest);
+                db.SaveChanges();
 
-            TempData["Alert"] = "Excluído com sucesso";
-            TempData["Class"] = "green-alert";
-
+                TempData["Alerta"] = "Excluído com sucesso";
+                TempData["Classe"] = "green-alert";
+            }
+            else
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "green-alert";
+            }
             return RedirectToAction("Inicio", "Home");
         }
 

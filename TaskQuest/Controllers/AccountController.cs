@@ -10,7 +10,6 @@ using Microsoft.Owin.Security;
 using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
-using TaskQuest.App_Code;
 using Task = System.Threading.Tasks.Task;
 
 namespace TaskQuest.Controllers
@@ -86,13 +85,13 @@ namespace TaskQuest.Controllers
                     await SignInAsync(user, true);
                     return RedirectToAction("Inicio", "Home");
                 case SignInStatus.LockedOut:
-                    TempData["Response"] = "Você excedeu seu limite de tentativas de entrada";
-                    TempData["Class"] = "yellow-alert";
+                    TempData["Alerta"] = "Você excedeu seu limite de tentativas de entrada";
+                    TempData["Classe"] = "yellow-alert";
                     return RedirectToAction("Index", "Home");
                 case SignInStatus.Failure:
                 default:
-                    TempData["Response"] = "Email ou Senha incorretos";
-                    TempData["Class"] = "yellow-alert";
+                    TempData["Alerta"] = "Email ou Senha incorretos";
+                    TempData["Classe"] = "yellow-alert";
                     return RedirectToAction("Index", "Home");
             }
         }
@@ -121,15 +120,18 @@ namespace TaskQuest.Controllers
             {
                 var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 await UserManager.ConfirmEmailAsync(user.Id, code);
-                
+
+                TempData["Alerta"] = "Cadastrado com sucesso";
+                TempData["Classe"] = "green-alert";
+
                 return RedirectToAction("Index", "Home");
             }
             
             AddErrors(result);
 
             // No caso de falha, reexibir a view. 
-            TempData["Response"] = "Algo deu errado";
-            TempData["Class"] = "yellow-alert";
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
             return RedirectToAction("Index", "Home");
         }
 

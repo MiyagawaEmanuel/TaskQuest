@@ -38,7 +38,7 @@ var quest = {
         $('#task-container div').remove();
         for (var x = 0; x < this.TasksViewModel.length; x++) {
             var content = "<div class='margin-bottom item' id=" + x + ">" +
-                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + quest.Cor + "'></div></a>" +
+                "<a onclick='showTaskModal(" + x + ")'><div class='filete' style='background-color: " + quest.Cor + "'></div></a>" +
                 "<div class='quest-body flex-properties-c'>" +
                 "<div class='icon-black limit-lines'>" +
                 "<a onclick='showTaskModal(" + x + ")'>" +
@@ -52,28 +52,20 @@ var quest = {
                 "<h4 class='DataConclusao'>" + this.get(x)["DataConclusao"].split('-').reverse().join('/') + "</h4>" +
                 "</div>" +
                 "<div class='select-container'>" +
-                "<select class='form-control Status' onchange='mudarStatus(" + x + ")'>" +
-                "<option value='0'>A Fazer</option>" +
-                "<option value='1'>Fazendo</option>" +
-                "<option value='2'>Feito</option>" +
-                "</select>" +
+                "<select id="+quest.TasksViewModel[x].Id+" class='form-control Status' onchange='mudarStatus(this)'>"+
+                        "<option value='0'>A Fazer</option>" +
+                        "<option value='1'>Fazendo</option>"+
+                        "<option value='2'>Feito</option>"+
+               " </select>"+
                 "</div>" +
                 "</div>" +
                 "</div>";
             $("#task-container").append(content);
-            $('#' + x + ' .Status').val(this.get(x)["Status"]);
+            $('#' + quest.TasksViewModel[x].Id).val(this.get(x)["Status"]);
             $('#Nome').text(quest.Nome);
             $("#Descricao").text(quest.Descricao);
         }
     }
-}
-
-function mudarStatus(index) {
-    var status = $("#" + index + " .Status").val();
-    quest.setProp(index, "Status", parseInt(status));
-    if (quest.get(index)['Feedback'] != undefined)
-        if (status == 0 || status == 1)
-            quest.setProp(index, 'Feedback', undefined);
 }
 
 function submit(id, action) {
@@ -98,7 +90,20 @@ function showTaskModal(index){
 			break;
 	}
 	$("#Dificuldade").text(dificuldade);
-	
+    $("#feedback-modal div").remove();
+    if (quest.TasksViewModel[index].Feedback != undefined && quest.TasksViewModel[index].Feedback != null) {
+        
+        var content =   "<div class='form-group'> " + 
+                        "<p> " + "Nota " + "</p>" +
+                        "<h4>" + quest.TasksViewModel[index].Feedback.Nota + "</h4>" +
+                        "</div >" +
+                        "<div class='form-group'> " +
+                        "<p> " + "Resposta" + "</p>" +
+            "<h4>" + quest.TasksViewModel[index].Feedback.Resposta + "</h4>" +
+                        "</div >";
+        $("#feedback-modal").append(content);
+    }
+
 	$("#modalTask").modal('show');
 }
 

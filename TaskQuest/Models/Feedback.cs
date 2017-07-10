@@ -9,14 +9,11 @@ namespace TaskQuest.Models
 
         public string Relatorio { get; set; }
 
-        [Required]
-        public int? Nota { get; set; }
+        public int Nota { get; set; }
 
-        [Required]
-        [StringLength(40, MinimumLength = 3)]
         public string Resposta { get; set; }
 
-        public DateTime DataConclusao { get; set; }
+        public DateTime DataCriacao { get; set; }
 
         public int TaskId { get; set; }
 

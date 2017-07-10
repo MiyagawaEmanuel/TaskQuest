@@ -1,4 +1,4 @@
-﻿@model int?
+﻿@model string
 
 @{
     ViewBag.Title = "Criar Quest";
@@ -34,9 +34,9 @@
     </div>
 
     <form id="formQuest">
-        @if (Model != null)
+        @if (!Model.IsEmpty())
         {
-            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Html.LinkId(Convert.ToString(Model))" />
+            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model" />
         }
         <div class="container flex-properties-c">
             <div class="form-container">

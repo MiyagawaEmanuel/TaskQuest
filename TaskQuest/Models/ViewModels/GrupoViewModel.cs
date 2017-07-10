@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels
@@ -9,7 +8,7 @@ namespace TaskQuest.ViewModels
 
         public Grupo Grupo = new Grupo();
 
-        public List<Tuple<bool, User>> Integrantes = new List<Tuple<bool, User>>();
+        public List<User> Integrantes = new List<User>();
 
     }
 }

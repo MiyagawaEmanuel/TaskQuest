@@ -11,8 +11,7 @@
 
 @section js
 {
-    <script src="~Content/js/spectrum.js"></script>
-    <script src="~Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/link.js"></script>
 }
 
 <section class="pads-bot">
@@ -29,18 +28,16 @@
     </div>
 
     <div class="container flex-properties-r margintop">
-        
+
         @for (int x = 0; x < Model.Count; x++)
         {
-            @Html.Partial("_LinkPartial", Html.LinkViewModel("Gru"+x, Model[x].Id.ToString(), "/Grupo"))
+            @Html.Partial("_LinkPartial", Html.LinkViewModel("Gru" + x, Model[x].Id.ToString(), "/Grupo"))
             <div class="flex-properties-c margin-bottom item group-container">
-                <a onclick="link(@Html.LinkId("Gru"+x))">
-                    <div class="grupo-elipse" style="background-color: @Model[x].Cor"><img src="~/Content/img/groupicon.png"></div>
-                    <div class="icon-black"><spam class="grupo-nome">@Model[x].Nome</spam></div>
-                </a>
+                <a onclick="link(@Html.ToString("Gru"+x))"><div class="grupo-elipse" style="background-color: @Model[x].Cor"><img src="~/Content/img/groupicon.png"></div></a>
+                <div class="icon-black"><a onclick="link(@Html.ToString("Gru"+x))" class="grupo-nome">@Model[x].Nome</a></div>
             </div>
         }
-        
+
     </div>
 
 </section>

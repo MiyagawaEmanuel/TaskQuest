@@ -175,7 +175,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="App_Code\Util.cs" />
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\Identity\ApplicationCookieIdentityValidator.cs" />
@@ -189,14 +188,14 @@
     <Compile Include="Controllers\FileController.cs" />
     <Compile Include="Controllers\GrupoController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\Html.cs" />
+    <Compile Include="Controllers\Util.cs" />
     <Compile Include="Controllers\QuestController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
-    <Compile Include="Migrations\201707011629340_InitialMigration.cs" />
-    <Compile Include="Migrations\201707011629340_InitialMigration.Designer.cs">
-      <DependentUpon>201707011629340_InitialMigration.cs</DependentUpon>
+    <Compile Include="Migrations\201707071349102_InitialMigration.cs" />
+    <Compile Include="Migrations\201707071349102_InitialMigration.Designer.cs">
+      <DependentUpon>201707071349102_InitialMigration.cs</DependentUpon>
     </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\ViewModels\AccountViewModels.cs" />
@@ -221,7 +220,6 @@
     <Compile Include="Models\Telefone.cs" />
     <Compile Include="Models\ViewModels\QuestViewModel.cs" />
     <Compile Include="Models\ViewModels\UploadViewModel.cs" />
-    <Compile Include="Models\UsuarioGrupo.cs" />
     <Compile Include="Models\ViewModels\EditarIntegranteViewModel.cs" />
     <Compile Include="Models\ViewModels\GrupoViewModel.cs" />
     <Compile Include="Models\ViewModels\InicioViewModel.cs" />
@@ -462,9 +460,12 @@
     <Content Include="Content\js\jquery-ui\package.json" />
   </ItemGroup>
   <ItemGroup>
-    <EmbeddedResource Include="Migrations\201707011629340_InitialMigration.resx">
-      <DependentUpon>201707011629340_InitialMigration.cs</DependentUpon>
+    <EmbeddedResource Include="Migrations\201707071349102_InitialMigration.resx">
+      <DependentUpon>201707071349102_InitialMigration.cs</DependentUpon>
     </EmbeddedResource>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="App_Code\" />
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

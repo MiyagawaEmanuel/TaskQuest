@@ -33,11 +33,11 @@
         {
             @Html.Partial("_LinkPartial", Html.LinkViewModel("Tsk"+x, Model[x].Quest.Id.ToString(), "/Quest"))
             <div class="margin-bottom item">
-                <a onclick="link(@Html.LinkId("Tsk"+x))"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
+                <a onclick="link(@Html.ToString("Tsk"+x))"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
                 <div class="quest-body flex-properties-c">
-                    <div class="limit-lines icon-black"><a onclick="link(@Html.LinkId("Tsk"+x))"><h4>@Model[x].Nome</h4></a></div>
+                    <div class="limit-lines icon-black"><a onclick="link(@Html.ToString("Tsk"+x))"><h4>@Model[x].Nome</h4></a></div>
                     <div class="limit-lines"><h4>@Model[x].Descricao</h4></div>
-                    <div><h4>@Model[x].DataConclusao</h4></div>
+                    <div><h4>@Model[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
                     <div class="select-container">
                         <select id="@Model[x].Id" class="form-control" onchange="mudarStatus(this)">
                             @if (Model[x].Status == 0)

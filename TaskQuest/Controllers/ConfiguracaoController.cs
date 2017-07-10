@@ -7,7 +7,6 @@ using System.Web.Mvc;
 using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
-using TaskQuest.App_Code;
 using System.Data.Entity.Infrastructure;
 
 namespace TaskQuest.Controllers
@@ -78,15 +77,15 @@ namespace TaskQuest.Controllers
 
                 } while (saveFailed);
                 
-                TempData["Alert"] = "Atualizado com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Atualizado com sucesso";
+                TempData["Classe"] = "green-alert";
 
                 return RedirectToAction("Index");
             }
             else
             {
-                TempData["Alert"] = "Formulário Inválido";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Formulário Inválido";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Index");
             }
         }
@@ -100,13 +99,13 @@ namespace TaskQuest.Controllers
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                TempData["Alert"] = "Atualizado com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Atualizado com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Você não tem permissão para realizar essa ação";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -121,13 +120,13 @@ namespace TaskQuest.Controllers
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Modified;
                 db.SaveChanges();
-                TempData["Alert"] = "Atualizado com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Atualizado com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Você não tem permissão para realizar essa ação";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Index", "Home");
             }
             return RedirectToAction("Index");
@@ -141,13 +140,13 @@ namespace TaskQuest.Controllers
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
-                TempData["Alert"] = "Removido com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Removido com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Você não tem permissão para realizar essa ação";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -162,13 +161,13 @@ namespace TaskQuest.Controllers
             {
                 db.Entry(model).State = System.Data.Entity.EntityState.Deleted;
                 db.SaveChanges();
-                TempData["Alert"] = "Removido com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Removido com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Você não tem permissão para realizar essa ação";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Você não tem permissão para realizar essa ação";
+                TempData["Classe"] = "yellow-alert";
                 return RedirectToAction("Index", "Home");
             }
 
@@ -184,13 +183,13 @@ namespace TaskQuest.Controllers
                 model.UsuarioId = User.Identity.GetUserId<int>();
                 db.Telefone.Add(model);
                 db.SaveChanges();
-                TempData["Alert"] = "Criado com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Criado com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Formulário inválido";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Formulário inválido";
+                TempData["Classe"] = "yellow-alert";
             }
 
             return RedirectToAction("Index");
@@ -206,13 +205,13 @@ namespace TaskQuest.Controllers
                 model.UsuarioId = User.Identity.GetUserId<int>();
                 db.Cartao.Add(model);
                 db.SaveChanges();
-                TempData["Alert"] = "Criado com sucesso";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Criado com sucesso";
+                TempData["Classe"] = "green-alert";
             }
             else
             {
-                TempData["Alert"] = "Formulário inválido";
-                TempData["Class"] = "green-alert";
+                TempData["Alerta"] = "Formulário inválido";
+                TempData["Classe"] = "green-alert";
             }
 
 

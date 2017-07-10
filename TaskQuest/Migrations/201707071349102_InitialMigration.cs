@@ -12,8 +12,8 @@ namespace TaskQuest.Migrations
                 c => new
                     {
                         arq_id = c.Int(nullable: false, identity: true),
-                        arq_nome = c.String(maxLength: 20, storeType: "nvarchar"),
-                        arq_caminho = c.String(maxLength: 40, storeType: "nvarchar"),
+                        arq_nome = c.String(maxLength: 40, storeType: "nvarchar"),
+                        arq_caminho = c.String(maxLength: 120, storeType: "nvarchar"),
                         arq_tamanho = c.Int(nullable: false),
                         arq_data_upload = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         arq_versao_atual = c.Boolean(nullable: false),
@@ -29,8 +29,8 @@ namespace TaskQuest.Migrations
                     {
                         tsk_id = c.Int(nullable: false, identity: true),
                         qst_id = c.Int(nullable: false),
-                        tsk_nome = c.String(nullable: false, maxLength: 45, storeType: "nvarchar"),
-                        tsk_descricao = c.String(nullable: false, unicode: false),
+                        tsk_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
+                        tsk_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
                         tsk_status = c.Int(nullable: false),
                         tsk_dificuldade = c.Int(nullable: false),
                         tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -71,10 +71,10 @@ namespace TaskQuest.Migrations
                         qst_id = c.Int(nullable: false, identity: true),
                         usu_id_criador = c.Int(),
                         gru_id_criador = c.Int(),
-                        qst_cor = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+                        qst_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
                         qst_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
-                        qst_descricao = c.String(nullable: false, maxLength: 45, storeType: "nvarchar"),
-                        qst_nome = c.String(nullable: false, maxLength: 45, storeType: "nvarchar"),
+                        qst_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
+                        qst_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.qst_id)
                 .ForeignKey("dbo.usu_usuario", t => t.usu_id_criador, cascadeDelete: true)
@@ -87,8 +87,8 @@ namespace TaskQuest.Migrations
                 c => new
                     {
                         gru_id = c.Int(nullable: false, identity: true),
-                        gru_nome = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
-                        gru_cor = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+                        gru_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
+                        gru_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
                         gru_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         gru_plano = c.Boolean(nullable: false),
                         gru_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
@@ -119,11 +119,11 @@ namespace TaskQuest.Migrations
                 c => new
                     {
                         usu_id = c.Int(nullable: false, identity: true),
-                        usu_nome = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
-                        usu_sobrenome = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+                        usu_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
+                        usu_sobrenome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                         usu_data_nascimento = c.DateTime(nullable: false, precision: 0),
                         usu_sexo = c.String(nullable: false, maxLength: 1, storeType: "nvarchar"),
-                        usu_cor = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+                        usu_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
                         usu_email = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                         usu_email_confirmado = c.Boolean(nullable: false),
                         usu_senha = c.String(unicode: false),
@@ -145,11 +145,11 @@ namespace TaskQuest.Migrations
                         crt_id = c.Int(nullable: false, identity: true),
                         usu_id = c.Int(nullable: false),
                         crt_bandeira = c.String(nullable: false, unicode: false),
-                        crt_numero = c.String(nullable: false, unicode: false),
-                        crt_nome_titular = c.String(nullable: false, unicode: false),
-                        crt_data_vencimento = c.String(nullable: false, unicode: false),
-                        crt_codigo_seguranca = c.String(nullable: false, unicode: false),
-                        Senha = c.String(unicode: false),
+                        crt_numero = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
+                        crt_nome_titular = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
+                        crt_data_vencimento = c.String(nullable: false, maxLength: 10, storeType: "nvarchar"),
+                        crt_codigo_seguranca = c.String(nullable: false, maxLength: 3, storeType: "nvarchar"),
+                        Senha = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.crt_id)
                 .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
@@ -200,12 +200,12 @@ namespace TaskQuest.Migrations
                 c => new
                     {
                         feb_id = c.Int(nullable: false, identity: true),
-                        feb_relatorio = c.String(nullable: false, maxLength: 150, storeType: "nvarchar"),
+                        feb_relatorio = c.String(maxLength: 120, storeType: "nvarchar"),
                         feb_nota = c.Int(nullable: false),
                         feb_resposta = c.String(maxLength: 120, storeType: "nvarchar"),
-                        feb_data_conclusao = c.DateTime(nullable: false, precision: 0),
+                        feb_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         tsk_id = c.Int(nullable: false),
-                        usu_id_responsavel = c.Int(nullable: false),
+                        usu_id_responsavel = c.Int(),
                     })
                 .PrimaryKey(t => t.feb_id)
                 .ForeignKey("dbo.tsk_task", t => t.tsk_id, cascadeDelete: true)
@@ -246,26 +246,12 @@ namespace TaskQuest.Migrations
                     {
                         tel_id = c.Int(nullable: false, identity: true),
                         usu_id = c.Int(nullable: false),
-                        tel_numero = c.String(nullable: false, unicode: false),
-                        tel_tipo = c.String(nullable: false, maxLength: 20, storeType: "nvarchar"),
+                        tel_numero = c.String(nullable: false, maxLength: 15, storeType: "nvarchar"),
+                        tel_tipo = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.tel_id)
                 .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.usu_id);
-            
-            CreateTable(
-                "dbo.uxg_usuario_grupo",
-                c => new
-                    {
-                        usu_id = c.Int(nullable: false),
-                        gru_id = c.Int(nullable: false),
-                        uxg_administrador = c.Boolean(nullable: false),
-                    })
-                .PrimaryKey(t => new { t.usu_id, t.gru_id })
-                .ForeignKey("dbo.gru_grupo", t => t.gru_id, cascadeDelete: true)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
-                .Index(t => t.usu_id)
-                .Index(t => t.gru_id);
             
             CreateTable(
                 "dbo.sem_semana",
@@ -285,6 +271,19 @@ namespace TaskQuest.Migrations
                         ctr_name = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.ctr_Id);
+            
+            CreateTable(
+                "dbo.uxg_usuario_grupo",
+                c => new
+                    {
+                        usu_id = c.Int(nullable: false),
+                        gru_id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => new { t.usu_id, t.gru_id })
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
+                .ForeignKey("dbo.gru_grupo", t => t.gru_id, cascadeDelete: true)
+                .Index(t => t.usu_id)
+                .Index(t => t.gru_id);
             
             CreateTable(
                 "dbo.qxs_quest_semana",
@@ -313,14 +312,14 @@ namespace TaskQuest.Migrations
             DropForeignKey("dbo.pre_precedencia", "qst_id_precedente", "dbo.qst_quest");
             DropForeignKey("dbo.qst_quest", "gru_id_criador", "dbo.gru_grupo");
             DropForeignKey("dbo.msg_mensagem", "gru_id_destinatario", "dbo.gru_grupo");
-            DropForeignKey("dbo.uxg_usuario_grupo", "usu_id", "dbo.usu_usuario");
-            DropForeignKey("dbo.uxg_usuario_grupo", "gru_id", "dbo.gru_grupo");
             DropForeignKey("dbo.tel_telefone", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.tsk_task", "usu_id_responsavel", "dbo.usu_usuario");
             DropForeignKey("dbo.cur_custom_user_role", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.msg_mensagem", "usu_id_remetente", "dbo.usu_usuario");
             DropForeignKey("dbo.qst_quest", "usu_id_criador", "dbo.usu_usuario");
             DropForeignKey("dbo.cul_custom_user_login", "usu_id", "dbo.usu_usuario");
+            DropForeignKey("dbo.uxg_usuario_grupo", "gru_id", "dbo.gru_grupo");
+            DropForeignKey("dbo.uxg_usuario_grupo", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.feb_feedback", "usu_id_responsavel", "dbo.usu_usuario");
             DropForeignKey("dbo.feb_feedback", "tsk_id", "dbo.tsk_task");
             DropForeignKey("dbo.xpu_experiencia_usuario", "usu_id", "dbo.usu_usuario");
@@ -360,9 +359,9 @@ namespace TaskQuest.Migrations
             DropIndex("dbo.tsk_task", new[] { "qst_id" });
             DropIndex("dbo.arq_arquivo", new[] { "tsk_id" });
             DropTable("dbo.qxs_quest_semana");
+            DropTable("dbo.uxg_usuario_grupo");
             DropTable("dbo.ctr_custom_role");
             DropTable("dbo.sem_semana");
-            DropTable("dbo.uxg_usuario_grupo");
             DropTable("dbo.tel_telefone");
             DropTable("dbo.cur_custom_user_role");
             DropTable("dbo.cul_custom_user_login");

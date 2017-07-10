@@ -56,7 +56,7 @@
 	<div>
 		<div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
 	</div>
-	<div><h3>@Model.Grupo.Nome</h3></div>
+	<div class="limit-lines limit-lines_grupo" title="@Model.Grupo.Nome"><h3>@Model.Grupo.Nome</h3></div>
     @if (@Model.Integrantes.Count == 1)
     {
         <div><h3>@Model.Integrantes.Count Integrante</h3></div>
@@ -80,11 +80,11 @@
             @foreach (var integrante in Model.Integrantes)
             {
                 <div class="user-container">
-                    <p class="user-title">&bull; @integrante.Item2.Nome</p>
-                    @if (!@integrante.Item1)
+                    <p class="user-title">&bull; @integrante.Nome</p>
+                    @if (!integrante.Claims.Any(q => q.ClaimType == Model.Grupo.Id.ToString() && q.ClaimValue == "Adm"))
                     {
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Item2.Id', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Item2.Id', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Id', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Id', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
                     }
                 </div>
             }
@@ -94,9 +94,9 @@
             @for (int x = 0; x < Model.Grupo.Quests.Count; x++)
             {
                 <div class="quest-container icon-black questlist-g">
-                    <i class="fa fa-circle bull" aria-hidden="true"></i>
+                    <i class="fa fa-circle bull" aria-hidden="true" style="color: @Model.Grupo.Quests.ToList()[x].Cor"></i>
                     @Html.Partial("_LinkPartial", Html.LinkViewModel("Grupo"+x, Model.Grupo.Quests.ToList()[x].Id.ToString(), "/Quest"))
-                    <a onclick="link(@Html.LinkId("Grupo"+x))"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
+                    <a onclick="link(@Html.ToString("Grupo"+x))"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
         </div>

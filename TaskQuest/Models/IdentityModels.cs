@@ -9,6 +9,13 @@ namespace TaskQuest.Models
 
     public class UserClaim : IdentityUserClaim<int>
     {
+        public UserClaim() { }
+
+        public UserClaim(string type, string value)
+        {
+            this.ClaimType = type;
+            this.ClaimValue = value;
+        }
     }
 
     public class UserLogin : IdentityUserLogin<int>

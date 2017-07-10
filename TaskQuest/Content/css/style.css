@@ -166,9 +166,24 @@ textarea {
     margin: 0 auto;
 }
 
-.limit-lines h4 {
+.limit-lines h4, h3, a {
     overflow: hidden;
     text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.limit-lines_grupo{
+    margin: 0;
+    width: 250px;
+}
+
+.limit-lines_grupo_icon {
+    width: initial;
+}
+
+.limit-lines_grupo_icon a{
+    display: block;
+    width: 140px;
 }
 
 .elipse {

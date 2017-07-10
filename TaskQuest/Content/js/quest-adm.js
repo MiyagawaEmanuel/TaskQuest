@@ -1,4 +1,4 @@
-function showBalloon(alert, classe) {
+ï»¿function showBalloon(alert, classe) {
     $(".balloon").addClass(classe);
     $(".balloon").text(alert);
     $(".balloon").css("display", "block");
@@ -203,7 +203,7 @@ $(document).ready(function() {
                 if (result == "true")
                     window.location.href = "/Home/Inicio";
                 else
-                    showBalloon("Formulário inválido", "yellow-alert");
+                    showBalloon("Formulario invalido", "yellow-alert");
             },
             error: function () {
                 showBalloon("Algo deu errado", "yellow-alert");

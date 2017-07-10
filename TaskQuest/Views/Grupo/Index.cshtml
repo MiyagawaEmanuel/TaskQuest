@@ -20,12 +20,13 @@ ViewBag.Title = "Grupo";
     <script src="~/Content/js/jquery-ui/jquery-ui.js"></script>
     <script src="~/Content/js/tabs.js"></script>
     <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
 }
 
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Grupo Bom Gosto</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Grupo</h2></div>
         <div class="title-b flex-properties-r">
             <div class="flex-properties-r pads icon-black">
                 @Html.Partial("_LinkPartial", Html.LinkViewModel("SairGrupo", Model.Grupo.Id.ToString(), "/Grupo/SairGrupo"))
@@ -49,7 +50,7 @@ ViewBag.Title = "Grupo";
     <div>
         <div class="grupo-elipse" style="background-color: @Model.Grupo.Cor"><img src="~/Content/img/groupicon.png"></div>
     </div>
-    <div><h3>@Model.Grupo.Nome</h3></div>
+    <div class="limit-lines" style="width: 200px"><h3>@Model.Grupo.Nome</h3></div>
     @if (@Model.Integrantes.Count == 1)
     {
         <div><h3>@Model.Integrantes.Count Integrante</h3></div>
@@ -72,7 +73,7 @@ ViewBag.Title = "Grupo";
         <div id="integrantes">
             @foreach (var integrante in Model.Integrantes)
             {
-                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; @integrante.Item2.Nome</h4>
+                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; @integrante.Nome</h4>
             }
         </div>
 
@@ -80,9 +81,9 @@ ViewBag.Title = "Grupo";
             @for (int x = 0; x < Model.Grupo.Quests.Count; x++)
             {
                 <div class="quest-container icon-black questlist-g">
-                    <i class="fa fa-circle bull" aria-hidden="true"></i>
+                    <i class="fa fa-circle bull" aria-hidden="true" style="color: @Model.Grupo.Quests.ToList()[x].Cor"></i>
                     @Html.Partial("_LinkPartial", Html.LinkViewModel("Grupo" + x, Model.Grupo.Quests.ToList()[x].Id.ToString(), "/Quest"))
-                    <a onclick="link(@Html.LinkId("Grupo"+x))"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
+                    <a onclick="link(@Html.ToString("Grupo"+x))"><h4 class="quest-container">@Model.Grupo.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
         </div>

@@ -28,7 +28,6 @@ namespace TaskQuest.Models
         public virtual DbSet<Telefone> Telefone { get; set; }
         public virtual DbSet<Arquivo> Arquivo { get; set; }
         public virtual DbSet<Task> Task { get; set; }
-        public virtual DbSet<UsuarioGrupo> UsuarioGrupo { get; set; }
         public virtual DbSet<ExperienciaUsuario> ExperienciaUsuario { get; set; }
         public virtual DbSet<Client> Client { get; set; }
 
@@ -123,14 +122,14 @@ namespace TaskQuest.Models
             modelBuilder.Entity<User>()
                 .Property(e => e.Nome)
                 .HasColumnName("usu_nome")
-                .HasMaxLength(20)
+                .HasMaxLength(40)
                 .IsRequired();
 
             modelBuilder.Entity<User>()
                 .Property(e => e.Sobrenome)
                 .HasColumnName("usu_sobrenome")
                 .IsRequired()
-                .HasMaxLength(20);
+                .HasMaxLength(40);
             
             modelBuilder.Entity<User>()
                 .Property(e => e.DataNascimento)
@@ -145,7 +144,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<User>()
                 .Property(e => e.Cor)
                 .HasColumnName("usu_cor")
-                .HasMaxLength(20)
+                .HasMaxLength(7)
                 .IsRequired();
 
             modelBuilder.Entity<User>()
@@ -188,6 +187,11 @@ namespace TaskQuest.Models
                 .HasForeignKey(e => e.UsuarioResponsavelId)
                 .WillCascadeOnDelete(true);
 
+            modelBuilder.Entity<User>()
+                .HasMany(e => e.Grupos)
+                .WithMany(e => e.Users)
+                .Map(m => m.ToTable("uxg_usuario_grupo").MapLeftKey("usu_id").MapRightKey("gru_id"));
+
             /*
                 Configurando tabela Arquivo
             */
@@ -206,12 +210,12 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Nome)
                 .HasColumnName("arq_nome")
-                .HasMaxLength(20);
+                .HasMaxLength(40);
 
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Path)
                 .HasColumnName("arq_caminho")
-                .HasMaxLength(40);
+                .HasMaxLength(120);
 
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.Size)
@@ -410,8 +414,8 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<Feedback>()
-                .Property(e => e.DataConclusao)
-                .HasColumnName("feb_data_conclusao")
+                .Property(e => e.DataCriacao)
+                .HasColumnName("feb_data_criacao")
                 .IsRequired();
 
             modelBuilder.Entity<Feedback>()
@@ -439,13 +443,13 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Grupo>()
                 .Property(e => e.Nome)
                 .HasColumnName("gru_nome")
-                .HasMaxLength(20)
+                .HasMaxLength(40)
                 .IsRequired();
 
             modelBuilder.Entity<Grupo>()
                 .Property(e => e.Cor)
                 .HasColumnName("gru_cor")
-                .HasMaxLength(20)
+                .HasMaxLength(7)
                 .IsRequired();
 
             modelBuilder.Entity<Grupo>()
@@ -566,7 +570,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Quest>()
                 .Property(e => e.Cor)
                 .HasColumnName("qst_cor")
-                .HasMaxLength(20)
+                .HasMaxLength(7)
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
@@ -577,13 +581,13 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Quest>()
                 .Property(e => e.Descricao)
                 .HasColumnName("qst_descricao")
-                .HasMaxLength(45)
+                .HasMaxLength(120)
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
                 .Property(e => e.Nome)
                 .HasColumnName("qst_nome")
-                .HasMaxLength(45)
+                .HasMaxLength(40)
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
@@ -654,7 +658,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Telefone>()
                 .Property(e => e.Tipo)
                 .HasColumnName("tel_tipo")
-                .HasMaxLength(20)
+                .HasMaxLength(40)
                 .IsRequired();
 
             /*
@@ -678,7 +682,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Task>()
                 .Property(e => e.Nome)
                 .HasColumnName("tsk_nome")
-                .HasMaxLength(45)
+                .HasMaxLength(40)
                 .IsRequired();
 
             modelBuilder.Entity<Task>()
@@ -726,29 +730,6 @@ namespace TaskQuest.Models
                 .WithOptional(e => e.TaskPrecedente)
                 .HasForeignKey(e => e.TaskPrecedenteId)
                 .WillCascadeOnDelete();
-
-            /*
-                Configuração da tabela UsuarioGrupo 
-            */
-
-            modelBuilder.Entity<UsuarioGrupo>()
-                .ToTable("uxg_usuario_grupo");
-
-            modelBuilder.Entity<UsuarioGrupo>()
-                .Property(e => e.UsuarioId)
-                .HasColumnName("usu_id");
-
-            modelBuilder.Entity<UsuarioGrupo>()
-                .Property(e => e.GrupoId)
-                .HasColumnName("gru_id");
-
-            modelBuilder.Entity<UsuarioGrupo>()
-                .HasKey(e => new { e.UsuarioId, e.GrupoId });
-
-            modelBuilder.Entity<UsuarioGrupo>()
-                .Property(e => e.Administrador)
-                .HasColumnName("uxg_administrador")
-                .IsRequired();
 
             /*
                 Configuração da tabela ExperienciaUsuario 

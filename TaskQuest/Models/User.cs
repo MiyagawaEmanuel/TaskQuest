@@ -4,8 +4,6 @@ using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
-using System.Collections.ObjectModel;
-using System.ComponentModel.DataAnnotations;
 
 namespace TaskQuest.Models
 {
@@ -21,7 +19,7 @@ namespace TaskQuest.Models
             Tasks = new HashSet<Task>();
             Quests = new HashSet<Quest>();
             Telefones = new HashSet<Telefone>();
-            UsuarioGrupos = new HashSet<UsuarioGrupo>();
+            Grupos = new HashSet<Grupo>();
             ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
         }
 
@@ -49,7 +47,7 @@ namespace TaskQuest.Models
 
         public virtual ICollection<Telefone> Telefones { get; set; }
 
-        public virtual ICollection<UsuarioGrupo> UsuarioGrupos { get; set; }
+        public virtual ICollection<Grupo> Grupos { get; set; }
 
         public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
 

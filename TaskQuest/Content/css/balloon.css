@@ -1,4 +1,5 @@
 ﻿.balloon {
+    text-align: center;
     bottom: 2%;
     left: 50%;
     transform: translate(-50%);

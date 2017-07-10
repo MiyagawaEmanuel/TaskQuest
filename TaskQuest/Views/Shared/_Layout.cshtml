@@ -45,9 +45,9 @@
 
     @RenderBody();
 
-    @if (TempData["Alert"] != null && TempData["Class"] != null)
+    @if (TempData["Alerta"] != null && TempData["Classe"] != null)
     {
-        @Html.Partial("_BalloonPartial", new Tuple<string, string>(TempData["Alert"].ToString(), TempData["Class"].ToString()))
+        @Html.Partial("_BalloonPartial", new Tuple<string, string>(TempData["Alerta"].ToString(), TempData["Classe"].ToString()))
     }
 
     <script src="~/Content/js/jquery.min.js"></script>

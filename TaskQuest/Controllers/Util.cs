@@ -1,5 +1,9 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.Linq;
+using System.Security.Cryptography;
+using System.Security.Principal;
+using System.Text;
 using System.Web.Mvc;
 using TaskQuest.Identity;
 using TaskQuest.Models;
@@ -7,7 +11,7 @@ using TaskQuest.ViewModels;
 
 namespace TaskQuest
 {
-    public static class Html
+    public static class Util
     {
         public static MvcHtmlString ToHtmlDate(this HtmlHelper helper, DateTime dateTime)
         {
@@ -24,9 +28,37 @@ namespace TaskQuest
             return new Grupo();
         }
 
-        public static string LinkId(this HtmlHelper helper, string @string)
+        public static string ToString(this HtmlHelper helper, string @string)
         {
             return @string;
+        }
+
+        public static DateTime StringToDateTime(this string @string)
+        {
+            var aux = @string.Split('-');
+            return new DateTime(Convert.ToInt32(aux[0]), Convert.ToInt32(aux[1]), Convert.ToInt32(aux[2]));
+        }
+
+        public static bool HasClaim(this IIdentity identity, string type, string value)
+        {
+            if (identity.GetApplicationUser().Claims.Any(q => q.ClaimType == type && q.ClaimValue == value))
+                return true;
+            else
+                return false;
+        }
+
+        public static string Hash(string @string)
+        {
+            StringBuilder sb = new StringBuilder();
+            SHA512 sha = SHA512.Create();
+
+            byte[] entrada = Encoding.ASCII.GetBytes(@string);
+            byte[] hash = sha.ComputeHash(entrada);
+
+            for (int i = 0; i < hash.Length; i++)
+                sb.Append(hash[i].ToString("X2"));
+
+            return sb.ToString();
         }
 
         public static AdicionarIntegranteViewModel AdicionarIntegranteViewModel(this HtmlHelper helper, int Id)
@@ -43,7 +75,7 @@ namespace TaskQuest
             return new EditarUsuarioViewModel(user);
         }
 
-        public static User GetApplicationUser(this System.Security.Principal.IIdentity identity)
+        public static User GetApplicationUser(this IIdentity identity)
         {
             if (identity.IsAuthenticated)
             {

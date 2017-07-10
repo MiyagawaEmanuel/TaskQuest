@@ -1,4 +1,6 @@
-﻿@{
+﻿@model string
+
+@{
 ViewBag.Title = "Quest";
 }
 
@@ -10,6 +12,7 @@ ViewBag.Title = "Quest";
 @section js
 {
     <script src="~/Content/js/quest.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
 }
 
 @Html.AntiForgeryToken()
@@ -59,6 +62,7 @@ ViewBag.Title = "Quest";
                     <p>Dificuldade</p>
                     <h3 id="Dificuldade"></h3>
                 </div>
+                <div id="feedback-modal"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary btn-cg" data-dismiss="modal">Sair</button>
@@ -67,4 +71,4 @@ ViewBag.Title = "Quest";
     </div>
 </div>
 
-<span class="balloon" style="display: none"></span>
+<span id="BalloonStatus" class="balloon" style="display: none"></span>

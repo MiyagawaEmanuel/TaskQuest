@@ -1,4 +1,5 @@
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
 
 namespace TaskQuest.ViewModels
 {
@@ -9,17 +10,18 @@ namespace TaskQuest.ViewModels
 
         public LinkViewModel(string Hash)
         {
-            this.Hash = Hash;
+            this.Hash = Util.Hash(Hash);
         }
 
         public LinkViewModel(string Id, string Hash, string Action)
         {
             this.Id = Id;
-            this.Hash = Hash;
+            this.Hash = Util.Hash(Hash);
             this.Action = Action;
         }
 
         public string Id { get; set; }
+
 
         [Required]
         public string Hash { get; set; }

@@ -3,11 +3,7 @@ using TaskQuest.Models;
 using System.Web.Mvc;
 using TaskQuest.ViewModels;
 using System.Linq;
-using TaskQuest.Identity;
-using System.Web;
-using Microsoft.AspNet.Identity.Owin;
 using Microsoft.AspNet.Identity;
-using System.Diagnostics;
 
 namespace TaskQuest.Controllers
 {
@@ -22,9 +18,10 @@ namespace TaskQuest.Controllers
         {
             if (returnUrl != null)
             {
-                TempData["Alert"] = "Você não está logado";
-                TempData["Class"] = "yellow-alert";
+                TempData["Alerta"] = "Você não está logado";
+                TempData["Classe"] = "yellow-alert";
             }
+            
             return View();
         }
 
@@ -36,22 +33,24 @@ namespace TaskQuest.Controllers
 
             var model = new InicioViewModel();
 
-            foreach (var uxg in user.UsuarioGrupos)
-                foreach (var gru in db.Grupo.Where(q => q.Id == uxg.GrupoId).ToArray())
-                    model.Grupos.Add(gru);
+            model.Grupos.AddRange(user.Grupos.ToList());
 
             foreach (var gru in model.Grupos)
                 foreach (var qst in gru.Quests)
                     foreach (var tsk in qst.Tasks)
-                            model.Pendencias.Add(tsk);
+                        model.Pendencias.Add(tsk);
 
             foreach (var qst in user.Quests)
                 foreach (var tsk in qst.Tasks)
-                        model.Pendencias.Add(tsk);
+                    model.Pendencias.Add(tsk);
 
             foreach (var tsk in model.Pendencias)
                 foreach (var feb in tsk.Feedbacks)
                     model.Feedbacks.Add(feb);
+            
+            model.Grupos.OrderBy(a => a.Nome);
+            model.Pendencias.OrderByDescending(a => a.DataConclusao);
+            model.Feedbacks.OrderByDescending(a => a.DataCriacao);
 
             return View(model);
         }
@@ -66,9 +65,7 @@ namespace TaskQuest.Controllers
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
 
-            foreach (var uxg in user.UsuarioGrupos)
-                foreach (var gru in db.Grupo.Where(q => q.Id == uxg.GrupoId).ToArray())
-                    grupos.Add(gru);
+            grupos.Concat(user.Grupos.ToList());
 
             foreach (var gru in grupos)
                 foreach (var qst in gru.Quests)
@@ -83,6 +80,8 @@ namespace TaskQuest.Controllers
                 foreach (var feb in tsk.Feedbacks)
                     model.Add(feb);
 
+            model.OrderBy(a => a.DataCriacao);
+
             return View(model);
         }
 
@@ -90,8 +89,11 @@ namespace TaskQuest.Controllers
         public ActionResult Grupos()
         {
             List<Grupo> model = new List<Grupo>();
-            foreach (var uxg in db.Users.Find(User.Identity.GetUserId<int>()).UsuarioGrupos)
-                model.Add(db.Grupo.Find(uxg.GrupoId));
+
+            model.AddRange(db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList());
+
+            model.OrderBy(a => a.Nome);
+
             return View(model);
         }
 
@@ -102,11 +104,7 @@ namespace TaskQuest.Controllers
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
 
-            List<Grupo> grupos = new List<Grupo>();
-            foreach (var uxg in user.UsuarioGrupos)
-                grupos.Add(uxg.Grupo);
-
-            foreach (var gru in grupos)
+            foreach (var gru in user.Grupos)
                 foreach (var qst in gru.Quests)
                     foreach (var tsk in qst.Tasks)
                         model.Add(tsk);
@@ -114,6 +112,8 @@ namespace TaskQuest.Controllers
             foreach (var qst in user.Quests)
                 foreach (var tsk in qst.Tasks)
                     model.Add(tsk);
+
+            model.OrderByDescending(a => a.DataConclusao);
 
             return View(model);
         }
