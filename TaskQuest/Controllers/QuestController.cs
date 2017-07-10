@@ -85,11 +85,10 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-                var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
-                var aux = quests.Where(q => q.HashId == model.Hash);
+                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
                 if (aux.Any())
                 {
-                    var quest = aux.First().Quest;
+                    var quest = aux.First();
                     int user_id = User.Identity.GetUserId<int>();
 
                     if (quest.UsuarioCriadorId == user_id || User.Identity.HasClaim(model.Hash, "Adm"))
@@ -118,11 +117,10 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public JsonResult GetQuests(string Hash)
         {
-            var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
-            var aux = quests.Where(q => q.HashId == Hash);
+            var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash);
             if (aux.Any())
             {
-                QuestViewModel quest = new QuestViewModel(aux.First().Quest);
+                QuestViewModel quest = new QuestViewModel(aux.First());
                 quest.TasksViewModel = new List<TaskViewModel>();
                 foreach (var tsk in db.Task.Where(q => q.QuestId == quest.Id).ToList())
                 {
@@ -259,11 +257,10 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirQuest(LinkViewModel model)
         {
-            var quests = db.Quest.ToList().Select(q => new { Quest = q, HashId = Util.Hash(q.Id.ToString()) });
-            var aux = quests.Where(q => q.HashId == model.Hash);
+            var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
             if (aux.Any())
             {
-                db.Quest.Remove(aux.First().Quest);
+                db.Quest.Remove(aux.First());
                 db.SaveChanges();
 
                 TempData["Alerta"] = "Excluído com sucesso";

@@ -49,11 +49,10 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var grupos = db.Grupo.ToList().Select(q => new { Grupo = q, HashId = Util.Hash(q.Id.ToString()) });
-                var aux = grupos.Where(q => q.HashId == model.Hash);
+                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
                 if (aux.Any())
                 {
-                    Grupo grupo = aux.First().Grupo;
+                    Grupo grupo = aux.First();
                     if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -245,11 +244,10 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-                var grupos = db.Grupo.ToList().Select(q => new { Grupo = q, HashId = Util.Hash(q.Id.ToString()) });
-                var aux = grupos.Where(q => q.HashId == model.Hash);
+                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
                 if (aux.Any())
                 {
-                    Grupo grupo = aux.First().Grupo;
+                    Grupo grupo = aux.First();
                     if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -282,11 +280,10 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SairGrupo(LinkViewModel model)
         {
-            var grupos = db.Grupo.ToList().Select(q => new { Grupo = q, HashId = Util.Hash(q.Id.ToString()) });
-            var aux = grupos.Where(q => q.HashId == model.Hash);
+            var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
             if (aux.Any())
             {
-                var gru = aux.First().Grupo;
+                var gru = aux.First();
                 var aux2 = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.Where(q => q.Id == gru.Id);
                 if (aux2.Any())
                 {
