@@ -83,8 +83,8 @@
                     <p class="user-title">&bull; @integrante.Nome</p>
                     @if (!integrante.Claims.Any(q => q.ClaimType == Model.Grupo.Id.ToString() && q.ClaimValue == "Adm"))
                     {
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Id', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Id', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
                     }
                 </div>
             }
@@ -117,7 +117,7 @@
                 @Html.AntiForgeryToken()
                 <div class="modal-footer modalfooter-container">
                     <input type="hidden" name="UserId" />
-                    <input type="hidden" name="GrupoId" value="@Model.Grupo.Id" />
+                    <input type="hidden" name="GrupoId" value="@Util.Hash(Model.Grupo.Id.ToString())" />
                     <input type="submit" class="btn btn-secondary btn-cg" value="Sim">
                     <input type="submit" data-dismiss="modal" class="btn btn-secondary btn-cg" value="Não">
                 </div>

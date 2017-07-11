@@ -5,10 +5,10 @@ namespace TaskQuest.ViewModels
     public class EditarIntegranteViewModel
     {
     	[Required]
-        public int UserId { get; set; }
+        public string UserId { get; set; }
 
         [Required]
-        public int GrupoId { get; set; }
+        public string GrupoId { get; set; }
         
     }
 }

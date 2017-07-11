@@ -106,12 +106,12 @@ namespace TaskQuest.Controllers
                 else
                 {
                     db.Entry(model.Grupo).State = System.Data.Entity.EntityState.Modified;
-                db.SaveChanges();
+                    db.SaveChanges();
 
-                TempData["Classe"] = "green-alert";
-                TempData["Alerta"] = "Atualizado com sucesso";
+                    TempData["Classe"] = "green-alert";
+                    TempData["Alerta"] = "Atualizado com sucesso";
                 }
-                
+
             }
             else
             {
@@ -133,38 +133,41 @@ namespace TaskQuest.Controllers
             {
                 var user = db.Users.Find(User.Identity.GetUserId<int>());
 
-                Grupo grupo = db.Grupo.Find(Convert.ToInt32(model.GrupoId));
-                if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
-                {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
-                    return RedirectToAction("Inicio", "Home");
-                }
-
-                if (!user.Claims.Any(q => q.ClaimType == model.GrupoId.ToString() && q.ClaimValue == "Adm"))
-                {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
-                    return RedirectToAction("Inicio", "Home");
-                }
-
-                var aux = db.Users.Where(q => q.Email == model.Email);
+                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
                 if (aux.Any())
                 {
-                    User usuario = aux.First();
+                    Grupo grupo = aux.First();
+                    if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
+                        return RedirectToAction("Inicio", "Home");
+                    }
 
-                    grupo.Users.Add(usuario);
-                    db.SaveChanges();
+                    if (!user.Claims.Any(q => q.ClaimType == model.GrupoId.ToString() && q.ClaimValue == "Adm"))
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
+                        return RedirectToAction("Inicio", "Home");
+                    }
 
-                    TempData["Classe"] = "green-alert";
-                    TempData["Alerta"] = "Integrante adicionado com sucesso";
+                    var aux2 = db.Users.Where(q => q.Email == model.Email);
+                    if (aux2.Any())
+                    {
+                        User usuario = aux2.First();
+
+                        grupo.Users.Add(usuario);
+                        db.SaveChanges();
+
+                        TempData["Classe"] = "green-alert";
+                        TempData["Alerta"] = "Integrante adicionado com sucesso";
+                    }
+                    else
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Usuário não encontrado";
+                    }
                 }
-                else
-                {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Usuário não encontrado";
-                }
-
             }
             else
             {
@@ -183,26 +186,29 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-                Grupo grupo = db.Grupo.Find(Convert.ToInt32(model.GrupoId));
-                if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
-                {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
-                    return RedirectToAction("Inicio", "Home");
-                }
-
-                var aux = grupo.Users.Where(q => q.Id == model.UserId);
+                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
                 if (aux.Any())
                 {
-                    grupo.Users.Remove(aux.First());
-                    TempData["Classe"] = "green-alert";
-                    TempData["Alerta"] = "Removido com sucesso";
+                    Grupo grupo = aux.First();
+                    if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
+                        return RedirectToAction("Inicio", "Home");
+                    }
+
+                    var aux2 = grupo.Users.Where(q => Util.Hash(q.Id.ToString()) == model.UserId);
+                    if (aux2.Any())
+                    {
+                        grupo.Users.Remove(aux2.First());
+                        TempData["Classe"] = "green-alert";
+                        TempData["Alerta"] = "Removido com sucesso";
+                    }
                 }
-                
             }
             else
             {
-                TempData["Alerta"] = "Formulário inválido";
+                TempData["Alerta"] = "Algo deu errado";
                 TempData["Classe"] = "yellow-alert";
             }
 
@@ -214,20 +220,43 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult TornarAdministrador(EditarIntegranteViewModel model)
         {
-
             if (ModelState.IsValid)
             {
-                if (!db.Grupo.Find(Convert.ToInt32(model.GrupoId)).Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
+                if (aux.Any())
                 {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
-                    return RedirectToAction("Inicio", "Home");
+                    var grupo = aux.First();
+                    if (!grupo.Users.Where(q => q.Id == User.Identity.GetUserId<int>()).First()
+                        .Claims.Where(q => q.ClaimType == grupo.Id.ToString() && q.ClaimValue == "Adm").Any())
+                    {
+                        var aux3 = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.UserId);
+                        if (aux3.Any())
+                        {
+                            aux3.First().Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
+
+                            TempData["Classe"] = "green-alert";
+                            TempData["Alerta"] = "Integrante promovido a Administrador com sucesso";
+
+                            db.Entry(aux3.First()).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
+                        }
+                        else
+                        {
+                            TempData["Classe"] = "green-alert";
+                            TempData["Alerta"] = "Algo deu errado";
+                        }
+                    }
+                    else
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Você não tem permissão para executar essa ação";
+                    }
                 }
-
-                db.Users.Find(model.UserId).Claims.Add(new UserClaim(model.GrupoId.ToString(), "Adm"));
-
-                TempData["Classe"] = "green-alert";
-                TempData["Alerta"] = "Integrante promovido a Administrador com sucesso";
+                else
+                {
+                    TempData["Classe"] = "green-alert";
+                    TempData["Alerta"] = "Algo deu errado";
+                }
             }
             else
             {
@@ -248,10 +277,11 @@ namespace TaskQuest.Controllers
                 if (aux.Any())
                 {
                     Grupo grupo = aux.First();
-                    if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                    if (!grupo.Users.Where(q => q.Id == User.Identity.GetUserId<int>()).First()
+                        .Claims.Where(q => q.ClaimType == grupo.Id.ToString() && q.ClaimValue == "Adm").Any())
                     {
                         TempData["Classe"] = "yellow-alert";
-                        TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
+                        TempData["Alerta"] = "Você não tem permissão para executar essa ação";
                         return RedirectToAction("Inicio", "Home");
                     }
 

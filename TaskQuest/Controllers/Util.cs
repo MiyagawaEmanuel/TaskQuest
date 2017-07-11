@@ -65,7 +65,7 @@ namespace TaskQuest
         {
             var aux = new AdicionarIntegranteViewModel()
             {
-                GrupoId = Id
+                GrupoId = Util.Hash(Id.ToString())
             };
             return aux;
         }

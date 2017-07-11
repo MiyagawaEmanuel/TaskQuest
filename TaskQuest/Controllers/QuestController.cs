@@ -281,16 +281,21 @@ namespace TaskQuest.Controllers
             if (Status != "0" && Status != "1" && Status != "2")
                 return "false";
 
-            Task task = db.Task.Find(Convert.ToInt32(Id));
-            task.Status = Convert.ToInt32(Status);
+            var aux = db.Task.ToList().Where(q => Util.Hash(q.Id.ToString()) == Id);
+            if (aux.Any())
+            {
+                Task task = aux.First();
+                task.Status = Convert.ToInt32(Status);
 
-            if (task.Status == 1 || task.Status == 2)
-                foreach (var feb in db.Feedback.Where(q => q.TaskId == task.Id))
-                    db.Feedback.Remove(feb);
+                if (task.Status == 1 || task.Status == 2)
+                    foreach (var feb in db.Feedback.Where(q => q.TaskId == task.Id))
+                        db.Feedback.Remove(feb);
 
-            db.SaveChanges();
+                db.SaveChanges();
 
-            return "true";
+                return "true";
+            }
+            return "false";
         }
 
     }

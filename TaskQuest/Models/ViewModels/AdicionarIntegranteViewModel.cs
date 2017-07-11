@@ -9,6 +9,6 @@ namespace TaskQuest.ViewModels
         public string Email { get; set; }
 
         [Required]
-        public int GrupoId { get; set; }
+        public string GrupoId { get; set; }
     }
 }
