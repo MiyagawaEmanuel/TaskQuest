@@ -39,7 +39,7 @@
                     <div class="limit-lines"><h4>@Model[x].Descricao</h4></div>
                     <div><h4>@Model[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
                     <div class="select-container">
-                        <select id="@Model[x].Id" class="form-control" onchange="mudarStatus(this)">
+                        <select id="@Util.Hash(Model[x].Id.ToString())" class="form-control" onchange="mudarStatus(this)">
                             @if (Model[x].Status == 0)
                             {
                                 <option selected value="0">A Fazer</option>

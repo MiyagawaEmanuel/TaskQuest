@@ -8,15 +8,23 @@ namespace TaskQuest.ViewModels
 
         public LinkViewModel() { }
 
-        public LinkViewModel(string Hash)
+        public LinkViewModel(string Hash, bool requireHashing=true)
         {
-            this.Hash = Util.Hash(Hash);
+            if (requireHashing)
+                this.Hash = Util.Hash(Hash);
+            else
+                this.Hash = Hash;
         }
 
-        public LinkViewModel(string Id, string Hash, string Action)
+        public LinkViewModel(string Id, string Hash, string Action, bool requireHashing=true)
         {
             this.Id = Id;
-            this.Hash = Util.Hash(Hash);
+
+            if (requireHashing)
+                this.Hash = Util.Hash(Hash);
+            else
+                this.Hash = Hash;
+
             this.Action = Action;
         }
 

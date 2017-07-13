@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model TaskQuest.ViewModels.LinkViewModel
 
 @{
     ViewBag.Title = "Criar Quest";
@@ -34,9 +34,9 @@
     </div>
 
     <form id="formQuest">
-        @if (!Model.IsEmpty())
+        @if (Model != null)
         {
-            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model" />
+            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model.Hash" />
         }
         <div class="container flex-properties-c">
             <div class="form-container">

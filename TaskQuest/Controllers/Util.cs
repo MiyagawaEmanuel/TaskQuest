@@ -18,9 +18,9 @@ namespace TaskQuest
             return new MvcHtmlString(dateTime.ToString("yyyy-MM-dd"));
         }
 
-        public static LinkViewModel LinkViewModel(this HtmlHelper helper, string id, string hash, string action)
+        public static LinkViewModel LinkViewModel(this HtmlHelper helper, string id, string hash, string action, bool requireHashing=true)
         {
-            return new LinkViewModel(id, hash, action);
+            return new LinkViewModel(id, hash, action, requireHashing);
         }
 
         public static Grupo Grupo(this HtmlHelper helper)

@@ -37,14 +37,14 @@ namespace TaskQuest.ViewModels
 
         public List<Task> Tasks { get; set; }
 
-        public int? GrupoCriadorId { get; set; }
+        public string GrupoCriadorId { get; set; }
 
     }
 
     public class TaskViewModel
     {
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         public int QuestId { get; set; }
 

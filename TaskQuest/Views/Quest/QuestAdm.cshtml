@@ -1,4 +1,4 @@
-﻿@model string
+﻿@model TaskQuest.ViewModels.LinkViewModel
 
 @{
     ViewBag.Title = "Quest";
@@ -18,8 +18,7 @@
     <script src="~/Content/js/link.js"></script>
 }
 
-@Html.AntiForgeryToken()
-<input type="hidden" id="Hash" value="@Model" />
+<input type="hidden" id="Hash" value="@Model.Hash" />
 
 <section class="pads-bot">
 
@@ -35,7 +34,7 @@
                 <h3><a href="" data-target="#modalAdicionarTask" data-toggle="modal">Adicionar Task</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
-                @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirQuest", Model.ToString(), "/Quest/ExcluirQuest"))
+                @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirQuest", Model.Hash, "/Quest/ExcluirQuest", false))
                 <a onclick="link(ExcluirQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
                 <h3><a onclick="link(ExcluirQuest)">Excluir Quest</a></h3>
             </div>
