@@ -1,8 +1,13 @@
 ﻿using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.Owin;
 using System;
+using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using System.Linq;
+using System.Security.Claims;
+using System.Web;
 using System.Web.Mvc;
+using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 
@@ -67,10 +72,8 @@ namespace TaskQuest.Controllers
 
                     grupoViewModel.Integrantes.AddRange(grupo.Users);
 
-                    var aux2 = grupo.Users.Where(q => q.Id == User.Identity.GetUserId<int>());
-                    if (aux2.Any())
-                        if (aux2.First().Claims.Any(q => q.ClaimType == model.Hash && q.ClaimValue == "Adm"))
-                            return View("GrupoAdm", grupoViewModel);
+                    if (User.Identity.IsAdm(grupo.Id))
+                        return View("GrupoAdm", grupoViewModel);
 
                     return View(grupoViewModel);
                 }
@@ -98,10 +101,10 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
 
-                if (!model.Grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                if (!User.Identity.IsAdm(model.Grupo.Id))
                 {
                     TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para entrar nessa página ";
+                    TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
                 }
                 else
                 {
@@ -137,14 +140,7 @@ namespace TaskQuest.Controllers
                 if (aux.Any())
                 {
                     Grupo grupo = aux.First();
-                    if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
-                    {
-                        TempData["Classe"] = "yellow-alert";
-                        TempData["Alerta"] = "Você não tem permissão para entrar nessa página";
-                        return RedirectToAction("Inicio", "Home");
-                    }
-
-                    if (!user.Claims.Any(q => q.ClaimType == model.GrupoId.ToString() && q.ClaimValue == "Adm"))
+                    if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
                         TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
@@ -226,8 +222,7 @@ namespace TaskQuest.Controllers
                 if (aux.Any())
                 {
                     var grupo = aux.First();
-                    if (!grupo.Users.Where(q => q.Id == User.Identity.GetUserId<int>()).First()
-                        .Claims.Where(q => q.ClaimType == grupo.Id.ToString() && q.ClaimValue == "Adm").Any())
+                    if (User.Identity.IsAdm(grupo.Id))
                     {
                         var aux3 = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.UserId);
                         if (aux3.Any())
@@ -277,16 +272,27 @@ namespace TaskQuest.Controllers
                 if (aux.Any())
                 {
                     Grupo grupo = aux.First();
-                    if (!grupo.Users.Where(q => q.Id == User.Identity.GetUserId<int>()).First()
-                        .Claims.Where(q => q.ClaimType == grupo.Id.ToString() && q.ClaimValue == "Adm").Any())
+                    if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
                         TempData["Alerta"] = "Você não tem permissão para executar essa ação";
                         return RedirectToAction("Inicio", "Home");
                     }
 
+                    foreach (var usu in grupo.Users)
+                    {
+                        var user = User as ClaimsPrincipal;
+                    }
+                    
                     db.Grupo.Remove(grupo);
+
+                    foreach (var user in grupo.Users)
+                        foreach (var claim in user.Claims.ToList())
+                            if (claim.ClaimType == "3")
+                                db.Entry(claim).State = System.Data.Entity.EntityState.Deleted;
+                    
                     db.SaveChanges();
+
                     TempData["Classe"] = "green-alert";
                     TempData["Alerta"] = "Removido com sucesso";
                 }
@@ -319,6 +325,7 @@ namespace TaskQuest.Controllers
                 {
                     Grupo grupo = aux2.First();
                     db.Users.Find(User.Identity.GetUserId<int>()).Grupos.Remove(grupo);
+                    db.SaveChanges();
                     TempData["Alerta"] = "Bem sucedido";
                     TempData["Classe"] = "green-alert";
                 }

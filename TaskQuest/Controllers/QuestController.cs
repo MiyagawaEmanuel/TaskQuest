@@ -91,7 +91,7 @@ namespace TaskQuest.Controllers
                     var quest = aux.First();
                     int user_id = User.Identity.GetUserId<int>();
 
-                    if (quest.UsuarioCriadorId == user_id || User.Identity.HasClaim(model.Hash, "Adm"))
+                    if (quest.UsuarioCriadorId == user_id || User.Identity.IsAdm(quest.GrupoCriador.Id))
                     {
                         return View("QuestAdm", Util.Hash(quest.Id.ToString()));
                     }

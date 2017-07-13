@@ -39,12 +39,16 @@ namespace TaskQuest
             return new DateTime(Convert.ToInt32(aux[0]), Convert.ToInt32(aux[1]), Convert.ToInt32(aux[2]));
         }
 
-        public static bool HasClaim(this IIdentity identity, string type, string value)
+        public static bool IsAdm(this IIdentity identity, int GrupoId)
         {
-            if (identity.GetApplicationUser().Claims.Any(q => q.ClaimType == type && q.ClaimValue == value))
-                return true;
-            else
-                return false;
+            using (var db = new DbContext())
+            {
+                var user = db.Users.Find(identity.GetUserId<int>());
+                if (user.Claims.Any(q => q.ClaimType == GrupoId.ToString() && q.ClaimValue == "Adm") && user.Grupos.Any(q => q.Id == GrupoId))
+                    return true;
+                else
+                    return false;
+            }
         }
 
         public static string Hash(string @string)
