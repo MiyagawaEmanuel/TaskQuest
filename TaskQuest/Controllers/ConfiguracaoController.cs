@@ -14,7 +14,7 @@ namespace TaskQuest.Controllers
     [Authorize]
     public class ConfiguracaoController : Controller
     {
-        
+
         private ApplicationUserManager _userManager;
 
         public ConfiguracaoController() { }
@@ -35,52 +35,42 @@ namespace TaskQuest.Controllers
         public ActionResult Index()
         {
             var model = new ConfiguracaoViewModel();
-            model.usuario = db.Users.Find(User.Identity.GetUserId<int>());
-            model.Cartoes = model.usuario.Cartoes.ToList();
-            model.Telefones = model.usuario.Telefones.ToList();
+
+            var user = db.Users.Find(User.Identity.GetUserId<int>());
+
+            model.usuario = new UserViewModel(user);
+            model.Cartoes = user.Cartoes.ToList();
+            model.Telefones = user.Telefones.ToList();
+
             return View(model);
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarUsuario(EditarUsuarioViewModel model)
+        public ActionResult EditarUsuario(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
 
-                User user = (User)UserManager.FindById(User.Identity.GetUserId<int>());
+                var user = model.Update();
 
-                user.Nome = model.Nome;
-                user.Sobrenome = model.Sobrenome;
-                user.Email = model.Email;
-                user.UserName = model.Email;
-                user.DataNascimento = model.DataNascimento.StringToDateTime();
-                user.Cor = model.Cor;
-                user.PasswordHash = UserManager.PasswordHasher.HashPassword(model.Senha);
-
-                bool saveFailed;
-                do
+                if(user != null)
                 {
-                    saveFailed = false;
-                    try
-                    {
-                        UserManager.Update(user);
-                    }
-                    catch (DbUpdateConcurrencyException ex)
-                    {
-                        saveFailed = true;
+                    user.PasswordHash = UserManager.PasswordHasher.HashPassword(user.PasswordHash);
 
-                        // Update original values from the database 
-                        var entry = ex.Entries.Single();
-                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
-                    }
+                    UserManager.Update(user);
 
-                } while (saveFailed);
-                
-                TempData["Alerta"] = "Atualizado com sucesso";
-                TempData["Classe"] = "green-alert";
+                    TempData["Alerta"] = "Atualizado com sucesso";
+                    TempData["Classe"] = "green-alert";
 
-                return RedirectToAction("Index");
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    TempData["Alerta"] = "Algo deu errado";
+                    TempData["Classe"] = "yellow-alert";
+                    return RedirectToAction("Index");
+                }
             }
             else
             {

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -74,11 +75,6 @@ namespace TaskQuest
             return aux;
         }
 
-        public static EditarUsuarioViewModel EditarUsuarioViewModel(this HtmlHelper helper, User user)
-        {
-            return new EditarUsuarioViewModel(user);
-        }
-
         public static User GetApplicationUser(this IIdentity identity)
         {
             if (identity.IsAuthenticated)
@@ -95,5 +91,27 @@ namespace TaskQuest
             }
         }
 
+    }
+    
+    public class Date : ValidationAttribute
+    {
+        protected override ValidationResult IsValid(object value, ValidationContext validationContext)
+        {
+            if(value != null)
+            {
+                try
+                {
+                    var n = value.ToString().Split('-').Select(q => Convert.ToInt32(q)).ToList();
+                    DateTime date = new DateTime(n[0], n[1], n[2]);
+                    return ValidationResult.Success;
+                }
+                catch
+                {
+                    return new ValidationResult("Digite uma data válida");
+                }
+            }
+            else
+                return new ValidationResult("Digite uma data válida");
+        }
     }
 }
