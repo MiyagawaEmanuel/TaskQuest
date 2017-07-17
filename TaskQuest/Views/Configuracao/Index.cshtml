@@ -46,7 +46,7 @@
     </div>
     @for (int x = 0; x < Model.Telefones.Count; x++)
     {
-        @Html.Partial("_EditarTelefonePartial", new Tuple<int, TaskQuest.Models.Telefone>(x, Model.Telefones[x]))
+        @Html.Partial("_EditarTelefonePartial", new Tuple<int, TaskQuest.ViewModels.TelefoneViewModel>(x, Model.Telefones[x]))
     }
 </section>
 
@@ -63,12 +63,12 @@
     </div>
     @for (int x = 0; x < Model.Cartoes.Count; x++)
     {
-        @Html.Partial("_EditarCartaoPartial", new Tuple<int, TaskQuest.Models.Cartao>(x, Model.Cartoes[x]))
+        @Html.Partial("_EditarCartaoPartial", new Tuple<int, TaskQuest.ViewModels.CartaoViewModel>(x, Model.Cartoes[x]))
     }
 </section>
 
-@Html.Partial("_AdicionarTelefonePartial", Model.Telefone)
+@Html.Partial("_AdicionarTelefonePartial", new TaskQuest.ViewModels.TelefoneViewModel())
 
 <hr class="container quebra">
 
-@Html.Partial("_AdicionarCartaoPartial", Model.Cartao)
+@Html.Partial("_AdicionarCartaoPartial", new TaskQuest.ViewModels.CartaoViewModel())

@@ -218,7 +218,6 @@
     <Compile Include="Models\Telefone.cs" />
     <Compile Include="Models\ViewModels\QuestViewModel.cs" />
     <Compile Include="Models\ViewModels\UploadViewModel.cs" />
-    <Compile Include="Models\ViewModels\EditarIntegranteViewModel.cs" />
     <Compile Include="Models\ViewModels\GrupoViewModel.cs" />
     <Compile Include="Models\ViewModels\InicioViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

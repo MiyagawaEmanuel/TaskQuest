@@ -1,13 +1,7 @@
 ﻿using Microsoft.AspNet.Identity;
-using Microsoft.AspNet.Identity.Owin;
-using System;
-using System.Data.Entity.Infrastructure;
-using System.Diagnostics;
 using System.Linq;
 using System.Security.Claims;
-using System.Web;
 using System.Web.Mvc;
-using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 
@@ -21,24 +15,32 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult CriarGrupo(Grupo model)
+        public ActionResult CriarGrupo(GrupoViewModel model)
         {
             if (ModelState.IsValid)
             {
-                db.Grupo.Add(model);
-                db.SaveChanges();
+                var grupo = model.Update();
+                if(grupo != null)
+                {
+                    var user = db.Users.Find(User.Identity.GetUserId<int>());
 
-                var user = db.Users.Find(User.Identity.GetUserId<int>());
-                user.Grupos.Add(model);
-                db.SaveChanges();
+                    user.Grupos.Add(grupo);
+                    db.SaveChanges();
 
-                user.Claims.Add(new UserClaim(model.Id.ToString(), "Adm"));
-                db.SaveChanges();
+                    user.Claims.Add(new UserClaim(model.Id.ToString(), "Adm"));
+                    db.SaveChanges();
 
-                TempData["Alerta"] = "Criado com sucesso";
-                TempData["Classe"] = "green-alert";
+                    TempData["Alerta"] = "Criado com sucesso";
+                    TempData["Classe"] = "green-alert";
 
-                return RedirectToAction("Inicio", "Home");
+                    return RedirectToAction("Inicio", "Home");
+                }
+                else
+                {
+                    TempData["Alerta"] = "Algo deu errado";
+                    TempData["Classe"] = "yellow-alert";
+                    return RedirectToAction("Inicio", "Home");
+                }
             }
             else
             {
@@ -65,12 +67,10 @@ namespace TaskQuest.Controllers
                         return RedirectToAction("Inicio", "Home");
                     }
 
-                    GrupoViewModel grupoViewModel = new GrupoViewModel()
-                    {
-                        Grupo = grupo,
-                    };
+                    GrupoViewModel grupoViewModel = new GrupoViewModel(grupo);
 
                     grupoViewModel.Integrantes.AddRange(grupo.Users);
+                    grupoViewModel.Quests.AddRange(grupo.Quests);
 
                     if (User.Identity.IsAdm(grupo.Id))
                         return View("GrupoAdm", grupoViewModel);
@@ -97,24 +97,31 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult EditarGrupo(GrupoViewModel model)
         {
-
             if (ModelState.IsValid)
             {
-
-                if (!User.Identity.IsAdm(model.Grupo.Id))
+                var grupo = model.Update();
+                if(grupo != null)
                 {
-                    TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
+                    if (!User.Identity.IsAdm(grupo.Id))
+                    {
+                        TempData["Classe"] = "yellow-alert";
+                        TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
+                    }
+                    else
+                    {
+                        db.Entry(grupo).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        TempData["Classe"] = "green-alert";
+                        TempData["Alerta"] = "Atualizado com sucesso";
+                    }
                 }
                 else
                 {
-                    db.Entry(model.Grupo).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
-
-                    TempData["Classe"] = "green-alert";
-                    TempData["Alerta"] = "Atualizado com sucesso";
+                    TempData["Alerta"] = "Algo deu errado";
+                    TempData["Classe"] = "yellow-alert";
+                    return RedirectToAction("Inicio", "Home");
                 }
-
             }
             else
             {
@@ -131,7 +138,6 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult AdicionarIntegrante(AdicionarIntegranteViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var user = db.Users.Find(User.Identity.GetUserId<int>());

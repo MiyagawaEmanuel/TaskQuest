@@ -8,16 +8,13 @@ namespace TaskQuest.ViewModels
 {
     public class ConfiguracaoViewModel
     {
+
         public UserViewModel usuario = new UserViewModel();
 
-        public List<Cartao> Cartoes = new List<Cartao>();
+        public List<CartaoViewModel> Cartoes = new List<CartaoViewModel>();
 
-        public List<Telefone> Telefones = new List<Telefone>();
-
-        public Telefone Telefone = new Telefone();
-
-        public Cartao Cartao = new Cartao();
-
+        public List<TelefoneViewModel> Telefones = new List<TelefoneViewModel>();
+        
     }
 
     public class AdicionarIntegranteViewModel
@@ -100,6 +97,143 @@ namespace TaskQuest.ViewModels
         [Required]
         [StringLength(7, MinimumLength = 4)]
         public string Cor { get; set; }
+
+    }
+
+    public class TelefoneViewModel
+    {
+        public TelefoneViewModel() { }
+
+        public TelefoneViewModel(Telefone telefone)
+        {
+            this.Id = Util.Hash(telefone.Id.ToString());
+            this.Tipo = telefone.Tipo;
+            this.Numero = telefone.Numero;
+        }
+
+        public Telefone Update()
+        {
+            if (string.IsNullOrEmpty(this.Id))
+            {
+                Telefone telefone = new Telefone()
+                {
+                    Tipo = this.Tipo,
+                    Numero = this.Numero,
+                };
+                
+                return telefone;
+            }
+            else
+            {
+                using (var db = new DbContext())
+                {
+                    var aux = db.Telefone.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
+                    if (aux.Any())
+                    {
+                        Telefone telefone = aux.First();
+                        telefone.Tipo = this.Numero;
+                        telefone.Numero = this.Numero;
+
+                        return telefone;
+                    }
+                    else
+                        return null;
+                }
+            }
+        }
+
+        public string Id { get; set; }
+
+        [Required]
+        [StringLength(40, MinimumLength = 3)]
+        public string Tipo { get; set; }
+
+        [Required]
+        [StringLength(15, MinimumLength = 14)]
+        public string Numero { get; set; }
+
+    }
+
+    public class CartaoViewModel
+    {
+        public CartaoViewModel() { }
+
+        public CartaoViewModel(Cartao cartao)
+        {
+            this.Id = Util.Hash(cartao.Id.ToString());
+            this.NomeTitular = cartao.NomeTitular;
+            this.Bandeira = cartao.Bandeira;
+            this.Numero = cartao.Numero;
+            this.Senha = cartao.Senha;
+            this.CodigoSeguranca = cartao.CodigoSeguranca;
+            this.DataVencimento = cartao.DataVencimento;
+        }
+
+        public Cartao Update()
+        {
+            if (string.IsNullOrEmpty(this.Id))
+            {
+                Cartao cartao = new Cartao()
+                {
+                    NomeTitular = this.NomeTitular,
+                    Bandeira = this.Bandeira,
+                    Numero = this.Numero,
+                    Senha = this.Senha,
+                    CodigoSeguranca = this.CodigoSeguranca,
+                    DataVencimento = this.DataVencimento,
+                };
+
+                return cartao;
+            }
+            else
+            {
+                using (var db = new DbContext())
+                {
+                    var aux = db.Cartao.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
+                    if (aux.Any())
+                    {
+                        Cartao cartao = aux.First();
+
+                        cartao.NomeTitular = this.NomeTitular;
+                        cartao.Bandeira = this.Bandeira;
+                        cartao.Numero = this.Numero;
+                        cartao.Senha = this.Senha;
+                        cartao.CodigoSeguranca = this.CodigoSeguranca;
+                        cartao.DataVencimento = this.DataVencimento;
+
+                        return cartao;
+                    }
+                    else
+                        return null;
+                }
+            }
+        }
+
+        public string Id { get; set; }
+
+        [Required]
+        [StringLength(40, MinimumLength = 3)]
+        public string NomeTitular { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 3)]
+        public string Bandeira { get; set; }
+
+        [Required]
+        [StringLength(11, MinimumLength = 11)]
+        public string Numero { get; set; }
+
+        [Required]
+        [StringLength(20, MinimumLength = 5)]
+        public string Senha { get; set; }
+
+        [Required]
+        [StringLength(3, MinimumLength = 3)]
+        public string CodigoSeguranca { get; set; }
+
+        [Date]
+        [Required]
+        public string DataVencimento { get; set; }
 
     }
 

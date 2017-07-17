@@ -66,11 +66,11 @@ namespace TaskQuest
             return sb.ToString();
         }
 
-        public static AdicionarIntegranteViewModel AdicionarIntegranteViewModel(this HtmlHelper helper, int Id)
+        public static AdicionarIntegranteViewModel AdicionarIntegranteViewModel(this HtmlHelper helper, string Id)
         {
             var aux = new AdicionarIntegranteViewModel()
             {
-                GrupoId = Util.Hash(Id.ToString())
+                GrupoId = Id
             };
             return aux;
         }

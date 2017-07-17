@@ -34,7 +34,7 @@
     </div>
 
     <form id="formQuest">
-        @if (Model != null)
+        @if (!String.IsNullOrEmpty(Model.Hash))
         {
             <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model.Hash" />
         }

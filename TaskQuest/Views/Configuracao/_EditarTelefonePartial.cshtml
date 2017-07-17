@@ -1,9 +1,8 @@
-﻿@model Tuple<int, TaskQuest.Models.Telefone>
+﻿@model Tuple<int, TaskQuest.ViewModels.TelefoneViewModel>
 
 <form id="@Html.ToString("formTelefone"+@Model.Item1)" method="post">
     @Html.AntiForgeryToken()
-    <input type="hidden" value="@Html.ToString(Model.Item2.Id.ToString())" name="Item2.Id" id="Item2.Id" />
-    <input type="hidden" value="@Html.ToString(Model.Item2.UsuarioId.ToString())" name="Item2.UsuarioId" id="Item2.UsuarioId" />
+    <input type="hidden" value="Model.item2.Id" name="Item2.Id" id="Item2.Id" />
     <div class="flex-properties-r">
         <li class="li-hidden icon-black">
             <a onclick="submit('@Html.ToString("formTelefone"+@Model.Item1)', '/Configuracao/EditarTelefone')" title="Salvar"><i class="fa fa-save" aria-hidden="true"></i></a>
