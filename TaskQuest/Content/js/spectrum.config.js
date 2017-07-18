@@ -5,6 +5,5 @@ $("#Cor").spectrum({
     cancelText: "",
     move: function (color) {
         $("#Cor").val(color.toHex());
-    },
-    color: '#106494'
+    }
 });

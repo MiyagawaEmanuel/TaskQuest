@@ -16,6 +16,7 @@ namespace TaskQuest.ViewModels
             this.Nome = grupo.Nome;
             this.Descricao = grupo.Descricao;
             this.Plano = grupo.Plano;
+            this.Cor = grupo.Cor;
         }
 
         public Grupo Update()

@@ -53,11 +53,12 @@ namespace TaskQuest.Controllers
             {
                 var user = model.Update();
 
-                if(user != null)
+                if (user != null)
                 {
                     user.PasswordHash = UserManager.PasswordHasher.HashPassword(user.PasswordHash);
 
-                    UserManager.Update(user);
+                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                    db.SaveChanges();
 
                     TempData["Alerta"] = "Atualizado com sucesso";
                     TempData["Classe"] = "green-alert";
@@ -90,6 +91,7 @@ namespace TaskQuest.Controllers
                 {
                     if (User.Identity.GetUserId<int>() == telefone.UsuarioId)
                     {
+                        db.Entry(telefone).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                         TempData["Alerta"] = "Atualizado com sucesso";
                         TempData["Classe"] = "green-alert";
@@ -128,6 +130,7 @@ namespace TaskQuest.Controllers
                 {
                     if (User.Identity.GetUserId<int>() == cartao.UsuarioId)
                     {
+                        db.Entry(cartao).State = System.Data.Entity.EntityState.Modified;
                         db.SaveChanges();
                         TempData["Alerta"] = "Atualizado com sucesso";
                         TempData["Classe"] = "green-alert";
@@ -207,7 +210,7 @@ namespace TaskQuest.Controllers
                     {
                         db.Entry(cartao).State = System.Data.Entity.EntityState.Deleted;
                         db.SaveChanges();
-                        TempData["Alerta"] = "Atualizado com sucesso";
+                        TempData["Alerta"] = "Deletado com sucesso com sucesso";
                         TempData["Classe"] = "green-alert";
                         return RedirectToAction("Index");
                     }
@@ -240,7 +243,7 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var telefone = model.Update();
-                if(telefone != null)
+                if (telefone != null)
                 {
                     telefone.UsuarioId = User.Identity.GetUserId<int>();
                     db.Telefone.Add(telefone);
@@ -271,7 +274,7 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var cartao = model.Update();
-                if(cartao != null)
+                if (cartao != null)
                 {
                     cartao.UsuarioId = User.Identity.GetUserId<int>();
                     db.Cartao.Add(cartao);

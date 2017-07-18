@@ -30,12 +30,12 @@
 		<div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Grupo</h2></div>
 		<div class="title-b">
 			<div class="flex-properties-r pads icon-black">
-				@Html.Partial("_LinkPartial", Html.LinkViewModel("CriarQuest", Model.Id.ToString(), "/Quest/CriarQuest"))
+				@Html.Partial("_LinkPartial", Html.LinkViewModel("CriarQuest", Model.Id, "/Quest/CriarQuest", false))
                 <a onclick="link(CriarQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
                 <h3><a onclick="link(CriarQuest)">Criar Quest</a></h3>
 			</div>
 			<div class="flex-properties-r pads icon-black">
-                @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirGrupo", Model.Id.ToString(), "/Grupo/ExcluirGrupo"))
+                @Html.Partial("_LinkPartial", Html.LinkViewModel("ExcluirGrupo", Model.Id, "/Grupo/ExcluirGrupo", false))
 				<a onclick="link(ExcluirGrupo)"><i class="fa fa-times elipse" aria-hidden="true"></i></a>
 				<h3><a onclick="link(ExcluirGrupo)">Excluir Grupo</a></h3>
 			</div>
@@ -81,7 +81,7 @@
             {
                 <div class="user-container">
                     <p class="user-title">&bull; @integrante.Nome</p>
-                    @if (!integrante.Claims.Any(q => q.ClaimType == Model.Id.ToString() && q.ClaimValue == "Adm"))
+                    @if (!integrante.Claims.ToList().Any(q => Util.Hash(q.ClaimType) == Model.Id && q.ClaimValue == "Adm"))
                     {
                         <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
                         <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>

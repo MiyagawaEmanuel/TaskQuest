@@ -65,13 +65,16 @@ $(function () {
 		}
 	});
 
-	var options =  {onKeyPress: function(cep, e, field, options){
-		var masks = ['(00) 0000 00000', '(00) 00000 0000'];
-		mask = (cep.length > 14) ? masks[1] : masks[0];
-		$('.TelefoneNumero').mask(mask, options);
-	}};
+    var options = {
+        onKeyPress: function (cep, e, field, options) {
+		    var masks = ['(00) 0000 00000', '(00) 00000 0000'];
+		    mask = (cep.length > 14) ? masks[1] : masks[0];
+		    $('.TelefoneNumero').mask(mask, options);
+        },
+        placeholder: "Digite seu número de telefone"
+    };
 
-	$('.TelefoneNumero').mask('(00) 0000 00000', options);
+    $('.TelefoneNumero').mask('(00) 0000 00000', options);
 
 	var validateTelefone = {
 		errorPlacement: function(error, element) {

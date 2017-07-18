@@ -27,7 +27,7 @@ namespace TaskQuest.Controllers
                     user.Grupos.Add(grupo);
                     db.SaveChanges();
 
-                    user.Claims.Add(new UserClaim(model.Id.ToString(), "Adm"));
+                    user.Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
                     db.SaveChanges();
 
                     TempData["Alerta"] = "Criado com sucesso";
@@ -80,7 +80,7 @@ namespace TaskQuest.Controllers
                 else
                 {
                     TempData["Classe"] = "yellow-alert";
-                    TempData["Alerta"] = "Algo deu errado - No select";
+                    TempData["Alerta"] = "Algo deu errado";
                     return RedirectToAction("Inicio", "Home");
                 }
             }

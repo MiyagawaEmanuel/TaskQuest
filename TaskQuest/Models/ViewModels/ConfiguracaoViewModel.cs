@@ -34,13 +34,14 @@ namespace TaskQuest.ViewModels
 
         public UserViewModel(User user)
         {
-            Nome = user.Nome;
-            Sobrenome = user.Sobrenome;
-            DataNascimento = user.DataNascimento.ToString("yyyy-MM-dd");
-            Email = user.Email;
-            Senha = user.PasswordHash;
-            ConfirmarSenha = user.PasswordHash;
-            Cor = user.Cor;
+            this.Id = Util.Hash(user.Id.ToString());
+            this.Nome = user.Nome;
+            this.Sobrenome = user.Sobrenome;
+            this.DataNascimento = user.DataNascimento.ToString("yyyy-MM-dd");
+            this.Email = user.Email;
+            this.Senha = user.PasswordHash;
+            this.ConfirmarSenha = user.PasswordHash;
+            this.Cor = user.Cor;
         }
 
         public User Update()
@@ -131,7 +132,7 @@ namespace TaskQuest.ViewModels
                     if (aux.Any())
                     {
                         Telefone telefone = aux.First();
-                        telefone.Tipo = this.Numero;
+                        telefone.Tipo = this.Tipo;
                         telefone.Numero = this.Numero;
 
                         return telefone;
@@ -220,7 +221,7 @@ namespace TaskQuest.ViewModels
         public string Bandeira { get; set; }
 
         [Required]
-        [StringLength(11, MinimumLength = 11)]
+        [StringLength(19, MinimumLength = 19)]
         public string Numero { get; set; }
 
         [Required]

@@ -1,6 +1,7 @@
 ﻿@model TaskQuest.ViewModels.UserViewModel
 
 <form id="formUsuario" action="/Configuracao/EditarUsuario" method="post">
+    <input type="hidden" value="@Model.Id" name="Id" id="Id" required />
     @Html.AntiForgeryToken()
     <div class="flex-properties-r">
         <div>
