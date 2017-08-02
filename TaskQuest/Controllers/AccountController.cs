@@ -38,17 +38,27 @@ namespace TaskQuest.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            private set => _userManager = value;
+            get 
+            { 
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); 
+            }
+            private set 
+            { 
+                _userManager = value;
+            }
         }
 
         public ApplicationSignInManager SignInManager
         {
-            get => _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
-            private set => _signInManager = value;
+            get 
+            { 
+                return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
+            }
+            private set 
+            { 
+                _signInManager = value; 
+            }
         }
-
-        private IAuthenticationManager AuthenticationManager => HttpContext.GetOwinContext().Authentication;
 
         private async Task SignInAsync(User user, bool isPersistent)
         {
@@ -58,11 +68,11 @@ namespace TaskQuest.Controllers
             await UserManager.ResetAccessFailedCountAsync(user.Id);
 
             // Coletando Claims externos (se houver)
-            var ext = await AuthenticationManager.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
+            var ext = await HttpContext.GetOwinContext().Authentication.GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
 
-            AuthenticationManager.SignOut(DefaultAuthenticationTypes.ExternalCookie,
+            HttpContext.GetOwinContext().Authentication.SignOut(DefaultAuthenticationTypes.ExternalCookie,
                 DefaultAuthenticationTypes.TwoFactorCookie, DefaultAuthenticationTypes.ApplicationCookie);
-            AuthenticationManager.SignIn
+            HttpContext.GetOwinContext().Authentication.SignIn
             (
                 new AuthenticationProperties { IsPersistent = isPersistent },
                 // Criação da instancia do Identity e atribuição dos Claims
@@ -237,7 +247,7 @@ namespace TaskQuest.Controllers
         [AllowAnonymous]
         public async Task<ActionResult> ExternalLoginCallback()
         {
-            var loginInfo = await AuthenticationManager.GetExternalLoginInfoAsync();
+            var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
             if (loginInfo == null)
                 return RedirectToAction("Login");
 
@@ -269,7 +279,7 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> LogOff()
         {
             await SignOutAsync();
-            //AuthenticationManager.SignOut();
+            //HttpContext.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
         }
 
@@ -284,7 +294,7 @@ namespace TaskQuest.Controllers
             var clientKey = Request.Browser.Type;
             var user = UserManager.FindById(User.Identity.GetUserId<int>());
             await UserManager.SignOutClientAsync(user, clientKey);
-            AuthenticationManager.SignOut();
+            HttpContext.GetOwinContext().Authentication.SignOut();
         }
         
         public async Task<ActionResult> SignOutEverywhere()
@@ -306,7 +316,6 @@ namespace TaskQuest.Controllers
             return RedirectToAction("Index", "Home");
         }
 
-        [Route("EmailDisponivel?Email={email}")]
         public JsonResult EmailDisponivel(string email)
         {
             try

@@ -26,8 +26,14 @@ namespace TaskQuest.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get => _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
-            private set => _userManager = value;
+            get 
+            { 
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
+            }
+            private set 
+            { 
+                _userManager = value; 
+            }
         }
 
         private DbContext db = new DbContext();
