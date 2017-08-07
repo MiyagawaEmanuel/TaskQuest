@@ -15,7 +15,7 @@ namespace TaskQuest.Migrations
                         arq_nome = c.String(maxLength: 40, storeType: "nvarchar"),
                         arq_caminho = c.String(maxLength: 120, storeType: "nvarchar"),
                         arq_tamanho = c.Int(nullable: false),
-                        arq_data_upload = c.DateTime(nullable: false, precision: 0),
+                        arq_data_upload = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         arq_versao_atual = c.Boolean(nullable: false),
                         tsk_id = c.Int(nullable: false),
                     })
@@ -33,7 +33,7 @@ namespace TaskQuest.Migrations
                         tsk_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
                         tsk_status = c.Int(nullable: false),
                         tsk_dificuldade = c.Int(nullable: false),
-                        tsk_data_criacao = c.DateTime(nullable: false, precision: 0),
+                        tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         tsk_data_conclusao = c.DateTime(nullable: false, precision: 0),
                         tsk_verificacao = c.Boolean(nullable: false),
                         usu_id_responsavel = c.Int(),
@@ -72,7 +72,7 @@ namespace TaskQuest.Migrations
                         usu_id_criador = c.Int(),
                         gru_id_criador = c.Int(),
                         qst_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
-                        qst_data_criacao = c.DateTime(nullable: false, precision: 0),
+                        qst_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         qst_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
                         qst_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
@@ -89,7 +89,7 @@ namespace TaskQuest.Migrations
                         gru_id = c.Int(nullable: false, identity: true),
                         gru_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                         gru_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
-                        gru_data_criacao = c.DateTime(nullable: false, precision: 0),
+                        gru_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         gru_plano = c.Boolean(nullable: false),
                         gru_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
                     })
@@ -104,7 +104,7 @@ namespace TaskQuest.Migrations
                         usu_id_destinatario = c.Int(),
                         gru_id_destinatario = c.Int(),
                         msg_conteudo = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
-                        msg_data = c.DateTime(nullable: false, precision: 0),
+                        msg_data = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                     })
                 .PrimaryKey(t => t.msg_id)
                 .ForeignKey("dbo.usu_usuario", t => t.usu_id_destinatario, cascadeDelete: true)
@@ -187,7 +187,7 @@ namespace TaskQuest.Migrations
                         tsk_id = c.Int(nullable: false),
                         usu_id = c.Int(nullable: false),
                         xpu_valor = c.Int(nullable: false),
-                        xpu_data = c.DateTime(nullable: false, precision: 0),
+                        xpu_data = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                     })
                 .PrimaryKey(t => new { t.tsk_id, t.usu_id })
                 .ForeignKey("dbo.tsk_task", t => t.tsk_id, cascadeDelete: true)
@@ -203,7 +203,7 @@ namespace TaskQuest.Migrations
                         feb_relatorio = c.String(maxLength: 120, storeType: "nvarchar"),
                         feb_nota = c.Int(nullable: false),
                         feb_resposta = c.String(maxLength: 120, storeType: "nvarchar"),
-                        feb_data_criacao = c.DateTime(nullable: false, precision: 0),
+                        feb_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         tsk_id = c.Int(nullable: false),
                         usu_id_responsavel = c.Int(),
                     })
