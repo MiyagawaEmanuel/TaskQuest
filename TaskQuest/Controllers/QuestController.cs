@@ -17,7 +17,7 @@ namespace TaskQuest.Controllers
 
         public ActionResult CriarQuest()
         {
-            return View("CriarQuest", null);
+            return View("CriarQuest", new LinkViewModel(""));
         }
 
         [ValidateAntiForgeryToken]
