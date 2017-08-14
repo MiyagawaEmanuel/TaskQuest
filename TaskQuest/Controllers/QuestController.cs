@@ -58,12 +58,12 @@ namespace TaskQuest.Controllers
                 else
                 {
                     var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoCriadorId);
-                    if (aux.Any() && User.Identity.IsAdm(aux.First().Id)
+                    if (aux.Any() && User.Identity.IsAdm(aux.First().Id))
                         quest.GrupoCriadorId = aux.First().Id;
                     else
                         return "false";
                 }
-                
+
                 db.Quest.Add(quest);
                 db.SaveChanges();
 
@@ -85,8 +85,8 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupo().ToList().Where(q => Util.Hash(q.Id) == model.Hash);
-                if(aux.Any())
+                var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
+                if (aux.Any())
                 {
                     var aux2 = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
                     if (aux2.Any())
@@ -112,7 +112,7 @@ namespace TaskQuest.Controllers
                 {
                     TempData["Alerta"] = "Você não pode entrar nesta página";
                     TempData["Classe"] = "yellow-alert";
-                    return RedirectToAction("Inicio", "Home");    
+                    return RedirectToAction("Inicio", "Home");
                 }
             }
             else
@@ -127,8 +127,8 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public JsonResult GetQuests(string Hash)
         {
-            var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupo().ToList().Where(q => Util.Hash(q.Id) == model);
-            if(aux.Any())
+            var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash);
+            if (aux.Any())
             {
                 var aux2 = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash);
                 if (aux2.Any())
@@ -149,10 +149,10 @@ namespace TaskQuest.Controllers
                         });
 
 
-                        var aux2 = db.Feedback.Where(q => q.TaskId == tsk.Id);
-                        if (aux2.Any())
+                        var aux3 = db.Feedback.Where(q => q.TaskId == tsk.Id);
+                        if (aux3.Any())
                         {
-                            var feb = aux2.OrderByDescending(q => q.DataCriacao).First();
+                            var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
                             quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
                             {
                                 Id = feb.Id,
@@ -166,23 +166,20 @@ namespace TaskQuest.Controllers
 
                     return Json(quest);
                 }
-                else
-                {
-                    return null;
-                }
             }
+            return null;
         }
 
         [HttpPost]
         public string AtualizarQuest(QuestViewModel model)
         {
-            if(ModelState.IsValid)
+            if (ModelState.IsValid)
             {
                 Quest quest = db.Quest.Find(model.Id);
-                
-                if(!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoId) || !User.Identity.GetUserId<int>() == quest.UserId)
+
+                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == quest.UsuarioCriadorId)
                     return "false";
-                    
+
                 quest.Nome = model.Nome;
                 quest.Descricao = model.Descricao;
                 quest.Cor = model.Cor;
@@ -274,47 +271,46 @@ namespace TaskQuest.Controllers
                 TempData["Classe"] = "green-alert";
                 return "true";
             }
+            return "false";
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirQuest(LinkViewModel model)
         {
-            if(db.Users.Find().Grupos.ToList().Where().Any() || )
+            var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
+            if (aux.Any())
             {
-                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-                if (aux.Any())
-                {
-                    
-                    var quest = aux.First();
-                    
-                    if(!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoId) || !User.Identity.GetUserId<int>() == quest.UserId)
-                    {
-                        TempData["Alerta"] = "Você não pode executar esta ação";
-                        TempData["Classe"] = "yellow-alert";
-                    }
-                    else
-                    {
-                        db.Quest.Remove(aux.First());
-                        db.SaveChanges();
 
-                        TempData["Alerta"] = "Excluído com sucesso";
-                        TempData["Classe"] = "green-alert";
-                    }
+                var quest = aux.First();
+
+                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == quest.UsuarioCriadorId)
+                {
+                    TempData["Alerta"] = "Você não pode executar esta ação";
+                    TempData["Classe"] = "yellow-alert";
                 }
                 else
                 {
-                    TempData["Alerta"] = "Algo deu errado";
-                    TempData["Classe"] = "yellow-alert";
+                    db.Quest.Remove(aux.First());
+                    db.SaveChanges();
+
+                    TempData["Alerta"] = "Excluído com sucesso";
+                    TempData["Classe"] = "green-alert";
                 }
             }
+            else
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "yellow-alert";
+            }
+
             return RedirectToAction("Inicio", "Home");
         }
 
         [HttpPost]
         public string MudarStatus(string Id, string Status)
         {
-            
+
             if (Status != "0" && Status != "1" && Status != "2")
                 return "false";
 
@@ -322,10 +318,10 @@ namespace TaskQuest.Controllers
             if (aux.Any())
             {
                 Task task = aux.First();
-                
-                if(!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoId) || !User.Identity.GetUserId<int>() == quest.UserId)
+
+                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == task.Quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == task.Quest.UsuarioCriadorId)
                     return "false";
-                    
+
                 task.Status = Convert.ToInt32(Status);
 
                 if (task.Status == 1 || task.Status == 2)
