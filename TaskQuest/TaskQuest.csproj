@@ -164,6 +164,11 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\201708261416322_InitialMigration.cs" />
+    <Compile Include="Migrations\201708261416322_InitialMigration.Designer.cs">
+      <DependentUpon>201708261416322_InitialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Arquivo.cs" />
     <Compile Include="Models\Cartao.cs" />
     <Compile Include="Models\Client.cs" />
@@ -389,6 +394,11 @@
     <Content Include="Views\Shared\_LinkPartial.cshtml" />
     <Content Include="Views\Web.config" />
     <Content Include="Views\_ViewStart.cshtml" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\201708261416322_InitialMigration.resx">
+      <DependentUpon>201708261416322_InitialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
     <VisualStudioVersion Condition="'$(VisualStudioVersion)' == ''">10.0</VisualStudioVersion>

@@ -20,16 +20,12 @@ namespace TaskQuest.Models
 
         public int? GrupoCriadorId { get; set; }
 
-        [Required]
-        [StringLength(7, MinimumLength = 4)]
         public string Cor { get; set; }
 
         public DateTime DataCriacao { get; set; }
 
-        [Required]
         public string Descricao { get; set; }
 
-        [Required]
         public string Nome { get; set; }
 
         public virtual Grupo GrupoCriador { get; set; }
