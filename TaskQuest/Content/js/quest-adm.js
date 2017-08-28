@@ -6,32 +6,32 @@
 }
 
 var quest = {
-    
+
     TasksViewModel: [],
 
-	add: function(task){
+    add: function (task) {
         this.TasksViewModel.push(task);
-	},
+    },
 
-	remove: function(index){
+    remove: function (index) {
         this.TasksViewModel.splice(index, 1);
-	},
+    },
 
-	get: function(index){
+    get: function (index) {
         return this.TasksViewModel[index];
-	},
+    },
 
-	set: function(index, doc){
+    set: function (index, doc) {
         this.TasksViewModel[index] = doc;
-	},
+    },
 
-	setProp: function(index, prop, doc){
+    setProp: function (index, prop, doc) {
         this.TasksViewModel[index][prop] = doc;
-	},
+    },
 
-	getAll: function(){
+    getAll: function () {
         return this.TasksViewModel;
-	},
+    },
 
 
     render: function () {
@@ -61,78 +61,79 @@ var quest = {
                 "</div>" +
                 "</div>";
             $("#task-container").append(content);
-            $('#'+x+' .Status').val(this.get(x)["Status"]);
-            $('#Nome').val(quest.Nome);
-            $("#Descricao").val(quest.Descricao);
-            $("#Cor").val(quest.Cor);
+            $('#' + x + ' .Status').val(this.get(x)["Status"]);
+        }
+        $('#Nome').val(quest.Nome);
+        $("#Descricao").val(quest.Descricao);
+        $("#Cor").val(quest.Cor);
+    }
+
+}
+
+function mudarStatus(index) {
+    var status = $("#" + index + " .Status").val();
+    quest.setProp(index, "Status", parseInt(status));
+    if (quest.get(index)['Feedback'] != undefined)
+        if (status == 0 || status == 1)
+            quest.setProp(index, 'Feedback', undefined);
+}
+
+function submit(id, action) {
+    $('#' + id).attr('action', action).submit();
+}
+
+function showAtualizarTaskModal(index) {
+    $("#NomeTaskAtualizar").val(quest.get(index)["Nome"]);
+    $("#DescricaoTaskAtualizar").text(quest.get(index)["Descricao"]);
+    $("#DataConclusaoAtualizar").val(quest.get(index)["DataConclusao"].split('/').reverse().join('-'));
+    $("#DificuldadeAtualizar").val(quest.get(index)["Dificuldade"])
+    $("#AtualizarTask").data('index', index);
+    $("#ExcluirTask").data('index', index);
+
+    $('#Feedback div').remove();
+    if (quest.get(index)['Status'] === 2) {
+        if (quest.get(index)['Feedback'] === undefined || quest.get(index)['Feedback'] === null) {
+            var content = "<div class='icon-black'><a onclick='showFeedbackModal(" + index + ")'><h4>Criar Feedback<h4></a></div>";
+            $("#Feedback").append(content);
+        }
+        else {
+            var content = "<div><p>Feedback</p><div>" +
+								"<div class='form-group'>" +
+									"<textarea class='form-control' id='AtualizarTextoFeedback' name='AtualizarTextoFeedback' placeholder='Texto do Feedback' required></textarea>" +
+									"<label for='AtualizarTextoFeedback'></label>" +
+								"</div>" +
+								"<div class='select-container'>" +
+									"<select class='form-control' id='AtualizarNota'>" +
+										"<option>0</option>" +
+										"<option>1</option>" +
+										"<option>2</option>" +
+										"<option>3</option>" +
+										"<option>4</option>" +
+										"<option>5</option>" +
+									"</select>" +
+								"</div>";
+            $('#Feedback').append(content);
+            $('#AtualizarTextoFeedback').val(quest.get(index)['Feedback']['Resposta']);
+            $('#AtualizarNota').val(quest.get(index)['Feedback']['Nota']);
         }
     }
+
+    $("#modalAtualizarTask").modal('show');
 }
 
-function mudarStatus(index){
-	var status = $("#"+index+" .Status").val();
-	quest.setProp(index, "Status", parseInt(status));
-	if(quest.get(index)['Feedback'] != undefined)
-		if(status == 0 || status == 1)
-			quest.setProp(index, 'Feedback', undefined);
+function showFeedbackModal(index) {
+    $('#modalAtualizarTask').modal('hide');
+    $('#modalAtualizarTask').on('hidden.bs.modal', function () {
+        if (index != undefined) {
+            $('#modalCriarFeedback').modal('show');
+            $('#CriarFeedback').data('index', index);
+            index = undefined;
+        }
+        $("#AtualizarTask").data('index', undefined);
+    });
 }
 
-function submit(id, action){
-	$('#' + id).attr('action', action).submit();
-}
-
-function showAtualizarTaskModal(index){
-	$("#NomeTaskAtualizar").val(quest.get(index)["Nome"]);
-	$("#DescricaoTaskAtualizar").text(quest.get(index)["Descricao"]);
-	$("#DataConclusaoAtualizar").val(quest.get(index)["DataConclusao"].split('/').reverse().join('-'));
-	$("#DificuldadeAtualizar").val(quest.get(index)["Dificuldade"])
-	$("#AtualizarTask").data('index', index);
-	$("#ExcluirTask").data('index', index);
-
-	$('#Feedback div').remove();
-	if(quest.get(index)['Status'] === 2){
-        if (quest.get(index)['Feedback'] === undefined || quest.get(index)['Feedback'] === null){
-			var content = "<div class='icon-black'><a onclick='showFeedbackModal("+index+")'><h4>Criar Feedback<h4></a></div>";
-			$("#Feedback").append(content);
-		}
-		else{
-			var content = 	"<div><p>Feedback</p><div>"+
-								"<div class='form-group'>"+
-									"<textarea class='form-control' id='AtualizarTextoFeedback' name='AtualizarTextoFeedback' placeholder='Texto do Feedback' required></textarea>"+
-									"<label for='AtualizarTextoFeedback'></label>"+
-								"</div>"+
-								"<div class='select-container'>"+
-									"<select class='form-control' id='AtualizarNota'>"+
-										"<option>0</option>"+
-										"<option>1</option>"+
-										"<option>2</option>"+
-										"<option>3</option>"+
-										"<option>4</option>"+
-										"<option>5</option>"+
-									"</select>"+
-								"</div>";
-			$('#Feedback').append(content);
-			$('#AtualizarTextoFeedback').val(quest.get(index)['Feedback']['Resposta']);
-			$('#AtualizarNota').val(quest.get(index)['Feedback']['Nota']);
-		}
-	}
-
-	$("#modalAtualizarTask").modal('show');
-}
-
-function showFeedbackModal(index){
-	$('#modalAtualizarTask').modal('hide');
-	$('#modalAtualizarTask').on('hidden.bs.modal', function(){
-		if(index != undefined){
-			$('#modalCriarFeedback').modal('show');
-			$('#CriarFeedback').data('index', index);
-			index = undefined;
-		}
-		$("#AtualizarTask").data('index', undefined);	
-	});
-}
-
-$(document).ready(function() {
+$(document).ready(function () {
 
     $.ajax({
         contentType: 'application/json;',
@@ -164,32 +165,32 @@ $(document).ready(function() {
         }
     });
 
-	$("form").on('keyup keydown submit click focusout onfocus', function(){
-		var errors = $('[aria-invalid=true]');
-		if(errors[0]!=undefined)
-			$('label[for='+$('[aria-invalid=true]')[0]['id']+"] span").css('display', 'inline');
-		for(x = 1; x < errors.length; x++){
-			$('label[for='+$('[aria-invalid=true]')[x]['id']+"] span").css('display', 'none');
-		}
-	});
+    $("form").on('keyup keydown submit click focusout onfocus', function () {
+        var errors = $('[aria-invalid=true]');
+        if (errors[0] != undefined)
+            $('label[for=' + $('[aria-invalid=true]')[0]['id'] + "] span").css('display', 'inline');
+        for (x = 1; x < errors.length; x++) {
+            $('label[for=' + $('[aria-invalid=true]')[x]['id'] + "] span").css('display', 'none');
+        }
+    });
 
-	$('#modalAdicionarTask').on('hidden.bs.modal', function(){
-		document.getElementById("formAdicionarTaskModal").reset();
-		$("#NomeTask").val('');
-		$("#DescricaoTask").text('');
-		$("#DataConclusao").val('');
-		$("#Dificuldade").val(0);
-	})
+    $('#modalAdicionarTask').on('hidden.bs.modal', function () {
+        document.getElementById("formAdicionarTaskModal").reset();
+        $("#NomeTask").val('');
+        $("#DescricaoTask").text('');
+        $("#DataConclusao").val('');
+        $("#Dificuldade").val(0);
+    })
 
-	$('#modalCriarFeedback').on('hidden.bs.modal', function(){
-		document.getElementById("formCriarFeedback").reset();
-		$("#NomeTaskAtualizar").val('');
-		$("#DescricaoTaskAtualizar").text('');
-		$("#DataConclusaoAtualizar").val('');
-		$("#DificuldadeAtualizar").val(0);
-	})
+    $('#modalCriarFeedback').on('hidden.bs.modal', function () {
+        document.getElementById("formCriarFeedback").reset();
+        $("#NomeTaskAtualizar").val('');
+        $("#DescricaoTaskAtualizar").text('');
+        $("#DataConclusaoAtualizar").val('');
+        $("#DificuldadeAtualizar").val(0);
+    })
 
-	$('#formQuest').on("submit",function(e) {
+    $('#formQuest').on("submit", function (e) {
         e.preventDefault();
         quest.Nome = $("#Nome").val();
         quest.Descricao = $("#Descricao").val();
@@ -211,32 +212,32 @@ $(document).ready(function() {
         });
     });
 
-	$('#AdicionarTask').click(function(event) {
-		event.preventDefault();
-		if($("#formAdicionarTaskModal").valid()){
-			quest.add({
-				'Nome': $('#NomeTask').val(),
-				'Descricao': $('#DescricaoTask').val(),
-				'DataConclusao': $('#DataConclusao').val(),
-				'Dificuldade' : $('#Dificuldade').val(),
-				'Status': 0
+    $('#AdicionarTask').click(function (event) {
+        event.preventDefault();
+        if ($("#formAdicionarTaskModal").valid()) {
+            quest.add({
+                'Nome': $('#NomeTask').val(),
+                'Descricao': $('#DescricaoTask').val(),
+                'DataConclusao': $('#DataConclusao').val(),
+                'Dificuldade': $('#Dificuldade').val(),
+                'Status': 0
             });
             quest.Nome = $("#Nome").val();
             quest.Descricao = $("#Descricao").val();
             quest.Cor = $("#Cor").val();
-			quest.render()
-			$('#modalAdicionarTask').modal('hide');		
-		}
-	});
+            quest.render()
+            $('#modalAdicionarTask').modal('hide');
+        }
+    });
 
-	$('#AtualizarTask').click(function(event) {
-		event.preventDefault();
-		if($("#formAtualizarTaskModal").valid()){
-			var index = $("#AtualizarTask").data('index');
-            if (quest.get(index)['Feedback'] != undefined && quest.get(index)['Feedback'] != null){
+    $('#AtualizarTask').click(function (event) {
+        event.preventDefault();
+        if ($("#formAtualizarTaskModal").valid()) {
+            var index = $("#AtualizarTask").data('index');
+            if (quest.get(index)['Feedback'] != undefined && quest.get(index)['Feedback'] != null) {
                 quest.TasksViewModel[index].Feedback.Resposta = $('#AtualizarTextoFeedback').val();
                 quest.TasksViewModel[index].Feedback.Nota = $('#AtualizarNota').val();
-			}
+            }
 
             quest.TasksViewModel[index].Nome = $('#NomeTaskAtualizar').val();
             quest.TasksViewModel[index].Descricao = $('#DescricaoTaskAtualizar').val();
@@ -246,120 +247,120 @@ $(document).ready(function() {
             quest.Nome = $("#Nome").val();
             quest.Descricao = $("#Descricao").val();
             quest.Cor = $("#Cor").val();
-			quest.render();
-			$('#modalAtualizarTask').modal('hide');
-		}
-	});
+            quest.render();
+            $('#modalAtualizarTask').modal('hide');
+        }
+    });
 
-	$('#ExcluirTask').click(function(){
-		event.preventDefault();
+    $('#ExcluirTask').click(function () {
+        event.preventDefault();
         quest.remove($('#ExcluirTask').data('index'));
         quest.Nome = $("#Nome").val();
         quest.Descricao = $("#Descricao").val();
         quest.Cor = $("#Cor").val();
-		quest.render();
-		$('#modalAtualizarTask').modal('hide');	
-	});
+        quest.render();
+        $('#modalAtualizarTask').modal('hide');
+    });
 
-	$('#CriarFeedback').click(function(){
-		event.preventDefault();
-		quest.setProp($('#CriarFeedback').data('index'), 'Feedback', {
-			'Resposta': $('#TextoFeedback').val(),
-			'Nota': $('#Nota').val()
-		});
-		$('#modalCriarFeedback').modal('hide');
-	});
+    $('#CriarFeedback').click(function () {
+        event.preventDefault();
+        quest.setProp($('#CriarFeedback').data('index'), 'Feedback', {
+            'Resposta': $('#TextoFeedback').val(),
+            'Nota': $('#Nota').val()
+        });
+        $('#modalCriarFeedback').modal('hide');
+    });
 
-	$("#formQuest").validate({
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			Nome: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-			Descricao: {
-				required: true,
-				maxlength: 120
-			}
-		}
-	});
+    $("#formQuest").validate({
+        errorPlacement: function (error, element) {
+            $(element)
+			.closest("form")
+			.find("label[for='" + element.attr("id") + "']")
+			.append(error);
+        },
+        errorElement: "span",
+        rules: {
+            Nome: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            Descricao: {
+                required: true,
+                maxlength: 120
+            }
+        }
+    });
 
-	$('#formAdicionarTaskModal').validate({
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			NomeTask: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-			DescricaoTask: {
-				required: true,
-				minlength: 3,
-				maxlength: 120
-			},
-			DataConclusao: {
-				required: true,
-				date: true,
-				futureDate: true
-			}
-		},
-	});
+    $('#formAdicionarTaskModal').validate({
+        errorPlacement: function (error, element) {
+            $(element)
+			.closest("form")
+			.find("label[for='" + element.attr("id") + "']")
+			.append(error);
+        },
+        errorElement: "span",
+        rules: {
+            NomeTask: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            DescricaoTask: {
+                required: true,
+                minlength: 3,
+                maxlength: 120
+            },
+            DataConclusao: {
+                required: true,
+                date: true,
+                futureDate: true
+            }
+        },
+    });
 
-	$('#formAtualizarTaskModal').validate({
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			NomeTaskAtualizar: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-			DescricaoTaskAtualizar: {
-				required: true,
-				minlength: 3,
-				maxlength: 120
-			},
-			DataConclusaoAtualizar: {
-				required: true,
-				date: true,
-				futureDate: true
-			}
-		},
-	});
+    $('#formAtualizarTaskModal').validate({
+        errorPlacement: function (error, element) {
+            $(element)
+			.closest("form")
+			.find("label[for='" + element.attr("id") + "']")
+			.append(error);
+        },
+        errorElement: "span",
+        rules: {
+            NomeTaskAtualizar: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+            DescricaoTaskAtualizar: {
+                required: true,
+                minlength: 3,
+                maxlength: 120
+            },
+            DataConclusaoAtualizar: {
+                required: true,
+                date: true,
+                futureDate: true
+            }
+        },
+    });
 
-	$('formCriarFeedback').validate({
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			TextoFeedback: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-		},
-	});
+    $('formCriarFeedback').validate({
+        errorPlacement: function (error, element) {
+            $(element)
+			.closest("form")
+			.find("label[for='" + element.attr("id") + "']")
+			.append(error);
+        },
+        errorElement: "span",
+        rules: {
+            TextoFeedback: {
+                required: true,
+                minlength: 3,
+                maxlength: 20
+            },
+        },
+    });
 
 });

@@ -56,7 +56,7 @@ ViewBag.Title = "Início";
 <section class="pads-bot">
 
 	<div class="flex-properties-r margintop">
-		<div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>PENDÊNCIAS</h2></div>
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>PENDÊNCIAS</h2></div>
 		<div class="title-b">
 			<div class="flex-properties-r pads icon-black">
 				<a href="/Quest/CriarQuest"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
@@ -116,7 +116,7 @@ y++;
 <section class="pads-bot">
 
 	<div class="flex-properties-r margintop">
-		<div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>FEEDBACKS</h2></div>
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>FEEDBACKS</h2></div>
 		<div class="title-b">
 			<div class="flex-properties-r pads icon-black">
 				<a href="/Home/Feedbacks"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
@@ -147,4 +147,4 @@ y++;
 
 <span id="BalloonStatus" class="balloon" style="display: none"></span>
 
-@Html.Partial("_CriarGrupoPartial", Html.Grupo())
+@Html.Partial("_CriarGrupoPartial", new TaskQuest.Models.Grupo())

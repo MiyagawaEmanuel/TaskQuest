@@ -121,7 +121,7 @@ namespace TaskQuest.Controllers
 
                 QuestViewModel quest = new QuestViewModel(db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash).First());
                 quest.TasksViewModel = new List<TaskViewModel>();
-                foreach (var tsk in db.Task.Where(q => q.QuestId.ToString() == quest.Id).ToList())
+                foreach (var tsk in db.Task.ToList().Where(q => Util.Hash(q.QuestId.ToString()) == quest.Id))
                 {
                     quest.TasksViewModel.Add(new TaskViewModel()
                     {
@@ -135,7 +135,7 @@ namespace TaskQuest.Controllers
                     });
 
 
-                    var aux3 = db.Feedback.Where(q => q.TaskId == tsk.Id);
+                    var aux3 = db.Feedback.ToList().Where(q => q.TaskId == tsk.Id);
                     if (aux3.Any())
                     {
                         var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
