@@ -27,7 +27,7 @@
 <section class="pads-bot">
 
 	<div class="flex-properties-r">
-		<div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Grupo</h2></div>
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>Grupo</h2></div>
 		<div class="title-b">
 			<div class="flex-properties-r pads icon-black">
 				@Html.Partial("_LinkPartial", Html.LinkViewModel("CriarQuest", Model.Id, "/Quest/CriarQuest", false))

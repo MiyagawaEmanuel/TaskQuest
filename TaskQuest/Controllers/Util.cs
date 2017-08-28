@@ -24,11 +24,6 @@ namespace TaskQuest
             return new LinkViewModel(id, hash, action, requireHashing);
         }
 
-        public static Grupo Grupo(this HtmlHelper helper)
-        {
-            return new Grupo();
-        }
-
         public static string ToString(this HtmlHelper helper, string @string)
         {
             return @string;
@@ -75,14 +70,30 @@ namespace TaskQuest
             return aux;
         }
 
-        public static User GetApplicationUser(this IIdentity identity)
+        public static bool HasQuest(this IIdentity identity, string questId)
+        {
+            if (identity.IsAuthenticated)
+            {
+                using(var db = new DbContext())
+                {
+                    if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => Util.Hash(q.Id.ToString()) == questId).Any())
+                        return true;
+
+                    foreach (var grupo in db.Users.Find(identity.GetUserId<int>()).Grupos)
+                        if (grupo.Quests.Where(q => Util.Hash(q.Id.ToString()) == questId).Any())
+                            return true;
+                }
+            }
+            return false;
+        }
+
+        public static string GetCor(this IIdentity identity)
         {
             if (identity.IsAuthenticated)
             {
                 using (var db = new DbContext())
                 {
-                    var userManager = new ApplicationUserManager(new UserStore(db));
-                    return userManager.FindByName(identity.Name);
+                    return db.Users.Find(identity.GetUserId<int>()).Cor;
                 }
             }
             else

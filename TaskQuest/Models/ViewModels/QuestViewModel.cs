@@ -13,13 +13,13 @@ namespace TaskQuest.ViewModels
 
         public QuestViewModel(Quest quest)
         {
-            Id = quest.Id;
+            Id = Util.Hash(quest.Id.ToString());
             Nome = quest.Nome;
             Descricao = quest.Descricao;
             Cor = quest.Cor;
         }
 
-        public int Id { get; set; }
+        public string Id { get; set; }
 
         [Required]
         [StringLength(20, MinimumLength = 3)]

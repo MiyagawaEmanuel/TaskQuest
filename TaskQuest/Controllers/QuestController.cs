@@ -17,7 +17,7 @@ namespace TaskQuest.Controllers
 
         public ActionResult CriarQuest()
         {
-            return View("CriarQuest", new LinkViewModel(""));
+            return View("CriarQuest", new LinkViewModel("", requireHashing: false));
         }
 
         [ValidateAntiForgeryToken]
@@ -46,8 +46,7 @@ namespace TaskQuest.Controllers
                 {
                     Nome = model.Nome,
                     Descricao = model.Descricao,
-                    Cor = model.Cor,
-                    DataCriacao = DateTime.Now
+                    Cor = model.Cor
                 };
 
                 foreach (var tsk in model.Tasks)
@@ -61,7 +60,7 @@ namespace TaskQuest.Controllers
                     if (aux.Any() && User.Identity.IsAdm(aux.First().Id))
                         quest.GrupoCriadorId = aux.First().Id;
                     else
-                        return "false";
+                        return "false - usu criador id";
                 }
 
                 db.Quest.Add(quest);
@@ -75,7 +74,7 @@ namespace TaskQuest.Controllers
             }
             else
             {
-                return "false";
+                return "false - model state";
             }
         }
 
@@ -85,28 +84,18 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-                if (aux.Any())
+                if (User.Identity.HasQuest(model.Hash))
                 {
-                    var aux2 = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-                    if (aux2.Any())
-                    {
-                        var quest = aux2.First();
-                        int user_id = User.Identity.GetUserId<int>();
 
-                        if (quest.UsuarioCriadorId == user_id || User.Identity.IsAdm(quest.GrupoCriador.Id))
-                        {
-                            return View("QuestAdm", new LinkViewModel(quest.Id.ToString()));
-                        }
+                    var quest = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash).First();
 
-                        return View("Quest", new LinkViewModel(quest.Id.ToString()));
-                    }
-                    else
+                    if (quest.UsuarioCriadorId == User.Identity.GetUserId<int>() || User.Identity.IsAdm(quest.GrupoCriador.Id))
                     {
-                        TempData["Alerta"] = "Algo deu errado";
-                        TempData["Classe"] = "yellow-alert";
-                        return RedirectToAction("Inicio", "Home");
+                        return View("QuestAdm", new LinkViewModel(quest.Id.ToString()));
                     }
+
+                    return View("Quest", new LinkViewModel(quest.Id.ToString()));
+
                 }
                 else
                 {
@@ -127,46 +116,43 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public JsonResult GetQuests(string Hash)
         {
-            var aux = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash);
-            if (aux.Any())
+            if (User.Identity.HasQuest(Hash))
             {
-                var aux2 = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash);
-                if (aux2.Any())
+
+                QuestViewModel quest = new QuestViewModel(db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash).First());
+                quest.TasksViewModel = new List<TaskViewModel>();
+                foreach (var tsk in db.Task.Where(q => q.QuestId.ToString() == quest.Id).ToList())
                 {
-                    QuestViewModel quest = new QuestViewModel(aux2.First());
-                    quest.TasksViewModel = new List<TaskViewModel>();
-                    foreach (var tsk in db.Task.Where(q => q.QuestId == quest.Id).ToList())
+                    quest.TasksViewModel.Add(new TaskViewModel()
                     {
-                        quest.TasksViewModel.Add(new TaskViewModel()
+                        Id = Util.Hash(tsk.Id.ToString()),
+                        QuestId = tsk.QuestId,
+                        Nome = tsk.Nome,
+                        Descricao = tsk.Descricao,
+                        DataConclusao = tsk.DataConclusao.ToString("yyyy-MM-dd"),
+                        Dificuldade = tsk.Dificuldade,
+                        Status = tsk.Status
+                    });
+
+
+                    var aux3 = db.Feedback.Where(q => q.TaskId == tsk.Id);
+                    if (aux3.Any())
+                    {
+                        var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
+                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
                         {
-                            Id = Util.Hash(tsk.Id.ToString()),
-                            QuestId = tsk.QuestId,
-                            Nome = tsk.Nome,
-                            Descricao = tsk.Descricao,
-                            DataConclusao = tsk.DataConclusao.ToString("yyyy-MM-dd"),
-                            Dificuldade = tsk.Dificuldade,
-                            Status = tsk.Status
-                        });
-
-
-                        var aux3 = db.Feedback.Where(q => q.TaskId == tsk.Id);
-                        if (aux3.Any())
-                        {
-                            var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
-                            quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
-                            {
-                                Id = feb.Id,
-                                Nota = feb.Nota,
-                                Resposta = feb.Resposta,
-                                TaskId = feb.TaskId
-                            };
-                        }
-
+                            Id = feb.Id,
+                            Nota = feb.Nota,
+                            Resposta = feb.Resposta,
+                            TaskId = feb.TaskId
+                        };
                     }
 
-                    return Json(quest);
                 }
+
+                return Json(quest);
             }
+
             return null;
         }
 
@@ -177,7 +163,7 @@ namespace TaskQuest.Controllers
             {
                 Quest quest = db.Quest.Find(model.Id);
 
-                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == quest.UsuarioCriadorId)
+                if (User.Identity.HasQuest(model.Id))
                     return "false";
 
                 quest.Nome = model.Nome;
@@ -212,7 +198,7 @@ namespace TaskQuest.Controllers
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status,
                             DataConclusao = tsk.DataConclusao.StringToDateTime(),
-                            QuestId = model.Id,
+                            QuestId = quest.Id,
                         };
                         db.Task.Add(task);
                     }
@@ -244,7 +230,7 @@ namespace TaskQuest.Controllers
                             db.Feedback.Remove(feb);
                 }
 
-                foreach (var task in db.Task.Where(q => q.QuestId == model.Id))
+                foreach (var task in db.Task.Where(q => q.QuestId == quest.Id))
                     if (!model.TasksViewModel.Any(q => q.Id == Util.Hash(task.Id.ToString())))
                         db.Task.Remove(task);
 

@@ -26,7 +26,7 @@ ViewBag.Title = "Grupo";
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a" style="color: @User.Identity.GetApplicationUser().Cor"><h2>Grupo</h2></div>
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Grupo</h2></div>
         <div class="title-b flex-properties-r">
             <div class="flex-properties-r pads icon-black">
                 @Html.Partial("_LinkPartial", Html.LinkViewModel("SairGrupo", Model.Id, "/Grupo/SairGrupo", false))
