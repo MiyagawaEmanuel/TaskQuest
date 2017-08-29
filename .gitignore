@@ -1,0 +1,10 @@
+packages/
+*.sln
+*.suo
+*.config
+TaskQuest.csproj
+*.user
+*.asax
+bin/
+obj/
+Properties/
