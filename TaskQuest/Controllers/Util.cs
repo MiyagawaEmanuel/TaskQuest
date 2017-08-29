@@ -19,6 +19,11 @@ namespace TaskQuest
             return new MvcHtmlString(dateTime.ToString("yyyy-MM-dd"));
         }
 
+        public static string ToJavaScriptDate(this DateTime datetime)
+        {
+            return datetime.ToString("yyyy-MM-dd");
+        }
+
         public static LinkViewModel LinkViewModel(this HtmlHelper helper, string id, string hash, string action, bool requireHashing=true)
         {
             return new LinkViewModel(id, hash, action, requireHashing);

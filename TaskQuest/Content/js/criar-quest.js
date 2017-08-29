@@ -126,7 +126,7 @@ $(document).ready(function () {
                 if (response == "true")
                     window.location.href = "/Home/Inicio";
                 else
-                    showBalloon("Algo deu errado", "yellow-alert");
+                    showBalloon(response, "yellow-alert");
             },
             error: function () {
                 showBalloon("Algo deu errado", "yellow-alert");

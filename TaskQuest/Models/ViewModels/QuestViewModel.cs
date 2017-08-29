@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Diagnostics;
 using System.Linq;
@@ -48,19 +49,56 @@ namespace TaskQuest.ViewModels
 
         public int QuestId { get; set; }
 
+        [Required]
+        [StringLength(120, MinimumLength = 3)]
         public string Nome { get; set; }
 
+        [Required]
+        [StringLength(120, MinimumLength = 3)]
         public string Descricao { get; set; }
 
+        [Required]
+        [StringLength(10, MinimumLength = 10)]
         public string DataConclusao { get; set; }
 
+        [Required]
+        [Range(0, 2)]
         public int Status { get; set; }
 
+        [Required]
+        [Range(0, 4)]
         public int Dificuldade { get; set; }
 
-        public Feedback Feedback { get; set; }
+        public FeedbackViewModel Feedback { get; set; }
 
     }
 
+    public class FeedbackViewModel
+    {
+
+        public FeedbackViewModel(Feedback feedback) 
+        {
+            Id = Util.Hash(feedback.Id.ToString());
+            Nota = feedback.Nota;
+            Relatorio = feedback.Relatorio;
+            Resposta = feedback.Resposta;
+            UsuarioResponsavelNome = feedback.UsuarioResponsavel != null ? feedback.UsuarioResponsavel.Nome : "";
+        }
+
+        public string Id { get; set; }
+
+        [Required]
+        [Range(0, 4)]
+        public int Nota { get; set; }
+
+        public string Relatorio { get; set; }
+
+        [Required]
+        [StringLength(120, MinimumLength = 3)]
+        public string Resposta { get; set; }
+
+        public string UsuarioResponsavelNome { get; set; }
+
+    }
 
 }

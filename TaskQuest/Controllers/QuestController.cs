@@ -129,7 +129,7 @@ namespace TaskQuest.Controllers
                         QuestId = tsk.QuestId,
                         Nome = tsk.Nome,
                         Descricao = tsk.Descricao,
-                        DataConclusao = tsk.DataConclusao.ToString("yyyy-MM-dd"),
+                        DataConclusao = tsk.DataConclusao.ToJavaScriptDate(),
                         Dificuldade = tsk.Dificuldade,
                         Status = tsk.Status
                     });
@@ -139,13 +139,7 @@ namespace TaskQuest.Controllers
                     if (aux3.Any())
                     {
                         var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
-                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new Feedback()
-                        {
-                            Id = feb.Id,
-                            Nota = feb.Nota,
-                            Resposta = feb.Resposta,
-                            TaskId = feb.TaskId
-                        };
+                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new FeedbackViewModel(feb);
                     }
 
                 }
@@ -161,10 +155,17 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                Quest quest = db.Quest.Find(model.Id);
 
-                if (User.Identity.HasQuest(model.Id))
-                    return "false";
+                if (!User.Identity.HasQuest(model.Id))
+                    return "Você não pode executar esta ação";
+                
+                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Id);
+                Quest quest;
+
+                if (aux.Any())
+                    quest = aux.First();
+                else
+                    return "Algo deu errado";
 
                 quest.Nome = model.Nome;
                 quest.Descricao = model.Descricao;
@@ -257,7 +258,7 @@ namespace TaskQuest.Controllers
                 TempData["Classe"] = "green-alert";
                 return "true";
             }
-            return "false";
+            return "Formulário inválido";
         }
 
         [HttpPost]
@@ -270,7 +271,7 @@ namespace TaskQuest.Controllers
 
                 var quest = aux.First();
 
-                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == quest.UsuarioCriadorId)
+                if (!User.Identity.HasQuest(model.Hash))
                 {
                     TempData["Alerta"] = "Você não pode executar esta ação";
                     TempData["Classe"] = "yellow-alert";
@@ -305,7 +306,7 @@ namespace TaskQuest.Controllers
             {
                 Task task = aux.First();
 
-                if (!db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList().Where(q => q.Id == task.Quest.GrupoCriadorId).Any() || User.Identity.GetUserId<int>() == task.Quest.UsuarioCriadorId)
+                if (!User.Identity.HasQuest(Id))
                     return "false";
 
                 task.Status = Convert.ToInt32(Status);

@@ -204,7 +204,7 @@ $(document).ready(function () {
                 if (result == "true")
                     window.location.href = "/Home/Inicio";
                 else
-                    showBalloon("Formulario invalido", "yellow-alert");
+                    showBalloon(result, "yellow-alert");
             },
             error: function () {
                 showBalloon("Algo deu errado", "yellow-alert");
