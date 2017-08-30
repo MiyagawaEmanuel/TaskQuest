@@ -1,14 +1,19 @@
 ﻿using System;
+using Microsoft.AspNet.Identity.Owin;
 using System.Collections.Generic;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.EntityFramework;
+using TaskQuest.Identity;
+using System.Web;
 
 namespace TaskQuest.Models
 {
+
     public class User : IdentityUser<int, UserLogin, UserRole, UserClaim>
     {
+
         public User()
         {
             Clients = new HashSet<Client>();
