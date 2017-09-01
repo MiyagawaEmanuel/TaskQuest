@@ -73,9 +73,9 @@ var quest = {
 function mudarStatus(index) {
     var status = $("#" + index + " .Status").val();
     quest.setProp(index, "Status", parseInt(status));
-    if (quest.get(index)['Feedback'] != undefined)
+    if (quest.get(index)['FeedbackViewModel'] != undefined)
         if (status == 0 || status == 1)
-            quest.setProp(index, 'Feedback', undefined);
+            quest.setProp(index, 'FeedbackViewModel', undefined);
 }
 
 function submit(id, action) {
@@ -92,7 +92,7 @@ function showAtualizarTaskModal(index) {
 
     $('#Feedback div').remove();
     if (quest.get(index)['Status'] === 2) {
-        if (quest.get(index)['Feedback'] === undefined || quest.get(index)['Feedback'] === null) {
+        if (quest.get(index)['FeedbackViewModel'] === undefined || quest.get(index)['FeedbackViewModel'] === null) {
             var content = "<div class='icon-black'><a onclick='showFeedbackModal(" + index + ")'><h4>Criar Feedback<h4></a></div>";
             $("#Feedback").append(content);
         }
@@ -113,8 +113,8 @@ function showAtualizarTaskModal(index) {
 									"</select>" +
 								"</div>";
             $('#Feedback').append(content);
-            $('#AtualizarTextoFeedback').val(quest.get(index)['Feedback']['Resposta']);
-            $('#AtualizarNota').val(quest.get(index)['Feedback']['Nota']);
+            $('#AtualizarTextoFeedback').val(quest.get(index)['FeedbackViewModel']['Resposta']);
+            $('#AtualizarNota').val(quest.get(index)['FeedbackViewModel']['Nota']);
         }
     }
 
@@ -143,11 +143,15 @@ $(document).ready(function () {
             "Hash": $("#Hash").val()
         }),
         success: function (result) {
+
+            result = jQuery.parseJSON(result)
+
             quest.Id = result.Id
             quest.Nome = result.Nome;
             quest.Descricao = result.Descricao;
             quest.Cor = result.Cor;
             quest.TasksViewModel = result.TasksViewModel;
+
             quest.render();
             $("#Cor").spectrum({
                 preferredFormat: "hex",
@@ -201,12 +205,14 @@ $(document).ready(function () {
             url: "/Quest/AtualizarQuest",
             data: JSON.stringify(quest),
             success: function (result) {
+                alert(JSON.stringify(quest));
                 if (result == "true")
                     window.location.href = "/Home/Inicio";
                 else
                     showBalloon(result, "yellow-alert");
             },
-            error: function () {
+            error: function (jqXHR, textStatus, errorThrown) {
+                console.log(jqXHR + ", " + textStatus + ", " + errorThrown);
                 showBalloon("Algo deu errado", "yellow-alert");
             }
         });
@@ -234,9 +240,9 @@ $(document).ready(function () {
         event.preventDefault();
         if ($("#formAtualizarTaskModal").valid()) {
             var index = $("#AtualizarTask").data('index');
-            if (quest.get(index)['Feedback'] != undefined && quest.get(index)['Feedback'] != null) {
-                quest.TasksViewModel[index].Feedback.Resposta = $('#AtualizarTextoFeedback').val();
-                quest.TasksViewModel[index].Feedback.Nota = $('#AtualizarNota').val();
+            if (quest.get(index)['FeedbackViewModel'] != undefined && quest.get(index)['FeedbackViewModel'] != null) {
+                quest.TasksViewModel[index].FeedbackViewModel.Resposta = $('#AtualizarTextoFeedback').val();
+                quest.TasksViewModel[index].FeedbackViewModel.Nota = parseInt($('#AtualizarNota').val());
             }
 
             quest.TasksViewModel[index].Nome = $('#NomeTaskAtualizar').val();
@@ -264,9 +270,9 @@ $(document).ready(function () {
 
     $('#CriarFeedback').click(function () {
         event.preventDefault();
-        quest.setProp($('#CriarFeedback').data('index'), 'Feedback', {
+        quest.setProp($('#CriarFeedback').data('index'), 'FeedbackViewModel', {
             'Resposta': $('#TextoFeedback').val(),
-            'Nota': $('#Nota').val()
+            'Nota': parseInt($('#Nota').val())
         });
         $('#modalCriarFeedback').modal('hide');
     });

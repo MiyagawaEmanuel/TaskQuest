@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNet.Identity;
+using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.IO;
 using System.Linq;
 using System.Security.Cryptography;
 using System.Security.Principal;
@@ -128,6 +130,27 @@ namespace TaskQuest
             }
             else
                 return new ValidationResult("Digite uma data válida");
+        }
+    }
+
+    public class JsonFilter : ActionFilterAttribute
+    {
+        public string Parameter { get; set; }
+        public Type JsonDataType { get; set; }
+
+        public override void OnActionExecuting(ActionExecutingContext filterContext)
+        {
+            if (filterContext.HttpContext.Request.ContentType.Contains("application/json"))
+            {
+                string inputContent;
+                using (var sr = new StreamReader(filterContext.HttpContext.Request.InputStream))
+                {
+                    inputContent = sr.ReadToEnd();
+                }
+
+                var result = JsonConvert.DeserializeObject(inputContent, JsonDataType);
+                filterContext.ActionParameters[Parameter] = result;
+            }
         }
     }
 }

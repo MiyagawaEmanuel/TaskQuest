@@ -6,6 +6,8 @@ using System.Web.Mvc;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
+using Newtonsoft.Json;
 
 namespace TaskQuest.Controllers
 {
@@ -114,8 +116,9 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public JsonResult GetQuests(string Hash)
+        public string GetQuests(string Hash)
         {
+
             if (User.Identity.HasQuest(Hash))
             {
 
@@ -134,45 +137,46 @@ namespace TaskQuest.Controllers
                         Status = tsk.Status
                     });
 
-
                     var aux3 = db.Feedback.ToList().Where(q => q.TaskId == tsk.Id);
                     if (aux3.Any())
                     {
                         var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
-                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].Feedback = new FeedbackViewModel(feb);
+                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].FeedbackViewModel = new FeedbackViewModel(feb);
                     }
 
                 }
-
-                return Json(quest);
+                return JsonConvert.SerializeObject(quest);
             }
 
             return null;
         }
 
         [HttpPost]
-        public string AtualizarQuest(QuestViewModel model)
+        public string AtualizarQuest(QuestViewModel quest)
         {
+
+            Debug.WriteLine("Oi");
+
             if (ModelState.IsValid)
             {
 
-                if (!User.Identity.HasQuest(model.Id))
+                if (!User.Identity.HasQuest(quest.Id))
                     return "Você não pode executar esta ação";
                 
-                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Id);
-                Quest quest;
+                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == quest.Id);
+                Quest qst;
 
                 if (aux.Any())
-                    quest = aux.First();
+                    qst = aux.First();
                 else
                     return "Algo deu errado";
 
-                quest.Nome = model.Nome;
-                quest.Descricao = model.Descricao;
-                quest.Cor = model.Cor;
-                db.Entry(quest).State = System.Data.Entity.EntityState.Modified;
+                qst.Nome = quest.Nome;
+                qst.Descricao = quest.Descricao;
+                qst.Cor = quest.Cor;
+                db.Entry(qst).State = System.Data.Entity.EntityState.Modified;
 
-                foreach (var tsk in model.TasksViewModel)
+                foreach (var tsk in quest.TasksViewModel)
                 {
 
                     Task task;
@@ -199,20 +203,20 @@ namespace TaskQuest.Controllers
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status,
                             DataConclusao = tsk.DataConclusao.StringToDateTime(),
-                            QuestId = quest.Id,
+                            QuestId = qst.Id,
                         };
                         db.Task.Add(task);
                     }
 
-                    if (tsk.Feedback != null)
+                    if (tsk.FeedbackViewModel != null)
                     {
                         if (!db.Feedback.Any(q => q.TaskId == task.Id))
                         {
                             Feedback feedback = new Feedback()
                             {
                                 TaskId = task.Id,
-                                Resposta = tsk.Feedback.Resposta,
-                                Nota = tsk.Feedback.Nota,
+                                Resposta = tsk.FeedbackViewModel.Resposta,
+                                Nota = tsk.FeedbackViewModel.Nota,
                                 DataCriacao = DateTime.Now
                             };
                             db.Feedback.Add(feedback);
@@ -220,8 +224,8 @@ namespace TaskQuest.Controllers
                         else
                         {
                             Feedback feedback = task.Feedbacks.First();
-                            feedback.Resposta = tsk.Feedback.Resposta;
-                            feedback.Nota = tsk.Feedback.Nota;
+                            feedback.Resposta = tsk.FeedbackViewModel.Resposta;
+                            feedback.Nota = tsk.FeedbackViewModel.Nota;
                             feedback.DataCriacao = DateTime.Now;
                             db.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
                         }
@@ -231,8 +235,8 @@ namespace TaskQuest.Controllers
                             db.Feedback.Remove(feb);
                 }
 
-                foreach (var task in db.Task.Where(q => q.QuestId == quest.Id))
-                    if (!model.TasksViewModel.Any(q => q.Id == Util.Hash(task.Id.ToString())))
+                foreach (var task in db.Task.Where(q => q.QuestId == qst.Id))
+                    if (!quest.TasksViewModel.Any(q => q.Id == Util.Hash(task.Id.ToString())))
                         db.Task.Remove(task);
 
                 bool saveFailed;

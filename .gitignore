@@ -5,6 +5,11 @@ packages/
 TaskQuest.csproj
 *.user
 *.asax
+*.asax.cs
 bin/
 obj/
 Properties/
+FilterConfig.cs
+RouteConfig.cs
+WebApiConfig.cs
+.nuget/

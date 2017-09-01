@@ -69,12 +69,14 @@ namespace TaskQuest.ViewModels
         [Range(0, 4)]
         public int Dificuldade { get; set; }
 
-        public FeedbackViewModel Feedback { get; set; }
+        public FeedbackViewModel FeedbackViewModel { get; set; }
 
     }
 
     public class FeedbackViewModel
     {
+
+        public FeedbackViewModel() { }
 
         public FeedbackViewModel(Feedback feedback) 
         {
