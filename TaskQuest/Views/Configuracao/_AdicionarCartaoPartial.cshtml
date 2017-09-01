@@ -1,0 +1,46 @@
+﻿@model TaskQuest.ViewModels.CartaoViewModel
+
+<div class="modal fade" id="modalCartao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 class="modal-title" id="exampleModalLabel">Adicionar Cartão</h1>
+            </div>
+            <form id="formCartaoModal" action="/Configuracao/AdicionarCartao" method="post">
+                @Html.AntiForgeryToken()
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="NomeTitular" id="NomeTitularModal" placeholder="Nome do Titular" required>
+                        <label for="NumeroTitularModal"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control" name="Bandeira" id="BandeiraModal" placeholder="Bandeira" required>
+                        <label for="BandeiraModal"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" class="form-control NumeroCartao" name="Numero" id="NumeroModal" placeholder="Número do Cartão" required>
+                        <label for="NumeroModal"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control CodigoSeguranca" name="CodigoSeguranca" id="CodigoSegurancaModal" placeholder="Código de Segurança" required>
+                        <label for="CodigoSegurancaModal"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="date" class="form-control" name="DataVencimento" id="DataVencimentoModal" placeholder="Data de Vencimento" required>
+                        <label for="DataVencimentoModal"></label>
+                    </div>
+                    <div class="form-group">
+                        <input type="password" class="form-control" name="Senha" id="SenhaCartaoModal" placeholder="Senha" required>
+                        <label for="SenhaCartaoModal"></label>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-secondary btn-cg" value="Salvar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
