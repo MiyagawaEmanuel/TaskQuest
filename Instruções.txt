@@ -1,0 +1,13 @@
+String de conexão dentro de "Condiguration":
+<connectionStrings>
+    <add name="DefaultConnection" connectionString="server=127.0.0.1;uid=root;pwd=aluno;persistsecurityinfo=True;database=task_quest;Allow User Variables=True;" providerName="MySql.Data.MySqlClient" />
+</connectionStrings>
+
+Pacotes necessários:
+    MySQL.Data.Entity
+    Entity
+    Identity
+    Owin
+    SignalR
+
+Adicionar na Web.config das Views o namespace TaskQuest
