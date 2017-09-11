@@ -62,7 +62,7 @@ namespace TaskQuest.Controllers
                     if (aux.Any() && User.Identity.IsAdm(aux.First().Id))
                         quest.GrupoCriadorId = aux.First().Id;
                     else
-                        return "false - usu criador id";
+                        return "false";
                 }
 
                 db.Quest.Add(quest);
@@ -76,7 +76,7 @@ namespace TaskQuest.Controllers
             }
             else
             {
-                return "false - model state";
+                return "false";
             }
         }
 
@@ -132,7 +132,7 @@ namespace TaskQuest.Controllers
                         QuestId = tsk.QuestId,
                         Nome = tsk.Nome,
                         Descricao = tsk.Descricao,
-                        DataConclusao = tsk.DataConclusao.ToJavaScriptDate(),
+                        DataConclusao = tsk.DataConclusao.ToHtmlDate(),
                         Dificuldade = tsk.Dificuldade,
                         Status = tsk.Status
                     });
@@ -154,8 +154,6 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public string AtualizarQuest(QuestViewModel quest)
         {
-
-            Debug.WriteLine("Oi");
 
             if (ModelState.IsValid)
             {

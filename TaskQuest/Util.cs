@@ -4,6 +4,7 @@ using System;
 using System.ComponentModel.DataAnnotations;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
@@ -16,19 +17,14 @@ namespace TaskQuest
 {
     public static class Util
     {
-        public static MvcHtmlString ToHtmlDate(this HtmlHelper helper, DateTime dateTime)
+        public static string ToHtmlDate(this HtmlHelper helper, DateTime dateTime)
         {
-            return new MvcHtmlString(dateTime.ToString("yyyy-MM-dd"));
+            return dateTime.ToString("yyyy-MM-dd");
         }
 
-        public static string ToJavaScriptDate(this DateTime datetime)
+        public static string ToHtmlDate(this DateTime datetime)
         {
             return datetime.ToString("yyyy-MM-dd");
-        }
-
-        public static LinkViewModel LinkViewModel(this HtmlHelper helper, string id, string hash, string action, bool requireHashing=true)
-        {
-            return new LinkViewModel(id, hash, action, requireHashing);
         }
 
         public static string ToString(this HtmlHelper helper, string @string)
@@ -59,22 +55,13 @@ namespace TaskQuest
             StringBuilder sb = new StringBuilder();
             SHA512 sha = SHA512.Create();
 
-            byte[] entrada = Encoding.ASCII.GetBytes(@string);
+            byte[] entrada = Encoding.ASCII.GetBytes(@string + "80fa1f5f9e");
             byte[] hash = sha.ComputeHash(entrada);
 
             for (int i = 0; i < hash.Length; i++)
                 sb.Append(hash[i].ToString("X2"));
 
             return sb.ToString();
-        }
-
-        public static AdicionarIntegranteViewModel AdicionarIntegranteViewModel(this HtmlHelper helper, string Id)
-        {
-            var aux = new AdicionarIntegranteViewModel()
-            {
-                GrupoId = Id
-            };
-            return aux;
         }
 
         public static bool HasQuest(this IIdentity identity, string questId)
@@ -130,27 +117,6 @@ namespace TaskQuest
             }
             else
                 return new ValidationResult("Digite uma data válida");
-        }
-    }
-
-    public class JsonFilter : ActionFilterAttribute
-    {
-        public string Parameter { get; set; }
-        public Type JsonDataType { get; set; }
-
-        public override void OnActionExecuting(ActionExecutingContext filterContext)
-        {
-            if (filterContext.HttpContext.Request.ContentType.Contains("application/json"))
-            {
-                string inputContent;
-                using (var sr = new StreamReader(filterContext.HttpContext.Request.InputStream))
-                {
-                    inputContent = sr.ReadToEnd();
-                }
-
-                var result = JsonConvert.DeserializeObject(inputContent, JsonDataType);
-                filterContext.ActionParameters[Parameter] = result;
-            }
         }
     }
 }

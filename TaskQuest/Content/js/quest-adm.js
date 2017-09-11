@@ -1,11 +1,4 @@
-﻿function showBalloon(alert, classe) {
-    $(".balloon").addClass(classe);
-    $(".balloon").text(alert);
-    $(".balloon").css("display", "block");
-    $(".balloon").delay(4000).fadeOut(2000);
-}
-
-var quest = {
+﻿var quest = {
 
     TasksViewModel: [],
 

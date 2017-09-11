@@ -19,6 +19,14 @@ namespace TaskQuest.ViewModels
 
     public class AdicionarIntegranteViewModel
     {
+
+        public AdicionarIntegranteViewModel() { }
+
+        public AdicionarIntegranteViewModel(string @string)
+        {
+            GrupoId = @string;
+        }
+
         [Required]
         [EmailAddress]
         public string Email { get; set; }

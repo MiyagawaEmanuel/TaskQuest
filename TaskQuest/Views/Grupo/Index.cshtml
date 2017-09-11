@@ -29,7 +29,7 @@ ViewBag.Title = "Grupo";
         <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Grupo</h2></div>
         <div class="title-b flex-properties-r">
             <div class="flex-properties-r pads icon-black">
-                @Html.Partial("_LinkPartial", Html.LinkViewModel("SairGrupo", Model.Id, "/Grupo/SairGrupo", false))
+                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("SairGrupo", Model.Id, "/Grupo/SairGrupo", false))
                 <a onclick="link(SairGrupo)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
                 <h3><a onclick="link(SairGrupo)">Sair do Grupo</a></h3>
             </div>
@@ -82,7 +82,7 @@ ViewBag.Title = "Grupo";
             {
                 <div class="quest-container icon-black questlist-g">
                     <i class="fa fa-circle bull" aria-hidden="true" style="color: @Model.Quests.ToList()[x].Cor"></i>
-                    @Html.Partial("_LinkPartial", Html.LinkViewModel("Grupo" + x, Model.Quests.ToList()[x].Id.ToString(), "/Quest"))
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model.Quests.ToList()[x].Id.ToString(), "/Quest"))
                     <a onclick="link(@Html.ToString("Grupo"+x))"><h4 class="quest-container">@Model.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
