@@ -80,7 +80,7 @@
             @foreach (var integrante in Model.Integrantes)
             {
                 <div class="user-container">
-                    <p class="user-title">&bull; @integrante.Nome</p>
+                    <p class="user-title" data-id="@Model.Id">&bull; @integrante.Nome</p>
                     @if (!integrante.Claims.ToList().Any(q => Util.Hash(q.ClaimType) == Model.Id && q.ClaimValue == "Adm"))
                     {
                         <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
@@ -111,7 +111,7 @@
     <div class="modal-dialog" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h1 class="modal-title" id="exampleModalLabel">Você tem certeza?</h1>
+                <h1 class="modal-title" id="exampleModalLabel">VocÃª tem certeza?</h1>
             </div>
             <form method="post" id="formConfirmacao">
                 @Html.AntiForgeryToken()
@@ -119,7 +119,7 @@
                     <input type="hidden" name="UserId" />
                     <input type="hidden" name="GrupoId" value="@Model.Id" />
                     <input type="submit" class="btn btn-secondary btn-cg" value="Sim">
-                    <input type="submit" data-dismiss="modal" class="btn btn-secondary btn-cg" value="Não">
+                    <input type="submit" data-dismiss="modal" class="btn btn-secondary btn-cg" value="NÃ£o">
                 </div>
             </form>
         </div>
