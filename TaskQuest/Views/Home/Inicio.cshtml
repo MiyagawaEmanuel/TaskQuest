@@ -38,7 +38,7 @@ ViewBag.Title = "Início";
 	<div class="container flex-properties-r margintop">
 
 	@for (int x = 0;x < (Model.Grupos.Count >= 5 ? 5 : Model.Grupos.Count); x++){
-		@Html.Partial("_LinkPartial", @Html.LinkViewModel("Grupo"+x, Model.Grupos[x].Id.ToString(), "/Grupo/Index"))
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model.Grupos[x].Id.ToString(), "/Grupo/Index"))
 		<div class="flex-properties-c margin-bottom item">
 			<a onclick="link(@Html.ToString("Grupo"+x))">
 				<div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor">
@@ -74,7 +74,7 @@ ViewBag.Title = "Início";
 		@for (int x = 0, y = 0; x < Model.Pendencias.Count && y < 5; x++){
 		if (Model.Pendencias[x].Status != 2)
 		{
-		@Html.Partial("_LinkPartial", @Html.LinkViewModel("Task" + x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Task" + x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
 		<div class="margin-bottom item">
 			<a onclick="link(@Html.ToString("Task"+x))"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
 			<div class="quest-body flex-properties-c icon-black">
@@ -129,7 +129,7 @@ y++;
 
 		@for (int x = 0; x < (Model.Feedbacks.Count >= 5 ? 5 : Model.Feedbacks.Count); x++)
 		{
-		@Html.Partial("_LinkPartial", @Html.LinkViewModel("Feb" + x, Model.Feedbacks[x].Task.Quest.Id.ToString(), "/Quest"))
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Feb" + x, Model.Feedbacks[x].Task.Quest.Id.ToString(), "/Quest"))
 		<div class="margin-bottom item">
 			<a onclick="link(@Html.ToString("Feb"+x))"><div class="filete" style="background-color: @Model.Feedbacks[x].Task.Quest.Cor"></div></a>
 			<div class="quest-body flex-properties-c icon-black">

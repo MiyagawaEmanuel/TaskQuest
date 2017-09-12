@@ -23,7 +23,7 @@ namespace TaskQuest.Identity
             var text = HttpUtility.HtmlEncode(message.Body);
 
             var msg = new MailMessage();
-            msg.From = new MailAddress("miyagawa.emanuel@gmail.com", "Eu");
+            msg.From = new MailAddress("taskquest@outlook.com", "TaskQuest");
             msg.To.Add(new MailAddress(message.Destination));
             msg.Subject = message.Subject;
             msg.AlternateViews.Add(
@@ -31,8 +31,8 @@ namespace TaskQuest.Identity
             msg.AlternateViews.Add(
                 AlternateView.CreateAlternateViewFromString(text, System.Text.Encoding.UTF8, MediaTypeNames.Text.Html));
 
-            var smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
-            var credentials = new NetworkCredential("miyagawa.emanuel@gmail.com", "0b01t3D34t8G00gl3");
+            var smtpClient = new SmtpClient("smtp-mail.outlook.com", Convert.ToInt32(587));
+            var credentials = new NetworkCredential("taskquest@outlook.com", "Teste@123");
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
             smtpClient.Send(msg);

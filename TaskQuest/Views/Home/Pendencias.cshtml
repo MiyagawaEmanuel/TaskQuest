@@ -31,7 +31,7 @@
 
         @for (int x = 0; x < Model.Count; x++)
         {
-            @Html.Partial("_LinkPartial", Html.LinkViewModel("Tsk"+x, Model[x].Quest.Id.ToString(), "/Quest"))
+            @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Tsk" + x, Model[x].Quest.Id.ToString(), "/Quest"))
             <div class="margin-bottom item">
                 <a onclick="link(@Html.ToString("Tsk"+x))"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
                 <div class="quest-body flex-properties-c">
@@ -67,5 +67,3 @@
     </div>
 
 </section>
-
-<span id="BalloonStatus" class="balloon" style="display: none"></span>

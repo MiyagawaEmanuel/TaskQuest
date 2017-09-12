@@ -4,6 +4,7 @@ using System.Web.Mvc;
 using TaskQuest.ViewModels;
 using System.Linq;
 using Microsoft.AspNet.Identity;
+using TaskQuest.Identity;
 
 namespace TaskQuest.Controllers
 {
@@ -21,7 +22,7 @@ namespace TaskQuest.Controllers
                 TempData["Alerta"] = "Você não está logado";
                 TempData["Classe"] = "yellow-alert";
             }
-            
+
             return View();
         }
 

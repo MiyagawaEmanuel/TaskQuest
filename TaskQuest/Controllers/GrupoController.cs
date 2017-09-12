@@ -20,20 +20,20 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var grupo = model.Update();
-                if(grupo != null)
+                if (grupo != null)
                 {
                     var user = db.Users.Find(User.Identity.GetUserId<int>());
 
                     user.Grupos.Add(grupo);
-                    db.SaveChanges();
 
                     user.Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
+                    
                     db.SaveChanges();
 
                     TempData["Alerta"] = "Criado com sucesso";
                     TempData["Classe"] = "green-alert";
 
-                    return RedirectToAction("Inicio", "Home");
+                    return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                 }
                 else
                 {
@@ -100,7 +100,7 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var grupo = model.Update();
-                if(grupo != null)
+                if (grupo != null)
                 {
                     if (!User.Identity.IsAdm(grupo.Id))
                     {
@@ -114,6 +114,7 @@ namespace TaskQuest.Controllers
 
                         TempData["Classe"] = "green-alert";
                         TempData["Alerta"] = "Atualizado com sucesso";
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                     }
                 }
                 else
@@ -149,8 +150,8 @@ namespace TaskQuest.Controllers
                     if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
-                        TempData["Alerta"] = "Você não tem permissão para realizar esta ação";
-                        return RedirectToAction("Inicio", "Home");
+                        TempData["Alerta"] = "Você não pode executar esta ação";
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                     }
 
                     var aux2 = db.Users.Where(q => q.Email == model.Email);
@@ -163,29 +164,25 @@ namespace TaskQuest.Controllers
 
                         TempData["Classe"] = "green-alert";
                         TempData["Alerta"] = "Integrante adicionado com sucesso";
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                     }
                     else
                     {
                         TempData["Classe"] = "yellow-alert";
-                        TempData["Alerta"] = "Usuário não encontrado";
+                        TempData["Alerta"] = "Usuário não cadastrado";
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                     }
                 }
             }
-            else
-            {
-                TempData["Alerta"] = "Algo deu errado";
-                TempData["Classe"] = "yellow-alert";
-            }
-
+            TempData["Classe"] = "yellow-alert";
+            TempData["Alerta"] = "Formulário inválido";
             return RedirectToAction("Inicio", "Home");
-
         }
 
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirIntegrante(EditarIntegranteViewModel model)
         {
-
             if (ModelState.IsValid)
             {
                 var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
@@ -203,8 +200,10 @@ namespace TaskQuest.Controllers
                     if (aux2.Any())
                     {
                         grupo.Users.Remove(aux2.First());
+                        db.SaveChanges();
                         TempData["Classe"] = "green-alert";
                         TempData["Alerta"] = "Removido com sucesso";
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
                     }
                 }
             }
@@ -246,6 +245,9 @@ namespace TaskQuest.Controllers
                             TempData["Classe"] = "green-alert";
                             TempData["Alerta"] = "Algo deu errado";
                         }
+
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+
                     }
                     else
                     {
@@ -289,14 +291,14 @@ namespace TaskQuest.Controllers
                     {
                         var user = User as ClaimsPrincipal;
                     }
-                    
+
                     db.Grupo.Remove(grupo);
 
                     foreach (var user in grupo.Users)
                         foreach (var claim in user.Claims.ToList())
                             if (claim.ClaimType == "3")
                                 db.Entry(claim).State = System.Data.Entity.EntityState.Deleted;
-                    
+
                     db.SaveChanges();
 
                     TempData["Classe"] = "green-alert";
