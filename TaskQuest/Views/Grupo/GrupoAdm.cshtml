@@ -22,6 +22,7 @@
 	<script src="~/Content/js/jquery.validate.js"></script>
 	<script src="~/Content/js/grupo.js"></script>	
     <script src="~/Content/js/link.js"></script>
+<script src="~/Content/js/integrante.js"></script>
 }
 
 <section class="pads-bot">
@@ -80,7 +81,7 @@
             @foreach (var integrante in Model.Integrantes)
             {
                 <div class="user-container">
-                    <p class="user-title" data-id="@Model.Id">&bull; @integrante.Nome</p>
+                    <p class="user-title integrante" data-id="@Model.Id">&bull; @integrante.Nome</p>
                     @if (!integrante.Claims.ToList().Any(q => Util.Hash(q.ClaimType) == Model.Id && q.ClaimValue == "Adm"))
                     {
                         <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>

@@ -21,6 +21,7 @@ ViewBag.Title = "Grupo";
     <script src="~/Content/js/tabs.js"></script>
     <script src="~/Content/js/link.js"></script>
     <script src="~/Content/js/mudar-status.js"></script>
+    <script src="~/Content/js/integrante.js"></script>
 }
 
 <section class="pads-bot">
@@ -73,7 +74,7 @@ ViewBag.Title = "Grupo";
         <div id="integrantes">
             @foreach (var integrante in Model.Integrantes)
             {
-                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal" data-id="@Model.Id">&bull; @integrante.Nome</h4>
+                <h4 class="integrante" data-id="@Model.Id">&bull; @integrante.Nome</h4>
             }
         </div>
 

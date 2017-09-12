@@ -25,9 +25,9 @@ namespace TaskQuest.Controllers
                     var user = db.Users.Find(User.Identity.GetUserId<int>());
 
                     user.Grupos.Add(grupo);
+                    db.SaveChanges();
 
                     user.Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
-                    
                     db.SaveChanges();
 
                     TempData["Alerta"] = "Criado com sucesso";

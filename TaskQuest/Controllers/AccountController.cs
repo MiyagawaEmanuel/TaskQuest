@@ -134,7 +134,9 @@ namespace TaskQuest.Controllers
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";
 
-                return RedirectToAction("Index", "Home");
+                await SignInAsync(user, true);
+
+                return RedirectToAction("Inicio", "Home");
             }
             
             AddErrors(result);
