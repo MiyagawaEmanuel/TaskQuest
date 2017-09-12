@@ -73,7 +73,7 @@ ViewBag.Title = "Grupo";
         <div id="integrantes">
             @foreach (var integrante in Model.Integrantes)
             {
-                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal">&bull; @integrante.Nome</h4>
+                <h4 data-target="#modalOpcoesIntegrantes" data-toggle="modal" data-id="@Model.Id">&bull; @integrante.Nome</h4>
             }
         </div>
 
