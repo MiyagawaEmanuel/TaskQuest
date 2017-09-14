@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
@@ -350,6 +351,19 @@ namespace TaskQuest.Controllers
             }
 
             return RedirectToAction("Inicio", "Home");
+        }
+
+        [HttpPost]
+        public ActionResult GetInfoIntegrante(string model)
+        {
+            var aux = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == model);
+            if (aux.Any()) 
+            {
+                User user = aux.First();
+                return Json(new { Success = "true",  Nome = user.Nome, Email = user.Email, Telefones = new List<Telefone>(user.Telefones.ToList()) });
+            }
+            else
+                return Json(new { Success = "false" });
         }
 
     }

@@ -25,6 +25,7 @@
     getAll: function () {
         return this.TasksViewModel;
     },
+    
 
 
     render: function () {
