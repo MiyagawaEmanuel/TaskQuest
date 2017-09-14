@@ -78,15 +78,15 @@
 			<li><a href="#integrantes">Integrantes</a></li>
 			<li><a href="#quests">Quests</a></li>
 		</ul>
-        <div id="integrantes">
+        <div id="integrantes" data-rel="@Model.Id">
             @foreach (var integrante in Model.Integrantes)
             {
                 <div class="user-container">
-                    <p class="user-title integrante" data-id="@Model.Id">&bull; @integrante.Nome</p>
+                    <p class="user-title integrante" data-email="@integrante.Email">&bull; @integrante.Nome</p>
                     @if (!integrante.Claims.ToList().Any(q => Util.Hash(q.ClaimType) == Model.Id && q.ClaimValue == "Adm"))
                     {
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
-                        <a class="icon-black" onclick="popularConfirmacaoModal('@Util.Hash(integrante.Id.ToString())', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Email', '/Grupo/TornarAdministrador')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-user" aria-hidden="true"></i></a>
+                        <a class="icon-black" onclick="popularConfirmacaoModal('@integrante.Email', '/Grupo/ExcluirIntegrante')" data-target="#modalConfirmacao" data-toggle="modal"><i class="fa fa-times" aria-hidden="true"></i></a>
                     }
                 </div>
             }
@@ -107,7 +107,7 @@
 
 <hr class="container quebra">
 
-@Html.Partial("_AdicionarIntegrantePartial", new TaskQuest.ViewModels.AdicionarIntegranteViewModel(Model.Id))
+@Html.Partial("_AdicionarIntegrantePartial", new TaskQuest.ViewModels.IntegranteViewModel(Model.Id))
 
 <div class="modal fade" id="modalConfirmacao" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
@@ -118,7 +118,7 @@
             <form method="post" id="formConfirmacao">
                 @Html.AntiForgeryToken()
                 <div class="modal-footer modalfooter-container">
-                    <input type="hidden" name="UserId" />
+                    <input type="hidden" name="Email" />
                     <input type="hidden" name="GrupoId" value="@Model.Id" />
                     <input type="submit" class="btn btn-secondary btn-cg" value="Sim">
                     <input type="submit" data-dismiss="modal" class="btn btn-secondary btn-cg" value="Não">

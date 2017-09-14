@@ -1,5 +1,5 @@
-function popularConfirmacaoModal(id, action) {
-    $("[name='UserId']").val(id);
+function popularConfirmacaoModal(email, action) {
+    $("[name='Email']").val(email);
     $('#formConfirmacao').attr('action', action);
 }
 

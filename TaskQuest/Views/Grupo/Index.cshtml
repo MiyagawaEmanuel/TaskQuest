@@ -72,10 +72,10 @@ ViewBag.Title = "Grupo";
             <li><a href="#integrantes">Integrantes</a></li>
             <li><a href="#quests">Quests</a></li>
         </ul>
-        <div id="integrantes">
+        <div id="integrantes" data-rel="@Model.Id">
             @foreach (var integrante in Model.Integrantes)
             {
-                <h4 class="integrante" data-id="@Model.Id">&bull; @integrante.Nome</h4>
+                <h4 class="integrante" data-id="@integrante.Email">&bull; @integrante.Nome</h4>
             }
         </div>
 

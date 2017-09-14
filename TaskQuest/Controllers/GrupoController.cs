@@ -138,7 +138,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult AdicionarIntegrante(AdicionarIntegranteViewModel model)
+        public ActionResult AdicionarIntegrante(IntegranteViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -160,12 +160,16 @@ namespace TaskQuest.Controllers
                     {
                         User usuario = aux2.First();
 
-                        grupo.Users.Add(usuario);
-                        db.SaveChanges();
+                        if (!grupo.Users.Any(q => q == usuario))
+                        {
+                            grupo.Users.Add(usuario);
+                            db.SaveChanges();
 
-                        TempData["Classe"] = "green-alert";
-                        TempData["Alerta"] = "Integrante adicionado com sucesso";
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                            TempData["Classe"] = "green-alert";
+                            TempData["Alerta"] = "Integrante adicionado com sucesso";
+                            return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                        }
+                        
                     }
                     else
                     {
@@ -182,7 +186,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult ExcluirIntegrante(EditarIntegranteViewModel model)
+        public ActionResult ExcluirIntegrante(IntegranteViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -197,7 +201,7 @@ namespace TaskQuest.Controllers
                         return RedirectToAction("Inicio", "Home");
                     }
 
-                    var aux2 = grupo.Users.Where(q => Util.Hash(q.Id.ToString()) == model.UserId);
+                    var aux2 = grupo.Users.Where(q => q.Email == model.Email);
                     if (aux2.Any())
                     {
                         grupo.Users.Remove(aux2.First());
@@ -220,7 +224,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult TornarAdministrador(EditarIntegranteViewModel model)
+        public ActionResult TornarAdministrador(IntegranteViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -230,7 +234,7 @@ namespace TaskQuest.Controllers
                     var grupo = aux.First();
                     if (User.Identity.IsAdm(grupo.Id))
                     {
-                        var aux3 = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.UserId);
+                        var aux3 = db.Users.ToList().Where(q => q.Email == model.Email);
                         if (aux3.Any())
                         {
                             aux3.First().Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
@@ -354,16 +358,31 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public ActionResult GetInfoIntegrante(string model)
+        public ActionResult GetInfoIntegrante(IntegranteViewModel model)
         {
-            var aux = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == model);
-            if (aux.Any()) 
+            var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
+            if (aux.Any())
             {
-                User user = aux.First();
-                return Json(new { Success = "true",  Nome = user.Nome, Email = user.Email, Telefones = new List<Telefone>(user.Telefones.ToList()) });
+                if (aux.First().Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                {
+                    var aux2 = db.Users.ToList().Where(q => q.Email == model.Email);
+                    if(aux2.Any())
+                    {
+                        User user = aux2.First();
+                        var telefones = user.Telefones.ToList().Select(q => new { Tipo = q.Tipo, Numero = q.Numero });
+                        return Json(new { Success = "true", Nome =  user.Nome + " " + user.Sobrenome, Email = user.Email, Telefones = telefones});
+                    }
+                    else
+                    {
+                        return Json(new { Success = "false", Alert = "Algo deu errado" });
+                    }
+                }
+                    
+                else
+                    return Json(new { Success = "false", Alert = "Você não tem privilérios para realizar esta ação" });
             }
             else
-                return Json(new { Success = "false" });
+                return Json(new { Success = "false", Alert = "Algo deu errado" });
         }
 
     }

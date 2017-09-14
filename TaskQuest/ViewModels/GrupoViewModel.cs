@@ -80,16 +80,22 @@ namespace TaskQuest.ViewModels
 
     }
 
-    public class EditarIntegranteViewModel
+    public class IntegranteViewModel
     {
 
+        public IntegranteViewModel() { }
+
+        public IntegranteViewModel(string @string)
+        {
+            GrupoId = @string;
+        }
+
         [Required]
-        public string UserId { get; set; }
+        [EmailAddress]
+        public string Email { get; set; }
 
         [Required]
         public string GrupoId { get; set; }
-
     }
 
 }
-

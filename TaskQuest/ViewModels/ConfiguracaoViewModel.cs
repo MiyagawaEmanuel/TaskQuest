@@ -14,25 +14,7 @@ namespace TaskQuest.ViewModels
         public List<CartaoViewModel> Cartoes = new List<CartaoViewModel>();
 
         public List<TelefoneViewModel> Telefones = new List<TelefoneViewModel>();
-        
-    }
 
-    public class AdicionarIntegranteViewModel
-    {
-
-        public AdicionarIntegranteViewModel() { }
-
-        public AdicionarIntegranteViewModel(string @string)
-        {
-            GrupoId = @string;
-        }
-
-        [Required]
-        [EmailAddress]
-        public string Email { get; set; }
-
-        [Required]
-        public string GrupoId { get; set; }
     }
 
     public class UserViewModel

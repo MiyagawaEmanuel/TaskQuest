@@ -1,30 +1,24 @@
 $(".integrante").on("click", function () {
-    $.ajax({
-        contentType: 'application/json;',
-        type: "POST",
-        url: "/Grupo/GetInfoIntegrante",
-        data: $(this).data("id").id,
-        async: false,
-        success: function (data) {
+    $.post("/Grupo/GetInfoIntegrante", { Email: $(this).data("email"), GrupoId: $("#integrantes").data("rel") }, function (data) {
+        if (data.Success === "true") {
+            $("#IntegranteNome").text(data.Nome);
+            $("#IntegranteEmail").text(data.Email);
+            $("#telefones-container *").remove();
             oi = data;
-            if (data.Success === "true") {
-                $("#NomeIntegrante").text(data.Nome);
-                $("#EmailIntegrante").text(data.Email);
-                $("#Telefones-container *").remove();
-                if (data.Telefones.length > 0) {
-                    $("#Telefones-container").append("<h3>Telefones</h3>");
-                    $.each(data.Telefones, function (index, value) {
-                        $("#Telefones-container").append("<p>" + value.Tipo + ": " + value.Numero + "</p>");
-                    });
-                }
-                $("#modalIntegrante").modal('show');
+            if (data.Telefones.length > 0) {
+                $("#telefones-container").append("<h3>Telefones</h3>");
+                $.each(data.Telefones, function (index, value) {
+                    $("#telefones-container").append("<p>" + value.Tipo + ": " + value.Numero + "</p>");
+                });
             }
-            else {
-                showBalloon("Algo deu errado", "yellow-alert");
-            }
-        },
-        error: function () {
-            showBalloon("Algo deu errado", "yellow-alert");
+            $("#modalIntegrante").modal('show');
         }
-    });
+        else {
+            showBalloon(data.Alert, "yellow-alert");
+        }
+    }).fail(function () {
+        showBalloon("Algo deu errado", "yellow-alert");
+    })
 });
+
+
