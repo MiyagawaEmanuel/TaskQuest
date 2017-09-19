@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Security.Claims;
 using System.Web.Mvc;
+using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 
@@ -34,7 +35,7 @@ namespace TaskQuest.Controllers
                     TempData["Alerta"] = "Criado com sucesso";
                     TempData["Classe"] = "green-alert";
 
-                    return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                    return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                 }
                 else
                 {
@@ -57,10 +58,10 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(model.Hash), out Id))
                 {
-                    Grupo grupo = aux.First();
+                    Grupo grupo = db.Grupo.Find(Id);
                     if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -115,7 +116,7 @@ namespace TaskQuest.Controllers
 
                         TempData["Classe"] = "green-alert";
                         TempData["Alerta"] = "Atualizado com sucesso";
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                     }
                 }
                 else
@@ -144,15 +145,15 @@ namespace TaskQuest.Controllers
             {
                 var user = db.Users.Find(User.Identity.GetUserId<int>());
 
-                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
                 {
-                    Grupo grupo = aux.First();
+                    Grupo grupo = db.Grupo.Find(Id);
                     if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
                         TempData["Alerta"] = "Você não pode executar esta ação";
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                     }
 
                     var aux2 = db.Users.Where(q => q.Email == model.Email);
@@ -167,7 +168,7 @@ namespace TaskQuest.Controllers
 
                             TempData["Classe"] = "green-alert";
                             TempData["Alerta"] = "Integrante adicionado com sucesso";
-                            return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                            return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                         }
                         
                     }
@@ -175,7 +176,15 @@ namespace TaskQuest.Controllers
                     {
                         TempData["Classe"] = "yellow-alert";
                         TempData["Alerta"] = "Usuário não cadastrado";
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+
+                        (new EmailService()).SendAsync(new IdentityMessage() 
+                        { 
+                            Destination = model.Email,
+                            Subject = "",
+                            Body = ""
+                        });
+
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                     }
                 }
             }
@@ -190,10 +199,10 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
                 {
-                    Grupo grupo = aux.First();
+                    Grupo grupo = db.Grupo.Find(Id);
                     if (!grupo.Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -208,7 +217,7 @@ namespace TaskQuest.Controllers
                         db.SaveChanges();
                         TempData["Classe"] = "green-alert";
                         TempData["Alerta"] = "Removido com sucesso";
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
                     }
                 }
             }
@@ -228,10 +237,10 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
                 {
-                    var grupo = aux.First();
+                    var grupo = db.Grupo.Find(Id);
                     if (User.Identity.IsAdm(grupo.Id))
                     {
                         var aux3 = db.Users.ToList().Where(q => q.Email == model.Email);
@@ -251,7 +260,7 @@ namespace TaskQuest.Controllers
                             TempData["Alerta"] = "Algo deu errado";
                         }
 
-                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Hash(grupo.Id.ToString())));
+                        return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));
 
                     }
                     else
@@ -281,10 +290,10 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-                var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(model.Hash), out Id))
                 {
-                    Grupo grupo = aux.First();
+                    Grupo grupo = db.Grupo.Find(Id);
                     if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -329,10 +338,10 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult SairGrupo(LinkViewModel model)
         {
-            var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-            if (aux.Any())
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
             {
-                var gru = aux.First();
+                var gru = db.Grupo.Find(Id);
                 var aux2 = db.Users.Find(User.Identity.GetUserId<int>()).Grupos.Where(q => q.Id == gru.Id);
                 if (aux2.Any())
                 {
@@ -360,10 +369,10 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult GetInfoIntegrante(IntegranteViewModel model)
         {
-            var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoId);
-            if (aux.Any())
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
             {
-                if (aux.First().Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
+                if (db.Grupo.Find(Id).Users.Any(q => q.Id == User.Identity.GetUserId<int>()))
                 {
                     var aux2 = db.Users.ToList().Where(q => q.Email == model.Email);
                     if(aux2.Any())

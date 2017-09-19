@@ -12,7 +12,7 @@ namespace TaskQuest.ViewModels
 
         public GrupoViewModel(Grupo grupo)
         {
-            this.Id = Util.Hash(grupo.Id.ToString());
+            this.Id = Util.Encrypt(grupo.Id.ToString());
             this.Nome = grupo.Nome;
             this.Descricao = grupo.Descricao;
             this.Plano = grupo.Plano;
@@ -39,10 +39,10 @@ namespace TaskQuest.ViewModels
             {
                 using (var db = new DbContext())
                 {
-                    var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
-                    if (aux.Any())
+                    int GrupoId;
+                    if (int.TryParse(Util.Decrypt(this.Id), out GrupoId))
                     {
-                        Grupo grupo = aux.First();
+                        Grupo grupo = db.Grupo.Find(GrupoId);
 
                         grupo.Nome = this.Nome;
                         grupo.Descricao = this.Descricao;

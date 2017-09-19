@@ -58,9 +58,12 @@ namespace TaskQuest.Controllers
                     quest.UsuarioCriadorId = User.Identity.GetUserId<int>();
                 else
                 {
-                    var aux = db.Grupo.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.GrupoCriadorId);
-                    if (aux.Any() && User.Identity.IsAdm(aux.First().Id))
-                        quest.GrupoCriadorId = aux.First().Id;
+                    int Id;
+                    if (int.TryParse(Util.Decrypt(model.GrupoCriadorId), out Id))
+                        if (User.Identity.IsAdm(Id))
+                            quest.GrupoCriadorId = Id;
+                        else
+                            return "false";
                     else
                         return "false";
                 }
@@ -88,15 +91,21 @@ namespace TaskQuest.Controllers
             {
                 if (User.Identity.HasQuest(model.Hash))
                 {
-
-                    var quest = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash).First();
-
-                    if (quest.UsuarioCriadorId == User.Identity.GetUserId<int>() || User.Identity.IsAdm(quest.GrupoCriador.Id))
+                    int Id;
+                    if (int.TryParse(Util.Decrypt(model.Hash), out Id))
                     {
-                        return View("QuestAdm", new LinkViewModel(quest.Id.ToString()));
+                        var quest = db.Quest.Find(Id);
+                        if (quest.UsuarioCriadorId == User.Identity.GetUserId<int>() || User.Identity.IsAdm(quest.GrupoCriador.Id))
+                            return View("QuestAdm", new LinkViewModel(quest.Id.ToString()));
+                        else
+                            return View("Quest", new LinkViewModel(quest.Id.ToString()));
                     }
-
-                    return View("Quest", new LinkViewModel(quest.Id.ToString()));
+                    else
+                    {
+                        TempData["Alerta"] = "Algo deu errado";
+                        TempData["Classe"] = "yellow-alert";
+                        return RedirectToAction("Inicio", "Home");
+                    }
 
                 }
                 else
@@ -121,33 +130,36 @@ namespace TaskQuest.Controllers
 
             if (User.Identity.HasQuest(Hash))
             {
-
-                QuestViewModel quest = new QuestViewModel(db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == Hash).First());
-                quest.TasksViewModel = new List<TaskViewModel>();
-                foreach (var tsk in db.Task.ToList().Where(q => Util.Hash(q.QuestId.ToString()) == quest.Id))
+                int Id;
+                if (int.TryParse(Util.Decrypt(Hash), out Id))
                 {
-                    quest.TasksViewModel.Add(new TaskViewModel()
+                    QuestViewModel quest = new QuestViewModel(db.Quest.Find(Id));
+                    quest.TasksViewModel = new List<TaskViewModel>();
+                    foreach (var tsk in db.Task.Where(q => q.QuestId == Id))
                     {
-                        Id = Util.Hash(tsk.Id.ToString()),
-                        QuestId = tsk.QuestId,
-                        Nome = tsk.Nome,
-                        Descricao = tsk.Descricao,
-                        DataConclusao = tsk.DataConclusao.ToHtmlDate(),
-                        Dificuldade = tsk.Dificuldade,
-                        Status = tsk.Status
-                    });
+                        quest.TasksViewModel.Add(new TaskViewModel()
+                        {
+                            Id = Util.Encrypt(tsk.Id.ToString()),
+                            QuestId = tsk.QuestId,
+                            Nome = tsk.Nome,
+                            Descricao = tsk.Descricao,
+                            DataConclusao = tsk.DataConclusao.ToHtmlDate(),
+                            Dificuldade = tsk.Dificuldade,
+                            Status = tsk.Status
+                        });
 
-                    var aux3 = db.Feedback.ToList().Where(q => q.TaskId == tsk.Id);
-                    if (aux3.Any())
-                    {
-                        var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
-                        quest.TasksViewModel[quest.TasksViewModel.Count - 1].FeedbackViewModel = new FeedbackViewModel(feb);
+                        var aux3 = db.Feedback.ToList().Where(q => q.TaskId == tsk.Id);
+                        if (aux3.Any())
+                        {
+                            var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
+                            quest.TasksViewModel[quest.TasksViewModel.Count - 1].FeedbackViewModel = new FeedbackViewModel(feb);
+                        }
+
+                        return JsonConvert.SerializeObject(quest);
+
                     }
-
                 }
-                return JsonConvert.SerializeObject(quest);
             }
-
             return null;
         }
 
@@ -157,108 +169,104 @@ namespace TaskQuest.Controllers
 
             if (ModelState.IsValid)
             {
-
-                if (!User.Identity.HasQuest(quest.Id))
-                    return "Você não pode executar esta ação";
-                
-                var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == quest.Id);
-                Quest qst;
-
-                if (aux.Any())
-                    qst = aux.First();
-                else
-                    return "Algo deu errado";
-
-                qst.Nome = quest.Nome;
-                qst.Descricao = quest.Descricao;
-                qst.Cor = quest.Cor;
-                db.Entry(qst).State = System.Data.Entity.EntityState.Modified;
-
-                foreach (var tsk in quest.TasksViewModel)
+                int Id;
+                if(int.TryParse(Util.Decrypt(quest.Id), out Id))
                 {
+                    if (!User.Identity.HasQuest(quest.Id))
+                        return "Você não pode executar esta ação";
 
-                    Task task;
+                    var qst = db.Quest.Find(Id);
+                    qst.Nome = quest.Nome;
+                    qst.Descricao = quest.Descricao;
+                    qst.Cor = quest.Cor;
+                    db.Entry(qst).State = System.Data.Entity.EntityState.Modified;
 
-                    var aux2 = db.Task.ToList().Where(q => Util.Hash(q.Id.ToString()) == tsk.Id);
-                    if (aux2.Any())
+                    foreach (var tsk in quest.TasksViewModel)
                     {
-                        task = aux2.First();
 
-                        task.Nome = tsk.Nome;
-                        task.Descricao = tsk.Descricao;
-                        task.Dificuldade = tsk.Dificuldade;
-                        task.Status = tsk.Status;
-                        task.DataConclusao = tsk.DataConclusao.StringToDateTime();
-                        db.Entry(task).State = System.Data.Entity.EntityState.Modified;
-
-                    }
-                    else
-                    {
-                        task = new Task()
+                        Task task;
+                        if (int.TryParse(Util.Decrypt(tsk.Id), out Id))
                         {
-                            Nome = tsk.Nome,
-                            Descricao = tsk.Descricao,
-                            Dificuldade = tsk.Dificuldade,
-                            Status = tsk.Status,
-                            DataConclusao = tsk.DataConclusao.StringToDateTime(),
-                            QuestId = qst.Id,
-                        };
-                        db.Task.Add(task);
-                    }
+                            task = db.Task.Find(Id);
 
-                    if (tsk.FeedbackViewModel != null)
-                    {
-                        if (!db.Feedback.Any(q => q.TaskId == task.Id))
-                        {
-                            Feedback feedback = new Feedback()
-                            {
-                                TaskId = task.Id,
-                                Resposta = tsk.FeedbackViewModel.Resposta,
-                                Nota = tsk.FeedbackViewModel.Nota,
-                                DataCriacao = DateTime.Now
-                            };
-                            db.Feedback.Add(feedback);
+                            task.Nome = tsk.Nome;
+                            task.Descricao = tsk.Descricao;
+                            task.Dificuldade = tsk.Dificuldade;
+                            task.Status = tsk.Status;
+                            task.DataConclusao = tsk.DataConclusao.StringToDateTime();
+                            db.Entry(task).State = System.Data.Entity.EntityState.Modified;
+
                         }
                         else
                         {
-                            Feedback feedback = task.Feedbacks.First();
-                            feedback.Resposta = tsk.FeedbackViewModel.Resposta;
-                            feedback.Nota = tsk.FeedbackViewModel.Nota;
-                            feedback.DataCriacao = DateTime.Now;
-                            db.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+                            task = new Task()
+                            {
+                                Nome = tsk.Nome,
+                                Descricao = tsk.Descricao,
+                                Dificuldade = tsk.Dificuldade,
+                                Status = tsk.Status,
+                                DataConclusao = tsk.DataConclusao.StringToDateTime(),
+                                QuestId = qst.Id,
+                            };
+                            db.Task.Add(task);
                         }
+
+                        if (tsk.FeedbackViewModel != null)
+                        {
+                            if (!db.Feedback.Any(q => q.TaskId == task.Id))
+                            {
+                                Feedback feedback = new Feedback()
+                                {
+                                    TaskId = task.Id,
+                                    Resposta = tsk.FeedbackViewModel.Resposta,
+                                    Nota = tsk.FeedbackViewModel.Nota,
+                                    DataCriacao = DateTime.Now
+                                };
+                                db.Feedback.Add(feedback);
+                            }
+                            else
+                            {
+                                Feedback feedback = task.Feedbacks.First();
+                                feedback.Resposta = tsk.FeedbackViewModel.Resposta;
+                                feedback.Nota = tsk.FeedbackViewModel.Nota;
+                                feedback.DataCriacao = DateTime.Now;
+                                db.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+                            }
+                        }
+                        else
+                            foreach (var feb in db.Feedback.Where(q => q.TaskId == task.Id))
+                                db.Feedback.Remove(feb);
                     }
-                    else
-                        foreach (var feb in db.Feedback.Where(q => q.TaskId == task.Id))
-                            db.Feedback.Remove(feb);
+
+                    foreach (var task in db.Task.Where(q => q.QuestId == qst.Id))
+                        if (!quest.TasksViewModel.Any(q => q.Id == Util.Encrypt(task.Id.ToString())))
+                            db.Task.Remove(task);
+
+                    bool saveFailed;
+                    do
+                    {
+                        saveFailed = false;
+                        try
+                        {
+                            db.SaveChanges();
+                        }
+                        catch (DbUpdateConcurrencyException ex)
+                        {
+                            saveFailed = true;
+
+                            // Update original values from the database 
+                            var entry = ex.Entries.Single();
+                            entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                        }
+
+                    } while (saveFailed);
+
+                    TempData["Alerta"] = "Atualizado com sucesso";
+                    TempData["Classe"] = "green-alert";
+                    return "true";
                 }
-
-                foreach (var task in db.Task.Where(q => q.QuestId == qst.Id))
-                    if (!quest.TasksViewModel.Any(q => q.Id == Util.Hash(task.Id.ToString())))
-                        db.Task.Remove(task);
-
-                bool saveFailed;
-                do
-                {
-                    saveFailed = false;
-                    try
-                    {
-                        db.SaveChanges();
-                    }
-                    catch (DbUpdateConcurrencyException ex)
-                    {
-                        saveFailed = true;
-
-                        // Update original values from the database 
-                        var entry = ex.Entries.Single();
-                        entry.OriginalValues.SetValues(entry.GetDatabaseValues());
-                    }
-
-                } while (saveFailed);
-
-                TempData["Alerta"] = "Atualizado com sucesso";
-                TempData["Classe"] = "green-alert";
-                return "true";
+                else
+                    return "Algo deu errado";
             }
             return "Formulário inválido";
         }
@@ -267,11 +275,11 @@ namespace TaskQuest.Controllers
         [ValidateAntiForgeryToken]
         public ActionResult ExcluirQuest(LinkViewModel model)
         {
-            var aux = db.Quest.ToList().Where(q => Util.Hash(q.Id.ToString()) == model.Hash);
-            if (aux.Any())
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
             {
 
-                var quest = aux.First();
+                var quest = db.Quest.Find(Id);
 
                 if (!User.Identity.HasQuest(model.Hash))
                 {
@@ -280,7 +288,7 @@ namespace TaskQuest.Controllers
                 }
                 else
                 {
-                    db.Quest.Remove(aux.First());
+                    db.Quest.Remove(quest);
                     db.SaveChanges();
 
                     TempData["Alerta"] = "Excluído com sucesso";
@@ -303,10 +311,10 @@ namespace TaskQuest.Controllers
             if (Status != "0" && Status != "1" && Status != "2")
                 return "false";
 
-            var aux = db.Task.ToList().Where(q => Util.Hash(q.Id.ToString()) == Id);
-            if (aux.Any())
+            int TaskId;
+            if (int.TryParse(Util.Decrypt(Id), out TaskId))
             {
-                Task task = aux.First();
+                Task task = db.Task.Find(TaskId);
 
                 if (!User.Identity.HasQuest(Id))
                     return "false";

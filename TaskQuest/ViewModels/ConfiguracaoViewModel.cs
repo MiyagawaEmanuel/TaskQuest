@@ -24,7 +24,7 @@ namespace TaskQuest.ViewModels
 
         public UserViewModel(User user)
         {
-            this.Id = Util.Hash(user.Id.ToString());
+            this.Id = Util.Encrypt(user.Id.ToString());
             this.Nome = user.Nome;
             this.Sobrenome = user.Sobrenome;
             this.DataNascimento = user.DataNascimento.ToString("yyyy-MM-dd");
@@ -38,11 +38,11 @@ namespace TaskQuest.ViewModels
         {
             using (var db = new DbContext())
             {
-                var aux = db.Users.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
-                if (aux.Any())
+                int Id;
+                if (int.TryParse(Util.Decrypt(this.Id), out Id))
                 {
 
-                    User user = aux.First();
+                    User user = db.Users.Find(Id);
 
                     user.Nome = Nome;
                     user.Sobrenome = Sobrenome;
@@ -97,7 +97,7 @@ namespace TaskQuest.ViewModels
 
         public TelefoneViewModel(Telefone telefone)
         {
-            this.Id = Util.Hash(telefone.Id.ToString());
+            this.Id = Util.Encrypt(telefone.Id.ToString());
             this.Tipo = telefone.Tipo;
             this.Numero = telefone.Numero;
         }
@@ -118,10 +118,10 @@ namespace TaskQuest.ViewModels
             {
                 using (var db = new DbContext())
                 {
-                    var aux = db.Telefone.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
-                    if (aux.Any())
+                    int Id;
+                    if (int.TryParse(Util.Decrypt(this.Id), out Id))
                     {
-                        Telefone telefone = aux.First();
+                        Telefone telefone = db.Telefone.Find(Id);
                         telefone.Tipo = this.Tipo;
                         telefone.Numero = this.Numero;
 
@@ -151,7 +151,7 @@ namespace TaskQuest.ViewModels
 
         public CartaoViewModel(Cartao cartao)
         {
-            this.Id = Util.Hash(cartao.Id.ToString());
+            this.Id = Util.Encrypt(cartao.Id.ToString());
             this.NomeTitular = cartao.NomeTitular;
             this.Bandeira = cartao.Bandeira;
             this.Numero = cartao.Numero;
@@ -180,10 +180,10 @@ namespace TaskQuest.ViewModels
             {
                 using (var db = new DbContext())
                 {
-                    var aux = db.Cartao.ToList().Where(q => Util.Hash(q.Id.ToString()) == this.Id);
-                    if (aux.Any())
+                    int Id;
+                    if (int.TryParse(Util.Decrypt(this.Id), out Id))
                     {
-                        Cartao cartao = aux.First();
+                        Cartao cartao = db.Cartao.Find(Id);
 
                         cartao.NomeTitular = this.NomeTitular;
                         cartao.Bandeira = this.Bandeira;

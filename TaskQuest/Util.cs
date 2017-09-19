@@ -2,6 +2,7 @@
 using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
+using System.Configuration;
 using System.Diagnostics;
 using System.IO;
 using System.Linq;
@@ -18,6 +19,10 @@ namespace TaskQuest
 {
     public static class Util
     {
+
+        private static byte[] IV { get { return StringToByte(ConfigurationManager.AppSettings["AesIV"]); } }
+        private static byte[] Key { get { return StringToByte(ConfigurationManager.AppSettings["AesKey"]); } }
+
         public static string ToHtmlDate(this HtmlHelper helper, DateTime dateTime)
         {
             return dateTime.ToString("yyyy-MM-dd");
@@ -51,12 +56,13 @@ namespace TaskQuest
             }
         }
 
+        /*
         public static string Hash(string @string)
         {
             StringBuilder sb = new StringBuilder();
             SHA512 sha = SHA512.Create();
 
-            byte[] entrada = Encoding.ASCII.GetBytes(@string + "80fa1f5f9e");
+            byte[] entrada = Encoding.ASCII.GetBytes(@string + ConfigurationManager.AppSettings["Salt"]);
             byte[] hash = sha.ComputeHash(entrada);
 
             for (int i = 0; i < hash.Length; i++)
@@ -64,18 +70,20 @@ namespace TaskQuest
 
             return sb.ToString();
         }
+        */
 
         public static bool HasQuest(this IIdentity identity, string questId)
         {
-            if (identity.IsAuthenticated)
+            int Id;
+            if (identity.IsAuthenticated && Int32.TryParse(Decrypt(questId), out Id))
             {
                 using(var db = new DbContext())
                 {
-                    if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => Util.Hash(q.Id.ToString()) == questId).Any())
+                    if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == Id).Any())
                         return true;
 
                     foreach (var grupo in db.Users.Find(identity.GetUserId<int>()).Grupos)
-                        if (grupo.Quests.Where(q => Util.Hash(q.Id.ToString()) == questId).Any())
+                        if (grupo.Quests.Where(q => q.Id == Id).Any())
                             return true;
                 }
             }
@@ -95,6 +103,75 @@ namespace TaskQuest
             {
                 return null;
             }
+        }
+
+
+        private static byte[] StringToByte(string stringToConvert)
+        {
+            byte[] key = new byte[16];
+            for (int i = 0; i < 16; i += 2)
+            {
+                byte[] unicodeBytes = BitConverter.GetBytes(stringToConvert[i % stringToConvert.Length]);
+                Array.Copy(unicodeBytes, 0, key, i, 2);
+            }
+            return key;
+        }
+
+        public static string Encrypt(string plainText)
+        {
+
+            byte[] encrypted;
+
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Key;
+                aesAlg.IV = IV;
+
+                ICryptoTransform encryptor = aesAlg.CreateEncryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msEncrypt = new MemoryStream())
+                {
+                    using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
+                    {
+                        using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
+                        {
+                            swEncrypt.Write(plainText);
+                        }
+                        encrypted = msEncrypt.ToArray();
+                    }
+                }
+            }
+
+            return Convert.ToBase64String(encrypted);
+
+        }
+
+        public static string Decrypt(string cipherText)
+        {
+            string plaintext = null;
+
+            using (Aes aesAlg = Aes.Create())
+            {
+                aesAlg.Key = Key;
+                aesAlg.IV = IV;
+
+                ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
+
+                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                {
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    {
+                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        {
+                            plaintext = srDecrypt.ReadToEnd();
+                        }
+                    }
+                }
+
+            }
+
+            return plaintext;
+
         }
 
     }

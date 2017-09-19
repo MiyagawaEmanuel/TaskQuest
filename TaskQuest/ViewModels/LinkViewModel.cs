@@ -11,7 +11,7 @@ namespace TaskQuest.ViewModels
         public LinkViewModel(string Hash, bool requireHashing=true)
         {
             if (requireHashing)
-                this.Hash = Util.Hash(Hash);
+                this.Hash = Util.Encrypt(Hash);
             else
                 this.Hash = Hash;
         }
@@ -21,7 +21,7 @@ namespace TaskQuest.ViewModels
             this.Id = Id;
 
             if (requireHashing)
-                this.Hash = Util.Hash(Hash);
+                this.Hash = Util.Encrypt(Hash);
             else
                 this.Hash = Hash;
 

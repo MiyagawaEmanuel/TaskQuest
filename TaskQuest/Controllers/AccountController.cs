@@ -92,6 +92,8 @@ namespace TaskQuest.Controllers
             {
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
+                    if (!user.EmailConfirmed)
+                        return View("ConfirmeEmail");
                     await SignInAsync(user, true);
                     return RedirectToAction("Inicio", "Home");
                 case SignInStatus.LockedOut:
@@ -129,14 +131,13 @@ namespace TaskQuest.Controllers
             if (result.Succeeded)
             {
                 var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
-                await UserManager.ConfirmEmailAsync(user.Id, code);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = Util.Encrypt(user.Id.ToString()), code = code }, protocol: Request.Url.Scheme);
+                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", "Por favor confirme sua conta clicando neste link: <a href='" + callbackUrl + "'>Aqui</a>");
 
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";
-
-                await SignInAsync(user, true);
-
-                return RedirectToAction("Inicio", "Home");
+                
+                return View("ConfirmeEmail");
             }
             
             AddErrors(result);
@@ -150,12 +151,24 @@ namespace TaskQuest.Controllers
         //
         // GET: /Account/ConfirmEmail
         [AllowAnonymous]
-        public async Task<ActionResult> ConfirmEmail(int userId, string code)
+        public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
-            if (userId == 0 || code == null)
+            int Id;
+            if (int.TryParse(Util.Decrypt(userId), out Id) || code == null)
                 return View("Error");
-            var result = await UserManager.ConfirmEmailAsync(userId, code);
-            return View(result.Succeeded ? "Inicio" : "Error");
+            var result = await UserManager.ConfirmEmailAsync(Id, code);
+            if (result.Succeeded)
+            {
+                TempData["Alerta"] = "Email confirmado";
+                TempData["Classe"] = "green-alert";
+                return RedirectToAction("Login", "Home");
+            }
+            else
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
+            }
         }
 
         //
@@ -316,19 +329,6 @@ namespace TaskQuest.Controllers
                 user.Clients.Remove(client);
             UserManager.Update(user);
             return RedirectToAction("Index", "Home");
-        }
-
-        public JsonResult EmailDisponivel(string email)
-        {
-            try
-            {
-                User user = UserManager.FindByEmail(email);
-                return Json(new { response = false });
-            }
-            catch
-            {
-                return Json(new { response = true });
-            }
         }
 
         internal class ChallengeResult : HttpUnauthorizedResult

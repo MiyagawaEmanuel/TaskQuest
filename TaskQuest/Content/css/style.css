@@ -363,6 +363,88 @@ label {
     width: 160px;
 }
 
+
+
+//Demarcador
+
+.background-page{
+	background-color: white;
+	height: 100vh;
+}
+
+.logo-task{
+	text-align: center;
+	background-color: #106494;
+	width: 100%;
+}
+
+.messages-1{
+	font-size: 30px;
+	color: white;
+	font-family: Impact;
+	margin-top: 10%;
+	color: #231f20;
+}
+
+.messages-forgot{
+	margin-top: 0%;
+}
+
+.messages-2{
+	font-size: 20px;
+	color: white;
+	text-decoration: none;
+	margin-bottom: 2%;
+	color: #929496;
+}
+
+.messages-error{
+	font-size: 50px;
+}
+
+.login{
+	margin-top: 5%;
+	justify-content: center;
+}
+
+.input-login{
+	width: 300px;
+	margin-bottom: 2%;
+}
+
+.btn-login{
+	width: 250px !important;
+}
+
+#forget{
+	margin-top: 8%;
+	font-size: 20px;
+	color: white;
+	text-decoration: none;
+}
+
+#forget:hover{
+	color: #4682B4;
+}
+
+.link{
+	text-decoration: none;
+	color: #106494;
+}
+
+.link:hover{
+	color: #4682B4;
+	text-decoration: none;
+}
+
+.task-quest{
+	font-size: 75px;
+}
+
+// Fim Demarcador
+
+
+
 @media (max-width: 600px) {
 
     label span {

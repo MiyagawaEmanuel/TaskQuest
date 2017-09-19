@@ -14,7 +14,7 @@ namespace TaskQuest.ViewModels
 
         public QuestViewModel(Quest quest)
         {
-            Id = Util.Hash(quest.Id.ToString());
+            Id = Util.Encrypt(quest.Id.ToString());
             Nome = quest.Nome;
             Descricao = quest.Descricao;
             Cor = quest.Cor;
@@ -80,7 +80,7 @@ namespace TaskQuest.ViewModels
 
         public FeedbackViewModel(Feedback feedback) 
         {
-            Id = Util.Hash(feedback.Id.ToString());
+            Id = Util.Encrypt(feedback.Id.ToString());
             Nota = feedback.Nota;
             Relatorio = feedback.Relatorio;
             Resposta = feedback.Resposta;

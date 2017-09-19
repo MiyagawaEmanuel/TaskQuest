@@ -20,13 +20,13 @@ namespace TaskQuest.Identity
         private Task SendMail(IdentityMessage message)
         {
             var msg = new MailMessage();
-            msg.From = new MailAddress("taskquest01@gmail.com", "TaskQuest");
+            msg.From = new MailAddress(ConfigurationManager.AppSettings["mailAccount"], "TaskQuest");
             msg.To.Add(new MailAddress(message.Destination));
             msg.Subject = message.Subject;
             msg.AlternateViews.Add(AlternateView.CreateAlternateViewFromString(message.Body, null, "text/html"));
             msg.IsBodyHtml = true;
             var smtpClient = new SmtpClient("smtp.gmail.com", Convert.ToInt32(587));
-            var credentials = new NetworkCredential("taskquest01@gmail.com", "Teste@123");
+            var credentials = new NetworkCredential(ConfigurationManager.AppSettings["mailAccount"], ConfigurationManager.AppSettings["mailPassword"]);
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
             smtpClient.Send(msg);
