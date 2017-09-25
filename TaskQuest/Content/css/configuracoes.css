@@ -3,11 +3,17 @@
 }
 
 .flex-properties-r{
-	align-items: center;
+	-webkit-box-align: center;
+	    -ms-flex-align: center;
+	            -ms-grid-row-align: center;
+	        align-items: center;
 }
 
 .subtitulo{
-	align-items: initial;
+	-webkit-box-align: initial;
+	    -ms-flex-align: initial;
+	            -ms-grid-row-align: initial;
+	        align-items: initial;
 }
 
 .flex-properties-r div:not(.title-a):not(.title-b){
@@ -33,7 +39,10 @@
 	margin-bottom: 3%;
 	text-align: center;
 	color: rgba(0,0,0,0.6);
-	align-items: baseline;
+	-webkit-box-align: baseline;
+	    -ms-flex-align: baseline;
+	            -ms-grid-row-align: baseline;
+	        align-items: baseline;
 }
 
 .title h1{
