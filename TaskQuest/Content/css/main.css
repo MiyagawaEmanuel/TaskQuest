@@ -343,12 +343,18 @@ body.modal-open {
 }
 
     .mouse-icon .scroll {
-        animation-delay: 0s;
-        animation-duration: 1s;
-        animation-iteration-count: infinite;
-        animation-name: scrolling;
-        animation-play-state: running;
-        animation-timing-function: linear;
+        -webkit-animation-delay: 0s;
+                animation-delay: 0s;
+        -webkit-animation-duration: 1s;
+                animation-duration: 1s;
+        -webkit-animation-iteration-count: infinite;
+                animation-iteration-count: infinite;
+        -webkit-animation-name: scrolling;
+                animation-name: scrolling;
+        -webkit-animation-play-state: running;
+                animation-play-state: running;
+        -webkit-animation-timing-function: linear;
+                animation-timing-function: linear;
     }
 
     .mouse-icon .scroll {
@@ -566,8 +572,12 @@ footer {
 
 .txtlogo {
     font-size: 75px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     margin-top: 5%;
 }
 
@@ -701,8 +711,12 @@ footer {
 }
 
 .centralize-v {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 #banner-grafico {
