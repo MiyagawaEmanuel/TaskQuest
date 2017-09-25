@@ -92,8 +92,8 @@ namespace TaskQuest.Controllers
             {
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
-                    if (!user.EmailConfirmed)
-                        return View("ConfirmeEmail");
+                    //if (!user.EmailConfirmed)
+                    //    return View("ConfirmeEmail");
                     await SignInAsync(user, true);
                     return RedirectToAction("Inicio", "Home");
                 case SignInStatus.LockedOut:
