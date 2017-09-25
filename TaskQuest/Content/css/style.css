@@ -28,7 +28,11 @@ header {
     height: 130px;
     background-color: #106494;
     display: flex;
-    justify-content: space-around;
+    display: -webkit-box;
+    display: -ms-flexbox;
+    -ms-flex-pack: distribute;
+    -webkit-box-align: center;
+    -ms-flex-align: center;
     align-items: center;
     color: white;
 }
@@ -64,17 +68,32 @@ body {
 }
 
 .flex-properties-r {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    justify-content: center;
-    flex-wrap: wrap;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    -ms-flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 
 .flex-properties-c {
-    display: flex;
-    flex-direction: column;
-    text-align: center;
-    align-items: center;
+    display: -webkit-box;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+                flex-direction: column;
+        text-align: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+                align-items: center;
 }
 
 .group-container {
@@ -123,8 +142,13 @@ textarea {
 .title-b {
     width: 70%;
     background-color: rgba(0,0,0,0.1);
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
 }
 
 .icon-white a {
@@ -192,9 +216,15 @@ textarea {
     height: 60px;
     border-radius: 30px;
     font-size: 20px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    align-items: center;
-    justify-content: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .error {
@@ -264,7 +294,9 @@ label {
     padding-bottom: 1.5%;
     margin-left: 5%;
     width: 100%;
-    justify-content: flex-start;
+    -webkit-box-pack: start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
 }
 
     .pads h3 {
@@ -303,8 +335,13 @@ label {
 
 .modal-body input:not([type='date']) {
     margin: 0 auto;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
 }
 
 .modal-body p {
@@ -365,7 +402,10 @@ label {
 
 
 
+<<<<<<< HEAD
+=======
 //Demarcador
+>>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 
 .background-page{
 	background-color: white;
@@ -403,8 +443,15 @@ label {
 }
 
 .login{
+<<<<<<< HEAD
+    margin-top: 5%;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+=======
 	margin-top: 5%;
 	justify-content: center;
+>>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 }
 
 .input-login{
@@ -441,8 +488,11 @@ label {
 	font-size: 75px;
 }
 
+<<<<<<< HEAD
+=======
 // Fim Demarcador
 
+>>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 
 
 @media (max-width: 600px) {
@@ -465,13 +515,20 @@ label {
 
     .title-b {
         width: 100%;
-        justify-content: space-around;
+        -ms-flex-pack: distribute;
+            justify-content: space-around;
         margin-bottom: 4%;
     }
 
     .flex-properties-r {
-        flex-direction: column;
-        align-items: center;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
+        -webkit-box-align: center;
+            -ms-flex-align: center;
+                    -ms-grid-row-align: center;
+                align-items: center;
         text-align: center;
     }
 
