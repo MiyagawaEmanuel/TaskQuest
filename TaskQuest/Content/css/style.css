@@ -402,10 +402,7 @@ label {
 
 
 
-<<<<<<< HEAD
-=======
-//Demarcador
->>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
+
 
 .background-page{
 	background-color: white;
@@ -443,15 +440,12 @@ label {
 }
 
 .login{
-<<<<<<< HEAD
     margin-top: 5%;
     -webkit-box-pack: center;
         -ms-flex-pack: center;
             justify-content: center;
-=======
 	margin-top: 5%;
 	justify-content: center;
->>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 }
 
 .input-login{
@@ -487,12 +481,6 @@ label {
 .task-quest{
 	font-size: 75px;
 }
-
-<<<<<<< HEAD
-=======
-// Fim Demarcador
-
->>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 
 
 @media (max-width: 600px) {
