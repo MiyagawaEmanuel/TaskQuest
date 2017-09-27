@@ -1,0 +1,184 @@
+﻿@model TaskQuest.ViewModels.LinkViewModel
+
+@{
+    ViewBag.Title = "Quest";
+}
+
+@section css
+{
+    <link rel="stylesheet" href="~/Content/css/quest-adm.css">
+    <link rel="stylesheet" href="~/Content/css/spectrum.css">
+}
+
+@section js
+{
+    <script src="~/Content/js/jquery.validate.js"></script>
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/quest-adm.js"></script>
+    <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/showBalloon.js"></script>
+}
+
+<input type="hidden" id="Hash" value="@Model.oi" />
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Quest</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <a onclick="submit('formQuest', '/Quest/AtualizarQuest')"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="submit('formQuest', '/Quest/AtualizarQuest')">Atualizar Quest</a></h3>
+            </div>
+            <div class="flex-properties-r pads icon-black">
+                <a href="" data-target="#modalAdicionarTask" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a href="" data-target="#modalAdicionarTask" data-toggle="modal">Adicionar Task</a></h3>
+            </div>
+            <div class="flex-properties-r pads icon-black">
+                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("ExcluirQuest", Model.Hash, "/Quest/ExcluirQuest", false))
+                <a onclick="link(ExcluirQuest)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="link(ExcluirQuest)">Excluir Quest</a></h3>
+            </div>
+        </div>
+    </div>
+
+    <form id="formQuest">
+        <div class="container flex-properties-c">
+            <div class="form-container">
+                <input type="text" class="form-control" placeholder="Nome da Quest" id="Nome" name="Nome">
+                <label for="Nome"></label>
+            </div>
+            <div class="form-container">
+                <textarea type="text" class="form-control" placeholder="Descrição da Quest" id="Descricao" name="Descricao"></textarea>
+                <label for="Descricao"></label>
+            </div>
+            <div class="form-container">
+                <p>Escolha a cor da Quest.</p>
+                <input type="hidden" name="Cor" id="Cor">
+            </div>
+        </div>
+    </form>
+
+</section>
+
+<section class="pads-bot">
+    <div id="task-container" class="container flex-properties-r margintop"></div>
+</section>
+
+<div class="modal fade" id="modalAdicionarTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h1 class="modal-title" id="exampleModalLabel">Adicionar Task</h1>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form id="formAdicionarTaskModal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="NomeTask" name="NomeTask" placeholder="Nome da Task">
+                        <label for="NomeTask"></label>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="DescricaoTask" name="DescricaoTask" placeholder="Descrição da Task"></textarea>
+                        <label for="DescricaoTask"></label>
+                    </div>
+                    <div class="form-group">
+                        <p>Escolha a data de conclusão da Task</p>
+                        <input class="form-control" type="date" id="DataConclusao" name="DataConclusao">
+                        <label for="DataConclusao"></label>
+                    </div>
+                    <div class="select-container">
+                        <select class="form-control" id="Dificuldade">
+                            <option value="0">Fácil</option>
+                            <option value="1">Médio</option>
+                            <option value="2">Difícil</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input id="AdicionarTask" type="submit" class="btn btn-secondary btn-cg" value="Criar">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalAtualizarTask" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 class="modal-title" id="exampleModalLabel">Atualizar Task</h1>
+            </div>
+            <form id="formAtualizarTaskModal">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" class="form-control" id="NomeTaskAtualizar" name="NomeTaskAtualizar" placeholder="Nome da Task">
+                        <label for="NomeTaskAtualizar"></label>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" id="DescricaoTaskAtualizar" name="DescricaoTaskAtualizar" placeholder="Descrição da Task"></textarea>
+                        <label for="DescricaoTaskAtualizar"></label>
+                    </div>
+                    <div class="form-group">
+                        <p>Escolha a data de conclusão da Task</p>
+                        <input class="form-control" type="date" id="DataConclusaoAtualizar" name="DataConclusaoAtualizar">
+                        <label for="DataConclusaoAtualizar"></label>
+                    </div>
+                    <div class="select-container">
+                        <select class="form-control" id="DificuldadeAtualizar">
+                            <option value="0">Fácil</option>
+                            <option value="1">Médio</option>
+                            <option value="2">Difícil</option>
+                        </select>
+                    </div>
+                    <div id="Feedback"></div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="AtualizarTask" id="AtualizarTask" class="btn btn-secondary btn-cg" value="Atualizar">
+                    <input type="submit" name="ExcluirTask" id="ExcluirTask" class="btn btn-secondary btn-cg" value="ExcluirTask">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalCriarFeedback" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+                <h1 class="modal-title" id="exampleModalLabel">Criar Feedback</h1>
+            </div>
+            <form id="formCriarFeedback">
+                <div class="modal-body">
+                    <div class="form-group">
+                        <textarea class="form-control" id="TextoFeedback" name="TextoFeedback" placeholder="Texto do Feedback"></textarea>
+                        <label for="TextoFeedback"></label>
+                    </div>
+                    <div class="select-container">
+                        <select class="form-control" id="Nota">
+                            <option>0</option>
+                            <option>1</option>
+                            <option>2</option>
+                            <option>3</option>
+                            <option>4</option>
+                            <option>5</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" name="CriarFeedback" id="CriarFeedback" class="btn btn-secondary btn-cg" value="Criar Feedback">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<span class="balloon" style="display: none"></span>

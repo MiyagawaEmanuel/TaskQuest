@@ -1,0 +1,27 @@
+@model TaskQuest.ViewModels.IntegranteViewModel
+
+<div class="modal fade" id="modalAdicionarIntegrante" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+	<div class="modal-dialog" role="document">
+		<div class="modal-content">
+			<div class="modal-header">
+				<h1 class="modal-title" id="exampleModalLabel">Adicionar Integrante</h1>
+				<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+					<span aria-hidden="true">&times;</span>
+				</button>
+			</div>
+			<form id="formAdicionarIntegrante" action="/Grupo/AdicionarIntegrante" method="post">
+                @Html.AntiForgeryToken()
+				<input type="hidden" name="GrupoId" value="@Model.GrupoId">
+				<div class="modal-body">
+					<div class="form-group">
+						<input class="form-control" id="Email" name="Email" placeholder="E-mail">
+						<label for="EmailIntegrante"></label>
+					</div>
+				</div>
+				<div class="modal-footer">
+                    <button id="AdicionarIntegrante" class="btn btn-secondary btn-cg">Adicionar</button>
+				</div>
+			</form>
+		</div>
+	</div>
+</div>

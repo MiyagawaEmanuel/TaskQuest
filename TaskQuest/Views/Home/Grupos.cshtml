@@ -1,0 +1,45 @@
+﻿@model List<TaskQuest.Models.Grupo>
+
+@{
+    ViewBag.Title = "Grupos";
+}
+
+@section css
+{
+    <link href="~/Content/css/spectrum.css" rel="stylesheet" />
+}
+
+@section js
+{
+    <script src="~/Content/js/link.js"></script>
+}
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>GRUPOS</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <a href="" data-target="#modalCadastro" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a href="" data-target="#modalCadastro" data-toggle="modal">Criar Grupos</a></h3>
+            </div>
+            <div class="flex-properties-r pads"></div>
+        </div>
+    </div>
+
+    <div class="container flex-properties-r margintop">
+
+        @for (int x = 0; x < Model.Count; x++)
+        {
+            @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Gru" + x, Model[x].Id.ToString(), "/Grupo"))
+            <div class="flex-properties-c margin-bottom item group-container">
+                <a onclick="link(@Html.ToString("Gru"+x))"><div class="grupo-elipse" style="background-color: @Model[x].Cor"><img src="~/Content/img/groupicon.png"></div></a>
+                <div class="icon-black"><a onclick="link(@Html.ToString("Gru"+x))" class="grupo-nome">@Model[x].Nome</a></div>
+            </div>
+        }
+
+    </div>
+
+</section>
+
+@Html.Partial("_CriarGrupoPartial", new TaskQuest.Models.Grupo())

@@ -1,0 +1,69 @@
+﻿@model List<TaskQuest.Models.Task>
+
+@{ 
+    ViewBag.Title = "Pendências";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/css/balloon.css"/>
+}
+
+@section js 
+{
+    <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
+}
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>PENDÊNCIAS</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <i class="fa fa-plus elipse" aria-hidden="true"></i>
+                <h3><a href="/Quest/CriarQuest/Usuario">Criar Quest</a></h3>
+            </div>
+            <div class="flex-properties-r pads"></div>
+        </div>
+    </div>
+
+    <div class="container flex-properties-r margintop">
+
+        @for (int x = 0; x < Model.Count; x++)
+        {
+            @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Tsk" + x, Model[x].Quest.Id.ToString(), "/Quest"))
+            <div class="margin-bottom item">
+                <a onclick="link(@Html.ToString("Tsk"+x))"><div class="filete" style="background-color: @Model[x].Quest.Cor"></div></a>
+                <div class="quest-body flex-properties-c">
+                    <div class="limit-lines icon-black"><a onclick="link(@Html.ToString("Tsk"+x))"><h4>@Model[x].Nome</h4></a></div>
+                    <div class="limit-lines"><h4>@Model[x].Descricao</h4></div>
+                    <div><h4>@Model[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+                    <div class="select-container">
+                        <select id="@Util.Hash(Model[x].Id.ToString())" class="form-control" onchange="mudarStatus(this)">
+                            @if (Model[x].Status == 0)
+                            {
+                                <option selected value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option value="2">Feito</option>
+                            }
+                            else if (Model[x].Status == 1)
+                            {
+                                <option value="0">A Fazer</option>
+                                <option selected value="1">Fazendo</option>
+                                <option value="2">Feito</option>
+                            }
+                            else if (Model[x].Status == 2)
+                            {
+                                <option value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option selected value="2">Feito</option>
+                            }
+                        </select>
+                    </div>
+                </div>
+            </div>
+        }
+
+    </div>
+
+</section>

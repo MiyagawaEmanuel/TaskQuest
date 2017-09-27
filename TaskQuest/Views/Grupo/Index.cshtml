@@ -1,0 +1,95 @@
+﻿@model TaskQuest.ViewModels.GrupoViewModel
+
+@{
+ViewBag.Title = "Grupo";
+}
+
+@section css
+{
+    <link rel="stylesheet" href="~/Content/css/grupo.css">
+    <link rel="stylesheet" href="~/Content/css/spectrum.css">
+    <link rel="stylesheet" href="~/Content/js/jquery-ui/jquery-ui.css">
+}
+
+@section js
+{
+    <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/canvas/canvasjs.min.js"></script>
+    <script src="~/Content/js/graphics.js"></script>
+    <script src="~/Content/js/spectrum.config.js"></script>
+    <script src="~/Content/js/jquery-ui/jquery-ui.js"></script>
+    <script src="~/Content/js/tabs.js"></script>
+    <script src="~/Content/js/link.js"></script>
+    <script src="~/Content/js/mudar-status.js"></script>
+    <script src="~/Content/js/showBalloon.js"></script>
+    <script src="~/Content/js/integrante.js"></script>
+}
+
+<section class="pads-bot">
+
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Grupo</h2></div>
+        <div class="title-b flex-properties-r">
+            <div class="flex-properties-r pads icon-black">
+                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("SairGrupo", Model.Id, "/Grupo/SairGrupo", false))
+                <a onclick="link(SairGrupo)"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="link(SairGrupo)">Sair do Grupo</a></h3>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+<section>
+    <div class="container">
+        <div id="chartContainer"></div>
+    </div>
+</section>
+
+<hr class="container quebra">
+
+<section class="container flex-properties-g">
+    <div>
+        <div class="grupo-elipse" style="background-color: @Model.Cor"><img src="~/Content/img/groupicon.png"></div>
+    </div>
+    <div class="limit-lines" style="width: 200px"><h3>@Model.Nome</h3></div>
+    @if (@Model.Integrantes.Count == 1)
+    {
+        <div><h3>@Model.Integrantes.Count Integrante</h3></div>
+    }
+    else
+    {
+        <div><h3>@Model.Integrantes.Count Integrantes</h3></div>
+    }
+    
+</section>
+
+<hr class="container quebra">
+
+<section class="container">
+    <div id="tabs">
+        <ul>
+            <li><a href="#integrantes">Integrantes</a></li>
+            <li><a href="#quests">Quests</a></li>
+        </ul>
+        <div id="integrantes" data-rel="@Model.Id">
+            @foreach (var integrante in Model.Integrantes)
+            {
+                <h4 class="integrante" data-id="@integrante.Email">&bull; @integrante.Nome</h4>
+            }
+        </div>
+
+        <div id="quests">
+            @for (int x = 0; x < Model.Quests.Count; x++)
+            {
+                <div class="quest-container icon-black questlist-g">
+                    <i class="fa fa-circle bull" aria-hidden="true" style="color: @Model.Quests.ToList()[x].Cor"></i>
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model.Quests.ToList()[x].Id.ToString(), "/Quest"))
+                    <a onclick="link(@Html.ToString("Grupo"+x))"><h4 class="quest-container">@Model.Quests.ToList()[x].Nome</h4></a>
+                </div>
+            }
+        </div>
+    </div>
+</section>
+
+@Html.Partial("_ModalIntegrantePartial")

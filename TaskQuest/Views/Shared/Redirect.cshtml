@@ -1,0 +1,15 @@
+﻿@model TaskQuest.ViewModels.RedirectViewModel
+
+@{
+    ViewBag.Title = "";
+    Layout = null;
+}
+
+<form id="formRedirect" action="@Model.Path" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.Value" name="Hash" id="Hash" />
+</form>
+
+<script>
+    formRedirect.submit();
+</script>

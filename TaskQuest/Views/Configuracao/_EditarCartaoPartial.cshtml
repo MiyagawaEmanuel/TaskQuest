@@ -1,0 +1,45 @@
+﻿@model Tuple<int, TaskQuest.ViewModels.CartaoViewModel>
+
+<form id="@Html.ToString("formCartao"+@Model.Item1)" method="post">
+    @Html.AntiForgeryToken()
+    <input type="hidden" value="@Model.Item2.Id" name="Item2.Id" id="Item2.Id" />
+    <div class="flex-properties-r">
+        <li class="li-hidden icon-black">
+            <a onclick="submit('@Html.ToString("formCartao"+@Model.Item1)', '/Configuracao/EditarCartao')" title="Salvar">
+                <i class="fa fa-save" aria-hidden="true"></i>
+            </a>
+        </li>
+        <div id="cartao-input-container" class="flex-properties-r">
+            <div>
+                <input type="text" class="form-control" value="@Model.Item2.NomeTitular" name="Item2.NomeTitular" id="Item2.NomeTitular" placeholder="Nome do Titular" required>
+                <label for="Item2.NomeTitular"></label>
+            </div>
+            <div>
+                <input type="text" class="form-control" value="@Model.Item2.Bandeira" name="Item2.Bandeira" id="Item2.Bandeira" placeholder="Bandeira" required>
+                <label for="Item2.Bandeira"></label>
+            </div>
+            <div>
+                <input type="text" class="form-control NumeroCartao" value="@Model.Item2.Numero" name="Item2.Numero" id="Item2.Numero" placeholder="Número do Cartão" required>
+                <label for="Item2.Numero"></label>
+            </div>
+            <div>
+                <input type="password" class="form-control CodigoSeguranca" value="@Model.Item2.CodigoSeguranca" name="Item2.CodigoSeguranca" id="Item2.CodigoSeguranca" placeholder="Código de Segurança" required>
+                <label for="Item2.CodigoSeguranca"></label>
+            </div>
+            <div>
+                <input type="date" class="form-control" name="Item2.DataVencimento" id="Item2.DataVencimento" value="@Model.Item2.DataVencimento" required>
+                <label for="Item2.DataVencimento"></label>
+            </div>
+            <div>
+                <input type="password" class="form-control SenhaCartao" value="@Model.Item2.Senha" name="Item2.Senha" id="Item2.Senha" placeholder="Senha" required>
+                <label for="Item2.Senha"></label>
+            </div>
+        </div>
+
+        <li class="li-hidden icon-black">
+            <a onclick="submit('@Html.ToString("formCartao"+@Model.Item1)', '/Configuracao/ExcluirCartao')" title="Excluir">
+                <i class="fa fa-remove" aria-hidden="true"></i>
+            </a>
+        </li>
+    </div>
+</form>

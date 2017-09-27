@@ -1,0 +1,149 @@
+﻿@model TaskQuest.ViewModels.InicioViewModel
+
+@{ 
+ViewBag.Title = "Início";
+}
+
+@section css{
+<link rel="stylesheet" href="~/Content/css/spectrum.css">
+<link rel="stylesheet" href="~/Content/css/balloon.css" />
+} 
+
+@section js{
+<script src="~/Content/js/spectrum.js"></script>
+<script src="~/Content/js/spectrum.config.js"></script>
+<script src="~/Content/js/jquery.validate.js"></script>
+<script src="~/Content/js/inicio.js"></script>
+<script src="~/Content/js/link.js"></script>
+<script src="~/Content/js/mudar-status.js"></script>
+}
+
+<section class="pads-bot">
+
+	<div class="flex-properties-r">
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>GRUPOS</h2></div>
+		<div class="title-b">
+			<div class="flex-properties-r pads icon-black">
+				<a href="" data-target="#modalCriarGrupo" data-toggle="modal"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+				<h3><a href="" data-target="#modalCriarGrupo" data-toggle="modal">Criar Grupo</a></h3>
+			</div>
+			<div class="flex-properties-r pads icon-black">
+				<i class="fa fa-caret-down elipse icon-black" aria-hidden="true"></i>
+				<h3><a href="/Home/Grupos">Ver Todos</a></h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="container flex-properties-r margintop">
+
+	@for (int x = 0;x < (Model.Grupos.Count >= 5 ? 5 : Model.Grupos.Count); x++){
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model.Grupos[x].Id.ToString(), "/Grupo/Index"))
+		<div class="flex-properties-c margin-bottom item">
+			<a onclick="link(@Html.ToString("Grupo"+x))">
+				<div class="grupo-elipse" style="background-color: @Model.Grupos[x].Cor">
+					<img src="~/Content/img/groupicon.png">
+				</div>
+			</a>
+			<div class="limit-lines limit-lines_grupo_icon icon-black"><a onclick='link(@Html.ToString("Grupo"+x))' class="grupo-nome">@Model.Grupos[x].Nome</a></div>
+		</div>
+	}
+
+</div>
+
+</section>
+
+<section class="pads-bot">
+
+	<div class="flex-properties-r margintop">
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>PENDÊNCIAS</h2></div>
+		<div class="title-b">
+			<div class="flex-properties-r pads icon-black">
+				<a href="/Quest/CriarQuest"><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+				<h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
+			</div>
+			<div class="flex-properties-r pads icon-black">
+				<a href="/Home/Pendencias"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
+				<h3><a href="/Home/Pendencias">Ver Todas</a></h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="container flex-properties-r margintop">
+
+		@for (int x = 0, y = 0; x < Model.Pendencias.Count && y < 5; x++){
+		if (Model.Pendencias[x].Status != 2)
+		{
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Task" + x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
+		<div class="margin-bottom item">
+			<a onclick="link(@Html.ToString("Task"+x))"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
+			<div class="quest-body flex-properties-c icon-black">
+				<a onclick="link(@Html.ToString("Task"+x))"><div class="limit-lines"><h4>@Model.Pendencias[x].Nome</h4></div></a>
+				<div class="limit-lines"><h4>@Model.Pendencias[x].Descricao</h4></div>
+				<div><h4>@Model.Pendencias[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+				<div class="select-container">
+					<select id="@Util.Encrypt(Model.Pendencias[x].Id.ToString())" class="form-control" onchange="mudarStatus(this)">
+						@if (Model.Pendencias[x].Status == 0)
+						{
+						<option selected value="0">A Fazer</option>
+						<option value="1">Fazendo</option>
+						<option value="2">Feito</option>
+					}
+					else if (Model.Pendencias[x].Status == 1)
+					{
+					<option value="0">A Fazer</option>
+					<option selected value="1">Fazendo</option>
+					<option value="2">Feito</option>
+				}
+				else if (Model.Pendencias[x].Status == 2)
+				{
+				<option value="0">A Fazer</option>
+				<option value="1">Fazendo</option>
+				<option selected value="2">Feito</option>
+			}
+		</select>
+	</div>
+</div>
+</div>
+y++;
+}
+}
+
+</div>
+
+</section>
+
+<section class="pads-bot">
+
+	<div class="flex-properties-r margintop">
+		<div class="title-a" style="color: @User.Identity.GetCor()"><h2>FEEDBACKS</h2></div>
+		<div class="title-b">
+			<div class="flex-properties-r pads icon-black">
+				<a href="/Home/Feedbacks"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
+				<h3><a href="/Home/Feedbacks">Ver Todas</a></h3>
+			</div>
+		</div>
+	</div>
+
+	<div class="container flex-properties-r margintop">
+
+		@for (int x = 0; x < (Model.Feedbacks.Count >= 5 ? 5 : Model.Feedbacks.Count); x++)
+		{
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Feb" + x, Model.Feedbacks[x].Task.Quest.Id.ToString(), "/Quest"))
+		<div class="margin-bottom item">
+			<a onclick="link(@Html.ToString("Feb"+x))"><div class="filete" style="background-color: @Model.Feedbacks[x].Task.Quest.Cor"></div></a>
+			<div class="quest-body flex-properties-c icon-black">
+				<a onclick="link(@Html.ToString("Feb"+x))"><div class="limit-lines"><h4>@Model.Feedbacks[x].Task.Nome</h4></div></a>
+				<div class="limit-lines"><h4>@Model.Feedbacks[x].Resposta</h4></div>
+				<div><h1>@Model.Feedbacks[x].Nota</h1></div>
+				<div><h4>@Model.Feedbacks[x].Task.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+			</div>
+		</div>
+	}
+
+</div>
+
+</section>
+
+<span id="BalloonStatus" class="balloon" style="display: none"></span>
+
+@Html.Partial("_CriarGrupoPartial", new TaskQuest.Models.Grupo())
