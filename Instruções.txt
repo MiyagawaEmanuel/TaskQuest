@@ -17,3 +17,19 @@ Adicionar o caminho para erros customizáveis dentro de 'system.web':
 <customErrors mode="On" >
     <error statusCode="404" redirect="/Error" />
 </customErrors>
+
+Apague todas as rotas e insira estas no arquivo RouteConfig:
+routes.IgnoreRoute("{resource}.axd/{*pathInfo}");
+routes.MapRoute(
+    name: "Default",
+    url: "{controller}/{action}",
+    defaults: new { controller = "Home", action = "Index" }
+);
+routes.MapRoute("PageNotFound", "{*catchall}", new { controller = "Error", action = "Index" });
+
+Insira as seguintes linhas em "appSettings" na raiz de "configuration" no arquivo web.config:
+<add key="mailAccount" value="taskquest01@gmail.com"/>
+<add key="mailPassword" value="Teste@123"/>
+<add key="AesIV" value="1fa4866dfe"/>
+<add key="AesKey" value="c9203488c0"/>
+<add key="Salt" value="80fa1f5f9e"/>
