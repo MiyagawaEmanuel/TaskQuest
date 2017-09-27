@@ -9,7 +9,7 @@ TaskQuest.csproj
 bin/
 obj/
 Properties/
-FilterConfig.cs
-RouteConfig.cs
-WebApiConfig.cs
+/FilterConfig.cs
+/RouteConfig.cs
+/WebApiConfig.cs
 .nuget/
