@@ -9,7 +9,8 @@ TaskQuest.csproj
 bin/
 obj/
 Properties/
-/FilterConfig.cs
-/RouteConfig.cs
-/WebApiConfig.cs
+/TaskQuest/App_Start/FilterConfig.cs
+/TaskQuest/App_Start/RouteConfig.cs
+/TaskQuest/App_Start/WebApiConfig.cs
+/TaskQuest/App_Start/BundleConfig.cs
 .nuget/
