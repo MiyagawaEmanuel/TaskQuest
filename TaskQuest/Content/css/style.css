@@ -28,13 +28,14 @@ header {
     height: 130px;
     background-color: #106494;
     display: flex;
-    display: -webkit-box;
+    /*display: -webkit-box;*/
     display: -ms-flexbox;
     -ms-flex-pack: distribute;
-    -webkit-box-align: center;
+    /*-webkit-box-align: center;*/
     -ms-flex-align: center;
     align-items: center;
     color: white;
+    justify-content: space-around;
 }
 
 .dropdown-menu {
@@ -488,11 +489,6 @@ label {
 	font-size: 75px;
 }
 
-<<<<<<< HEAD
-=======
-// Fim Demarcador
-
->>>>>>> fbc28a8a6dabef3348ac135aa168207206f478f0
 
 
 @media (max-width: 600px) {

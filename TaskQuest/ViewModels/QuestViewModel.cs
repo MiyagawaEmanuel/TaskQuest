@@ -45,6 +45,18 @@ namespace TaskQuest.ViewModels
     public class TaskViewModel
     {
 
+        public Task CriarTask()
+        {
+            return new Task()
+            {
+                QuestId = QuestId,
+                Nome = Nome,
+                Descricao = Descricao,
+                Status = Status,
+                Dificuldade = Dificuldade
+            };
+        }
+
         public string Id { get; set; }
 
         public int QuestId { get; set; }
@@ -58,7 +70,6 @@ namespace TaskQuest.ViewModels
         public string Descricao { get; set; }
 
         [Required]
-        [StringLength(10, MinimumLength = 10)]
         public string DataConclusao { get; set; }
 
         [Required]

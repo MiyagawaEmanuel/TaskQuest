@@ -120,7 +120,7 @@ $(document).ready(function () {
                 "Descricao": $("#Descricao").val(),
                 "Cor": $("#Cor").val(),
                 "GrupoCriadorId": $("#GrupoCriadorId").val(),
-                "Tasks": quest.tasks
+                "TasksViewModel": quest.tasks
             }),
             success: function (response) {
                 if (response == "true")

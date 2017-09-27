@@ -51,8 +51,9 @@ namespace TaskQuest.Controllers
                     Cor = model.Cor
                 };
 
-                foreach (var tsk in model.Tasks)
-                    quest.Tasks.Add(tsk);
+                if(model.TasksViewModel.Count != 0)
+                    foreach (var tsk in model.TasksViewModel)
+                        quest.Tasks.Add(tsk.CriarTask());
 
                 if (model.GrupoCriadorId == null)
                     quest.UsuarioCriadorId = User.Identity.GetUserId<int>();
@@ -125,7 +126,7 @@ namespace TaskQuest.Controllers
         }
 
         [HttpPost]
-        public string GetQuests(string Hash)
+        public ActionResult GetQuests(string Hash)
         {
 
             if (User.Identity.HasQuest(Hash))
@@ -135,7 +136,7 @@ namespace TaskQuest.Controllers
                 {
                     QuestViewModel quest = new QuestViewModel(db.Quest.Find(Id));
                     quest.TasksViewModel = new List<TaskViewModel>();
-                    foreach (var tsk in db.Task.Where(q => q.QuestId == Id))
+                    foreach (var tsk in db.Task.Where(q => q.QuestId == Id).ToList())
                     {
                         quest.TasksViewModel.Add(new TaskViewModel()
                         {
@@ -147,17 +148,14 @@ namespace TaskQuest.Controllers
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status
                         });
-
-                        var aux3 = db.Feedback.ToList().Where(q => q.TaskId == tsk.Id);
-                        if (aux3.Any())
+                        
+                        if (tsk.Feedbacks.Count != 0)
                         {
-                            var feb = aux3.OrderByDescending(q => q.DataCriacao).First();
+                            var feb = tsk.Feedbacks.OrderByDescending(q => q.DataCriacao).First();
                             quest.TasksViewModel[quest.TasksViewModel.Count - 1].FeedbackViewModel = new FeedbackViewModel(feb);
                         }
-
-                        return JsonConvert.SerializeObject(quest);
-
                     }
+                    return Json(new { data = quest });
                 }
             }
             return null;
