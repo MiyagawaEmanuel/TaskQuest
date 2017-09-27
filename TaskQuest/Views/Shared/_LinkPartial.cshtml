@@ -1,6 +1,0 @@
-﻿@model TaskQuest.ViewModels.LinkViewModel
-
-<form id="@Model.Id" action="@Model.Action" method="post">
-    @Html.AntiForgeryToken()
-    <input type="hidden" value="@Model.Hash" name="Hash" id="Hash" />
-</form> 
