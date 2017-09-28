@@ -197,14 +197,12 @@ $(document).ready(function () {
             url: "/Quest/AtualizarQuest",
             data: JSON.stringify(quest),
             success: function (result) {
-                alert(JSON.stringify(quest));
                 if (result == "true")
                     window.location.href = "/Home/Inicio";
                 else
                     showBalloon(result, "yellow-alert");
             },
             error: function (jqXHR, textStatus, errorThrown) {
-                console.log(jqXHR + ", " + textStatus + ", " + errorThrown);
                 showBalloon("Algo deu errado", "yellow-alert");
             }
         });

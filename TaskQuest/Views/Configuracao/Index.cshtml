@@ -50,25 +50,4 @@
     }
 </section>
 
-<hr class="container quebra">
-
-<section class="container" data-cartoes-length="@Model.Cartoes.Count">
-    <div class="title flex-properties-r">
-        <h1>Cartões</h1>
-        <li class="li-hidden icon-black">
-            <a href="#" data-target="#modalCartao" data-toggle="modal" title="Adicionar Cartão">
-                <i class="fa fa-plus" aria-hidden="true"></i>
-            </a>
-        </li>
-    </div>
-    @for (int x = 0; x < Model.Cartoes.Count; x++)
-    {
-        @Html.Partial("_EditarCartaoPartial", new Tuple<int, TaskQuest.ViewModels.CartaoViewModel>(x, Model.Cartoes[x]))
-    }
-</section>
-
 @Html.Partial("_AdicionarTelefonePartial", new TaskQuest.ViewModels.TelefoneViewModel())
-
-<hr class="container quebra">
-
-@Html.Partial("_AdicionarCartaoPartial", new TaskQuest.ViewModels.CartaoViewModel())

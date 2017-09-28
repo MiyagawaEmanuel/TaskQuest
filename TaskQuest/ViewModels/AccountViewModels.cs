@@ -7,15 +7,12 @@ namespace TaskQuest.ViewModels
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
-        [Display(Name = "E-mail")]
         public string Email { get; set; }
 
         [Required]
-        [Display(Name = "Nome")]
         public string Name { get; set; }
 
         [Required]
-        [Display(Name = "Sobrenome")]
         public string LastName { get; set; }
     }
 
@@ -25,12 +22,10 @@ namespace TaskQuest.ViewModels
         public string Provider { get; set; }
 
         [Required]
-        [Display(Name = "Codigo")]
         public string Code { get; set; }
 
         public string ReturnUrl { get; set; }
 
-        [Display(Name = "Lembrar este Browser?")]
         public bool RememberBrowser { get; set; }
 
         [HiddenInput]
@@ -55,7 +50,6 @@ namespace TaskQuest.ViewModels
     public class ForgotViewModel
     {
         [Required]
-        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 
@@ -76,8 +70,12 @@ namespace TaskQuest.ViewModels
 
         public string DataNascimento { get; set; }
         
+        [EmailAddress]
+        [StringLength(40, MinimumLenght = 10)]
         public string Email { get; set; }
 
+        [EmailAddress]
+        [StringLength(40, MinimumLenght = 10)]
         public string ConfirmarEmail { get; set; }
 
         public string Senha { get; set; }
@@ -93,19 +91,14 @@ namespace TaskQuest.ViewModels
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100, ErrorMessage = "The {0} must be at least {2} characters long.", MinimumLength = 6)]
+        [StringLength(100)]  
         [DataType(DataType.Password)]
-        [Display(Name = "Password")]
         public string Password { get; set; }
 
         [DataType(DataType.Password)]
-        [Display(Name = "Confirm password")]
-        [System.ComponentModel.DataAnnotations.Compare("Password", ErrorMessage =
-            "The password and confirmation password do not match.")]
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }
@@ -115,7 +108,6 @@ namespace TaskQuest.ViewModels
     {
         [Required]
         [EmailAddress]
-        [Display(Name = "Email")]
         public string Email { get; set; }
     }
 }

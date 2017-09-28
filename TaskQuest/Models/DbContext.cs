@@ -18,11 +18,9 @@ namespace TaskQuest.Models
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>());
         }
 
-        public virtual DbSet<Cartao> Cartao { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Mensagem> Mensagen { get; set; }
-        public virtual DbSet<Precedencia> Precedencia { get; set; }
         public virtual DbSet<Quest> Quest { get; set; }
         public virtual DbSet<Semana> Semana { get; set; }
         public virtual DbSet<Telefone> Telefone { get; set; }
@@ -148,11 +146,6 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             modelBuilder.Entity<User>()
-                .HasMany(e => e.Cartoes)
-                .WithRequired(e => e.Usuario)
-                .HasForeignKey(e => e.UsuarioId);
-
-            modelBuilder.Entity<User>()
                 .HasMany(e => e.Clients)
                 .WithOptional(e => e.Usuario)
                 .HasForeignKey(e => e.UsuarioId)
@@ -233,48 +226,6 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Arquivo>()
                 .Property(e => e.TaskId)
                 .HasColumnName("tsk_id");
-
-            /*
-                Configurando tabela Cartao
-            */
-
-            modelBuilder.Entity<Cartao>()
-                .ToTable("crt_cartao");
-
-            modelBuilder.Entity<Cartao>()
-                .HasKey(e => e.Id)
-                .Property(e => e.Id)
-                .HasColumnName("crt_id")
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.Bandeira)
-                .HasColumnName("crt_bandeira")
-                .IsRequired();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.Numero)
-                .HasColumnName("crt_numero")
-                .IsRequired();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.NomeTitular)
-                .HasColumnName("crt_nome_titular")
-                .IsRequired();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.DataVencimento)
-                .HasColumnName("crt_data_vencimento")
-                .IsRequired();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.CodigoSeguranca)
-                .HasColumnName("crt_codigo_seguranca")
-                .IsRequired();
-
-            modelBuilder.Entity<Cartao>()
-                .Property(e => e.UsuarioId)
-                .HasColumnName("usu_id");
 
             /*
                 Configurando tabela Role
@@ -518,35 +469,6 @@ namespace TaskQuest.Models
                 .IsRequired();
 
             /*
-                Configuração da tabela Precedencia 
-            */
-
-            modelBuilder.Entity<Precedencia>()
-                .ToTable("pre_precedencia");
-
-            modelBuilder.Entity<Precedencia>()
-                .HasKey(e => e.Id)
-                .Property(e => e.Id)
-                .HasColumnName("pre_id")
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            modelBuilder.Entity<Precedencia>()
-                .Property(e => e.QuestAntecedenteId)
-                .HasColumnName("qst_id_antecedente");
-
-            modelBuilder.Entity<Precedencia>()
-                .Property(e => e.TaskAntecedenteId)
-                .HasColumnName("tsk_id_antecedente");
-
-            modelBuilder.Entity<Precedencia>()
-                .Property(e => e.QuestPrecedenteId)
-                .HasColumnName("qst_id_precedente");
-
-            modelBuilder.Entity<Precedencia>()
-                .Property(e => e.TaskPrecedenteId)
-                .HasColumnName("tsk_id_precedente");
-
-            /*
                 Configuração da tabela Quest 
             */
 
@@ -589,18 +511,6 @@ namespace TaskQuest.Models
                 .HasColumnName("qst_nome")
                 .HasMaxLength(40)
                 .IsRequired();
-
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Antecedencias)
-                .WithOptional(e => e.QuestAntecedente)
-                .HasForeignKey(e => e.QuestAntecedenteId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Precedencias)
-                .WithOptional(e => e.QuestPrecedente)
-                .HasForeignKey(e => e.QuestPrecedenteId)
-                .WillCascadeOnDelete();
 
             modelBuilder.Entity<Quest>()
                 .HasMany(e => e.Semanas)
@@ -718,18 +628,6 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Task>()
                 .Property(e => e.UsuarioResponsavelId)
                 .HasColumnName("usu_id_responsavel");
-
-            modelBuilder.Entity<Task>()
-                .HasMany(e => e.Antecedencias)
-                .WithOptional(e => e.TaskAntecedente)
-                .HasForeignKey(e => e.TaskAntecedenteId)
-                .WillCascadeOnDelete();
-
-            modelBuilder.Entity<Task>()
-                .HasMany(e => e.Precedencias)
-                .WithOptional(e => e.TaskPrecedente)
-                .HasForeignKey(e => e.TaskPrecedenteId)
-                .WillCascadeOnDelete();
 
             /*
                 Configuração da tabela ExperienciaUsuario 

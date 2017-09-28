@@ -32,5 +32,10 @@
     <script src="~/Content/js/jquery.min.js"></script>
     <script src="~/Content/js/bootstrap.min.js"></script>
 
+    @if (TempData["Alerta"] != null && TempData["Classe"] != null)
+    {
+        @Html.Partial("_BalloonPartial", new Tuple<string, string>(TempData["Alerta"].ToString(), TempData["Classe"].ToString()))
+    }
+
 </body>
 </html>

@@ -12,7 +12,6 @@ namespace TaskQuest.Models
         public User()
         {
             Clients = new HashSet<Client>();
-            Cartoes = new HashSet<Cartao>();
             RemetenteMensagens = new HashSet<Mensagem>();
             DestinatarioMensagens = new HashSet<Mensagem>();
             Feedbacks = new HashSet<Feedback>();
@@ -32,8 +31,6 @@ namespace TaskQuest.Models
         public string Sexo { get; set; }
 
         public string Cor { get; set; }
-
-        public virtual ICollection<Cartao> Cartoes { get; set; }
 
         public virtual ICollection<Mensagem> RemetenteMensagens { get; set; }
 

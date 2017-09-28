@@ -45,7 +45,6 @@ namespace TaskQuest.Controllers
             var user = db.Users.Find(User.Identity.GetUserId<int>());
 
             model.usuario = new UserViewModel(user);
-            model.Cartoes = user.Cartoes.Select(q => new CartaoViewModel(q)).ToList();
             model.Telefones = user.Telefones.Select(q => new TelefoneViewModel(q)).ToList();
 
             return View(model);
@@ -127,45 +126,6 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarCartao([Bind(Prefix = "Item2")] CartaoViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var cartao = model.Update();
-                if (cartao != null)
-                {
-                    if (User.Identity.GetUserId<int>() == cartao.UsuarioId)
-                    {
-                        db.Entry(cartao).State = System.Data.Entity.EntityState.Modified;
-                        db.SaveChanges();
-                        TempData["Alerta"] = "Atualizado com sucesso";
-                        TempData["Classe"] = "green-alert";
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        TempData["Alerta"] = "Você não pode executar esta ação";
-                        TempData["Classe"] = "yellow-alert";
-                        return RedirectToAction("Inicio", "Home");
-                    }
-                }
-                else
-                {
-                    TempData["Alerta"] = "Algo deu errado";
-                    TempData["Classe"] = "yellow-alert";
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                TempData["Alerta"] = "Formulário Inválido";
-                TempData["Classe"] = "yellow-alert";
-                return RedirectToAction("Index");
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
         public ActionResult ExcluirTelefone([Bind(Prefix = "Item2")] TelefoneViewModel model)
         {
             if (ModelState.IsValid)
@@ -178,45 +138,6 @@ namespace TaskQuest.Controllers
                         db.Entry(telefone).State = System.Data.Entity.EntityState.Deleted;
                         db.SaveChanges();
                         TempData["Alerta"] = "Deletado com sucesso";
-                        TempData["Classe"] = "green-alert";
-                        return RedirectToAction("Index");
-                    }
-                    else
-                    {
-                        TempData["Alerta"] = "Você não pode executar esta ação";
-                        TempData["Classe"] = "yellow-alert";
-                        return RedirectToAction("Inicio", "Home");
-                    }
-                }
-                else
-                {
-                    TempData["Alerta"] = "Algo deu errado";
-                    TempData["Classe"] = "yellow-alert";
-                    return RedirectToAction("Index");
-                }
-            }
-            else
-            {
-                TempData["Alerta"] = "Formulário Inválido";
-                TempData["Classe"] = "yellow-alert";
-                return RedirectToAction("Index");
-            }
-        }
-
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult ExcluirCartao([Bind(Prefix = "Item2")] CartaoViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var cartao = model.Update();
-                if (cartao != null)
-                {
-                    if (User.Identity.GetUserId<int>() == cartao.UsuarioId)
-                    {
-                        db.Entry(cartao).State = System.Data.Entity.EntityState.Deleted;
-                        db.SaveChanges();
-                        TempData["Alerta"] = "Deletado com sucesso com sucesso";
                         TempData["Classe"] = "green-alert";
                         return RedirectToAction("Index");
                     }
@@ -273,35 +194,5 @@ namespace TaskQuest.Controllers
 
         }
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult AdicionarCartao(CartaoViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var cartao = model.Update();
-                if (cartao != null)
-                {
-                    cartao.UsuarioId = User.Identity.GetUserId<int>();
-                    db.Cartao.Add(cartao);
-                    db.SaveChanges();
-                    TempData["Alerta"] = "Criado com sucesso";
-                    TempData["Classe"] = "green-alert";
-                }
-                else
-                {
-                    TempData["Alerta"] = "Algo deu errado";
-                    TempData["Classe"] = "yellow-alert";
-                }
-            }
-            else
-            {
-                TempData["Alerta"] = "Formulário inválido";
-                TempData["Classe"] = "yellow-alert";
-            }
-
-
-            return RedirectToAction("Index");
-        }
     }
 }

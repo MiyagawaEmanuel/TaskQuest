@@ -51,7 +51,7 @@ namespace TaskQuest.Controllers
                     Cor = model.Cor
                 };
 
-                if(model.TasksViewModel.Count != 0)
+                if(model.TasksViewModel != null) 
                     foreach (var tsk in model.TasksViewModel)
                         quest.Tasks.Add(tsk.CriarTask());
 

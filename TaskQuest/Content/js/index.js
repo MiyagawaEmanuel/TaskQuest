@@ -51,12 +51,12 @@
             Nome: {
                 required: true,
                 minlength: 3,
-                maxlength: 20
+                maxlength: 40
             },
             Sobrenome: {
                 required: true,
                 minlength: 3,
-                maxlength: 20
+                maxlength: 40
             },
             Email: {
                 required: true,

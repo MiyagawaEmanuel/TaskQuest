@@ -101,7 +101,7 @@ namespace TaskQuest.ViewModels
         public string Id { get; set; }
 
         [Required]
-        [Range(0, 4)]
+        [Range(0, 5)]
         public int Nota { get; set; }
 
         public string Relatorio { get; set; }

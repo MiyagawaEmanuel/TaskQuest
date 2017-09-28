@@ -9,8 +9,6 @@ namespace TaskQuest.Models
         public Task()
         {
             Feedbacks = new HashSet<Feedback>();
-            Precedencias = new HashSet<Precedencia>();
-            Antecedencias = new HashSet<Precedencia>();
             ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
             Arquivos = new HashSet<Arquivo>();
         }
@@ -40,10 +38,6 @@ namespace TaskQuest.Models
         public virtual Quest Quest { get; set; }
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
-
-        public virtual ICollection<Precedencia> Precedencias { get; set; }
-
-        public virtual ICollection<Precedencia> Antecedencias { get; set; }
 
         public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
         

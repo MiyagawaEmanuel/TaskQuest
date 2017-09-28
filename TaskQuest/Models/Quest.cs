@@ -8,8 +8,6 @@ namespace TaskQuest.Models
     {
         public Quest()
         {
-            Precedencias = new HashSet<Precedencia>();
-            Antecedencias = new HashSet<Precedencia>();
             Tasks = new HashSet<Task>();
             Semanas = new HashSet<Semana>();
         }
@@ -29,10 +27,6 @@ namespace TaskQuest.Models
         public string Nome { get; set; }
 
         public virtual Grupo GrupoCriador { get; set; }
-
-        public virtual ICollection<Precedencia> Precedencias { get; set; }
-
-        public virtual ICollection<Precedencia> Antecedencias { get; set; }
 
         public virtual ICollection<Task> Tasks { get; set; }
 

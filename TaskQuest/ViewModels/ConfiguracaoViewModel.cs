@@ -11,8 +11,6 @@ namespace TaskQuest.ViewModels
 
         public UserViewModel usuario = new UserViewModel();
 
-        public List<CartaoViewModel> Cartoes = new List<CartaoViewModel>();
-
         public List<TelefoneViewModel> Telefones = new List<TelefoneViewModel>();
 
     }
@@ -142,89 +140,6 @@ namespace TaskQuest.ViewModels
         [Required]
         [StringLength(15, MinimumLength = 14)]
         public string Numero { get; set; }
-
-    }
-
-    public class CartaoViewModel
-    {
-        public CartaoViewModel() { }
-
-        public CartaoViewModel(Cartao cartao)
-        {
-            this.Id = Util.Encrypt(cartao.Id.ToString());
-            this.NomeTitular = cartao.NomeTitular;
-            this.Bandeira = cartao.Bandeira;
-            this.Numero = cartao.Numero;
-            this.Senha = cartao.Senha;
-            this.CodigoSeguranca = cartao.CodigoSeguranca;
-            this.DataVencimento = cartao.DataVencimento;
-        }
-
-        public Cartao Update()
-        {
-            if (string.IsNullOrEmpty(this.Id))
-            {
-                Cartao cartao = new Cartao()
-                {
-                    NomeTitular = this.NomeTitular,
-                    Bandeira = this.Bandeira,
-                    Numero = this.Numero,
-                    Senha = this.Senha,
-                    CodigoSeguranca = this.CodigoSeguranca,
-                    DataVencimento = this.DataVencimento,
-                };
-
-                return cartao;
-            }
-            else
-            {
-                using (var db = new DbContext())
-                {
-                    int Id;
-                    if (int.TryParse(Util.Decrypt(this.Id), out Id))
-                    {
-                        Cartao cartao = db.Cartao.Find(Id);
-
-                        cartao.NomeTitular = this.NomeTitular;
-                        cartao.Bandeira = this.Bandeira;
-                        cartao.Numero = this.Numero;
-                        cartao.Senha = this.Senha;
-                        cartao.CodigoSeguranca = this.CodigoSeguranca;
-                        cartao.DataVencimento = this.DataVencimento;
-
-                        return cartao;
-                    }
-                    else
-                        return null;
-                }
-            }
-        }
-
-        public string Id { get; set; }
-
-        [Required]
-        [StringLength(40, MinimumLength = 3)]
-        public string NomeTitular { get; set; }
-
-        [Required]
-        [StringLength(20, MinimumLength = 3)]
-        public string Bandeira { get; set; }
-
-        [Required]
-        [StringLength(19, MinimumLength = 19)]
-        public string Numero { get; set; }
-
-        [Required]
-        [StringLength(20, MinimumLength = 5)]
-        public string Senha { get; set; }
-
-        [Required]
-        [StringLength(3, MinimumLength = 3)]
-        public string CodigoSeguranca { get; set; }
-
-        [Date]
-        [Required]
-        public string DataVencimento { get; set; }
 
     }
 
