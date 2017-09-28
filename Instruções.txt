@@ -33,3 +33,6 @@ Insira as seguintes linhas em "appSettings" na raiz de "configuration" no arquiv
 <add key="AesIV" value="1fa4866dfe"/>
 <add key="AesKey" value="c9203488c0"/>
 <add key="Salt" value="80fa1f5f9e"/>
+
+Insira a seguinte linha em Webconfig, acima de </system.web> (antes do fechamento da tag syste.web)
+<globalization fileEncoding="utf-8" requestEncoding="utf-8" responseEncoding="utf-8" culture="pt-br"/>

@@ -15,7 +15,7 @@ namespace TaskQuest.Controllers
 
         private DbContext db = new DbContext();
 
-        [HttpPost]
+        [HttpPost, ValidateInput(false)]
         [ValidateAntiForgeryToken]
         public ActionResult CriarGrupo(GrupoViewModel model)
         {
