@@ -1,6 +1,4 @@
-﻿@model TaskQuest.ViewModels.LinkViewModel
-
-@{
+﻿@{
     ViewBag.Title = "Quest";
 }
 
@@ -12,24 +10,22 @@
 @section js
 {
     <script src="~/Content/js/quest.js"></script>
-    <script src="~/Content/js/showBalloon.js"></script>
-    <script src="~/Content/js/mudar-status.js"></script>
 }
 
 @Html.AntiForgeryToken()
-<input type="hidden" id="Hash" value="@Model.Hash" />
+<input type="hidden" id="Hash" value="@Model" />
 
 <section class="pads-bot">
 
     <div class="flex-properties-r">
-        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Quest</h2></div>
+        <div class="title-a"><h2>Quest</h2></div>
         <div class="title-b">
             <div class="flex-properties-r pads"></div>
         </div>
     </div>
 
     <div class="container flex-properties-c">
-    <div><h1 id="Nome"></h1></div>
+        <div><h1 id="Nome"></h1></div>
         <div><p class="justify" id="Descricao"></p></div>
     </div>
 
@@ -63,7 +59,6 @@
                     <p>Dificuldade</p>
                     <h3 id="Dificuldade"></h3>
                 </div>
-                <div id="feedback-modal"></div>
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary btn-cg" data-dismiss="modal">Sair</button>
@@ -71,3 +66,5 @@
         </div>
     </div>
 </div>
+
+<span class="balloon" style="display: none"></span>

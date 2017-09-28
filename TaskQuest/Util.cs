@@ -56,22 +56,6 @@ namespace TaskQuest
             }
         }
 
-        /*
-        public static string Hash(string @string)
-        {
-            StringBuilder sb = new StringBuilder();
-            SHA512 sha = SHA512.Create();
-
-            byte[] entrada = Encoding.ASCII.GetBytes(@string + ConfigurationManager.AppSettings["Salt"]);
-            byte[] hash = sha.ComputeHash(entrada);
-
-            for (int i = 0; i < hash.Length; i++)
-                sb.Append(hash[i].ToString("X2"));
-
-            return sb.ToString();
-        }
-        */
-
         public static bool HasQuest(this IIdentity identity, string questId)
         {
             int Id;
