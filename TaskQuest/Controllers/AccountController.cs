@@ -11,6 +11,7 @@ using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 using Task = System.Threading.Tasks.Task;
+using System.Text.RegularExpressions;
 
 namespace TaskQuest.Controllers
 {
@@ -132,7 +133,27 @@ namespace TaskQuest.Controllers
             {
                 var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = Util.Encrypt(user.Id.ToString()), code = code }, protocol: Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", "Por favor confirme sua conta clicando neste link: <a href='" + callbackUrl + "'>Aqui</a>");
+
+                var mailBody = string.Format(@"
+                    <table width=621 border='1' cellpadding='0' cellspacing='0'>
+
+	                    <tr height=160 style='background-color: #106494;'>
+		                    <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
+	                    </tr>
+
+	                    <tr height=300>
+		                    <td style='text-align: center;'>
+			                    <span style='font-size: 50px; font-family: Impact;'>Confirmação de Cadastro</span>
+			                    <br>
+			                    <br>
+			                    <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Parabéns! Você se registrou no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{0}' style='text-decoration: none; color: #106494;'>Clique aqui para confirmar o cadastro</a></span>
+		                    </td>
+	                    </tr>
+
+                    </table>
+                ", callbackUrl);
+
+                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
 
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";

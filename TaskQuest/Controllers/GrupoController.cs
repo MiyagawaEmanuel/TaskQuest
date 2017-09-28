@@ -180,8 +180,25 @@ namespace TaskQuest.Controllers
                         (new EmailService()).SendAsync(new IdentityMessage() 
                         { 
                             Destination = model.Email,
-                            Subject = "",
-                            Body = ""
+                            Subject = "Uma equipe quer você como colaborador!",
+                            Body = string.Format(@"
+                                <table width=621 border='1' cellpadding='0' cellspacing='0'>
+
+	                                <tr height=160 style='background-color: #106494;'>
+		                                <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
+	                                </tr>
+
+	                                <tr height=300>
+		                                <td style='text-align: center;'>
+			                                <span style='font-size: 50px; font-family: Impact;'>Convite de Participação</span>
+			                                <br>
+			                                <br>
+			                                <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Você foi convidado para participar da equipe {0},<br> criada por {1},<br> no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{2}' style='text-decoration: none; color: #106494;'>Comece Já!</a></span>
+		                                </td>
+	                                </tr>
+
+                                </table>
+                            ", grupo.Nome, user.Nome + " " + user.Sobrenome, Url.Action("Index", "Home"))
                         });
 
                         return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));

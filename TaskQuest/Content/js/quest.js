@@ -112,11 +112,12 @@ $(document).ready(function () {
             "Hash": $("#Hash").val()
         }),
         success: function (result) {
-            quest.Id = result.Id
-            quest.Nome = result.Nome;
-            quest.Descricao = result.Descricao;
-            quest.Cor = result.Cor;
-            quest.TasksViewModel = result.TasksViewModel;
+            oi = result;
+            quest.Id = result.data.Id
+            quest.Nome = result.data.Nome;
+            quest.Descricao = result.data.Descricao;
+            quest.Cor = result.data.Cor;
+            quest.TasksViewModel = result.data.TasksViewModel;
             quest.render();
         },
         error: function () {
