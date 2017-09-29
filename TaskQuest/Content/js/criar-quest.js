@@ -203,13 +203,13 @@ $(document).ready(function () {
         rules: {
             NomeTask: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 1,
+                maxlength: 40
             },
             DescricaoTask: {
                 required: true,
-                minlength: 3,
-                maxlength: 120
+                minLength: 1,
+                maxlength: 300
             },
             DataConclusao: {
                 required: true,
@@ -230,13 +230,13 @@ $(document).ready(function () {
         rules: {
             NomeTaskAtualizar: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 2,
+                maxlength: 40
             },
             DescricaoTaskAtualizar: {
                 required: true,
-                minlength: 3,
-                maxlength: 120
+                minlength: 2,
+                maxlength: 300
             },
             DataConclusaoAtualizar: {
                 required: true,

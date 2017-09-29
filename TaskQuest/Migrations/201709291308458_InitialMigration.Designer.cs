@@ -13,7 +13,7 @@ namespace TaskQuest.Migrations
         
         string IMigrationMetadata.Id
         {
-            get { return "201709281822322_InitialMigration"; }
+            get { return "201709291308458_InitialMigration"; }
         }
         
         string IMigrationMetadata.Source

@@ -30,7 +30,7 @@ namespace TaskQuest.Migrations
                         tsk_id = c.Int(nullable: false, identity: true),
                         qst_id = c.Int(nullable: false),
                         tsk_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
-                        tsk_descricao = c.String(nullable: false, unicode: false),
+                        tsk_descricao = c.String(nullable: false, maxLength: 300, storeType: "nvarchar"),
                         tsk_status = c.Int(nullable: false),
                         tsk_dificuldade = c.Int(nullable: false),
                         tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
@@ -149,7 +149,7 @@ namespace TaskQuest.Migrations
                         gru_id_criador = c.Int(),
                         qst_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
                         qst_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
-                        qst_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
+                        qst_descricao = c.String(nullable: false, maxLength: 300, storeType: "nvarchar"),
                         qst_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.qst_id)
@@ -173,9 +173,9 @@ namespace TaskQuest.Migrations
                 c => new
                     {
                         feb_id = c.Int(nullable: false, identity: true),
-                        feb_relatorio = c.String(maxLength: 120, storeType: "nvarchar"),
+                        feb_relatorio = c.String(maxLength: 300, storeType: "nvarchar"),
                         feb_nota = c.Int(nullable: false),
-                        feb_resposta = c.String(maxLength: 120, storeType: "nvarchar"),
+                        feb_resposta = c.String(maxLength: 300, storeType: "nvarchar"),
                         feb_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
                         tsk_id = c.Int(nullable: false),
                         usu_id_responsavel = c.Int(),

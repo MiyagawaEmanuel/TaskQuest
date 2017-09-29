@@ -27,8 +27,6 @@ namespace TaskQuest.ViewModels
             this.Sobrenome = user.Sobrenome;
             this.DataNascimento = user.DataNascimento.ToString("yyyy-MM-dd");
             this.Email = user.Email;
-            this.Senha = user.PasswordHash;
-            this.ConfirmarSenha = user.PasswordHash;
             this.Cor = user.Cor;
         }
 
@@ -44,10 +42,8 @@ namespace TaskQuest.ViewModels
 
                     user.Nome = Nome;
                     user.Sobrenome = Sobrenome;
-                    //user.Sexo = Sexo;
                     user.DataNascimento = DataNascimento.StringToDateTime();
                     user.Email = Email;
-                    user.PasswordHash = Senha;
                     user.Cor = Cor;
 
                     return user;
@@ -74,14 +70,8 @@ namespace TaskQuest.ViewModels
 
         [Required]
         [EmailAddress]
+        [StringLength(50, MinimumLength = 10)]
         public string Email { get; set; }
-
-        [Required]
-        public string Senha { get; set; }
-
-        [Required]
-        [Compare("Senha")]
-        public string ConfirmarSenha { get; set; }
 
         [Required]
         [StringLength(7, MinimumLength = 4)]

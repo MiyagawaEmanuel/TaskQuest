@@ -278,12 +278,13 @@ $(document).ready(function () {
         rules: {
             Nome: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 2,
+                maxlength: 40
             },
             Descricao: {
                 required: true,
-                maxlength: 120
+                minLength: 2,
+                maxlength: 300
             }
         }
     });
@@ -299,13 +300,13 @@ $(document).ready(function () {
         rules: {
             NomeTask: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 2,
+                maxlength: 40
             },
             DescricaoTask: {
                 required: true,
-                minlength: 3,
-                maxlength: 120
+                minlength: 2,
+                maxlength: 300
             },
             DataConclusao: {
                 required: true,
@@ -326,13 +327,13 @@ $(document).ready(function () {
         rules: {
             NomeTaskAtualizar: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 2,
+                maxlength: 40
             },
             DescricaoTaskAtualizar: {
                 required: true,
-                minlength: 3,
-                maxlength: 120
+                minlength: 2,
+                maxlength: 300
             },
             DataConclusaoAtualizar: {
                 required: true,
@@ -353,8 +354,8 @@ $(document).ready(function () {
         rules: {
             TextoFeedback: {
                 required: true,
-                minlength: 3,
-                maxlength: 20
+                minlength: 2,
+                maxlength: 300
             },
         },
     });

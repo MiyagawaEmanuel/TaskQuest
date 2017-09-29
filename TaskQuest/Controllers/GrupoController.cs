@@ -193,12 +193,12 @@ namespace TaskQuest.Controllers
 			                                <span style='font-size: 50px; font-family: Impact;'>Convite de Participação</span>
 			                                <br>
 			                                <br>
-			                                <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Você foi convidado para participar da equipe {0},<br> criada por {1},<br> no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{2}' style='text-decoration: none; color: #106494;'>Comece Já!</a></span>
+			                                <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Você foi convidado por {0},<br> para participar da equipe {1},<br> no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{2}' style='text-decoration: none; color: #106494;'>Comece Já!</a></span>
 		                                </td>
 	                                </tr>
 
                                 </table>
-                            ", grupo.Nome, user.Nome + " " + user.Sobrenome, Url.Action("Index", "Home"))
+                            ", user.Nome + " " + user.Sobrenome, grupo.Nome, Url.Action("Index", "Home"))
                         });
 
                         return View("Redirect", new RedirectViewModel("/Grupo/Index", Util.Encrypt(grupo.Id.ToString())));

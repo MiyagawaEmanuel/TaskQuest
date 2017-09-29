@@ -23,11 +23,11 @@ namespace TaskQuest.ViewModels
         public string Id { get; set; }
 
         [Required]
-        [StringLength(20, MinimumLength = 3)]
+        [StringLength(40, MinimumLength = 1)]
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(120, MinimumLength = 3)]
+        [StringLength(300, MinimumLength = 1)]
         public string Descricao { get; set; }
 
         [Required]
@@ -62,11 +62,11 @@ namespace TaskQuest.ViewModels
         public int QuestId { get; set; }
 
         [Required]
-        [StringLength(120, MinimumLength = 3)]
+        [StringLength(40, MinimumLength = 2)]
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(120, MinimumLength = 3)]
+        [StringLength(300, MinimumLength = 2)]
         public string Descricao { get; set; }
 
         [Required]
@@ -104,10 +104,11 @@ namespace TaskQuest.ViewModels
         [Range(0, 5)]
         public int Nota { get; set; }
 
+        [StringLength(300, MinimumLength = 2)]
         public string Relatorio { get; set; }
 
         [Required]
-        [StringLength(120, MinimumLength = 3)]
+        [StringLength(300, MinimumLength = 2)]
         public string Resposta { get; set; }
 
         public string UsuarioResponsavelNome { get; set; }

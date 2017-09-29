@@ -61,7 +61,8 @@
             Email: {
                 required: true,
                 email: true,
-                maxlength: 50
+                maxlength: 40,
+                minlength: 10
             },
             ConfirmarEmail: {
                 required: true,
@@ -73,7 +74,8 @@
                 pastDate: true,
             },
             Senha: {
-                required: true
+                required: true,
+                maxlength: 50
             },
             ConfirmarSenha: {
                 required: true,
@@ -113,11 +115,11 @@
             LoginEmail: {
                 required: true,
                 email: true,
-                maxlength: 50
+                maxlength: 40
             },
             LoginSenha: {
                 required: true,
-                maxlength: 20
+                maxlength: 50
             }
         }
     });

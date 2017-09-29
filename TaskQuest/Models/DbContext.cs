@@ -352,12 +352,12 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Relatorio)
                 .HasColumnName("feb_relatorio")
-                .HasMaxLength(120);
+                .HasMaxLength(300);
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Resposta)
                 .HasColumnName("feb_resposta")
-                .HasMaxLength(120);
+                .HasMaxLength(300);
 
             modelBuilder.Entity<Feedback>()
                 .Property(e => e.Nota)
@@ -503,7 +503,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Quest>()
                 .Property(e => e.Descricao)
                 .HasColumnName("qst_descricao")
-                .HasMaxLength(120)
+                .HasMaxLength(300)
                 .IsRequired();
 
             modelBuilder.Entity<Quest>()
@@ -598,6 +598,7 @@ namespace TaskQuest.Models
             modelBuilder.Entity<Task>()
                 .Property(e => e.Descricao)
                 .HasColumnName("tsk_descricao")
+                .HasMaxLength(300)
                 .IsRequired();
 
             modelBuilder.Entity<Task>()

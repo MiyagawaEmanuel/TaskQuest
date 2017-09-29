@@ -7,6 +7,7 @@ namespace TaskQuest.ViewModels
     public class ExternalLoginConfirmationViewModel
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
 
         [Required]
@@ -50,40 +51,64 @@ namespace TaskQuest.ViewModels
     public class ForgotViewModel
     {
         [Required]
+        [EmailAddress]
         public string Email { get; set; }
     }
 
     public class LoginViewModel
     {
-
+        [Required]
+        [EmailAddress]
+        [StringLength(50, MinimumLength = 10)]
         public string LoginEmail { get; set; }
 
+        [Required]
+        [StringLength(50, MinimumLength = 8)]
         public string LoginSenha { get; set; }
         
     }
 
     public class RegisterViewModel
     {
+        [Required]
+        [StringLength(40, MinimumLength = 3)]
         public string Nome { get; set; }
 
+        [Required]
+        [StringLength(40, MinimumLength = 3)]
         public string Sobrenome { get; set; }
 
+        [Date]
+        [Required]
         public string DataNascimento { get; set; }
         
+        [Required]
         [EmailAddress]
-        [StringLength(40, MinimumLenght = 10)]
+        [StringLength(50, MinimumLength = 10)]
         public string Email { get; set; }
 
+        [Required]
         [EmailAddress]
-        [StringLength(40, MinimumLenght = 10)]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Email")]
+        [StringLength(50, MinimumLength = 10)]
         public string ConfirmarEmail { get; set; }
 
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 8)]
         public string Senha { get; set; }
 
+        [Required]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Senha")]
         public string ConfirmarSenha { get; set; }
 
+        [Required]
+        [StringLength(1)]
+        [RegularExpression("^M|S$")]
         public string Sexo { get; set; }
 
+        [Required]
+        [StringLength(7, MinimumLength = 4)]
         public string Cor { get; set; }
     }
 
@@ -91,14 +116,15 @@ namespace TaskQuest.ViewModels
     {
         [Required]
         [EmailAddress]
+        [StringLength(50, MinimumLength = 10)]
         public string Email { get; set; }
 
         [Required]
-        [StringLength(100)]  
-        [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 8)]
         public string Password { get; set; }
 
-        [DataType(DataType.Password)]
+        [Required]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Password")] 
         public string ConfirmPassword { get; set; }
 
         public string Code { get; set; }

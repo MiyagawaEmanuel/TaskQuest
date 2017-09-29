@@ -60,8 +60,6 @@ namespace TaskQuest.Controllers
 
                 if (user != null)
                 {
-                    user.PasswordHash = UserManager.PasswordHasher.HashPassword(user.PasswordHash);
-
                     db.Entry(user).State = System.Data.Entity.EntityState.Modified;
                     db.SaveChanges();
 

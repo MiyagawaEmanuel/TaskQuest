@@ -25,12 +25,12 @@ $(function () {
 			Nome: {
 				required: true,
 				minlength: 3,
-				maxlength: 20
+				maxlength: 40
 			},
 			Sobrenome: {
 				required: true,
 				minlength: 3,
-				maxlength: 20
+				maxlength: 40
 			},
 			DataNascimento: {
 				required: true,
@@ -40,17 +40,8 @@ $(function () {
 			Email: {
 				required: true,
 				email: true,
-			},
-			Senha: {
-				required: true,
-				minlength: 5,
-				pwd: true,
-			},
-			ConfirmarSenha: {
-				required: true,
-				minlength: 5,
-				equalTo: "#Senha",
-				pwd: true,
+				minlength: 10,
+				maxlength: 50
 			},
 			debug: {} 
 		},
@@ -88,7 +79,7 @@ $(function () {
 			TipoTelefone: {
 				required: true,
 				minlength: 3,
-				maxlength: 20
+				maxlength: 40
 			},
 			TelefoneNumero: {
 				required: true,
@@ -118,7 +109,8 @@ $(function () {
 		rules: {
 			TipoTelefoneModal: {
 				required: true,
-				minlength: 3
+				minlength: 3,
+				maxlength: 40
 			},
 			TelefoneNumeroModal: {
 				required: true,
@@ -131,98 +123,4 @@ $(function () {
 			}
 		}
 	});
-
-	$('.NumeroCartao').mask('0000 0000 0000 0000');
-
-	$('.CodigoSeguranca').mask('000');
-
-	var validateCartao = {
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			NomeCartao: {
-				required: true,
-				minlength: 3,
-				maxlength: 40
-			},
-			Bandeira: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-			Numero: {
-				required: true,
-				minlength: 19,
-				maxlength: 19
-			},
-			CodigoSeguranca: {
-				required: true,
-				minlength: 3,
-				maxlength: 3
-			},
-			DataVencimento: {
-				required: true,
-				date: true,
-				futureDate: true
-			},
-			SenhaCartao: {
-				required: true,
-				minlength: 3,
-				maxlength: 40
-			}
-		},
-	};
-
-	var cartaoLen = $('[data-cartoes-length]').attr('data-cartoes-length');
-	for(x = 0; x < cartaoLen; x++){
-		$('#formCartao'+x).validate(validateCartao);
-	}
-
-	$('#formCartaoModal').validate({
-		errorPlacement: function(error, element) {
-			$( element )
-			.closest( "form" )
-			.find( "label[for='" + element.attr( "id" ) + "']" )
-			.append( error );
-		},
-		errorElement: "span",
-		rules: {
-			NomeCartaoModal: {
-				required: true,
-				minlength: 3,
-				maxlength: 40
-			},
-			BandeiraModal: {
-				required: true,
-				minlength: 3,
-				maxlength: 20
-			},
-			NumeroModal: {
-				required: true,
-				minlength: 19,
-				maxlength: 19
-			},
-			CodigoSegurancaModal: {
-				required: true,
-				minlength: 3,
-				maxlength: 3
-			},
-			DataVencimentoModal: {
-				required: true,
-				date: true,
-				futureDate: true
-			},
-			SenhaCartaoModal: {
-				required: true,
-				minlength: 3,
-				maxlength: 40
-			}
-		},
-	});
-
 });
