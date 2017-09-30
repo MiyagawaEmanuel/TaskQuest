@@ -97,7 +97,7 @@ function showAtualizarTaskModal(index) {
 									"<label for='AtualizarTextoFeedback'></label>" +
 								"</div>" +
 								"<div class='select-container'>" +
-									"<select class='form-control' id='AtualizarNota'>" +
+									"<select class='form-control' id='AtualizarNota' name='AtualizarNota'>" +
 										"<option>0</option>" +
 										"<option>1</option>" +
 										"<option>2</option>" +
@@ -285,6 +285,14 @@ $(document).ready(function () {
                 required: true,
                 minLength: 2,
                 maxlength: 300
+            },
+            AtualizarTextoFeedback: {
+                required: true,
+                maxlength: 300
+            },
+            AtualizarNota: {
+                required: true,
+                range: [0, 5]
             }
         }
     });
@@ -357,6 +365,10 @@ $(document).ready(function () {
                 minlength: 2,
                 maxlength: 300
             },
+            Nota: {
+                required: true,
+                range: [0, 5]
+            }
         },
     });
 

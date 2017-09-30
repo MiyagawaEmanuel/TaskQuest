@@ -175,14 +175,15 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
             int Id;
-            if (int.TryParse(Util.Decrypt(userId), out Id) || code == null)
+            if (!int.TryParse(Util.Decrypt(userId), out Id) || code == null)
                 return View("Error");
             var result = await UserManager.ConfirmEmailAsync(Id, code);
             if (result.Succeeded)
             {
+                await SignInAsync(UserManager.FindById(Id), true);
                 TempData["Alerta"] = "Email confirmado";
                 TempData["Classe"] = "green-alert";
-                return RedirectToAction("Login", "Home");
+                return RedirectToAction("Inicio", "Home");
             }
             else
             {
@@ -210,27 +211,26 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 var user = await UserManager.FindByNameAsync(model.Email);
-                if (user == null || !await UserManager.IsEmailConfirmedAsync(user.Id))
-                    return View("ForgotPasswordConfirmation");
 
+                if (user == null)
+                {
+                    TempData["Alerta"] = "Algo deu errado";
+                    TempData["Classe"] = "yellow-alert";
+                    return RedirectToAction("Index", "Home");
+                }
+                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
+                    return RedirectToAction("ConfirmEmail");
+                
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code },
                     Request.Url.Scheme);
                 await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha",
-                    "Por favor altere sua senha clicando aqui: <a href='" + callbackUrl + "'></a>");
+                    "Por favor altere sua senha clicando <a href='" + callbackUrl + "'>aqui</a>");
                 return View("ForgotPasswordConfirmation");
             }
 
             // No caso de falha, reexibir a view. 
             return View(model);
-        }
-
-        //
-        // GET: /Account/ForgotPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ForgotPasswordConfirmation()
-        {
-            return View();
         }
 
         //
@@ -261,14 +261,6 @@ namespace TaskQuest.Controllers
         }
 
         //
-        // GET: /Account/ResetPasswordConfirmation
-        [AllowAnonymous]
-        public ActionResult ResetPasswordConfirmation()
-        {
-            return View();
-        }
-
-        //
         // POST: /Account/FacebookLogin
         [HttpPost]
         [AllowAnonymous]
@@ -295,17 +287,6 @@ namespace TaskQuest.Controllers
             var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
             ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
             return View("PickColor");
-        }
-
-        //
-        // POST: /Account/ExternalLoginConfirmation
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public async Task<ActionResult> PickColor(string color)
-        {
-            await UserManager.AddClaimAsync(User.Identity.GetUserId<int>(), new Claim("Color", color));
-            return View("Inicio");
         }
 
         //

@@ -208,7 +208,6 @@ $(document).ready(function () {
             },
             DescricaoTask: {
                 required: true,
-                minLength: 1,
                 maxlength: 300
             },
             DataConclusao: {
