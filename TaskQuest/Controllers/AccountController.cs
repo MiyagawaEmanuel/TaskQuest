@@ -81,22 +81,40 @@ namespace TaskQuest.Controllers
             );
         }
 
+        [AllowAnonymous]
+        public ActionResult Login(string returnUrl = null)
+        {
+            if (returnUrl != null)
+            {
+                TempData["Alerta"] = "Você não está logado";
+                TempData["Classe"] = "yellow-alert";
+            }
+            return View();
+        }
+
         //
         // POST: /Account/Login
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
-        public async Task<ActionResult> Login(LoginViewModel model)
+        public async Task<ActionResult> Login(LoginViewModel model, string returnUrl = null)
         {
             var result = await SignInManager.PasswordSignInAsync(model.LoginEmail, model.LoginSenha, true, shouldLockout: true);
             switch (result)
             {
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
+                    
                     //if (!user.EmailConfirmed)
                     //    return View("ConfirmeEmail");
+
                     await SignInAsync(user, true);
-                    return RedirectToAction("Inicio", "Home");
+
+                    if (returnUrl != null && Url.IsLocalUrl(returnUrl))
+                        return Redirect(returnUrl);
+                    else
+                        return RedirectToAction("Inicio", "Home");
+
                 case SignInStatus.LockedOut:
                     TempData["Alerta"] = "Você excedeu seu limite de tentativas de entrada";
                     TempData["Classe"] = "yellow-alert";
@@ -160,17 +178,12 @@ namespace TaskQuest.Controllers
                 
                 return View("ConfirmeEmail");
             }
-            
-            AddErrors(result);
 
-            // No caso de falha, reexibir a view. 
             TempData["Alerta"] = "Algo deu errado";
             TempData["Classe"] = "yellow-alert";
             return RedirectToAction("Index", "Home");
         }
 
-        //
-        // GET: /Account/ConfirmEmail
         [AllowAnonymous]
         public async Task<ActionResult> ConfirmEmail(string userId, string code)
         {
@@ -180,10 +193,9 @@ namespace TaskQuest.Controllers
             var result = await UserManager.ConfirmEmailAsync(Id, code);
             if (result.Succeeded)
             {
-                await SignInAsync(UserManager.FindById(Id), true);
                 TempData["Alerta"] = "Email confirmado";
                 TempData["Classe"] = "green-alert";
-                return RedirectToAction("Inicio", "Home");
+                return RedirectToAction("Login", "Account");
             }
             else
             {
@@ -193,16 +205,12 @@ namespace TaskQuest.Controllers
             }
         }
 
-        //
-        // GET: /Account/ForgotPassword
         [AllowAnonymous]
         public ActionResult ForgotPassword()
         {
             return View();
         }
 
-        //
-        // POST: /Account/ForgotPassword
         [HttpPost]
         [AllowAnonymous]
         [ValidateAntiForgeryToken]
@@ -251,42 +259,25 @@ namespace TaskQuest.Controllers
             if (!ModelState.IsValid)
                 return View(model);
             var user = await UserManager.FindByNameAsync(model.Email);
+            
             if (user == null)
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "yellow-alert";
+                return RedirectToAction("Index", "Home");
+            }
+            
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
-                return RedirectToAction("ResetPasswordConfirmation", "Account");
-            AddErrors(result);
-            return View();
-        }
+            {
+                TempData["Alerta"] = "Senha modificada com sucesso";
+                TempData["Classe"] = "green-alert";
+                return RedirectToAction("Login", "Account");
+            }
 
-        //
-        // POST: /Account/FacebookLogin
-        [HttpPost]
-        [AllowAnonymous]
-        [ValidateAntiForgeryToken]
-        public ActionResult FacebookLogin()
-        {
-            return new ChallengeResult("Facebook", "/Account/ExternalLoginCallback");
-        }
-
-        //
-        // GET: /Account/ExternalLoginCallback
-        [AllowAnonymous]
-        public async Task<ActionResult> ExternalLoginCallback()
-        {
-            var loginInfo = await HttpContext.GetOwinContext().Authentication.GetExternalLoginInfoAsync();
-            if (loginInfo == null)
-                return RedirectToAction("Login");
-
-            var externalIdentity = HttpContext.GetOwinContext().Authentication
-                .GetExternalIdentityAsync(DefaultAuthenticationTypes.ExternalCookie);
-            var email = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:email").Value;
-            var firstName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:first_name")
-                .Value;
-            var lastName = externalIdentity.Result.Claims.FirstOrDefault(c => c.Type == "urn:facebook:last_name").Value;
-            ViewBag.LoginProvider = loginInfo.Login.LoginProvider;
-            return View("PickColor");
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Index", "Home");
         }
 
         //
@@ -296,14 +287,8 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> LogOff()
         {
             await SignOutAsync();
-            //HttpContext.GetOwinContext().Authentication.SignOut();
+            HttpContext.GetOwinContext().Authentication.SignOut();
             return RedirectToAction("Index", "Home");
-        }
-
-        private void AddErrors(IdentityResult result)
-        {
-            foreach (var error in result.Errors)
-                ModelState.AddModelError("", error);
         }
 
         private async Task SignOutAsync()

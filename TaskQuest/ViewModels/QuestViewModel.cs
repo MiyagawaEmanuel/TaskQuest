@@ -70,7 +70,7 @@ namespace TaskQuest.ViewModels
         public string Descricao { get; set; }
 
         [Required]
-        public string DataConclusao { get; set; }
+        public DateTime DataConclusao { get; set; }
 
         [Required]
         [Range(0, 2)]

@@ -62,39 +62,39 @@ ViewBag.Title = "Início";
 				<h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
 			</div>
 			<div class="flex-properties-r pads icon-black">
-				<a href="/Home/Pendencias"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
-				<h3><a href="/Home/Pendencias">Ver Todas</a></h3>
+				<a href="/Home/Quests"><i class="fa fa-caret-down elipse" aria-hidden="true"></i></a>
+				<h3><a href="/Home/Quests">Ver Todas</a></h3>
 			</div>
 		</div>
 	</div>
 
 	<div class="container flex-properties-r margintop">
 
-		@for (int x = 0, y = 0; x < Model.Pendencias.Count && y < 5; x++){
-		if (Model.Pendencias[x].Status != 2)
+		@for (int x = 0, y = 0; x < Model.Tasks.Count && y < 5; x++){
+		if (Model.Tasks[x].Status != 2)
 		{
-		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Task" + x, Model.Pendencias[x].Quest.Id.ToString(), "/Quest"))
+		@Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Task" + x, Model.Tasks[x].Quest.Id.ToString(), "/Quest"))
 		<div class="margin-bottom item">
-			<a onclick="link(@Html.ToString("Task"+x))"> <div class="filete" style="background-color: @Model.Pendencias[x].Quest.Cor"></div></a>
+			<a onclick="link(@Html.ToString("Task"+x))"> <div class="filete" style="background-color: @Model.Tasks[x].Quest.Cor"></div></a>
 			<div class="quest-body flex-properties-c icon-black">
-				<a onclick="link(@Html.ToString("Task"+x))"><div class="limit-lines"><h4>@Model.Pendencias[x].Nome</h4></div></a>
-				<div class="limit-lines"><h4>@Model.Pendencias[x].Descricao</h4></div>
-				<div><h4>@Model.Pendencias[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+				<a onclick="link(@Html.ToString("Task"+x))"><div class="limit-lines"><h4>@Model.Tasks[x].Nome</h4></div></a>
+				<div class="limit-lines"><h4>@Model.Tasks[x].Descricao</h4></div>
+				<div><h4>@Model.Tasks[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
 				<div class="select-container">
-					<select id="@Util.Encrypt(Model.Pendencias[x].Id.ToString())" class="form-control" onchange="mudarStatus(this)">
-						@if (Model.Pendencias[x].Status == 0)
+					<select id="@Util.Encrypt(Model.Tasks[x].Id.ToString())" class="form-control" onchange="mudarStatus(this)">
+						@if (Model.Tasks[x].Status == 0)
 						{
 						<option selected value="0">A Fazer</option>
 						<option value="1">Fazendo</option>
 						<option value="2">Feito</option>
 					}
-					else if (Model.Pendencias[x].Status == 1)
+					else if (Model.Tasks[x].Status == 1)
 					{
 					<option value="0">A Fazer</option>
 					<option selected value="1">Fazendo</option>
 					<option value="2">Feito</option>
 				}
-				else if (Model.Pendencias[x].Status == 2)
+				else if (Model.Tasks[x].Status == 2)
 				{
 				<option value="0">A Fazer</option>
 				<option value="1">Fazendo</option>

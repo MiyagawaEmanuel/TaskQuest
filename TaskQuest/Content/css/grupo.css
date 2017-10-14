@@ -83,6 +83,16 @@
 	text-overflow: ellipsis;
 }
 
+.grupo-descricao{
+    width: 300px;
+}
+
+.limit-lines_grupo{
+    margin: 0;
+    width: 300px;
+    word-wrap: break-word;
+}
+
 @media (max-width: 600px){
 	.flex-properties-g{
 		flex-direction: column;
@@ -93,4 +103,7 @@
 	.user-title{
 		width: 80%;
 	}
+    .limit-lines_grupo{
+        text-align: center;
+    }
 }

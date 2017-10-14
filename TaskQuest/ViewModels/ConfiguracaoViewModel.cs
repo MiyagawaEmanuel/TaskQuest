@@ -133,4 +133,20 @@ namespace TaskQuest.ViewModels
 
     }
 
+    public class AlterarSenhaViewModel
+    {
+        [Required]
+        [StringLength(50, MinimumLength = 8)]
+        public string SenhaAtual { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 8)]
+        public string Senha { get; set; }
+
+        [Required]
+        [StringLength(50, MinimumLength = 8)]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("Senha")]
+        public string ConfirmarSenha { get; set; }
+    }
+
 }

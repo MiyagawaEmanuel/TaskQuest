@@ -26,13 +26,13 @@ namespace TaskQuest.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get 
-            { 
+            get
+            {
                 return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set 
-            { 
-                _userManager = value; 
+            private set
+            {
+                _userManager = value;
             }
         }
 
@@ -188,6 +188,34 @@ namespace TaskQuest.Controllers
                 TempData["Classe"] = "yellow-alert";
             }
 
+            return RedirectToAction("Index");
+
+        }
+
+        public ActionResult AlterarSenha()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult AlterarSenha(AlterarSenhaViewModel model)
+        {
+            var user = UserManager.FindById(User.Identity.GetUserId<int>());
+            if (UserManager.CheckPassword(user, model.SenhaAtual))
+            {
+                var result = UserManager.ChangePassword(user.Id, model.SenhaAtual, model.Senha);
+                if (result.Succeeded)
+                {
+                    TempData["Alerta"] = "Senha alterada com sucesso";
+                    TempData["Classe"] = "green-alert";
+                    return RedirectToAction("Index");
+                }
+
+            }
+
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
             return RedirectToAction("Index");
 
         }

@@ -40,8 +40,8 @@ namespace TaskQuest.Identity
             };
             // Configuração de Lockout
             manager.UserLockoutEnabledByDefault = true;
-            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(5);
-            manager.MaxFailedAccessAttemptsBeforeLockout = 5;
+            manager.DefaultAccountLockoutTimeSpan = TimeSpan.FromMinutes(2);
+            manager.MaxFailedAccessAttemptsBeforeLockout = 3;
 
             // Definindo a classe de serviço de e-mail
             manager.EmailService = new EmailService();

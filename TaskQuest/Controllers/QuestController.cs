@@ -51,7 +51,7 @@ namespace TaskQuest.Controllers
                     Cor = model.Cor
                 };
 
-                if(model.TasksViewModel != null) 
+                if (model.TasksViewModel.Count != 0)
                     foreach (var tsk in model.TasksViewModel)
                         quest.Tasks.Add(tsk.CriarTask());
 
@@ -144,11 +144,11 @@ namespace TaskQuest.Controllers
                             QuestId = tsk.QuestId,
                             Nome = tsk.Nome,
                             Descricao = tsk.Descricao,
-                            DataConclusao = tsk.DataConclusao.ToHtmlDate(),
+                            DataConclusao = tsk.DataConclusao,
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status
                         });
-                        
+
                         if (tsk.Feedbacks.Count != 0)
                         {
                             var feb = tsk.Feedbacks.OrderByDescending(q => q.DataCriacao).First();
@@ -168,7 +168,7 @@ namespace TaskQuest.Controllers
             if (ModelState.IsValid)
             {
                 int Id;
-                if(int.TryParse(Util.Decrypt(quest.Id), out Id))
+                if (int.TryParse(Util.Decrypt(quest.Id), out Id))
                 {
                     if (!User.Identity.HasQuest(quest.Id))
                         return "Você não pode executar esta ação";
@@ -191,7 +191,7 @@ namespace TaskQuest.Controllers
                             task.Descricao = tsk.Descricao;
                             task.Dificuldade = tsk.Dificuldade;
                             task.Status = tsk.Status;
-                            task.DataConclusao = tsk.DataConclusao.StringToDateTime();
+                            task.DataConclusao = tsk.DataConclusao;
                             db.Entry(task).State = System.Data.Entity.EntityState.Modified;
 
                         }
@@ -203,7 +203,7 @@ namespace TaskQuest.Controllers
                                 Descricao = tsk.Descricao,
                                 Dificuldade = tsk.Dificuldade,
                                 Status = tsk.Status,
-                                DataConclusao = tsk.DataConclusao.StringToDateTime(),
+                                DataConclusao = tsk.DataConclusao,
                                 QuestId = qst.Id,
                             };
                             db.Task.Add(task);

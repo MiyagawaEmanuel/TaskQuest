@@ -15,14 +15,8 @@ namespace TaskQuest.Controllers
         private DbContext db = new DbContext();
 
         [AllowAnonymous]
-        public ActionResult Index(string returnUrl = null)
+        public ActionResult Index()
         {
-            if (returnUrl != null)
-            {
-                TempData["Alerta"] = "Você não está logado";
-                TempData["Classe"] = "yellow-alert";
-            }
-
             return View();
         }
 
@@ -39,18 +33,18 @@ namespace TaskQuest.Controllers
             foreach (var gru in model.Grupos)
                 foreach (var qst in gru.Quests)
                     foreach (var tsk in qst.Tasks)
-                        model.Pendencias.Add(tsk);
+                        model.Tasks.Add(tsk);
 
             foreach (var qst in user.Quests)
                 foreach (var tsk in qst.Tasks)
-                    model.Pendencias.Add(tsk);
+                    model.Tasks.Add(tsk);
 
-            foreach (var tsk in model.Pendencias)
+            foreach (var tsk in model.Tasks)
                 foreach (var feb in tsk.Feedbacks)
                     model.Feedbacks.Add(feb);
             
             model.Grupos.OrderBy(a => a.Nome);
-            model.Pendencias.OrderByDescending(a => a.DataConclusao);
+            model.Tasks.OrderByDescending(a => a.DataConclusao);
             model.Feedbacks.OrderByDescending(a => a.DataCriacao);
 
             return View(model);
@@ -99,22 +93,20 @@ namespace TaskQuest.Controllers
         }
 
         [Authorize]
-        public ActionResult Pendencias()
+        public ActionResult Quests()
         {
-            List<Task> model = new List<Task>();
+            List<Quest> model = new List<Quest>();
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
 
             foreach (var gru in user.Grupos)
                 foreach (var qst in gru.Quests)
-                    foreach (var tsk in qst.Tasks)
-                        model.Add(tsk);
+                    model.Add(qst);
 
             foreach (var qst in user.Quests)
-                foreach (var tsk in qst.Tasks)
-                    model.Add(tsk);
+                model.Add(qst);
 
-            model.OrderByDescending(a => a.DataConclusao);
+            model.OrderBy(a => a.Tasks.OrderBy(b => b.DataConclusao).FirstOrDefault());
 
             return View(model);
         }
