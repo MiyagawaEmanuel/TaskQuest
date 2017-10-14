@@ -1,4 +1,6 @@
-﻿@{
+﻿@model TaskQuest.ViewModels.QuestInfoViewModel
+
+@{
     ViewBag.Title = "Quest";
 }
 
@@ -13,7 +15,7 @@
 }
 
 @Html.AntiForgeryToken()
-<input type="hidden" id="Hash" value="@Model.Hash" />
+<input type="hidden" id="Hash" value="@Model.QuestId" />
 
 <section class="pads-bot">
 
@@ -59,6 +61,12 @@
                     <p>Dificuldade</p>
                     <h3 id="Dificuldade"></h3>
                 </div>
+                @if(Model.HasGroup){
+                    <div class="select-container">
+                        <p>Colaborador responsável</p>
+                        <h3 id="Responsavel"></h3>
+                    </div>
+                }
             </div>
             <div class="modal-footer">
                 <button class="btn btn-secondary btn-cg" data-dismiss="modal">Sair</button>

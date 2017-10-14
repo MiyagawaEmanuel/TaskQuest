@@ -19,7 +19,7 @@ namespace TaskQuest.Controllers
 
         public ActionResult CriarQuest()
         {
-            return View("CriarQuest", new LinkViewModel("", requireHashing: false));
+            return View("CriarQuest", new QuestInfoViewModel() { HasGroup = false });
         }
 
         [ValidateAntiForgeryToken]
@@ -28,14 +28,22 @@ namespace TaskQuest.Controllers
         {
             if (ModelState.IsValid)
             {
-                return View("CriarQuest", model);
+                int id;
+                if (int.TryParse(Util.Decrypt(model.Hash), out id))
+                {
+                    var grupo = db.Grupo.Find(id);
+                    return View("CriarQuest", new QuestInfoViewModel()
+                    {
+                        HasGroup = true,
+                        GrupoId = model.Hash,
+                        Colaboradores = grupo.Users.ToList()
+                    });
+                }
+
             }
-            else
-            {
-                TempData["Alerta"] = "Formulário inválido";
-                TempData["Classe"] = "yellow-alert";
-                return RedirectToAction("Inicio", "Home");
-            }
+            TempData["Alerta"] = "Formulário inválido";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Inicio", "Home");
         }
 
         [HttpPost]
@@ -52,9 +60,28 @@ namespace TaskQuest.Controllers
                 };
 
                 if (model.TasksViewModel.Count != 0)
+                {
                     foreach (var tsk in model.TasksViewModel)
-                        quest.Tasks.Add(tsk.CriarTask());
-
+                    {
+                        if (tsk.UsuarioResponsavelId == null)
+                            quest.Tasks.Add(tsk.CriarTask());
+                        else
+                        {
+                            int UserId;
+                            if (int.TryParse(Util.Decrypt(tsk.UsuarioResponsavelId), out UserId))
+                            {
+                                var task = tsk.CriarTask();
+                                task.UsuarioResponsavelId = UserId;
+                                quest.Tasks.Add(task);
+                            }
+                            else
+                            {
+                                return "Formulário inválido";
+                            }
+                        }
+                    }
+                }
+                    
                 if (model.GrupoCriadorId == null)
                     quest.UsuarioCriadorId = User.Identity.GetUserId<int>();
                 else
@@ -64,9 +91,9 @@ namespace TaskQuest.Controllers
                         if (User.Identity.IsAdm(Id))
                             quest.GrupoCriadorId = Id;
                         else
-                            return "false";
+                            return "Você não pode executar esta ação";
                     else
-                        return "false";
+                        return "Formlário inválido";
                 }
 
                 db.Quest.Add(quest);
@@ -97,9 +124,18 @@ namespace TaskQuest.Controllers
                     {
                         var quest = db.Quest.Find(Id);
                         if (quest.UsuarioCriadorId == User.Identity.GetUserId<int>() || User.Identity.IsAdm(quest.GrupoCriador.Id))
-                            return View("QuestAdm", new LinkViewModel(quest.Id.ToString()));
+                            return View("QuestAdm", new QuestInfoViewModel() 
+                            {
+                                HasGroup = quest.GrupoCriadorId != null,
+                                QuestId = Util.Encrypt(quest.Id.ToString()),
+                                Colaboradores = (quest.GrupoCriadorId != null)? quest.GrupoCriador.Users.ToList() : null
+                            });
                         else
-                            return View("Quest", new LinkViewModel(quest.Id.ToString()));
+                            return View("Quest", new QuestInfoViewModel()
+                            {
+                                HasGroup = quest.GrupoCriadorId != null,
+                                QuestId = Util.Encrypt(quest.Id.ToString())
+                            });
                     }
                     else
                     {
@@ -146,7 +182,9 @@ namespace TaskQuest.Controllers
                             Descricao = tsk.Descricao,
                             DataConclusao = tsk.DataConclusao,
                             Dificuldade = tsk.Dificuldade,
-                            Status = tsk.Status
+                            Status = tsk.Status,
+                            UsuarioResponsavelId =  (tsk.UsuarioResponsavel != null)? Util.Encrypt(tsk.UsuarioResponsavelId.ToString()): "",
+                            ResponsavelNome =  (tsk.UsuarioResponsavel != null)? tsk.UsuarioResponsavel.Nome + " " + tsk.UsuarioResponsavel.Sobrenome: ""
                         });
 
                         if (tsk.Feedbacks.Count != 0)
@@ -192,6 +230,15 @@ namespace TaskQuest.Controllers
                             task.Dificuldade = tsk.Dificuldade;
                             task.Status = tsk.Status;
                             task.DataConclusao = tsk.DataConclusao;
+
+                            if (tsk.UsuarioResponsavelId != null)
+                                if (int.TryParse(Util.Decrypt(tsk.UsuarioResponsavelId), out Id))
+                                    task.UsuarioResponsavelId = Id;
+                                else
+                                    return "Formulário inválido";
+                            else
+                                task.UsuarioResponsavelId = null;
+
                             db.Entry(task).State = System.Data.Entity.EntityState.Modified;
 
                         }
@@ -221,6 +268,32 @@ namespace TaskQuest.Controllers
                                     DataCriacao = DateTime.Now
                                 };
                                 db.Feedback.Add(feedback);
+
+                                if (qst.GrupoCriador != null)
+                                {
+                                    if (task.UsuarioResponsavel == null)
+                                    {
+                                        foreach (var user in qst.GrupoCriador.Users)
+                                        {
+                                            db.ExperienciaUsuario.Add(new ExperienciaUsuario()
+                                            {
+                                                Task = task,
+                                                Usuario = user,
+                                                Valor = feedback.Nota * (task.Dificuldade + 1)
+                                            });
+                                        }
+                                    }
+                                    else
+                                    {
+                                        db.ExperienciaUsuario.Add(new ExperienciaUsuario()
+                                        {
+                                            Task = task,
+                                            Usuario = task.UsuarioResponsavel,
+                                            Valor = feedback.Nota * (task.Dificuldade + 1)
+                                        });
+                                    }
+                                }
+
                             }
                             else
                             {
@@ -229,6 +302,25 @@ namespace TaskQuest.Controllers
                                 feedback.Nota = tsk.FeedbackViewModel.Nota;
                                 feedback.DataCriacao = DateTime.Now;
                                 db.Entry(feedback).State = System.Data.Entity.EntityState.Modified;
+
+                                if (qst.GrupoCriador != null)
+                                {
+                                    if (task.UsuarioResponsavel == null)
+                                    {
+                                        foreach (var user in qst.GrupoCriador.Users)
+                                        {
+                                            var exp = db.ExperienciaUsuario.Find(user.Id, task.Id);
+                                            exp.Valor = feedback.Nota * (task.Dificuldade + 1);
+                                            db.Entry(exp).State = System.Data.Entity.EntityState.Modified;
+                                        }
+                                    }
+                                    else
+                                    {
+                                        var exp = db.ExperienciaUsuario.Find(task.UsuarioResponsavelId, task.Id);
+                                        exp.Valor = feedback.Nota * (task.Dificuldade + 1);
+                                        db.Entry(exp).State = System.Data.Entity.EntityState.Modified;
+                                    }
+                                }
                             }
                         }
                         else
@@ -319,10 +411,15 @@ namespace TaskQuest.Controllers
 
                 task.Status = Convert.ToInt32(Status);
 
-                if (task.Status == 1 || task.Status == 2)
-                    foreach (var feb in db.Feedback.Where(q => q.TaskId == task.Id))
+                if (task.Status == 0 || task.Status == 1)
+                {
+                    foreach (var feb in db.Feedback.Where(q => q.Task == task))
                         db.Feedback.Remove(feb);
 
+                    foreach (var exp in db.ExperienciaUsuario.Where(q => q.Task == task))
+                        db.ExperienciaUsuario.Remove(exp);
+                }
+                
                 db.SaveChanges();
 
                 return "true";

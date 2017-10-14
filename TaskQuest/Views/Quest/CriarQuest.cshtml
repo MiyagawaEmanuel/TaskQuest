@@ -1,4 +1,4 @@
-﻿@model TaskQuest.ViewModels.LinkViewModel
+﻿@model TaskQuest.ViewModels.QuestInfoViewModel
 
 @{
     ViewBag.Title = "Criar Quest";
@@ -15,6 +15,7 @@
     <script src="~/Content/js/spectrum.config.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
     <script src="~/Content/js/criar-quest.js"></script>
+    <script src="~/Content/js/showBalloon.js"></script>
 }
 
 <section class="pads-bot">
@@ -34,9 +35,9 @@
     </div>
 
     <form id="formQuest">
-        @if (!String.IsNullOrEmpty(Model.Hash))
+        @if (Model.HasGroup)
         {
-            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model.Hash" />
+            <input type="hidden" name="GrupoCriadorId" id="GrupoCriadorId" value="@Model.GrupoId" />
         }
         <div class="container flex-properties-c">
             <div class="form-container">
@@ -91,16 +92,21 @@
                             <option value="2">Difícil</option>
                         </select>
                     </div>
-                    <div class="select-container">
-                        <label for="Responsavel">Atribua um responsável para a Task</label>
-                        <select class="form-control" id="Responsavel">
-                            <option value="0">Todos</option>
-                            <option value="0">Emanuel Miyagawa</option>
-                            <option value="1">Bruno Santos</option>
-                            <option value="2">Antonio Carlos</option>
-                        </select>
-                    </div>
+                    @if (Model.HasGroup)
+                    {
+                        <div class="select-container">
+                            <label for="Responsavel">Atribua um responsável para a Task</label>
+                            <select class="form-control" id="Responsavel">
+                                <option value="">Todos</option>
+                                @foreach (var colaborador in Model.Colaboradores)
+                                {
+                                <option value="@Util.Encrypt(colaborador.Id.ToString())">@colaborador.Nome @colaborador.Sobrenome</option>
+                                }
+                            </select>
+                        </div>
+                    }
                 </div>
+
                 <div class="modal-footer">
                     <input id="AdicionarTask" type="submit" class="btn btn-secondary btn-cg" value="Criar">
                 </div>
@@ -116,7 +122,7 @@
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
-                <h1 class="modal-title" id="exampleModalLabel">Adicionar Task</h1>
+                <h1 class="modal-title" id="exampleModalLabel">Atualizar Task</h1>
             </div>
             <form id="formAtualizarTaskModal">
                 <div class="modal-body">
@@ -140,6 +146,19 @@
                             <option value="2">Difícil</option>
                         </select>
                     </div>
+                    @if (Model.HasGroup)
+                    {
+                        <div class="select-container">
+                            <label for="ResponsavelAtualizar">Atribua um responsável para a Task</label>
+                            <select class="form-control" id="ResponsavelAtualizar">
+                                <option value="">Todos</option>
+                                @foreach (var colaborador in Model.Colaboradores)
+                                {
+                                    <option value="@Util.Encrypt(colaborador.Id.ToString())">@colaborador.Nome @colaborador.Sobrenome</option>
+                                }
+                            </select>
+                        </div>
+                    }
                 </div>
                 <div class="modal-footer">
                     <button id="AtualizarTask" class="btn btn-secondary btn-cg">Atualizar</button>

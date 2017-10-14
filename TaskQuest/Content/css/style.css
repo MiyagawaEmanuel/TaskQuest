@@ -313,7 +313,6 @@ label {
 .select-container {
     position: absolute;
     bottom: 20px;
-    width: 60%;
     margin: 0 auto;
 }
 
@@ -328,7 +327,8 @@ label {
 
 .modal-body .select-container {
     position: static;
-    width: 90px;
+    width: fit-content;
+    width: -moz-fit-content;
 }
 
 .modal-body input:not([type='date']) {

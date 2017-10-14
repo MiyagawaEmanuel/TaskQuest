@@ -31,29 +31,29 @@
     render: function () {
         $('#task-container div').remove();
         for (var x = 0; x < this.TasksViewModel.length; x++) {
-            var content = "<div class='margin-bottom item' id=" + x + ">" +
-                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + quest.Cor + "'></div></a>" +
-                "<div class='quest-body flex-properties-c'>" +
-                "<div class='icon-black limit-lines'>" +
-                "<a onclick='showAtualizarTaskModal(" + x + ")'>" +
-                "<h4 class='Nome'>" + this.get(x)['Nome'] + "</h4>" +
-                "</a>" +
-                "</div>" +
-                "<div class='limit-lines'>" +
-                "<h4 class='Descricao'>" + this.get(x)["Descricao"] + "</h4>" +
-                "</div>" +
-                "<div>" +
-                "<h4 class='DataConclusao'>" + this.get(x)["DataConclusao"].split('-').reverse().join('/') + "</h4>" +
-                "</div>" +
-                "<div class='select-container'>" +
-                "<select class='form-control Status' onchange='mudarStatus(" + x + ")'>" +
-                "<option value='0'>A Fazer</option>" +
-                "<option value='1'>Fazendo</option>" +
-                "<option value='2'>Feito</option>" +
-                "</select>" +
-                "</div>" +
-                "</div>" +
-                "</div>";
+            var content =   "<div class='margin-bottom item' id=" + x + ">" +
+                                "<a onclick='showAtualizarTaskModal(" + x + ")'><div class='filete' style='background-color: " + quest.Cor + "'></div></a>" +
+                                "<div class='quest-body flex-properties-c'>" +
+                                    "<div class='icon-black limit-lines'>" +
+                                        "<a onclick='showAtualizarTaskModal(" + x + ")'>" +
+                                            "<h4 class='Nome'>" + this.get(x)['Nome'] + "</h4>" +
+                                         "</a>" +
+                                     "</div>" +
+                                     "<div class='limit-lines'>" +
+                                        "<h4 class='Descricao'>" + this.get(x)["Descricao"] + "</h4>" +
+                                     "</div>" +
+                                     "<div>" +
+                                         "<h4 class='DataConclusao'>" + this.get(x)["DataConclusao"].split('-').reverse().join('/') + "</h4>" +
+                                     "</div>" +
+                                     "<div class='select-container'>" +
+                                        "<select class='form-control Status' onchange='mudarStatus(" + x + ")'>" +
+                                            "<option value='0'>A Fazer</option>" +
+                                            "<option value='1'>Fazendo</option>" +
+                                            "<option value='2'>Feito</option>" +
+                                        "</select>" +
+                                    "</div>" +
+                                "</div>" +
+                            "</div>";
             $("#task-container").append(content);
             $('#' + x + ' .Status').val(this.get(x)["Status"]);
         }
@@ -81,6 +81,7 @@ function showAtualizarTaskModal(index) {
     $("#DescricaoTaskAtualizar").text(quest.get(index)["Descricao"]);
     $("#DataConclusaoAtualizar").val(quest.get(index)["DataConclusao"].split('/').reverse().join('-'));
     $("#DificuldadeAtualizar").val(quest.get(index)["Dificuldade"])
+    $("#ResponsavelAtualizar").val(quest.get(index)["UsuarioResponsavelId"])
     $("#AtualizarTask").data('index', index);
     $("#ExcluirTask").data('index', index);
 
@@ -144,6 +145,10 @@ $(document).ready(function () {
             quest.Cor = result.data.Cor;
             quest.TasksViewModel = result.data.TasksViewModel;
 
+            $.each(quest.TasksViewModel, function (index, value) {
+                quest.TasksViewModel[index].DataConclusao = new Date(parseInt(/^(\/)(Date\()(.+)(\))(\/)$/g.exec(value.DataConclusao)[3])).toLocaleDateString()
+            });
+
             quest.render();
             $("#Cor").spectrum({
                 preferredFormat: "hex",
@@ -176,6 +181,7 @@ $(document).ready(function () {
         $("#DescricaoTask").text('');
         $("#DataConclusao").val('');
         $("#Dificuldade").val(0);
+        $("#Responsavel").val("")
     })
 
     $('#modalCriarFeedback').on('hidden.bs.modal', function () {
@@ -239,6 +245,7 @@ $(document).ready(function () {
             quest.TasksViewModel[index].Descricao = $('#DescricaoTaskAtualizar').val();
             quest.TasksViewModel[index].DataConclusao = $('#DataConclusaoAtualizar').val();
             quest.TasksViewModel[index].Dificuldade = $('#DificuldadeAtualizar').val();
+            quest.TasksViewModel[index].UsuarioResponsavelId = $('#ResponsavelAtualizar').val();
 
             quest.Nome = $("#Nome").val();
             quest.Descricao = $("#Descricao").val();
@@ -313,7 +320,6 @@ $(document).ready(function () {
             },
             DescricaoTask: {
                 required: true,
-                minlength: 2,
                 maxlength: 300
             },
             DataConclusao: {
@@ -340,7 +346,6 @@ $(document).ready(function () {
             },
             DescricaoTaskAtualizar: {
                 required: true,
-                minlength: 2,
                 maxlength: 300
             },
             DataConclusaoAtualizar: {
@@ -362,7 +367,6 @@ $(document).ready(function () {
         rules: {
             TextoFeedback: {
                 required: true,
-                minlength: 2,
                 maxlength: 300
             },
             Nota: {

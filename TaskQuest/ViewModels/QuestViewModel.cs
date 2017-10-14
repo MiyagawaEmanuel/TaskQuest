@@ -7,6 +7,20 @@ using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels
 {
+
+    public class QuestInfoViewModel
+    {
+
+        public string QuestId { get; set; }
+
+        public bool HasGroup { get; set; }
+
+        public string GrupoId { get; set; }
+
+        public List<User> Colaboradores { get; set; }
+
+    }
+
     public class QuestViewModel
     {
 
@@ -53,7 +67,8 @@ namespace TaskQuest.ViewModels
                 Nome = Nome,
                 Descricao = Descricao,
                 Status = Status,
-                Dificuldade = Dificuldade
+                Dificuldade = Dificuldade,
+                DataConclusao = DataConclusao
             };
         }
 
@@ -79,6 +94,10 @@ namespace TaskQuest.ViewModels
         [Required]
         [Range(0, 4)]
         public int Dificuldade { get; set; }
+
+        public string UsuarioResponsavelId { get; set; }
+
+        public string ResponsavelNome { get; set; }
 
         public FeedbackViewModel FeedbackViewModel { get; set; }
 

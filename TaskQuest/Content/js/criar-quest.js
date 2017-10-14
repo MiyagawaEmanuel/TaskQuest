@@ -1,11 +1,4 @@
-﻿function showBalloon(alert, classe) {
-    $(".balloon").addClass(classe);
-    $(".balloon").text(alert);
-    $(".balloon").css("display", "block");
-    $(".balloon").delay(4000).fadeOut(2000);
-}
-
-var quest = {
+﻿var quest = {
 
     tasks: [],
 
@@ -96,6 +89,7 @@ $(document).ready(function () {
         $("#DescricaoTask").text('');
         $("#DataConclusao").val('');
         $("#Dificuldade").val(0);
+        $("#Responsavel").val("")
     })
 
     $('#modalAtualizarTask').on('hidden.bs.modal', function () {
@@ -142,11 +136,16 @@ $(document).ready(function () {
                 'Descricao': $('#DescricaoTask').val(),
                 'DataConclusao': $('#DataConclusao').val(),
                 'Dificuldade': $('#Dificuldade').val(),
-                'Status': 0
+                'Status': 0,
+                'UsuarioResponsavelId': $('#Responsavel').val()
             });
             quest.render()
             $('#modalAdicionarTask').modal('hide');
         }
+    });
+
+    $("#modalAtualizarTask").on('show.bs.modal', function () {
+        $("#ResponsavelAtualizar").val(quest.get($("#AtualizarTask").data('index')).UsuarioResponsavelId);
     });
 
     $('#AtualizarTask').click(function (event) {
@@ -157,7 +156,7 @@ $(document).ready(function () {
                 'Descricao': $('#DescricaoTaskAtualizar').val(),
                 'DataConclusao': $('#DataConclusaoAtualizar').val(),
                 'Dificuldade': $('#DificuldadeAtualizar').val(),
-                'Status': $('#' + $("#AtualizarTask").data('index') + ' .Status').val()
+                'UsuarioResponsavelId': $('#Responsavel').val()
             })
             quest.render();
             $('#modalAtualizarTask').modal('hide');
@@ -182,12 +181,12 @@ $(document).ready(function () {
         rules: {
             Nome: {
                 required: true,
-                minlength: 3,
+                minlength: 2,
                 maxlength: 20
             },
             Descricao: {
                 required: true,
-                maxlength: 120
+                maxlength: 300
             }
         }
     });
@@ -234,7 +233,6 @@ $(document).ready(function () {
             },
             DescricaoTaskAtualizar: {
                 required: true,
-                minlength: 2,
                 maxlength: 300
             },
             DataConclusaoAtualizar: {

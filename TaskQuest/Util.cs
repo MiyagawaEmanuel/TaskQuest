@@ -134,6 +134,9 @@ namespace TaskQuest
         {
             string plaintext = null;
 
+            if (string.IsNullOrEmpty(cipherText))
+                return "";
+
             using (Aes aesAlg = Aes.Create())
             {
                 aesAlg.Key = Key;

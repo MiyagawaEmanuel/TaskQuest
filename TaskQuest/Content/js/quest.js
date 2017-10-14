@@ -82,7 +82,7 @@ function submit(id, action) {
 
 function showTaskModal(index) {
     $("#NomeTask").text(quest.get(index)["Nome"]);
-    $("#Descricao").text(quest.get(index)["Descricao"]);
+    $("#DescricaoTask").text(quest.get(index)["Descricao"]);
     $("#DataConclusao").text(quest.get(index)["DataConclusao"].split('-').reverse().join('/'));
 
     var dificuldade = "";
@@ -98,6 +98,7 @@ function showTaskModal(index) {
             break;
     }
     $("#Dificuldade").text(dificuldade);
+    $("#Responsavel").text(quest.get(index).ResponsavelNome);
 
     $("#modalTask").modal('show');
 }
@@ -118,6 +119,11 @@ $(document).ready(function () {
             quest.Descricao = result.data.Descricao;
             quest.Cor = result.data.Cor;
             quest.TasksViewModel = result.data.TasksViewModel;
+
+            $.each(quest.TasksViewModel, function (index, value) {
+                quest.TasksViewModel[index].DataConclusao = new Date(parseInt(/^(\/)(Date\()(.+)(\))(\/)$/g.exec(value.DataConclusao)[3])).toLocaleDateString()
+            });
+
             quest.render();
         },
         error: function () {
