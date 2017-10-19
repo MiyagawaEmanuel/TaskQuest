@@ -1,9 +1,15 @@
-﻿@{
+﻿@model Tuple<string>
+
+@{
     ViewBag.Title = "Confirme seu email";
     Layout = "~/Views/Shared/_LayoutVazio.cshtml";
 }
 
-<div class="flex-properties-c">
-    <span class="messages-1 messages-error">Confirme seu email</span>
-    <span class="messages-2 icon-black"><a href="/Home/Index">Voltar</a></span>
-</div>
+<section class="background-page flex-properties-c">
+    <div class="flex-properties-c">
+        <span class="messages-1">Você ainda não confirmou seu e-mail</span>
+        <span class="messages-2">Para acessar o sistema, cheque nossa confirmação em sua caixa de entrada</span>
+        <span class="messages-2"><a class="link" href="/Account/ReEnviarEmail">Reenviar e-mail</a></span>
+        <span class="messages-2"><a class="link" href="/">Voltar para a página inicial</a></span>
+    </div>
+</section>

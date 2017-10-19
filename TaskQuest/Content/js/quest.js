@@ -52,7 +52,7 @@ var quest = {
                 "<h4 class='DataConclusao'>" + this.get(x)["DataConclusao"].split('-').reverse().join('/') + "</h4>" +
                 "</div>" +
                 "<div class='select-container'>" +
-                "<select class='form-control Status' onchange='mudarStatus(" + x + ")'>" +
+                "<select id='" + this.get(x)["Id"] + "' class='form-control Status' onchange='mudarStatus(this)'>" +
                 "<option value='0'>A Fazer</option>" +
                 "<option value='1'>Fazendo</option>" +
                 "<option value='2'>Feito</option>" +

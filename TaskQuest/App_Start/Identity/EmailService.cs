@@ -29,9 +29,21 @@ namespace TaskQuest.Identity
             var credentials = new NetworkCredential(ConfigurationManager.AppSettings["mailAccount"], ConfigurationManager.AppSettings["mailPassword"]);
             smtpClient.Credentials = credentials;
             smtpClient.EnableSsl = true;
-            smtpClient.Send(msg);
+
+            bool isSent = false;
+
+            while (!isSent)
+            {
+                try
+                {
+                    smtpClient.Send(msg);
+                    isSent = true;
+                }
+                catch (Exception) {}
+            }
 
             return Task.FromResult(0);
+
         }
     }
 }

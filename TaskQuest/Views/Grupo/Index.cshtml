@@ -78,7 +78,7 @@ ViewBag.Title = "Grupo";
         <div id="integrantes" data-rel="@Model.Id">
             @foreach (var integrante in Model.Integrantes)
             {
-                <h4 class="integrante" data-id="@integrante.Email">&bull; @integrante.Nome</h4>
+                <h4 class="integrante" data-email="@integrante.Email">&bull; @integrante.Nome</h4>
             }
         </div>
 

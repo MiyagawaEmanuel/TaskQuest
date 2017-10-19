@@ -3,4 +3,16 @@
     Layout = "~/Views/Shared/_LayoutVazio.cshtml";
 }
 
-<h2>Login</h2>
+<section class="background-page flex-properties-c">
+    <div class="login">
+        <form class="flex-properties-c" method="post" action="/Account/Login">
+            @Html.AntiForgeryToken()
+            <h1 class=" messages-1">
+            Login</h1>
+            <input type="text" class="form-control input-login" placeholder="Email" name="LoginEmail" id="LoginEmail">
+            <input type="password" class="form-control input-login" placeholder="Senha" name="LoginSenha" id="LoginSenha">
+            <input type="submit" class="btn btn-primary btn-lg darkblue-bg btn-login" value="Entrar" />
+            <a href="Forgot.html" id="forget">Esqueceu sua senha?</a>
+        </form>
+    </div>
+</section>

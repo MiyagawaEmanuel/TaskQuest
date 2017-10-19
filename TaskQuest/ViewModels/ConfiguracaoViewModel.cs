@@ -43,7 +43,6 @@ namespace TaskQuest.ViewModels
                     user.Nome = Nome;
                     user.Sobrenome = Sobrenome;
                     user.DataNascimento = DataNascimento.StringToDateTime();
-                    user.Email = Email;
                     user.Cor = Cor;
 
                     return user;

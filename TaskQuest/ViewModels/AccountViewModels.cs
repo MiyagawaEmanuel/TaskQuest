@@ -136,4 +136,20 @@ namespace TaskQuest.ViewModels
         [EmailAddress]
         public string Email { get; set; }
     }
+
+    public class ChangePasswordViewModel
+    {
+
+        [Required]
+        public string Password { get; set; }
+
+        [Required]
+        [DataType(DataType.Password)]
+        [StringLength(50, MinimumLength = 8)]
+        public string NewPassword { get; set; }
+
+        [Required]
+        [System.ComponentModel.DataAnnotations.CompareAttribute("NewPassword")]
+        public string ConfirmPassword { get; set; }
+    }
 }

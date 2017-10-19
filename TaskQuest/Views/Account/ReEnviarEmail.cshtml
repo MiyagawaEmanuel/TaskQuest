@@ -1,0 +1,14 @@
+﻿@{
+    ViewBag.Title = "ReEnviarEmail";
+    Layout = "~/Views/Shared/_LayoutVazio.cshtml";
+}
+
+<section class="flex-properties-c">
+        <form class="flex-properties-c" method="post" action="/Account/ReEnviarEmail">
+            @Html.AntiForgeryToken()
+            <h1 class=" messages-1">Reenviar E-mail</h1>
+            <input type="text" class="form-control input-login" placeholder="E-mail" name="Email" id="Email">
+            <button class="btn btn-primary btn-lg darkblue-bg btn-login">Reenviar</button>
+        </form>
+    </div>
+</section>

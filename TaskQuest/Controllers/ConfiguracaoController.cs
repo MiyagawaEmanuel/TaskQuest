@@ -52,7 +52,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public ActionResult EditarUsuario(UserViewModel model)
+        public async System.Threading.Tasks.Task<ActionResult> EditarUsuario(UserViewModel model)
         {
             if (ModelState.IsValid)
             {
@@ -60,13 +60,66 @@ namespace TaskQuest.Controllers
 
                 if (user != null)
                 {
-                    db.Entry(user).State = System.Data.Entity.EntityState.Modified;
-                    db.SaveChanges();
 
-                    TempData["Alerta"] = "Atualizado com sucesso";
-                    TempData["Classe"] = "green-alert";
+                    if (user.UserName != model.Email)
+                    {
+                        if(UserManager.FindByEmail(model.Email) == null)
+                        {
+                            user.UserName = model.Email;
+                            user.Email = model.Email;
+                            user.EmailConfirmed = false;
+                            db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                            db.SaveChanges();
 
-                    return RedirectToAction("Index");
+                            var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                            var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = Util.Encrypt(user.Id.ToString()), code = code }, protocol: Request.Url.Scheme);
+
+                            var mailBody = string.Format(@"
+                                <table width=621 border='1' cellpadding='0' cellspacing='0'>
+
+	                                <tr height=160 style='background-color: #106494;'>
+		                                <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
+	                                </tr>
+
+	                                <tr height=300>
+		                                <td style='text-align: center;'>
+			                                <span style='font-size: 50px; font-family: Impact;'>Confirmação de Cadastro</span>
+			                                <br>
+			                                <br>
+			                                <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Parabéns! Você se registrou no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{0}' style='text-decoration: none; color: #106494;'>Clique aqui para confirmar o cadastro</a></span>
+		                                </td>
+	                                </tr>
+
+                                </table>
+                            ", callbackUrl);
+
+                            await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
+
+                            TempData["Alerta"] = "Confirme o email atualizado";
+                            TempData["Classe"] = "green-alert";
+
+                            SignOutAsync();
+
+                            return RedirectToAction("ConfirmeEmail", "Account");
+                        }
+                        else
+                        {
+                            TempData["Alerta"] = "Algo deu errado";
+                            TempData["Classe"] = "yellow-alert";
+                            return RedirectToAction("Index");
+                        }
+                    }
+
+                    else
+                    {
+                        db.Entry(user).State = System.Data.Entity.EntityState.Modified;
+                        db.SaveChanges();
+
+                        TempData["Alerta"] = "Atualizado com sucesso";
+                        TempData["Classe"] = "green-alert";
+
+                        return RedirectToAction("Index");
+                    }
                 }
                 else
                 {
@@ -218,6 +271,15 @@ namespace TaskQuest.Controllers
             TempData["Classe"] = "yellow-alert";
             return RedirectToAction("Index");
 
+        }
+
+        private async void SignOutAsync()
+        {
+            var clientKey = Request.Browser.Type;
+            var user = UserManager.FindById(User.Identity.GetUserId<int>());
+            await UserManager.SignOutClientAsync(user, clientKey);
+            HttpContext.GetOwinContext().Authentication.SignOut();
+            UserManager.UpdateSecurityStamp(User.Identity.GetUserId<int>());
         }
 
     }

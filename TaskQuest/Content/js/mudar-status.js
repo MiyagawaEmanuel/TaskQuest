@@ -1,10 +1,3 @@
-function showBalloon(alert, classe) {
-    $("#BalloonStatus").addClass(classe);
-    $("#BalloonStatus").text(alert);
-    $("#BalloonStatus").css("display", "block");
-    $("#BalloonStatus").delay(4000).fadeOut(2000);
-}
-
 function mudarStatus(status) {
     $.ajax({
         contentType: 'application/json;',

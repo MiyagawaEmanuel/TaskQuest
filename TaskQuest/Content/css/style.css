@@ -68,6 +68,10 @@ body {
     font-family: Calibri;
 }
 
+.flex {
+    display: flex;
+}
+
 .flex-properties-r {
     display: -webkit-box;
     display: -ms-flexbox;
@@ -398,13 +402,8 @@ label {
     width: 160px;
 }
 
-
-
-
-
 .background-page {
     background-color: white;
-    height: 130px;
 }
 
 .logo-task {
@@ -426,6 +425,11 @@ label {
     margin-top: 0%;
 }
 
+.forgot .messages-2 {
+    margin-top: 4%;
+    margin-bottom: 5%;
+}
+
 .messages-2 {
     font-size: 20px;
     color: white;
@@ -439,17 +443,21 @@ label {
 }
 
 .login {
-    margin-top: 5%;
+    margin-top: 2%;
     -webkit-box-pack: center;
     -ms-flex-pack: center;
     justify-content: center;
-    margin-top: 5%;
     justify-content: center;
 }
 
+    .login .messages-1 {
+        margin-bottom: 10%;
+        margin-top: 10%;
+    }
+
 .input-login {
     width: 300px;
-    margin-bottom: 2%;
+    margin-bottom: 7%;
 }
 
 .btn-login {
@@ -476,6 +484,12 @@ label {
         color: #4682B4;
         text-decoration: none;
     }
+
+
+.confirmation .messages-1 {
+    margin-top: 10%;
+    margin-bottom: 2%;
+}
 
 .task-quest {
     font-size: 75px;
@@ -505,8 +519,10 @@ label {
 .questlist-block {
     display: flex;
     align-items: center;
-    height: 100px;
-    width: 170px;
+    height: auto;
+    min-height: 130px;
+    width: 230px;
+    z-index: 1;
 }
 
     .questlist-block:hover {
@@ -532,12 +548,50 @@ label {
     margin-bottom: 2%;
 }
 
+.quest-nome a{
+    color: #106494;
+}
+
 .quest-cor {
     width: 40px;
     height: 40px;
     border-radius: 90px;
 }
 
+.show-quest {
+    margin-left: 10%;
+    font-size: 22px;
+    z-index: 10000;
+}
+
+.reset-password .messages-1 {
+    margin-top: 10%;
+    margin-bottom: 10%;
+}
+
+.change-password .messages-1{
+    margin-bottom: 10%;
+}
+
+.quest-info {
+    margin-left: 5%;
+    width: 130px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.quest-desc {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.questlist-block-2{
+    width: 100%;
+    align-items: center;
+    height: 100%;
+}
 
 @media (max-width: 600px) {
 

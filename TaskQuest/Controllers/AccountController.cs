@@ -39,25 +39,25 @@ namespace TaskQuest.Controllers
 
         public ApplicationUserManager UserManager
         {
-            get 
-            { 
-                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>(); 
+            get
+            {
+                return _userManager ?? HttpContext.GetOwinContext().GetUserManager<ApplicationUserManager>();
             }
-            private set 
-            { 
+            private set
+            {
                 _userManager = value;
             }
         }
 
         public ApplicationSignInManager SignInManager
         {
-            get 
-            { 
+            get
+            {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -104,10 +104,10 @@ namespace TaskQuest.Controllers
             {
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
-                    
-                    //if (!user.EmailConfirmed)
-                    //    return View("ConfirmeEmail");
 
+                    if (!user.EmailConfirmed)
+                        return RedirectToAction("ConfirmeEmail", "Account");
+                        
                     await SignInAsync(user, true);
 
                     if (returnUrl != null && Url.IsLocalUrl(returnUrl))
@@ -124,6 +124,63 @@ namespace TaskQuest.Controllers
                     TempData["Alerta"] = "Email ou Senha incorretos";
                     TempData["Classe"] = "yellow-alert";
                     return RedirectToAction("Index", "Home");
+            }
+        }
+
+        [AllowAnonymous]
+        public ActionResult ConfirmeEmail(string Id)
+        {
+            return View();
+        }
+
+        [AllowAnonymous]
+        public ActionResult ReEnviarEmail()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [AllowAnonymous]
+        public async Task<ActionResult> ReEnviarEmail(string Email)
+        {
+            var user = UserManager.FindByName(Email);
+
+            if (user != null)
+            {
+                var code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);
+                var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = Util.Encrypt(user.Id.ToString()), code = code }, protocol: Request.Url.Scheme);
+
+                var mailBody = string.Format(@"
+                    <table width=621 border='1' cellpadding='0' cellspacing='0'>
+
+	                    <tr height=160 style='background-color: #106494;'>
+		                    <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
+	                    </tr>
+
+	                    <tr height=300>
+		                    <td style='text-align: center;'>
+			                    <span style='font-size: 50px; font-family: Impact;'>Confirmação de Cadastro</span>
+			                    <br>
+			                    <br>
+			                    <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Parabéns! Você se registrou no sistema TaskQuest.</span style='font-family:Calibri; font-size: 20px;'><br><br><span style='font-size: 20px;'><a href='{0}' style='text-decoration: none; color: #106494;'>Clique aqui para confirmar o cadastro</a></span>
+		                    </td>
+	                    </tr>
+
+                    </table>
+                ", callbackUrl);
+
+                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
+
+                TempData["Alerta"] = "Verifique seu email";
+                TempData["Classe"] = "green-alert";
+
+                return RedirectToAction("ConfirmeEmail", "Account");
+            }
+            else
+            {
+                TempData["Alerta"] = "Email não encontrado";
+                TempData["Classe"] = "yellow-alert";
+                return View();
             }
         }
 
@@ -175,8 +232,8 @@ namespace TaskQuest.Controllers
 
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";
-                
-                return View("ConfirmeEmail");
+
+                return RedirectToAction("ConfirmeEmail", "Account");
             }
 
             TempData["Alerta"] = "Algo deu errado";
@@ -226,27 +283,41 @@ namespace TaskQuest.Controllers
                     TempData["Classe"] = "yellow-alert";
                     return RedirectToAction("Index", "Home");
                 }
-                if (!await UserManager.IsEmailConfirmedAsync(user.Id))
-                    return RedirectToAction("ConfirmEmail");
-                
+
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code },
                     Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha",
-                    "Por favor altere sua senha clicando <a href='" + callbackUrl + "'>aqui</a>");
+                await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha", string.Format(@"
+                    <table width=621 border='1' cellpadding='0' cellspacing='0'>
+	                    <tr height=160 style='background-color: #106494;'>
+		                    <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
+	                     </tr>
+
+	                     <tr height=300>
+		                    <td style='text-align: center;'>
+			                    <span style='font-size: 50px; font-family: Impact;'>Alteração de Senha</span>
+			                    <br>
+			                    <br>
+			                    <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Por favor, altere sua senha </span style='font-family:Calibri; font-size: 20px;'><span style='font-size: 20px;'><a href='{0}' style='text-decoration: none; color: #106494;'>clicando aqui.</a></span>
+		                    </td>
+	                    </tr>       
+                    </table>", callbackUrl));
                 return View("ForgotPasswordConfirmation");
             }
 
-            // No caso de falha, reexibir a view. 
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
             return View(model);
         }
 
         //
         // GET: /Account/ResetPassword
         [AllowAnonymous]
-        public ActionResult ResetPassword(string code)
+        public ActionResult ResetPassword(int userID, string code)
         {
-            return code == null ? View("Error") : View();
+            ViewBag.userID = userID;
+            ViewBag.code = code;
+            return code == null ? View("Error") : View("ResetPassword", new Tuple<string>(code));
         }
 
         //
@@ -257,19 +328,28 @@ namespace TaskQuest.Controllers
         public async Task<ActionResult> ResetPassword(ResetPasswordViewModel model)
         {
             if (!ModelState.IsValid)
-                return View(model);
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "yellow-alert";
+                return View();
+            }
+
             var user = await UserManager.FindByNameAsync(model.Email);
-            
+
             if (user == null)
             {
                 TempData["Alerta"] = "Algo deu errado";
                 TempData["Classe"] = "yellow-alert";
-                return RedirectToAction("Index", "Home");
+                return View();
             }
-            
+
             var result = await UserManager.ResetPasswordAsync(user.Id, model.Code, model.Password);
             if (result.Succeeded)
             {
+
+                user.EmailConfirmed = true;
+                UserManager.Update(user);
+
                 TempData["Alerta"] = "Senha modificada com sucesso";
                 TempData["Classe"] = "green-alert";
                 return RedirectToAction("Login", "Account");
@@ -278,6 +358,42 @@ namespace TaskQuest.Controllers
             TempData["Alerta"] = "Algo deu errado";
             TempData["Classe"] = "yellow-alert";
             return RedirectToAction("Index", "Home");
+        }
+
+        public ActionResult ChangePassword()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ChangePassword(ChangePasswordViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                User user;
+                using (var db = new DbContext())
+                    user = db.Users.Find(User.Identity.GetUserId<int>());
+
+                if (UserManager.CheckPassword(user, model.Password))
+                {
+                    UserManager.ChangePassword<User, int>(user.Id, model.Password, model.NewPassword);
+                    TempData["Alerta"] = "Senha alterada com sucesso";
+                    TempData["Classe"] = "green-alert";
+                    return RedirectToAction("Index", "Configuracao");
+                }
+                else
+                {
+                    TempData["Alerta"] = "Senha incorreta";
+                    TempData["Classe"] = "yellow-alert";
+                }
+            }
+            else
+            {
+                TempData["Alerta"] = "Algo deu errado";
+                TempData["Classe"] = "yellow-alert";
+            }
+            return View();
         }
 
         //
@@ -298,7 +414,7 @@ namespace TaskQuest.Controllers
             await UserManager.SignOutClientAsync(user, clientKey);
             HttpContext.GetOwinContext().Authentication.SignOut();
         }
-        
+
         public async Task<ActionResult> SignOutEverywhere()
         {
             UserManager.UpdateSecurityStamp(User.Identity.GetUserId<int>());

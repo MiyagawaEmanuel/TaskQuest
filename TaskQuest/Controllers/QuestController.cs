@@ -59,7 +59,7 @@ namespace TaskQuest.Controllers
                     Cor = model.Cor
                 };
 
-                if (model.TasksViewModel.Count != 0)
+                if (model.TasksViewModel != null)
                 {
                     foreach (var tsk in model.TasksViewModel)
                     {
@@ -406,17 +406,17 @@ namespace TaskQuest.Controllers
             {
                 Task task = db.Task.Find(TaskId);
 
-                if (!User.Identity.HasQuest(Id))
+                if (!User.Identity.HasQuest(Util.Encrypt(task.QuestId.ToString())))
                     return "false";
 
                 task.Status = Convert.ToInt32(Status);
 
                 if (task.Status == 0 || task.Status == 1)
                 {
-                    foreach (var feb in db.Feedback.Where(q => q.Task == task))
+                    foreach (var feb in db.Feedback.Where(q => q.Task.Id == task.Id))
                         db.Feedback.Remove(feb);
 
-                    foreach (var exp in db.ExperienciaUsuario.Where(q => q.Task == task))
+                    foreach (var exp in db.ExperienciaUsuario.Where(q => q.Task.Id == task.Id))
                         db.ExperienciaUsuario.Remove(exp);
                 }
                 
