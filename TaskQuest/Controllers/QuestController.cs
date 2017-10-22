@@ -228,7 +228,23 @@ namespace TaskQuest.Controllers
                             task.Nome = tsk.Nome;
                             task.Descricao = tsk.Descricao;
                             task.Dificuldade = tsk.Dificuldade;
+
+                            if (task.Status == 0)
+                            {
+                                if (tsk.Status == 1)
+                                    task.DataInicio = DateTime.Now;
+                                else if (tsk.Status == 2)
+                                {
+                                    task.DataInicio = DateTime.Now;
+                                    task.DataConclusao = DateTime.Now;
+                                }
+                            }
+                            else if (task.Status == 1)
+                                if (tsk.Status == 2)
+                                    task.DataConclusao = DateTime.Now;
+
                             task.Status = tsk.Status;
+
                             task.DataConclusao = tsk.DataConclusao;
 
                             if (tsk.UsuarioResponsavelId != null)
@@ -407,6 +423,30 @@ namespace TaskQuest.Controllers
                 Task task = db.Task.Find(TaskId);
 
                 if (!User.Identity.HasQuest(Util.Encrypt(task.QuestId.ToString())))
+                    return "false";
+
+                int status = Convert.ToInt32(Status);
+                if (status == 0 || status == 1 || status == 2)
+                {
+
+                    if (task.Status == 0)
+                    {
+                        if (status == 1)
+                            task.DataInicio = DateTime.Now;
+                        else if (status == 2)
+                        {
+                            task.DataInicio = DateTime.Now;
+                            task.DataConclusao = DateTime.Now;
+                        }
+                    }
+                    else if (task.Status == 1)
+                        if (status == 2)
+                            task.DataConclusao = DateTime.Now;
+
+                    task.Status = status;
+
+                }
+                else
                     return "false";
 
                 task.Status = Convert.ToInt32(Status);

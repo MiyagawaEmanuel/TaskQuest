@@ -26,7 +26,6 @@ namespace TaskQuest.ViewModels
             this.Nome = user.Nome;
             this.Sobrenome = user.Sobrenome;
             this.DataNascimento = user.DataNascimento.ToString("yyyy-MM-dd");
-            this.Email = user.Email;
             this.Cor = user.Cor;
         }
 
@@ -66,11 +65,6 @@ namespace TaskQuest.ViewModels
         [Date]
         [Required]
         public string DataNascimento { get; set; }
-
-        [Required]
-        [EmailAddress]
-        [StringLength(50, MinimumLength = 10)]
-        public string Email { get; set; }
 
         [Required]
         [StringLength(7, MinimumLength = 4)]

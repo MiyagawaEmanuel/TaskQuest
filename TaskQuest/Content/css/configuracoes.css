@@ -22,7 +22,11 @@
 }
 
 .title-a, .title-b{
-	width: 50%
+	width: 50%;
+}
+
+.title-b .flex-properties-r{
+	width: auto !important;
 }
 
 .pads{
@@ -58,7 +62,6 @@
 }
 
 #chartContainer{
-	height: 300px; 
 	width: 100%;
 	margin-top: 1%;
 }

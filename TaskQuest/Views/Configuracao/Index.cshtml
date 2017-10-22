@@ -7,16 +7,17 @@
 @section css{
     <link rel="stylesheet" href="~/Content/css/configuracoes.css">
     <link rel="stylesheet" href="~/Content/css/spectrum.css">
+    <link rel="stylesheet" href="~/Content/css/loading.css" />
 }
 
 @section js{
     <script src="~/Content/js/spectrum.js"></script>
     <script src="~/Content/js/spectrum.config.js"></script>
-    <script src="~/Content/js/canvas/canvasjs.min.js"></script>
-    <script src="~/Content/js/graphics.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
     <script src="~/Content/js/jquery.mask.js"></script>
     <script src="~/Content/js/configuracoes.js"></script>
+    <script src="~/Content/js/Chart.bundle.js"></script>
+    <script src="~/Content/js/showBalloon.js"></script>
 }
 
 <div class="flex-properties-r subtitulo">
@@ -29,13 +30,24 @@
     </div>
 </div>
 
-<section>
-    <div class="container">
-        <div id="chartContainer"></div>
+<section class="container flex-properties-r" id="chartContainer">
+    <div id="loading" style="width: 100%">
+        <div id="floatingCirclesG">
+            <div class="f_circleG" id="frotateG_01"></div>
+            <div class="f_circleG" id="frotateG_02"></div>
+            <div class="f_circleG" id="frotateG_03"></div>
+            <div class="f_circleG" id="frotateG_04"></div>
+            <div class="f_circleG" id="frotateG_05"></div>
+            <div class="f_circleG" id="frotateG_06"></div>
+            <div class="f_circleG" id="frotateG_07"></div>
+            <div class="f_circleG" id="frotateG_08"></div>
+        </div>
     </div>
+    <div id="divChart" style="position: relative; width: 60%">
+        <canvas id="chart"></canvas>
+    </div>
+    <hr class="container quebra">
 </section>
-
-<hr class="container quebra">
 
 <section class="container">
     <div><h1 class="title">Informações Pessoais</h1></div>

@@ -27,6 +27,8 @@ namespace TaskQuest.Models
 
         public DateTime DataCriacao { get; set; }
 
+        public DateTime DataInicio { get; set; }
+
         public DateTime DataConclusao { get; set; }
 
         public bool RequerVerificacao { get; set; }

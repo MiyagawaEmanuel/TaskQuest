@@ -1,8 +1,92 @@
+var colors = [
+		'rgba(25,25,112,0.5)',
+		'rgba(0,0,255,0.5)',
+		'rgba(0,206,209,0.5)',
+		'rgba(75,0,130,0.5)',
+		'rgba(255,0,0,0.5)',
+		'rgba(255,69,0,0.5)',
+		'rgba(0,100,0,0.5)',
+		'rgba(139,69,19,0.5)',
+		'rgba(255,255,0,0.5)',
+		'rgba(255,215,0,0.5)',
+];
+
+function ResizeColors(size) {
+    var aux = colors;
+    while (aux.length < size)
+        aux.concat(colors);
+    return aux;
+}
+
+var barChartConfig = {
+    type: 'bar',
+    data: {
+        datasets: [
+            {
+                data: [],
+                backgroundColor: {},
+            }
+        ],
+        labels: []
+    },
+    options: {
+        scales: {
+            yAxes: [{
+                ticks: {
+                    beginAtZero: true
+                },
+                scaleLabel: {
+                    display: true,
+                    labelString: 'Quantidade de pontos'
+                }
+            }]
+        },
+        responsive: true,
+        title: {
+            display: true,
+            text: ""
+        },
+        legend: {
+            display: false
+        },
+    }
+};
+
 function submit(id, action) {
 	$('#' + id).attr('action', action).submit();
 }
 
 $(function () {
+
+    $.post("/Chart/ConfiguracaoChart", function(data){
+        oi = data;
+        if (data.Response != "Error")
+        {
+            if(data.Data.length === 0)
+                $("#chartContainer").hide();
+            else{
+                barChartConfig.data.datasets[0].data = data.Data;
+                barChartConfig.data.datasets[0].backgroundColor = ResizeColors(data.Data.length);;
+                barChartConfig.data.labels = data.Labels;
+                barChartConfig.options.title.text = data.Title;
+
+                var ctx = document.getElementById("chart").getContext("2d");
+                window.chart = new Chart(ctx, barChartConfig);
+            }
+        }
+        else{
+            $("#divChart").hide();
+            showBalloon("Algo deu errado", "yellow-alert");
+        }
+
+    })
+    .fail(function() {
+        $("#divChart").hide();
+        showBalloon("Algo deu errado", "yellow-alert");
+    })
+    .always(function(){
+        $("#loading").hide();
+    });
 
 	$("form").on('keyup keydown submit click focusout onfocus', function(){
 		var errors = $('[aria-invalid=true]');
