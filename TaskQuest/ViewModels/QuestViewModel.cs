@@ -68,6 +68,7 @@ namespace TaskQuest.ViewModels
                 Descricao = Descricao,
                 Status = Status,
                 Dificuldade = Dificuldade,
+                DataCriacao = DateTime.Now,
                 DataConclusao = DataConclusao
             };
         }

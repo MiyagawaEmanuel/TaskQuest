@@ -34,6 +34,7 @@ namespace TaskQuest.Migrations
                         tsk_status = c.Int(nullable: false),
                         tsk_dificuldade = c.Int(nullable: false),
                         tsk_data_criacao = c.DateTime(nullable: false, precision: 0, defaultValueSql: "CURRENT_TIMESTAMP"),
+                        DataInicio = c.DateTime(nullable: false, precision: 0),
                         tsk_data_conclusao = c.DateTime(nullable: false, precision: 0),
                         tsk_verificacao = c.Boolean(nullable: false),
                         usu_id_responsavel = c.Int(),
