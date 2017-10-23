@@ -1,4 +1,4 @@
-a {
+a{
     cursor: pointer;
 }
 
@@ -74,27 +74,27 @@ body {
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
     -ms-flex-wrap: wrap;
-    flex-wrap: wrap;
+        flex-wrap: wrap;
 }
 
 .flex-properties-c {
     display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
-    text-align: center;
-    -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+        display: -ms-flexbox;
+        display: flex;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+                flex-direction: column;
+        text-align: center;
+        -webkit-box-align: center;
+        -ms-flex-align: center;
+                align-items: center;
 }
 
 .group-container {
@@ -148,8 +148,8 @@ textarea {
     display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
-    -ms-flex-direction: row;
-    flex-direction: row;
+        -ms-flex-direction: row;
+            flex-direction: row;
 }
 
 .icon-white a {
@@ -177,27 +177,27 @@ textarea {
     text-decoration: none;
 }
 
-    .icon-black span:hover {
-        color: #106494;
-        text-decoration: none;
-    }
+.icon-black span:hover {
+    color: #106494;
+    text-decoration: none;
+}
 
-.quest-body a {
+.quest-body a{
     width: 100%;
 }
 
-.limit-lines {
+.limit-lines{
     width: 80%;
     margin: 0 auto;
 }
 
-    .limit-lines h4, h3, a {
-        overflow: hidden;
-        text-overflow: ellipsis;
-        white-space: nowrap;
-    }
+.limit-lines h4, h3, a {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
 
-.limit-lines_grupo {
+.limit-lines_grupo{
     margin: 0;
     width: 250px;
 }
@@ -206,10 +206,10 @@ textarea {
     width: initial;
 }
 
-    .limit-lines_grupo_icon a {
-        display: block;
-        width: 140px;
-    }
+.limit-lines_grupo_icon a{
+    display: block;
+    width: 140px;
+}
 
 .elipse {
     background-color: white;
@@ -221,11 +221,11 @@ textarea {
     display: -ms-flexbox;
     display: flex;
     -webkit-box-align: center;
-    -ms-flex-align: center;
-    align-items: center;
+        -ms-flex-align: center;
+            align-items: center;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
 }
 
 .error {
@@ -296,8 +296,8 @@ label {
     margin-left: 5%;
     width: 100%;
     -webkit-box-pack: start;
-    -ms-flex-pack: start;
-    justify-content: flex-start;
+        -ms-flex-pack: start;
+            justify-content: flex-start;
 }
 
     .pads h3 {
@@ -329,12 +329,6 @@ label {
     color: rgba(0,0,0,0.6);
 }
 
-#modalDownload .modal-body{
-    overflow-y: auto;
-    height: auto;
-    max-height: 450px;
-}
-
 .modal-body .select-container {
     position: static;
     width: 90px;
@@ -347,12 +341,12 @@ label {
     display: flex;
     -webkit-box-orient: vertical;
     -webkit-box-direction: normal;
-    -ms-flex-direction: column;
-    flex-direction: column;
+        -ms-flex-direction: column;
+            flex-direction: column;
 }
 
 .modal-body p {
-    color: black;
+    color: #929496;
     font-size: 18px;
 }
 
@@ -362,19 +356,6 @@ label {
 
 .modal-footer {
     text-align: center;
-}
-#modalDownload .modal-dialog{
-    overflow-y: initial;
-}
-
-#modalDownload .modal-open {
-    overflow: hidden;
-}
-
-.fa-file{
-    font-size: 50px;
-    width: 80px;
-    height: 80px;
 }
 
 .btn-cg {
@@ -424,93 +405,83 @@ label {
 
 
 
-.background-page {
-    background-color: white;
+.background-page{
+	background-color: white;
     height: 130px;
 }
 
-.logo-task {
-    text-align: center;
-    background-color: #106494;
-    width: 100%;
+.logo-task{
+	text-align: center;
+	background-color: #106494;
+	width: 100%;
     height: 100%;
 }
 
-.messages-1 {
-    font-size: 30px;
-    color: white;
-    font-family: Impact;
-    margin-top: 10%;
-    color: #231f20;
+.messages-1{
+	font-size: 30px;
+	color: white;
+	font-family: Impact;
+	margin-top: 10%;
+	color: #231f20;
 }
 
-.messages-forgot {
-    margin-top: 0%;
+.messages-forgot{
+	margin-top: 0%;
 }
 
-.messages-2 {
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
-    margin-bottom: 2%;
-    color: #929496;
+.messages-2{
+	font-size: 20px;
+	color: white;
+	text-decoration: none;
+	margin-bottom: 2%;
+	color: #929496;
 }
 
-.messages-error {
-    font-size: 50px;
+.messages-error{
+	font-size: 50px;
 }
 
-.login {
+.login{
     margin-top: 5%;
     -webkit-box-pack: center;
-    -ms-flex-pack: center;
-    justify-content: center;
-    margin-top: 5%;
-    justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+	margin-top: 5%;
+	justify-content: center;
 }
 
-.input-login {
-    width: 300px;
-    margin-bottom: 2%;
+.input-login{
+	width: 300px;
+	margin-bottom: 2%;
 }
 
-.btn-login {
-    width: 250px !important;
+.btn-login{
+	width: 250px !important;
 }
 
-#forget {
-    margin-top: 8%;
-    font-size: 20px;
-    color: white;
-    text-decoration: none;
+#forget{
+	margin-top: 8%;
+	font-size: 20px;
+	color: white;
+	text-decoration: none;
 }
 
-    #forget:hover {
-        color: #4682B4;
-    }
-
-.link {
-    text-decoration: none;
-    color: #106494;
+#forget:hover{
+	color: #4682B4;
 }
 
-    .link:hover {
-        color: #4682B4;
-        text-decoration: none;
-    }
-
-.task-quest {
-    font-size: 75px;
+.link{
+	text-decoration: none;
+	color: #106494;
 }
 
-.fa-download {
-    color: black;
-    font-size: 25px;
-    margin-top: 3%;
+.link:hover{
+	color: #4682B4;
+	text-decoration: none;
 }
 
-#modalDownload .modal-content {
-    width: 400px;
+.task-quest{
+	font-size: 75px;
 }
 
 
@@ -535,19 +506,19 @@ label {
     .title-b {
         width: 100%;
         -ms-flex-pack: distribute;
-        justify-content: space-around;
+            justify-content: space-around;
         margin-bottom: 4%;
     }
 
     .flex-properties-r {
         -webkit-box-orient: vertical;
         -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-        flex-direction: column;
+            -ms-flex-direction: column;
+                flex-direction: column;
         -webkit-box-align: center;
-        -ms-flex-align: center;
-        -ms-grid-row-align: center;
-        align-items: center;
+            -ms-flex-align: center;
+                    -ms-grid-row-align: center;
+                align-items: center;
         text-align: center;
     }
 
