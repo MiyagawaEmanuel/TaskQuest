@@ -128,6 +128,176 @@ function showFeedbackModal(index) {
     });
 }
 
+var previousModal;
+var resetModal;
+function change(modal){
+    resetModal = modal;
+    previousModal = modal;
+    $("#"+modal).modal('hide');
+    $("#modalDownload").modal('show');
+};
+
+$("#Concluir").click(function () {
+    $("#modalDownload").modal('hide');
+    $("#"+previousModal).modal('show');
+});
+
+function deletar(Id, div){
+    $.post("/File/Delete", { Id: Id })
+    .done(function(data){
+        if(data === "Ok"){
+            showBalloon("Deletado com sucesso", "green-alert");
+            $("#"+div).remove();
+        }
+        else if(data === "Error")
+            showBalloon("Algo deu errado", "yellow-alert");
+    })
+    .fail(function(){
+        showBalloon("Algo deu errado", "yellow-alert");  
+    });
+}
+
+var fileIds = [];
+document.getElementById('formFiles').onsubmit = function () {
+    $("#textFiles").val("");
+    fileIds = [];
+    var formdata = new FormData(); //FormData object
+    var fileInput = document.getElementById('Files');
+    var validTypes = ["rar", "zip", "doc", "docx", "pdf", "xlsx", "xls", "ppt", "pptx", "jpg", "jpeg", "png", "gif"];
+    //Iterating through each files selected in fileInput
+    var errors = { number: 0, values: [] };
+    for (i = 0; i < fileInput.files.length; i++) {
+        if(validTypes.indexOf(fileInput.files[i].name.split('.').pop()) == -1){
+            errors.values.push(fileInput.files[i].name);
+            errors.number += 1;
+        }
+        else if(fileInput.files[i].size <= 10000000)
+            formdata.append(fileInput.files[i].name, fileInput.files[i]);
+        else{
+            errors.values.push(fileInput.files[i].name);
+            errors.number += 1;
+        }
+    }
+    if(errors.number > 0){
+        var alert = "";
+        $.each(errors.values, function(index, value){
+            alert += value;
+            if(index === errors.number - 2)
+                alert += " e ";
+            else if(index != errors.number - 1)
+                alert += ", ";
+        });
+        if(errors.number > 1)
+            showBalloon("Os arquivos " + alert + " são inválidos", "yellow-alert");
+        else
+            showBalloon("O arquivo " + alert + " é inválido", "yellow-alert");
+    }
+            
+    if (fileInput.files.length > errors.number) {
+        //Creating an XMLHttpRequest and sending
+        var xhr = new XMLHttpRequest();
+        xhr.open('POST', '/File/Upload');
+        xhr.send(formdata);
+        $("#load").append(` <div id="floatingCirclesG">
+                                <div class="f_circleG" id="frotateG_01"></div>
+                                <div class="f_circleG" id="frotateG_02"></div>
+                                <div class="f_circleG" id="frotateG_03"></div>
+                                <div class="f_circleG" id="frotateG_04"></div>
+                                <div class="f_circleG" id="frotateG_05"></div>
+                                <div class="f_circleG" id="frotateG_06"></div>
+                                <div class="f_circleG" id="frotateG_07"></div>
+                                <div class="f_circleG" id="frotateG_08"></div>
+                            </div>`);
+        xhr.onreadystatechange = function () {
+            if(xhr.readyState == 4){
+                if (xhr.status == 200) {
+                    if(xhr.response === "")
+                        showBalloon("Algo deu errado", "yellow-alert");
+                    else{
+                        files = JSON.parse(xhr.response);
+                        var errors = { number: 0, values: []};
+                        $.each(files, function(index, file){
+                            if(file.Response === "Error"){
+                                errors.values.push(value.Nome);
+                                errors.number += 1;
+                            }
+                            else{
+                                fileIds.push(file.Id);
+                                var data = `
+                                    <div id="${index}-div" class="download-item flex-properties-r">
+                                        <form method="post" action="/File/Download" id="fileForm${index}" style="display: none;">
+                                            <input type="hidden" value="${file.Id}" name="Id" />
+                                        </form>
+                                        <div class="download-info">
+                                            ${ file.Response === "Image" ? `<img src="Images/${file.Url.split('.')[0]+'-min.jpg'}">` : `<i class="fa fa-file" aria-hidden="true"></i>` }
+                                        </div>
+                                        <div class="download-info icon-black">
+                                            <a class="limit-lines" title="${file.Nome}" onclick="$('#fileForm${index}').submit()"><p>${file.Nome}</p></a>
+                                        </div>
+                                        <div class="download-info">
+                                            <span>${Math.ceil(file.Size * 10) / 10} MB</span>
+                                        </div>
+                                        <div class="download-info">
+                                            <button onclick="deletar('${file.Id}', '${index}-div')" class="btn btn-danger">Delete</button>
+                                        </div>
+                                    </div>
+                                `;
+                                                $("#data").append(data);
+                                            }
+                            });
+                            if(errors.number > 0){
+                                var alert = "";
+                                $.each(errors.values, function(index, value){
+                                    alert += value;
+                                    if(index === errors.number - 2)
+                                        alert += " e ";
+                                    else if(index != errors.number - 1)
+                                        alert += ", ";
+                                });
+                                if(errors.number > 1)
+                                    showBalloon("Os arquivos " + alert + " têm formato incompatível", "yellow-alert");
+                                else
+                                    showBalloon("O arquivo " + alert + " tem formato incompatível", "yellow-alert");
+                            }
+                        }
+                    $("#load div").remove();
+                    }
+                else{
+                    showBalloon("Algo deu errado", "yellow-alert");
+                    $("#load div").remove();
+                }
+            }
+        }
+    }
+
+    return false;
+}
+
+// We can attach the `fileselect` event to all file inputs on the page
+$(document).on('change', ':file', function () {
+    var input = $(this),
+        numFiles = input.get(0).files ? input.get(0).files.length : 1,
+        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
+    oi = input;
+    input.trigger('fileselect', [numFiles, label]);
+});
+
+// We can watch for our custom `fileselect` event like this
+$(document).ready(function () {
+    $(':file').on('fileselect', function (event, numFiles, label) {
+
+        var input = $(this).parents('.input-group').find(':text'),
+            log = numFiles > 1 ? numFiles + ' files selected' : label;
+
+        if (input.length) {
+            input.val(log);
+        } else {
+            if (log) alert(log);
+        }
+
+    });
+});
+
 $(document).ready(function () {
 
     $.ajax({
@@ -176,12 +346,14 @@ $(document).ready(function () {
     });
 
     $('#modalAdicionarTask').on('hidden.bs.modal', function () {
-        document.getElementById("formAdicionarTaskModal").reset();
-        $("#NomeTask").val('');
-        $("#DescricaoTask").text('');
-        $("#DataConclusao").val('');
-        $("#Dificuldade").val(0);
-        $("#Responsavel").val("")
+        if (resetModal != 'modalAdicionarTask'){
+            document.getElementById("formAdicionarTaskModal").reset();
+            $("#NomeTask").val('');
+            $("#DescricaoTask").text('');
+            $("#DataConclusao").val('');
+            $("#Dificuldade").val(0);
+            $("#Responsavel").val("");
+        }
     })
 
     $('#modalCriarFeedback').on('hidden.bs.modal', function () {
@@ -222,7 +394,9 @@ $(document).ready(function () {
                 'Descricao': $('#DescricaoTask').val(),
                 'DataConclusao': $('#DataConclusao').val(),
                 'Dificuldade': $('#Dificuldade').val(),
-                'Status': 0
+                'Status': 0,
+                'UsuarioResponsavelId': $("#Responsavel").val(),
+                'FileIds': fileIds,
             });
             quest.Nome = $("#Nome").val();
             quest.Descricao = $("#Descricao").val();
@@ -246,6 +420,7 @@ $(document).ready(function () {
             quest.TasksViewModel[index].DataConclusao = $('#DataConclusaoAtualizar').val();
             quest.TasksViewModel[index].Dificuldade = $('#DificuldadeAtualizar').val();
             quest.TasksViewModel[index].UsuarioResponsavelId = $('#ResponsavelAtualizar').val();
+            quest.TasksViewModel[index].FileIds = fileIds;
 
             quest.Nome = $("#Nome").val();
             quest.Descricao = $("#Descricao").val();
@@ -290,7 +465,6 @@ $(document).ready(function () {
             },
             Descricao: {
                 required: true,
-                minLength: 2,
                 maxlength: 300
             },
             AtualizarTextoFeedback: {

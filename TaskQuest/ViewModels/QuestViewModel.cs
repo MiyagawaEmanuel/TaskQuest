@@ -58,6 +58,10 @@ namespace TaskQuest.ViewModels
 
     public class TaskViewModel
     {
+        public TaskViewModel()
+        {
+            FileIds = new List<string>();
+        }
 
         public Task CriarTask()
         {
@@ -99,6 +103,8 @@ namespace TaskQuest.ViewModels
         public string UsuarioResponsavelId { get; set; }
 
         public string ResponsavelNome { get; set; }
+
+        public List<string> FileIds { get; set; }
 
         public FeedbackViewModel FeedbackViewModel { get; set; }
 

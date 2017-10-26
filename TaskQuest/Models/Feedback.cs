@@ -5,6 +5,12 @@ namespace TaskQuest.Models
 {
     public class Feedback
     {
+
+        public Feedback()
+        {
+            DataCriacao = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         public string Relatorio { get; set; }

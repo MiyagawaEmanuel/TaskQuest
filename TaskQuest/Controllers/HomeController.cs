@@ -55,14 +55,11 @@ namespace TaskQuest.Controllers
         {
 
             List<Feedback> model = new List<Feedback>();
-            List<Grupo> grupos = new List<Grupo>();
             List<Task> tasks = new List<Task>();
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
 
-            grupos.Concat(user.Grupos.ToList());
-
-            foreach (var gru in grupos)
+            foreach (var gru in user.Grupos)
                 foreach (var qst in gru.Quests)
                     foreach (var tsk in qst.Tasks)
                         tasks.Add(tsk);

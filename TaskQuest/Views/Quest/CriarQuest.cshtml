@@ -92,6 +92,9 @@
                             <option value="2">Difícil</option>
                         </select>
                     </div>
+                    <div class="form-group" title="Subir Arquivos">
+                        <a onclick="change('modalAdicionarTask')"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    </div>
                     @if (Model.HasGroup)
                     {
                         <div class="select-container">
@@ -146,6 +149,9 @@
                             <option value="2">Difícil</option>
                         </select>
                     </div>
+                    <div class="form-group" title="Subir Arquivos">
+                        <a onclick="change('modalAdicionarTask')"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    </div>
                     @if (Model.HasGroup)
                     {
                         <div class="select-container">
@@ -165,6 +171,39 @@
                     <button id="ExcluirTask" class="btn btn-secondary btn-cg">Excluir Task</button>
                 </div>
             </form>
+        </div>
+    </div>
+</div>
+
+<div id="modalDownload" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-sm">
+        <div class="modal-content">
+            <div class="modal-header">
+                <form method="post" id="formFiles">
+                    <div class="flex-properties-r">
+                        <div class="input-group">
+                            <label class="input-group-btn">
+                                <span class="btn btn-primary">
+                                    Adicionar arquivos <input id="Files" type="file" style="display: none;" multiple>
+                                </span>
+                            </label>
+                            <input id="textFiles" type="text" class="form-control" readonly>
+                            <label class="input-group-btn">
+                                <button class="btn btn-primary">
+                                    Enviar
+                                </button>
+                            </label>
+                        </div>
+                    </div>
+                </form>
+            </div>
+            <div class="modal-body">
+                <div id="data"></div>
+                <div id="load"></div>
+            </div>
+            <div class="modal-footer">
+                <button name="Concluir" id="Concluir" class="btn btn-secondary btn-cg">Concluir</button>
+            </div>
         </div>
     </div>
 </div>

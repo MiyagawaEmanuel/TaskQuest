@@ -9,7 +9,7 @@ namespace TaskQuest.Models
         public Quest()
         {
             Tasks = new HashSet<Task>();
-            Semanas = new HashSet<Semana>();
+            DataCriacao = DateTime.Now;
         }
 
         public int Id { get; set; }
@@ -31,7 +31,5 @@ namespace TaskQuest.Models
         public virtual ICollection<Task> Tasks { get; set; }
 
         public virtual User UsuarioCriador { get; set; }
-
-        public virtual ICollection<Semana> Semanas { get; set; }
     }
 }

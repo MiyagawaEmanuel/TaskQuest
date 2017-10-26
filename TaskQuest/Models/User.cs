@@ -19,7 +19,8 @@ namespace TaskQuest.Models
             Quests = new HashSet<Quest>();
             Telefones = new HashSet<Telefone>();
             Grupos = new HashSet<Grupo>();
-            ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
+            PontosUsuario = new HashSet<PontoUsuario>();
+            Files = new HashSet<File>();
         }
 
         public string Nome { get; set; }
@@ -46,10 +47,12 @@ namespace TaskQuest.Models
 
         public virtual ICollection<Grupo> Grupos { get; set; }
 
-        public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
+        public virtual ICollection<PontoUsuario> PontosUsuario { get; set; }
 
         public virtual ICollection<Client> Clients { get; set; }
-        
+
+        public virtual ICollection<File> Files { get; set; }
+
         public string CurrentClientId { get; set; }
 
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<User, int> manager,

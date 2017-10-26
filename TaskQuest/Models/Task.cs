@@ -9,8 +9,9 @@ namespace TaskQuest.Models
         public Task()
         {
             Feedbacks = new HashSet<Feedback>();
-            ExperienciaUsuarios = new HashSet<ExperienciaUsuario>();
-            Arquivos = new HashSet<Arquivo>();
+            PontoUsuarios = new HashSet<PontoUsuario>();
+            Files = new HashSet<File>();
+            DataCriacao = DateTime.Now;
         }
 
         public int Id { get; set; }
@@ -41,8 +42,8 @@ namespace TaskQuest.Models
 
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
-        public virtual ICollection<ExperienciaUsuario> ExperienciaUsuarios { get; set; }
+        public virtual ICollection<PontoUsuario> PontoUsuarios { get; set; }
         
-        public virtual ICollection<Arquivo> Arquivos { get; set; }
+        public virtual ICollection<File> Files { get; set; }
     }
 }
