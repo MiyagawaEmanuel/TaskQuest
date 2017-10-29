@@ -75,6 +75,7 @@ namespace TesteMVC.Controllers
                     foreach (var file in files)
                     {
                         file.TaskId = Id;
+                        file.IsValid = true;
                         db.Entry(file).State = System.Data.Entity.EntityState.Modified;
                     }
                     db.SaveChanges();

@@ -80,6 +80,33 @@ function submit(id, action) {
     $('#' + id).attr('action', action).submit();
 }
 
+function renderFiles(reference) {
+    $("#data div").remove();
+    var list = (typeof (reference) === "number") ? quest.get(reference).Files : reference;
+    $.each(list, function (index, file) {
+        var data = `
+                    <div id="${index}-div" class="download-item flex-properties-r">
+                        <form method="post" action="/File/Download" id="fileForm${index}" style="display: none;">
+                            <input type="hidden" value="${file.Id}" name="Id" />
+                        </form>
+                        <div class="download-info">
+                            ${ file.Response === "Image" ? `<img src="Images/${file.Url.split('.')[0]+'-min.jpg'}">` : `<i class="fa fa-file" aria-hidden="true"></i>` }
+                        </div>
+                        <div class="download-info icon-black">
+                            <a class="limit-lines" title="${file.Nome}" onclick="$('#fileForm${index}').submit()"><p>${file.Nome}</p></a>
+                        </div>
+                        <div class="download-info">
+                            <span>${Math.ceil(file.Size * 10) / 10} MB</span>
+                        </div>
+                        <div class="download-info">
+                            <button onclick="deletar('${file.Id}', '${index}-div')" class="btn btn-danger">Delete</button>
+                        </div>
+                    </div>
+        `;
+        $("#data").append(data);
+    });
+}
+
 var taskIndex;
 function showTaskModal(index) {
     taskIndex = index;
@@ -118,7 +145,7 @@ function showTaskModal(index) {
         $("#Responsavel div").remove();
         $("#Responsavel").append(data);
     }
-
+    renderFiles(taskIndex);
     $("#modalTask").modal('show');
 }
 
@@ -221,6 +248,7 @@ document.getElementById('formFiles').onsubmit = function () {
                         showBalloon("Algo deu errado", "yellow-alert");
                     else{
                         files = JSON.parse(xhr.response);
+                        var Files = [];
                         var errors = { number: 0, values: []};
                         $.each(files, function(index, file){
                             if(file.Response === "Error"){
@@ -228,28 +256,11 @@ document.getElementById('formFiles').onsubmit = function () {
                                 errors.number += 1;
                             }
                             else{
-                                var data = `
-                                    <div id="${index}-div" class="download-item flex-properties-r">
-                                        <form method="post" action="/File/Download" id="fileForm${index}" style="display: none;">
-                                            <input type="hidden" value="${file.Id}" name="Id" />
-                                        </form>
-                                        <div class="download-info">
-                                            ${ file.Response === "Image" ? `<img src="Images/${file.Url.split('.')[0]+'-min.jpg'}">` : `<i class="fa fa-file" aria-hidden="true"></i>` }
-                                        </div>
-                                        <div class="download-info icon-black">
-                                            <a class="limit-lines" title="${file.Nome}" onclick="$('#fileForm${index}').submit()"><p>${file.Nome}</p></a>
-                                        </div>
-                                        <div class="download-info">
-                                            <span>${Math.ceil(file.Size * 10) / 10} MB</span>
-                                        </div>
-                                        <div class="download-info">
-                                            <button onclick="deletar('${file.Id}', '${index}-div')" class="btn btn-danger">Delete</button>
-                                        </div>
-                                    </div>
-                                `;
-                                                $("#data").append(data);
-                                            }
-                            });
+                                Files.push(file);
+                            }
+                        });
+                        quest.TasksViewModel[taskIndex].Files = quest.TasksViewModel[taskIndex].Files.concat(Files);
+                        renderFiles(taskIndex);
                             if(errors.number > 0){
                                 var alert = "";
                                 $.each(errors.values, function(index, value){
