@@ -336,6 +336,10 @@ label {
     max-height: 450px;
 }
 
+.modal-body{
+    padding: 15px 0;
+}
+
 .modal-body .select-container {
     position: static;
     width: fit-content;

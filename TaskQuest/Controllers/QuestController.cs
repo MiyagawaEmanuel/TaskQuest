@@ -76,10 +76,10 @@ namespace TaskQuest.Controllers
                                 return "Algo deu errado";
                         }
 
-                        foreach (var fileId in tsk.FileIds)
+                        foreach (var fileViewModel in tsk.Files)
                         {
                             int Id;
-                            if (int.TryParse(Util.Decrypt(fileId), out Id))
+                            if (int.TryParse(Util.Decrypt(fileViewModel.Id), out Id))
                             {
                                 var file = db.File.Find(Id);
                                 task.Files.Add(file);
@@ -184,6 +184,12 @@ namespace TaskQuest.Controllers
                     quest.TasksViewModel = new List<TaskViewModel>();
                     foreach (var tsk in db.Task.Where(q => q.QuestId == Id).ToList())
                     {
+                        
+                        List<FileViewModel> files = new List<FileViewModel>();
+                        foreach (var file in tsk.Files)
+                            if (file.IsValid)
+                                files.Add(new FileViewModel(file));
+
                         quest.TasksViewModel.Add(new TaskViewModel()
                         {
                             Id = Util.Encrypt(tsk.Id.ToString()),
@@ -194,7 +200,8 @@ namespace TaskQuest.Controllers
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status,
                             UsuarioResponsavelId = (tsk.UsuarioResponsavel != null) ? Util.Encrypt(tsk.UsuarioResponsavelId.ToString()) : "",
-                            ResponsavelNome = (tsk.UsuarioResponsavel != null) ? tsk.UsuarioResponsavel.Nome + " " + tsk.UsuarioResponsavel.Sobrenome : ""
+                            ResponsavelNome = (tsk.UsuarioResponsavel != null) ? tsk.UsuarioResponsavel.Nome + " " + tsk.UsuarioResponsavel.Sobrenome : "",
+                            Files = files,
                         });
 
                         if (tsk.Feedbacks.Count != 0)
@@ -282,14 +289,14 @@ namespace TaskQuest.Controllers
                             db.Task.Add(task);
                         }
 
-                        foreach (var fileId in tsk.FileIds)
+                        foreach (var file in tsk.Files)
                         {
-                            if (int.TryParse(Util.Decrypt(fileId), out Id))
+                            if (int.TryParse(Util.Decrypt(file.Id), out Id))
                             {
-                                var file = db.File.Find(Id);
-                                file.TaskId = task.Id;
-                                file.IsValid = true;
-                                db.Entry(file).State = System.Data.Entity.EntityState.Modified;
+                                var fle = db.File.Find(Id);
+                                fle.TaskId = task.Id;
+                                fle.IsValid = true;
+                                db.Entry(fle).State = System.Data.Entity.EntityState.Modified;
                             }
                             else
                                 return "Algo deu errado";
