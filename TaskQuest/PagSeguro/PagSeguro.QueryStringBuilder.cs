@@ -49,7 +49,7 @@ namespace TaskQuest.PagSeguro
             return this;
         }
 
-        public string ToString()
+        public override string ToString()
         {
             return builder.ToString();
         }

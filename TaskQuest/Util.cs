@@ -1,19 +1,13 @@
 ﻿using Microsoft.AspNet.Identity;
-using Newtonsoft.Json;
 using System;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Diagnostics;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Principal;
-using System.Text;
 using System.Web.Mvc;
-using TaskQuest.Identity;
 using TaskQuest.Models;
-using TaskQuest.ViewModels;
 
 namespace TaskQuest
 {
