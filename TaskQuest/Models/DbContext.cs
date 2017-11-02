@@ -18,17 +18,16 @@ namespace TaskQuest.Models
             Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>());
         }
 
+        public virtual DbSet<Client> Client { get; set; }
+        public virtual DbSet<PontoUsuario> PontoUsuario { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
+        public virtual DbSet<File> File { get; set; } 
         public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Mensagem> Mensagen { get; set; }
         public virtual DbSet<Quest> Quest { get; set; }
-        public virtual DbSet<Semana> Semana { get; set; }
-        public virtual DbSet<Telefone> Telefone { get; set; }
-        public virtual DbSet<Arquivo> Arquivo { get; set; }
         public virtual DbSet<Task> Task { get; set; }
-        public virtual DbSet<ExperienciaUsuario> ExperienciaUsuario { get; set; }
-        public virtual DbSet<Client> Client { get; set; }
-
+        public virtual DbSet<Telefone> Telefone { get; set; }
+        
         public static DbContext Create()
         {
             return new DbContext();
@@ -181,51 +180,15 @@ namespace TaskQuest.Models
                 .WillCascadeOnDelete(true);
 
             modelBuilder.Entity<User>()
+                .HasMany(e => e.Files)
+                .WithRequired(e => e.User)
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(true);
+
+            modelBuilder.Entity<User>()
                 .HasMany(e => e.Grupos)
                 .WithMany(e => e.Users)
                 .Map(m => m.ToTable("uxg_usuario_grupo").MapLeftKey("usu_id").MapRightKey("gru_id"));
-
-            /*
-                Configurando tabela Arquivo
-            */
-
-            //Configurando o nome da tabela
-            modelBuilder.Entity<Arquivo>()
-                .ToTable("arq_arquivo");
-
-            //Configurando um campo como chave primária AUTO_INCREMENT
-            modelBuilder.Entity<Arquivo>()
-                .HasKey(e => e.Id)
-                .Property(e => e.Id)
-                .HasColumnName("arq_id")
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.Nome)
-                .HasColumnName("arq_nome")
-                .HasMaxLength(40);
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.Path)
-                .HasColumnName("arq_caminho")
-                .HasMaxLength(120);
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.Size)
-                .HasColumnName("arq_tamanho");
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.UploadDate)
-                .HasColumnName("arq_data_upload")
-                .IsRequired();
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.VersaoAtual)
-                .HasColumnName("arq_versao_atual");
-
-            modelBuilder.Entity<Arquivo>()
-                .Property(e => e.TaskId)
-                .HasColumnName("tsk_id");
 
             /*
                 Configurando tabela Role
@@ -379,6 +342,61 @@ namespace TaskQuest.Models
                 .HasColumnName("usu_id_responsavel");
 
             /*
+                Configurando tabela Feedback
+            */
+
+            modelBuilder.Entity<File>()
+                .ToTable("fle_file");
+
+            modelBuilder.Entity<File>()
+                .HasKey(e => e.Id)
+                .Property(e => e.Id)
+                .HasColumnName("fle_id")
+                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.Nome)
+                .HasColumnName("fle_nome")
+                .HasMaxLength(120)
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.Url)
+                .HasColumnName("fle_url")
+                .HasMaxLength(40)
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.Response)
+                .HasColumnName("fle_response")
+                .HasMaxLength(5)
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.Size)
+                .HasColumnName("fle_size")
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.DataEnvio)
+                .HasColumnName("fle_data_envio")
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.TaskId)
+                .HasColumnName("tsk_id");
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.IsValid)
+                .HasColumnName("fle_validado")
+                .IsRequired();
+
+            modelBuilder.Entity<File>()
+                .Property(e => e.UserId)
+                .HasColumnName("usu_id")
+                .IsRequired();
+
+            /*
                 Configurando a tabela Grupo 
             */
 
@@ -512,36 +530,6 @@ namespace TaskQuest.Models
                 .HasMaxLength(40)
                 .IsRequired();
 
-            modelBuilder.Entity<Quest>()
-                .HasMany(e => e.Semanas)
-                .WithMany(e => e.Quests)
-                .Map(m => m.ToTable("qxs_quest_semana").MapLeftKey("qst_id").MapRightKey("sem_id"));
-
-            /*
-                Configuração da tabela Semana 
-            */
-
-            modelBuilder.Entity<Semana>()
-                .ToTable("sem_semana");
-
-            modelBuilder.Entity<Semana>()
-                .HasKey(e => e.Id)
-                .Property(e => e.Id)
-                .HasColumnName("sem_id")
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
-
-            modelBuilder.Entity<Semana>()
-                .Property(e => e.Dia)
-                .HasColumnName("sem_dia")
-                .HasMaxLength(10)
-                .IsRequired();
-
-            modelBuilder.Entity<Semana>()
-                .Property(e => e.Sigla)
-                .HasColumnName("sem_sigla")
-                .HasMaxLength(1)
-                .IsRequired();
-
             /*
                 Configuração da tabela Telefone 
             */
@@ -630,32 +618,42 @@ namespace TaskQuest.Models
                 .Property(e => e.UsuarioResponsavelId)
                 .HasColumnName("usu_id_responsavel");
 
+            modelBuilder.Entity<Task>()
+                .Property(e => e.DataInicio)
+                .HasColumnName("tsk_data_inicio");
+
+            modelBuilder.Entity<Task>()
+                .HasMany(e => e.Files)
+                .WithOptional(e => e.Task)
+                .HasForeignKey(e => e.TaskId)
+                .WillCascadeOnDelete();
+
             /*
-                Configuração da tabela ExperienciaUsuario 
+                Configuração da tabela PontoUsuario 
             */
 
-            modelBuilder.Entity<ExperienciaUsuario>()
-                .ToTable("xpu_experiencia_usuario");
+            modelBuilder.Entity<PontoUsuario>()
+                .ToTable("ptu_ponto_usuario");
 
-            modelBuilder.Entity<ExperienciaUsuario>()
+            modelBuilder.Entity<PontoUsuario>()
                 .Property(e => e.TaskId)
-                .HasColumnName("tsk_id");
+                .HasColumnName("ptu_id");
 
-            modelBuilder.Entity<ExperienciaUsuario>()
+            modelBuilder.Entity<PontoUsuario>()
                 .Property(e => e.UsuarioId)
                 .HasColumnName("usu_id");
 
-            modelBuilder.Entity<ExperienciaUsuario>()
+            modelBuilder.Entity<PontoUsuario>()
                 .HasKey(e => new { e.TaskId, e.UsuarioId });
 
-            modelBuilder.Entity<ExperienciaUsuario>()
+            modelBuilder.Entity<PontoUsuario>()
                 .Property(e => e.Valor)
-                .HasColumnName("xpu_valor")
+                .HasColumnName("ptu_valor")
                 .IsRequired();
 
-            modelBuilder.Entity<ExperienciaUsuario>()
+            modelBuilder.Entity<PontoUsuario>()
                 .Property(e => e.Data)
-                .HasColumnName("xpu_data")
+                .HasColumnName("ptu_data")
                 .IsRequired();
 
         }

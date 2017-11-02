@@ -61,13 +61,30 @@ namespace TaskQuest
             int Id;
             if (identity.IsAuthenticated && Int32.TryParse(Decrypt(questId), out Id))
             {
-                using(var db = new DbContext())
+                using (var db = new DbContext())
                 {
                     if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == Id).Any())
                         return true;
 
                     foreach (var grupo in db.Users.Find(identity.GetUserId<int>()).Grupos)
                         if (grupo.Quests.Where(q => q.Id == Id).Any())
+                            return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool HasQuest(this IIdentity identity, int questId)
+        {
+            if (identity.IsAuthenticated)
+            {
+                using (var db = new DbContext())
+                {
+                    if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == questId).Any())
+                        return true;
+
+                    foreach (var grupo in db.Users.Find(identity.GetUserId<int>()).Grupos)
+                        if (grupo.Quests.Where(q => q.Id == questId).Any())
                             return true;
                 }
             }
@@ -144,17 +161,20 @@ namespace TaskQuest
 
                 ICryptoTransform decryptor = aesAlg.CreateDecryptor(aesAlg.Key, aesAlg.IV);
 
-                using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
+                try
                 {
-                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
                     {
-                        using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
                         {
-                            plaintext = srDecrypt.ReadToEnd();
+                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                            {
+                                plaintext = srDecrypt.ReadToEnd();
+                            }
                         }
                     }
                 }
-
+                catch (Exception) { return ""; }
             }
 
             return plaintext;
@@ -162,12 +182,12 @@ namespace TaskQuest
         }
 
     }
-    
+
     public class Date : ValidationAttribute
     {
         protected override ValidationResult IsValid(object value, ValidationContext validationContext)
         {
-            if(value != null)
+            if (value != null)
             {
                 try
                 {

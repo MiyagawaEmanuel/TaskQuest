@@ -35,7 +35,7 @@ namespace TaskQuest.Controllers
                 foreach (var user in grupo.Users)
                 {
                     int pontos = 0;
-                    foreach (var exp in user.ExperienciaUsuarios)
+                    foreach (var exp in user.PontosUsuario)
                         if (exp.Task.Quest.GrupoCriador != null)
                             if (exp.Task.Quest.GrupoCriadorId == grupo.Id)
                                 pontos += exp.Valor;
@@ -80,7 +80,7 @@ namespace TaskQuest.Controllers
                     model.Title = string.Format("Gráfico das de barras Quests realizadas por {0} na equipe {1}", user.Nome + " " + user.Sobrenome, db.Grupo.Find(grupo.Id).Nome);
                     int quantidade = 0;
 
-                    foreach (var exp in user.ExperienciaUsuarios.OrderByDescending(e => e.Data))
+                    foreach (var exp in user.PontosUsuario.OrderByDescending(e => e.Data))
                     {
                         if (quantidade >= 10)
                             break;
@@ -122,7 +122,7 @@ namespace TaskQuest.Controllers
                 foreach (var user in grupo.Users)
                 {
                     int pontos = 0;
-                    foreach (var exp in user.ExperienciaUsuarios)
+                    foreach (var exp in user.PontosUsuario)
                         if (exp.Task.Quest.GrupoCriador != null)
                             if (exp.Task.Quest.GrupoCriadorId == grupo.Id)
                                 pontos += exp.Valor;
@@ -213,7 +213,7 @@ namespace TaskQuest.Controllers
             model.Title = string.Format("Gráfico das de barras Quests realizadas por {0}", user.Nome + " " + user.Sobrenome);
             int quantidade = 0;
 
-            foreach (var exp in user.ExperienciaUsuarios.OrderByDescending(e => e.Data))
+            foreach (var exp in user.PontosUsuario.OrderByDescending(e => e.Data))
             {
                 if (quantidade >= 10)
                     break;
@@ -229,31 +229,4 @@ namespace TaskQuest.Controllers
         }
 
     }
-
-    public class ChartViewModel
-    {
-
-        public ChartViewModel()
-        {
-            Data = new List<int>();
-            Labels = new List<string>();
-            Offset = new List<int>();
-        }
-
-        public string Response { get; set; }
-
-        public string Title { get; set; }
-
-        public List<int> Data { get; set; }
-
-        public List<string> Labels { get; set; }
-
-        public List<int> Offset { get; set; }
-
-        public string Month { get; set; }
-
-        public int DaysInMonth { get; set; }
-
-    }
-
 }

@@ -15,10 +15,9 @@
 {
     <script src="~/Content/js/jquery.validate.js"></script>
     <script src="~/Content/js/spectrum.js"></script>
+    <script src="~/Content/js/showBalloon.js"></script>
     <script src="~/Content/js/quest-adm.js"></script>
     <script src="~/Content/js/link.js"></script>
-    <script src="~/Content/js/download.js"></script>
-    <script src="~/Content/js/showBalloon.js"></script>
 }
 
 <input type="hidden" id="Hash" value="@Model.QuestId" />
@@ -98,6 +97,9 @@
                             <option value="2">Difícil</option>
                         </select>
                     </div>
+                    <div class="form-group" title="Subir Arquivos">
+                        <a onclick="change('modalAdicionarTask')"><i class="fa fa-download" aria-hidden="true"></i></a>
+                    </div>
                     @if (Model.HasGroup)
                     {
                         <div class="select-container">
@@ -152,7 +154,7 @@
                         </select>
                     </div>
                     <div class="form-group" title="Subir Arquivos">
-                        <a id="download"><i class="fa fa-download" aria-hidden="true"></i></a>
+                        <a onclick="change('modalAtualizarTask')"><i class="fa fa-download" aria-hidden="true"></i></a>
                     </div>
                     @if (Model.HasGroup)
                     {
@@ -212,13 +214,6 @@
     </div>
 </div>
 
-
-
-<!-- Modal de Download-->
-
-
-
-
 <div id="modalDownload" class="modal fade in" tabindex="-1" role="dialog" aria-labelledby="mySmallModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
@@ -242,60 +237,8 @@
                 </form>
             </div>
             <div class="modal-body">
-                <div>
-                    <div id="data">
-                        <div id="naaaaaddaaaa" style="background-color: #f9f9f9; align-items: baseline; justify-content: space-between;" class="flex-properties-r">
-                            <form method="post" action="/File/Download" id="1" style="display: none;">
-                                <input type="hidden" value="naada" name="Url" />
-                                <input type="hidden" value="naaada" name="Nome" />
-                            </form>
-                            <div style="padding: 8px;">
-                                <img src="../../Content/img/bn3a4x7tc0uwvjh6fbdma-min.jpg" />
-                            </div>
-                            <div style="padding: 8px;">
-                                <a onclick="$('1').submit()"><p>Imagem</p></a>
-                            </div>
-                            <div style="padding: 8px;">
-                                <span>10 MB</span>
-                            </div>
-                            <div style="padding: 8px;">
-                                <button onclick="deletar('naaaada')" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                        <div id="nada" style="background-color: #f9f9f9; align-items: baseline; justify-content: space-between;" class="flex-properties-r">
-                            <form method="post" action="/File/Download" id="2" style="display: none;">
-                                <input type="hidden" value="dada" name="Url" />
-                                <input type="hidden" value="nunu" name="Nome" />
-                            </form>
-                            <div style="padding: 8px;">
-                                <i class="fa fa-file" aria-hidden="true"></i>
-                            </div>
-                            <div style="padding: 8px;">
-                                <a onclick="$('#2').submit()"><p>Arquivo</p></a>
-                            </div>
-                            <div style="padding: 8px;">
-                                <span>0.1 MB</span>
-                            </div>
-                            <div style="padding: 8px;">
-                                <button onclick="deletar('Oi^^')" class="btn btn-danger">Delete</button>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div id="load">
-                        <div id="floatingCirclesG">
-                            <div class="f_circleG" id="frotateG_01"></div>
-                            <div class="f_circleG" id="frotateG_02"></div>
-                            <div class="f_circleG" id="frotateG_03"></div>
-                            <div class="f_circleG" id="frotateG_04"></div>
-                            <div class="f_circleG" id="frotateG_05"></div>
-                            <div class="f_circleG" id="frotateG_06"></div>
-                            <div class="f_circleG" id="frotateG_07"></div>
-                            <div class="f_circleG" id="frotateG_08"></div>
-                        </div>
-                    </div>
-
-                </div>
+                <div id="data"></div>
+                <div id="load"></div>
             </div>
             <div class="modal-footer">
                 <button name="Concluir" id="Concluir" class="btn btn-secondary btn-cg">Concluir</button>
@@ -303,5 +246,3 @@
         </div>
     </div>
 </div>
-
-<span class="balloon" style="display: none"></span>

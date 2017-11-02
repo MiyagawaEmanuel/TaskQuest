@@ -4,6 +4,12 @@ namespace TaskQuest.Models
 {
     public class Mensagem
     {
+
+        public Mensagem()
+        {
+            Data = DateTime.Now;
+        }
+
         public int Id { get; set; }
 
         public int UsuarioRemetenteId { get; set; }

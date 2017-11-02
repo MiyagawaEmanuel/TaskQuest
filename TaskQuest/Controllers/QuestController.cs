@@ -63,25 +63,35 @@ namespace TaskQuest.Controllers
                 {
                     foreach (var tsk in model.TasksViewModel)
                     {
-                        if (tsk.UsuarioResponsavelId == null)
-                            quest.Tasks.Add(tsk.CriarTask());
-                        else
+
+                        var task = tsk.CriarTask();
+                        quest.Tasks.Add(task);
+
+                        if (tsk.UsuarioResponsavelId != null)
                         {
-                            int UserId;
-                            if (int.TryParse(Util.Decrypt(tsk.UsuarioResponsavelId), out UserId))
+                            int Id;
+                            if (int.TryParse(Util.Decrypt(tsk.UsuarioResponsavelId), out Id))
+                                task.UsuarioResponsavelId = Id;
+                            else
+                                return "Algo deu errado";
+                        }
+
+                        foreach (var fileViewModel in tsk.Files)
+                        {
+                            int Id;
+                            if (int.TryParse(Util.Decrypt(fileViewModel.Id), out Id))
                             {
-                                var task = tsk.CriarTask();
-                                task.UsuarioResponsavelId = UserId;
-                                quest.Tasks.Add(task);
+                                var file = db.File.Find(Id);
+                                task.Files.Add(file);
+                                file.IsValid = true;
+                                db.Entry(file).State = System.Data.Entity.EntityState.Modified;
                             }
                             else
-                            {
-                                return "Formulário inválido";
-                            }
+                                return "Algo deu errado";
                         }
                     }
                 }
-                    
+
                 if (model.GrupoCriadorId == null)
                     quest.UsuarioCriadorId = User.Identity.GetUserId<int>();
                 else
@@ -124,11 +134,11 @@ namespace TaskQuest.Controllers
                     {
                         var quest = db.Quest.Find(Id);
                         if (quest.UsuarioCriadorId == User.Identity.GetUserId<int>() || User.Identity.IsAdm(quest.GrupoCriador.Id))
-                            return View("QuestAdm", new QuestInfoViewModel() 
+                            return View("QuestAdm", new QuestInfoViewModel()
                             {
                                 HasGroup = quest.GrupoCriadorId != null,
                                 QuestId = Util.Encrypt(quest.Id.ToString()),
-                                Colaboradores = (quest.GrupoCriadorId != null)? quest.GrupoCriador.Users.ToList() : null
+                                Colaboradores = (quest.GrupoCriadorId != null) ? quest.GrupoCriador.Users.ToList() : null
                             });
                         else
                             return View("Quest", new QuestInfoViewModel()
@@ -174,6 +184,12 @@ namespace TaskQuest.Controllers
                     quest.TasksViewModel = new List<TaskViewModel>();
                     foreach (var tsk in db.Task.Where(q => q.QuestId == Id).ToList())
                     {
+                        
+                        List<FileViewModel> files = new List<FileViewModel>();
+                        foreach (var file in tsk.Files)
+                            if (file.IsValid)
+                                files.Add(new FileViewModel(file));
+
                         quest.TasksViewModel.Add(new TaskViewModel()
                         {
                             Id = Util.Encrypt(tsk.Id.ToString()),
@@ -183,8 +199,9 @@ namespace TaskQuest.Controllers
                             DataConclusao = tsk.DataConclusao,
                             Dificuldade = tsk.Dificuldade,
                             Status = tsk.Status,
-                            UsuarioResponsavelId =  (tsk.UsuarioResponsavel != null)? Util.Encrypt(tsk.UsuarioResponsavelId.ToString()): "",
-                            ResponsavelNome =  (tsk.UsuarioResponsavel != null)? tsk.UsuarioResponsavel.Nome + " " + tsk.UsuarioResponsavel.Sobrenome: ""
+                            UsuarioResponsavelId = (tsk.UsuarioResponsavel != null) ? Util.Encrypt(tsk.UsuarioResponsavelId.ToString()) : "",
+                            ResponsavelNome = (tsk.UsuarioResponsavel != null) ? tsk.UsuarioResponsavel.Nome + " " + tsk.UsuarioResponsavel.Sobrenome : "",
+                            Files = files,
                         });
 
                         if (tsk.Feedbacks.Count != 0)
@@ -272,6 +289,19 @@ namespace TaskQuest.Controllers
                             db.Task.Add(task);
                         }
 
+                        foreach (var file in tsk.Files)
+                        {
+                            if (int.TryParse(Util.Decrypt(file.Id), out Id))
+                            {
+                                var fle = db.File.Find(Id);
+                                fle.TaskId = task.Id;
+                                fle.IsValid = true;
+                                db.Entry(fle).State = System.Data.Entity.EntityState.Modified;
+                            }
+                            else
+                                return "Algo deu errado";
+                        }
+
                         if (tsk.FeedbackViewModel != null)
                         {
                             if (!db.Feedback.Any(q => q.TaskId == task.Id))
@@ -291,7 +321,7 @@ namespace TaskQuest.Controllers
                                     {
                                         foreach (var user in qst.GrupoCriador.Users)
                                         {
-                                            db.ExperienciaUsuario.Add(new ExperienciaUsuario()
+                                            db.PontoUsuario.Add(new PontoUsuario()
                                             {
                                                 Task = task,
                                                 Usuario = user,
@@ -301,7 +331,7 @@ namespace TaskQuest.Controllers
                                     }
                                     else
                                     {
-                                        db.ExperienciaUsuario.Add(new ExperienciaUsuario()
+                                        db.PontoUsuario.Add(new PontoUsuario()
                                         {
                                             Task = task,
                                             Usuario = task.UsuarioResponsavel,
@@ -325,16 +355,17 @@ namespace TaskQuest.Controllers
                                     {
                                         foreach (var user in qst.GrupoCriador.Users)
                                         {
-                                            var exp = db.ExperienciaUsuario.Find(user.Id, task.Id);
+                                            var exp = db.PontoUsuario.Find(task.Id, user.Id);
                                             exp.Valor = feedback.Nota * (task.Dificuldade + 1);
                                             db.Entry(exp).State = System.Data.Entity.EntityState.Modified;
                                         }
                                     }
                                     else
                                     {
-                                        var exp = db.ExperienciaUsuario.Find(task.UsuarioResponsavelId, task.Id);
+                                        var exp = db.PontoUsuario.Find(task.Id, task.UsuarioResponsavelId);
                                         exp.Valor = feedback.Nota * (task.Dificuldade + 1);
                                         db.Entry(exp).State = System.Data.Entity.EntityState.Modified;
+
                                     }
                                 }
                             }
@@ -456,10 +487,10 @@ namespace TaskQuest.Controllers
                     foreach (var feb in db.Feedback.Where(q => q.Task.Id == task.Id))
                         db.Feedback.Remove(feb);
 
-                    foreach (var exp in db.ExperienciaUsuario.Where(q => q.Task.Id == task.Id))
-                        db.ExperienciaUsuario.Remove(exp);
+                    foreach (var exp in db.PontoUsuario.Where(q => q.Task.Id == task.Id))
+                        db.PontoUsuario.Remove(exp);
                 }
-                
+
                 db.SaveChanges();
 
                 return "true";
