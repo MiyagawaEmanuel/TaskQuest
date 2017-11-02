@@ -13,7 +13,8 @@ namespace TaskQuest.Identity
     {
         public Task SendAsync(IdentityMessage message)
         {
-            return SendMail(message);
+            return Task.FromResult(0);
+            //return SendMail(message);
         }
 
         // Implementação de e-mail manual

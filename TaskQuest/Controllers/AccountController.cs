@@ -105,8 +105,8 @@ namespace TaskQuest.Controllers
                 case SignInStatus.Success:
                     var user = await UserManager.FindAsync(model.LoginEmail, model.LoginSenha);
 
-                    if (!user.EmailConfirmed)
-                        return RedirectToAction("ConfirmeEmail", "Account");
+                    //if (!user.EmailConfirmed)
+                    //    return RedirectToAction("ConfirmeEmail", "Account");
                         
                     await SignInAsync(user, true);
 
@@ -228,7 +228,7 @@ namespace TaskQuest.Controllers
                     </table>
                 ", callbackUrl);
 
-                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
+                UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
 
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";
