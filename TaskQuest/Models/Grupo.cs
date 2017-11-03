@@ -30,6 +30,8 @@ namespace TaskQuest.Models
         public virtual ICollection<Mensagem> Mensagens { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
-        
+
+        public virtual Pagamento Pagamento { get; set; }
+
     }
 }

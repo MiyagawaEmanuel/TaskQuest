@@ -17,7 +17,7 @@ namespace TaskQuest.Controllers
     {
 
         //Criar requisição de pagamento
-        public ActionResult CriarAsssinatura()
+        public ActionResult CriarAssinatura()
         {
             Assinatura a = new Assinatura()
             {
@@ -39,18 +39,29 @@ namespace TaskQuest.Controllers
             //return Content(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"]));
         }
 
+        [HttpPost]
         //Recebe as requisições de modificação de status do PagSeguro
-        public ActionResult ReceberAlteracao()
+        public ActionResult ReceberNotificacao(string notificationCode, string notificationType)
         {
-            return Content("");
+            //TODO: fazer o get no bando dos dados
+
+            var IsSandBox = ConfigurationManager.AppSettings["IsSandBox"];
+            var path = "";
+            if (IsSandBox == "True")
+                path = "https://ws.sandbox.pagseguro.uol.com.br/v2/pre-approvals/{preApprovalCode}?email={email}&token={token}";
+            else
+                path = "https://ws.pagseguro.uol.com.br/v2/pre-approvals/{preApprovalCode}?email={email}&token={token}";
+
+            //if (notificationCode exists in db)
+            IDictionary<string, string> data = GetResponse(path, notificationCode);
+
+            return Content(data.DictToString());
         }
 
         //Cancela a assinatura do plano Premium
         public ActionResult CancelarAssinatura()
         {
             //TODO: fazer o get no bando dos dados
-
-            //https://ws.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}
 
             var IsSandBox = ConfigurationManager.AppSettings["IsSandBox"];
             var path = "";
@@ -59,24 +70,30 @@ namespace TaskQuest.Controllers
             else
                 path = "https://ws.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}";
 
-            path = path.Replace("{preApprovalCode}", "38399D4DD5D5FE7994610FBC1F6E7544");
+            string code = "";
+            IDictionary<string, string> data = GetResponse(path, code);
+
+            return Content(data.DictToString());
+        }
+
+        private IDictionary<string, string> GetResponse(string path, string code)
+        {
+            path = path.Replace("{preApprovalCode}", code);
             path = path.Replace("{email}", "taskquest01@gmail.com");
             path = path.Replace("{token}", "85E43107188E4237B2E284181B9E673E");
 
-            IDictionary<string, string> data = new Dictionary<string, string>();
             try
             {
                 var response = Service.Request(urlPath: path, query: null, method: Service.Get);
                 if (HttpStatusCode.OK.Equals(response.StatusCode))
-                    data = Service.ReadXml(XDocument.Load(response.GetResponseStream()));
+                    return Service.ReadXml(XDocument.Load(response.GetResponseStream()));
             }
             catch (WebException ex)
             {
                 using (var reader = XmlReader.Create(ex.Response.GetResponseStream()))
-                    data = Service.ReadXml(XDocument.Load(ex.Response.GetResponseStream()));
+                    return Service.ReadXml(XDocument.Load(ex.Response.GetResponseStream()));
             }
-
-            return Content(data.DictToString());
+            return null;
         }
 
     }

@@ -43,6 +43,8 @@ namespace TaskQuest
             using (var db = new DbContext())
             {
                 var user = db.Users.Find(identity.GetUserId<int>());
+                var oi = user.Grupos.Any(q => q.Id == GrupoId);
+                var io = user.Claims.Any(q => q.ClaimType == GrupoId.ToString() && q.ClaimValue == "Adm");
                 if (user.Claims.Any(q => q.ClaimType == GrupoId.ToString() && q.ClaimValue == "Adm") && user.Grupos.Any(q => q.Id == GrupoId))
                     return true;
                 else

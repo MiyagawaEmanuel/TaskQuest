@@ -89,6 +89,18 @@ namespace TaskQuest.Migrations
                 .PrimaryKey(t => t.gru_id);
             
             CreateTable(
+                "dbo.pag_pagamento",
+                c => new
+                    {
+                        pag_id = c.Int(nullable: false, identity: true),
+                        pag_code = c.String(nullable: false, unicode: false),
+                        pag_satus = c.String(nullable: false, unicode: false),
+                    })
+                .PrimaryKey(t => t.pag_id)
+                .ForeignKey("dbo.gru_grupo", t => t.pag_id)
+                .Index(t => t.pag_id);
+            
+            CreateTable(
                 "dbo.qst_quest",
                 c => new
                     {
@@ -265,6 +277,7 @@ namespace TaskQuest.Migrations
             DropForeignKey("dbo.ptu_ponto_usuario", "ptu_id", "dbo.tsk_task");
             DropForeignKey("dbo.fle_file", "tsk_id", "dbo.tsk_task");
             DropForeignKey("dbo.feb_feedback", "tsk_id", "dbo.tsk_task");
+            DropForeignKey("dbo.pag_pagamento", "pag_id", "dbo.gru_grupo");
             DropForeignKey("dbo.msg_mensagem", "gru_id_destinatario", "dbo.gru_grupo");
             DropForeignKey("dbo.cli_client", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.cuc_custom_user_claim", "usu_id", "dbo.usu_usuario");
@@ -284,6 +297,7 @@ namespace TaskQuest.Migrations
             DropIndex("dbo.tsk_task", new[] { "qst_id" });
             DropIndex("dbo.qst_quest", new[] { "gru_id_criador" });
             DropIndex("dbo.qst_quest", new[] { "usu_id_criador" });
+            DropIndex("dbo.pag_pagamento", new[] { "pag_id" });
             DropIndex("dbo.msg_mensagem", new[] { "gru_id_destinatario" });
             DropIndex("dbo.msg_mensagem", new[] { "usu_id_destinatario" });
             DropIndex("dbo.msg_mensagem", new[] { "usu_id_remetente" });
@@ -301,6 +315,7 @@ namespace TaskQuest.Migrations
             DropTable("dbo.feb_feedback");
             DropTable("dbo.tsk_task");
             DropTable("dbo.qst_quest");
+            DropTable("dbo.pag_pagamento");
             DropTable("dbo.gru_grupo");
             DropTable("dbo.msg_mensagem");
             DropTable("dbo.cuc_custom_user_claim");

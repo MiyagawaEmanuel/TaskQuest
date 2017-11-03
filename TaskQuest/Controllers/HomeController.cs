@@ -43,10 +43,10 @@ namespace TaskQuest.Controllers
             foreach (var tsk in model.Tasks)
                 foreach (var feb in tsk.Feedbacks)
                     model.Feedbacks.Add(feb);
-            
-            model.Grupos.OrderBy(a => a.Nome);
-            model.Tasks.OrderByDescending(a => a.DataConclusao);
-            model.Feedbacks.OrderByDescending(a => a.DataCriacao);
+
+            model.Grupos = model.Grupos.OrderBy(a => a.Nome).ToList();
+            model.Tasks = model.Tasks.OrderBy(a => a.DataConclusao).ToList();
+            model.Feedbacks = model.Feedbacks.OrderByDescending(a => a.DataCriacao).ToList();
 
             return View(model);
         }
@@ -73,7 +73,7 @@ namespace TaskQuest.Controllers
                 foreach (var feb in tsk.Feedbacks)
                     model.Add(feb);
 
-            model.OrderBy(a => a.DataCriacao);
+            model = model.OrderBy(a => a.DataCriacao).ToList();
 
             return View(model);
         }
@@ -85,7 +85,7 @@ namespace TaskQuest.Controllers
 
             model.AddRange(db.Users.Find(User.Identity.GetUserId<int>()).Grupos.ToList());
 
-            model.OrderBy(a => a.Nome);
+            model = model.OrderBy(a => a.Nome).ToList();
 
             return View(model);
         }
@@ -104,7 +104,7 @@ namespace TaskQuest.Controllers
             foreach (var qst in user.Quests)
                 model.Add(qst);
 
-            model.OrderBy(a => a.Tasks.OrderBy(b => b.DataConclusao).FirstOrDefault());
+            model = model.OrderBy(a => a.Tasks.OrderBy(b => b.DataConclusao).FirstOrDefault()).ToList();
 
             return View(model);
         }

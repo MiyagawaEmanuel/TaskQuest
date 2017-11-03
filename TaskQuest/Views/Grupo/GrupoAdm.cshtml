@@ -42,6 +42,10 @@
                 <a onclick="link(ExcluirGrupo)"><i class="fa fa-times elipse" aria-hidden="true"></i></a>
                 <h3><a onclick="link(ExcluirGrupo)">Excluir Grupo</a></h3>
             </div>
+            <div class="flex-properties-r pads icon-black">
+                <a data-target="#modalEditarGrupo" data-toggle="modal"><i class="fa fa-pencil-square-o  elipse" aria-hidden="true"></i></a>
+                <h3><a data-target="#modalEditarGrupo" data-toggle="modal">Editar Grupo</a></h3>
+            </div>
         </div>
     </div>
 
@@ -148,6 +152,40 @@
                     <input type="hidden" name="GrupoId" value="@Model.Id" />
                     <input type="submit" class="btn btn-secondary btn-cg" value="Sim">
                     <input type="submit" data-dismiss="modal" class="btn btn-secondary btn-cg" value="Não">
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" id="modalEditarGrupo" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <form id="formCriarGrupo" action="/Grupo/EditarGrupo" method="post">
+                @Html.AntiForgeryToken()
+                <input type="hidden" value="@Model.Id" name="Id" />
+                <div class="modal-header">
+                    <h1 class="modal-title" id="exampleModalLabel">Editar Grupo</h1>
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="form-group">
+                        <input type="text" required class="form-control" id="Nome" name="Nome" placeholder="Nome do Grupo" value="@Model.Nome">
+                        <label for="Nome"></label>
+                    </div>
+                    <div class="form-group">
+                        <textarea class="form-control" required id="Descricao" name="Descricao" placeholder="Descrição do Grupo">@Model.Descricao</textarea>
+                        <label for="Descricao"></label>
+                    </div>
+                    <div class="form-group">
+                        <p>Escolha a cor do Grupo</p>
+                        <input type="hidden" id="Cor" name="Cor" value="#@Model.Cor">
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <input type="submit" class="btn btn-secondary btn-cg" value="Criar">
                 </div>
             </form>
         </div>

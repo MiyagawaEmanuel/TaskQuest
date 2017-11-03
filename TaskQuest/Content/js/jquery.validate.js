@@ -1361,9 +1361,7 @@ $.extend( $.validator, {
         },
 
         pwd: function(value, element) {
-   			return /^[A-Za-z0-9\d=!\-@._*]*$/.test(value) // consists of only these
-       			&& /[a-z]/.test(value) // has a lowercase letter
-       			&& /\d/.test(value) // has a digit
+            return /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&])(?=.*[\u00C0-\u1FFF\u2C00-\uD7FF\w])[\u00C0-\u1FFF\u2C00-\uD7FF\wA-Za-z\d$@$!%*?&]{8,}/.test(value)
    		},
 
 		// http://jqueryvalidation.org/email-method/
