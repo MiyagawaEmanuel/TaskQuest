@@ -5,8 +5,9 @@ using System.Data.Entity.Infrastructure.Annotations;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Web;
+using TaskQuest.Models;
 
-namespace TaskQuest.Models.EntityConfiguration
+namespace TaskQuest.Data.EntityConfiguration
 {
     public class UserConfiguration: EntityTypeConfiguration<User>
     {
@@ -97,13 +98,11 @@ namespace TaskQuest.Models.EntityConfiguration
 
             HasMany(e => e.Clients)
                 .WithOptional(e => e.Usuario)
-                .HasForeignKey(e => e.UsuarioId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(e => e.UsuarioId);
 
             HasMany(e => e.DestinatarioMensagens)
                 .WithOptional(e => e.UsuarioDestinatario)
-                .HasForeignKey(e => e.UsuarioDestinatarioId)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.UsuarioDestinatarioId);
 
             HasMany(e => e.RemetenteMensagens)
                 .WithRequired(e => e.UsuarioRemetente)
@@ -111,23 +110,19 @@ namespace TaskQuest.Models.EntityConfiguration
 
             HasMany(e => e.Feedbacks)
                 .WithOptional(e => e.UsuarioResponsavel)
-                .HasForeignKey(e => e.UsuarioResponsavelId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(e => e.UsuarioResponsavelId);
 
             HasMany(e => e.Quests)
                 .WithOptional(e => e.UsuarioCriador)
-                .HasForeignKey(e => e.UsuarioCriadorId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(e => e.UsuarioCriadorId);
 
             HasMany(e => e.Tasks)
                 .WithOptional(e => e.UsuarioResponsavel)
-                .HasForeignKey(e => e.UsuarioResponsavelId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(e => e.UsuarioResponsavelId);
 
             HasMany(e => e.Files)
                 .WithRequired(e => e.User)
-                .HasForeignKey(e => e.UserId)
-                .WillCascadeOnDelete(true);
+                .HasForeignKey(e => e.UserId);
 
             HasMany(e => e.Grupos)
                 .WithMany(e => e.Users)

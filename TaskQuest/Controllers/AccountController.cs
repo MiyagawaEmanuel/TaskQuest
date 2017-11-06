@@ -12,6 +12,7 @@ using TaskQuest.Models;
 using TaskQuest.ViewModels;
 using Task = System.Threading.Tasks.Task;
 using System.Text.RegularExpressions;
+using TaskQuest.Data;
 
 namespace TaskQuest.Controllers
 {

@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Web;
+using TaskQuest.Models;
 
-namespace TaskQuest.Models.EntityConfiguration
+namespace TaskQuest.Data.EntityConfiguration
 {
     public class TaskConfiguration: EntityTypeConfiguration<Task>
     {
@@ -60,8 +61,7 @@ namespace TaskQuest.Models.EntityConfiguration
 
             HasMany(e => e.Files)
                 .WithOptional(e => e.Task)
-                .HasForeignKey(e => e.TaskId)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.TaskId);
         }
     }
 }

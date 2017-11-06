@@ -6,6 +6,7 @@ using Microsoft.Owin.Security.Cookies;
 using Owin;
 using TaskQuest.Identity;
 using TaskQuest.Models;
+using TaskQuest.Data;
 
 namespace TaskQuest
 {

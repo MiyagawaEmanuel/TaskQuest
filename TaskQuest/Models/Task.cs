@@ -1,6 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.Diagnostics;
+using TaskQuest.Data;
+using System.Linq;
 
 namespace TaskQuest.Models
 {
@@ -43,7 +46,7 @@ namespace TaskQuest.Models
         public virtual ICollection<Feedback> Feedbacks { get; set; }
 
         public virtual ICollection<PontoUsuario> PontoUsuarios { get; set; }
-        
+
         public virtual ICollection<File> Files { get; set; }
     }
 }

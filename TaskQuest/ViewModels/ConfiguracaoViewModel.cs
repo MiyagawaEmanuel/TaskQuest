@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Web;
+using TaskQuest.Data;
 using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels

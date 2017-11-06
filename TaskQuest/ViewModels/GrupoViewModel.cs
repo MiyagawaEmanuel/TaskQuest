@@ -1,6 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
+using TaskQuest.Data;
 using TaskQuest.Models;
 
 namespace TaskQuest.ViewModels

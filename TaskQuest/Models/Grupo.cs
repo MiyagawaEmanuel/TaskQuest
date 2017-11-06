@@ -1,5 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
+using TaskQuest.Data;
+using System.Linq;
 
 namespace TaskQuest.Models
 {
@@ -17,7 +20,7 @@ namespace TaskQuest.Models
 
         public string Nome { get; set; }
 
-        public string Cor { get; set; } 
+        public string Cor { get; set; }
 
         public DateTime DataCriacao { get; set; }
 

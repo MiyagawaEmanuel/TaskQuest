@@ -8,6 +8,7 @@ using TaskQuest.Identity;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 using System.Data.Entity.Infrastructure;
+using TaskQuest.Data;
 
 namespace TaskQuest.Controllers
 {
@@ -52,7 +53,7 @@ namespace TaskQuest.Controllers
 
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async System.Threading.Tasks.Task<ActionResult> EditarUsuario(UserViewModel model)
+        public ActionResult EditarUsuario(UserViewModel model)
         {
             if (ModelState.IsValid)
             {

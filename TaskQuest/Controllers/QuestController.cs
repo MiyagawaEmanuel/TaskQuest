@@ -8,6 +8,7 @@ using TaskQuest.ViewModels;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using TaskQuest.Data;
 
 namespace TaskQuest.Controllers
 {
@@ -184,7 +185,7 @@ namespace TaskQuest.Controllers
                     quest.TasksViewModel = new List<TaskViewModel>();
                     foreach (var tsk in db.Task.Where(q => q.QuestId == Id).ToList())
                     {
-                        
+
                         List<FileViewModel> files = new List<FileViewModel>();
                         foreach (var file in tsk.Files)
                             if (file.IsValid)

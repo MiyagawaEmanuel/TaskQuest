@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Web;
+using TaskQuest.Models;
 
-namespace TaskQuest.Models.EntityConfiguration
+namespace TaskQuest.Data.EntityConfiguration
 {
     public class GrupoConfiguration: EntityTypeConfiguration<Grupo>
     {
@@ -43,13 +44,11 @@ namespace TaskQuest.Models.EntityConfiguration
 
             HasMany(e => e.Quests)
                 .WithOptional(e => e.GrupoCriador)
-                .HasForeignKey(e => e.GrupoCriadorId)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.GrupoCriadorId);
 
             HasMany(e => e.Mensagens)
                 .WithOptional(e => e.GrupoDestinatario)
-                .HasForeignKey(e => e.GrupoDestinatarioId)
-                .WillCascadeOnDelete();
+                .HasForeignKey(e => e.GrupoDestinatarioId);
 
             HasOptional(e => e.Pagamento)
                 .WithRequired(e => e.Grupo);

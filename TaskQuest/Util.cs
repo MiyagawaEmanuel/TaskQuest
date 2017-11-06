@@ -1,12 +1,21 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using System.Data.Entity.Core.Mapping;
+using System.Data.Entity.Core.Metadata.Edm;
+using System.Data.Entity.Core.Objects;
+using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
+using System.Linq.Expressions;
+using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Web.Mvc;
+using TaskQuest.Data;
 using TaskQuest.Models;
 
 namespace TaskQuest
@@ -177,6 +186,71 @@ namespace TaskQuest
 
         }
 
+        public static void Delete<T>(this DbContext db, Expression<Func<T, object>> prop, string where) where T : class
+        {
+            db.Database.ExecuteSqlCommand(string.Format(@"delete from task_quest.{0} where {1} = {2}", db.GetTableName<T>(), db.GetColumnName<T>(prop), where));
+        }
+
+        private static T GetAttributeFrom<T>(this object instance, string propertyName) where T : Attribute
+        {
+            var attrType = typeof(T);
+            var property = instance.GetType().GetProperty(propertyName);
+            return (T)property.GetCustomAttributes(attrType, false).First();
+        }
+
+        private static string GetTableName<T>(this DbContext context) where T : class
+        {
+            string result = "";
+            var itens = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace.GetItems<EntityContainerMapping>(DataSpace.CSSpace);
+
+            foreach (EntityContainerMapping ecm in itens)
+            {
+                EntitySet entitySet;
+                if (ecm.StoreEntityContainer.TryGetEntitySetByName(typeof(T).Name, true, out entitySet))
+                    return result = entitySet.Table;
+            }
+            return "";
+        }
+
+        private static string GetColumnName<T>(this DbContext context, Expression<Func<T, object>> expression)
+        {
+            var propertyName = ((MemberExpression)((UnaryExpression)expression.Body).Operand).Member.Name;
+            var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
+
+            // Get the part of the model that contains info about the actual CLR types
+            var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
+
+            // Get the entity type from the model that maps to the CLR type
+            var entityType = metadata
+                    .GetItems<EntityType>(DataSpace.OSpace)
+                    .Single(e => objectItemCollection.GetClrType(e) == typeof(T));
+
+            // Get the entity set that uses this entity type
+            var entitySet = metadata
+                .GetItems<EntityContainer>(DataSpace.CSpace)
+                .Single()
+                .EntitySets
+                .Single(s => s.ElementType.Name == entityType.Name);
+
+            // Find the mapping between conceptual and storage model for this entity set
+            var mapping = metadata.GetItems<EntityContainerMapping>(DataSpace.CSSpace)
+                    .Single()
+                    .EntitySetMappings
+                    .Single(s => s.EntitySet == entitySet);
+
+            // Find the storage property (column) that the property is mapped
+            var columnName = mapping
+                .EntityTypeMappings.Single()
+                .Fragments.Single()
+                .PropertyMappings
+                .OfType<ScalarPropertyMapping>()
+                .Single(m => m.Property.Name == propertyName)
+                .Column
+                .Name;
+
+            return columnName;
+        }
+        
     }
 
     public class Date : ValidationAttribute

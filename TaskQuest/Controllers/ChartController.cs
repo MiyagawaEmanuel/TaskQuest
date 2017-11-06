@@ -9,6 +9,7 @@ using TaskQuest.ViewModels;
 using System.Data.Entity.Infrastructure;
 using System.Diagnostics;
 using Newtonsoft.Json;
+using TaskQuest.Data;
 
 namespace TaskQuest.Controllers
 {

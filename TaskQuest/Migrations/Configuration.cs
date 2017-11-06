@@ -5,14 +5,14 @@ namespace TaskQuest.Migrations
     using System.Data.Entity.Migrations;
     using System.Linq;
 
-    internal sealed class Configuration : DbMigrationsConfiguration<TaskQuest.Models.DbContext>
+    internal sealed class Configuration : DbMigrationsConfiguration<TaskQuest.Data.DbContext>
     {
         public Configuration()
         {
             AutomaticMigrationsEnabled = false;
         }
 
-        protected override void Seed(TaskQuest.Models.DbContext context)
+        protected override void Seed(TaskQuest.Data.DbContext context)
         {
             //  This method will be called after migrating to the latest version.
 

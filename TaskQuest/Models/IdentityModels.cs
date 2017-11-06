@@ -1,4 +1,5 @@
 using Microsoft.AspNet.Identity.EntityFramework;
+using TaskQuest.Data;
 
 namespace TaskQuest.Models
 {

@@ -6,6 +6,9 @@ using System.Linq;
 using Microsoft.AspNet.Identity;
 using TaskQuest.Identity;
 using System.Net;
+using TaskQuest.Data;
+using System.Diagnostics;
+using TaskQuest;
 
 namespace TaskQuest.Controllers
 {
@@ -18,6 +21,7 @@ namespace TaskQuest.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
+            db.Delete<Backup>(e => e.Id, "14");
             return View();
         }
 

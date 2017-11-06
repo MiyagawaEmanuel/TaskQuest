@@ -5,6 +5,7 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin;
 using TaskQuest.Models;
+using TaskQuest.Data;
 
 namespace TaskQuest.Identity
 {

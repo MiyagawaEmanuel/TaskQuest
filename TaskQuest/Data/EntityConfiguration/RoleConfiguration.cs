@@ -4,8 +4,9 @@ using System.ComponentModel.DataAnnotations.Schema;
 using System.Data.Entity.ModelConfiguration;
 using System.Linq;
 using System.Web;
+using TaskQuest.Models;
 
-namespace TaskQuest.Models.EntityConfiguration
+namespace TaskQuest.Data.EntityConfiguration
 {
     public class RoleConfiguration: EntityTypeConfiguration<Role>
     {

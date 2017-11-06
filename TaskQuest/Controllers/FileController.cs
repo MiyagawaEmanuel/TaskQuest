@@ -11,6 +11,7 @@ using TaskQuest.ViewModels;
 using Microsoft.AspNet.Identity;
 using TaskQuest;
 using System.Diagnostics;
+using TaskQuest.Data;
 
 namespace TesteMVC.Controllers
 {
