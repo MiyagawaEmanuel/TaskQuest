@@ -44,11 +44,13 @@ namespace TaskQuest.Data.EntityConfiguration
 
             HasMany(e => e.Quests)
                 .WithOptional(e => e.GrupoCriador)
-                .HasForeignKey(e => e.GrupoCriadorId);
+                .HasForeignKey(e => e.GrupoCriadorId)
+                .WillCascadeOnDelete();
 
             HasMany(e => e.Mensagens)
                 .WithOptional(e => e.GrupoDestinatario)
-                .HasForeignKey(e => e.GrupoDestinatarioId);
+                .HasForeignKey(e => e.GrupoDestinatarioId)
+                .WillCascadeOnDelete();
 
             HasOptional(e => e.Pagamento)
                 .WithRequired(e => e.Grupo);

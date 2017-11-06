@@ -98,11 +98,13 @@ namespace TaskQuest.Data.EntityConfiguration
 
             HasMany(e => e.Clients)
                 .WithOptional(e => e.Usuario)
-                .HasForeignKey(e => e.UsuarioId);
+                .HasForeignKey(e => e.UsuarioId)
+                .WillCascadeOnDelete(true);
 
             HasMany(e => e.DestinatarioMensagens)
                 .WithOptional(e => e.UsuarioDestinatario)
-                .HasForeignKey(e => e.UsuarioDestinatarioId);
+                .HasForeignKey(e => e.UsuarioDestinatarioId)
+                .WillCascadeOnDelete();
 
             HasMany(e => e.RemetenteMensagens)
                 .WithRequired(e => e.UsuarioRemetente)
@@ -110,19 +112,23 @@ namespace TaskQuest.Data.EntityConfiguration
 
             HasMany(e => e.Feedbacks)
                 .WithOptional(e => e.UsuarioResponsavel)
-                .HasForeignKey(e => e.UsuarioResponsavelId);
+                .HasForeignKey(e => e.UsuarioResponsavelId)
+                .WillCascadeOnDelete(true);
 
             HasMany(e => e.Quests)
                 .WithOptional(e => e.UsuarioCriador)
-                .HasForeignKey(e => e.UsuarioCriadorId);
+                .HasForeignKey(e => e.UsuarioCriadorId)
+                .WillCascadeOnDelete(true);
 
             HasMany(e => e.Tasks)
                 .WithOptional(e => e.UsuarioResponsavel)
-                .HasForeignKey(e => e.UsuarioResponsavelId);
+                .HasForeignKey(e => e.UsuarioResponsavelId)
+                .WillCascadeOnDelete(true);
 
             HasMany(e => e.Files)
                 .WithRequired(e => e.User)
-                .HasForeignKey(e => e.UserId);
+                .HasForeignKey(e => e.UserId)
+                .WillCascadeOnDelete(true);
 
             HasMany(e => e.Grupos)
                 .WithMany(e => e.Users)

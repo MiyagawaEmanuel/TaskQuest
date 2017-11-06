@@ -27,7 +27,7 @@ namespace TaskQuest.Migrations
                         usu_id = c.Int(),
                     })
                 .PrimaryKey(t => t.cli_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.usu_id);
             
             CreateTable(
@@ -64,7 +64,7 @@ namespace TaskQuest.Migrations
                         cuc_value = c.String(unicode: false),
                     })
                 .PrimaryKey(t => t.cuc_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.usu_id);
             
             CreateTable(
@@ -79,9 +79,9 @@ namespace TaskQuest.Migrations
                         msg_data = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => t.msg_id)
-                .ForeignKey("dbo.gru_grupo", t => t.gru_id_destinatario)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_destinatario)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_remetente)
+                .ForeignKey("dbo.gru_grupo", t => t.gru_id_destinatario, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_destinatario, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_remetente, cascadeDelete: true)
                 .Index(t => t.usu_id_remetente)
                 .Index(t => t.usu_id_destinatario)
                 .Index(t => t.gru_id_destinatario);
@@ -124,8 +124,8 @@ namespace TaskQuest.Migrations
                         qst_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.qst_id)
-                .ForeignKey("dbo.gru_grupo", t => t.gru_id_criador)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_criador)
+                .ForeignKey("dbo.gru_grupo", t => t.gru_id_criador, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_criador, cascadeDelete: true)
                 .Index(t => t.usu_id_criador)
                 .Index(t => t.gru_id_criador);
             
@@ -146,8 +146,8 @@ namespace TaskQuest.Migrations
                         usu_id_responsavel = c.Int(),
                     })
                 .PrimaryKey(t => t.tsk_id)
-                .ForeignKey("dbo.qst_quest", t => t.qst_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel)
+                .ForeignKey("dbo.qst_quest", t => t.qst_id, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel, cascadeDelete: true)
                 .Index(t => t.qst_id)
                 .Index(t => t.usu_id_responsavel);
             
@@ -164,8 +164,8 @@ namespace TaskQuest.Migrations
                         usu_id_responsavel = c.Int(),
                     })
                 .PrimaryKey(t => t.feb_id)
-                .ForeignKey("dbo.tsk_task", t => t.tsk_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel)
+                .ForeignKey("dbo.tsk_task", t => t.tsk_id, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id_responsavel, cascadeDelete: true)
                 .Index(t => t.tsk_id)
                 .Index(t => t.usu_id_responsavel);
             
@@ -184,8 +184,8 @@ namespace TaskQuest.Migrations
                         usu_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.fle_id)
-                .ForeignKey("dbo.tsk_task", t => t.tsk_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.tsk_task", t => t.tsk_id, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.tsk_id)
                 .Index(t => t.usu_id);
             
@@ -199,8 +199,8 @@ namespace TaskQuest.Migrations
                         ptu_data = c.DateTime(nullable: false, precision: 0),
                     })
                 .PrimaryKey(t => new { t.ptu_id, t.usu_id })
-                .ForeignKey("dbo.tsk_task", t => t.ptu_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.tsk_task", t => t.ptu_id, cascadeDelete: true)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.ptu_id)
                 .Index(t => t.usu_id);
             
@@ -214,7 +214,7 @@ namespace TaskQuest.Migrations
                         usu_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.cul_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.usu_id);
             
             CreateTable(
@@ -226,8 +226,8 @@ namespace TaskQuest.Migrations
                         rol_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.cur_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
-                .ForeignKey("dbo.ctr_custom_role", t => t.rol_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
+                .ForeignKey("dbo.ctr_custom_role", t => t.rol_id, cascadeDelete: true)
                 .Index(t => t.usu_id)
                 .Index(t => t.rol_id);
             
@@ -241,7 +241,7 @@ namespace TaskQuest.Migrations
                         tel_tipo = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.tel_id)
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
                 .Index(t => t.usu_id);
             
             CreateTable(
@@ -261,8 +261,8 @@ namespace TaskQuest.Migrations
                         gru_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => new { t.usu_id, t.gru_id })
-                .ForeignKey("dbo.usu_usuario", t => t.usu_id)
-                .ForeignKey("dbo.gru_grupo", t => t.gru_id)
+                .ForeignKey("dbo.usu_usuario", t => t.usu_id, cascadeDelete: true)
+                .ForeignKey("dbo.gru_grupo", t => t.gru_id, cascadeDelete: true)
                 .Index(t => t.usu_id)
                 .Index(t => t.gru_id);
             

@@ -61,7 +61,8 @@ namespace TaskQuest.Data.EntityConfiguration
 
             HasMany(e => e.Files)
                 .WithOptional(e => e.Task)
-                .HasForeignKey(e => e.TaskId);
+                .HasForeignKey(e => e.TaskId)
+                .WillCascadeOnDelete();
         }
     }
 }
