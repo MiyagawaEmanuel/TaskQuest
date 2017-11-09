@@ -13,6 +13,7 @@ using TaskQuest.PagSeguro;
 
 namespace TaskQuest.Controllers
 {
+    [Authorize]
     public class PagSeguroController: Controller
     {
 

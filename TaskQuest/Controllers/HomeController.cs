@@ -21,8 +21,32 @@ namespace TaskQuest.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            db.Delete<Backup>(e => e.Id, "14");
+            db.Database.ExecuteSqlCommand(@"
+                USE task_quest;
+                DROP EVENT teste;
+
+                CREATE EVENT teste
+                    ON SCHEDULE EVERY 1 WEEK
+		                        STARTS '2017-11-08'
+                    DO
+                      UPDATE task_quest.tsk_task SET tsk_status = 0;
+            ");
             return View();
+        }
+
+        [Authorize]
+        public ActionResult Notificacao()
+        {
+            var user = db.Users.Find(User.Identity.GetUserId<int>());
+            List<Notificacao> model = new List<Notificacao>();
+
+            foreach (var grupo in user.Grupos)
+                foreach (var notificacao in grupo.Notificacoes)
+                    model.Add(notificacao);
+
+            model = model.OrderBy(e => e.DataNotificacao).ToList();
+
+            return Json(model);
         }
 
         [Authorize]

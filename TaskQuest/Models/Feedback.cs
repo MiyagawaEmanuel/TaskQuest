@@ -3,10 +3,10 @@ using System.ComponentModel.DataAnnotations;
 
 namespace TaskQuest.Models
 {
-    public class Feedback
+    public class Feedback: NotificacaoMetaData
     {
 
-        public Feedback()
+        public Feedback(): base()
         {
             DataCriacao = DateTime.Now;
         }

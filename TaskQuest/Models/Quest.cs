@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace TaskQuest.Models
 {
-    public class Quest
+    public class Quest: NotificacaoMetaData
     {
-        public Quest()
+        public Quest(): base()
         {
             Tasks = new HashSet<Task>();
             DataCriacao = DateTime.Now;

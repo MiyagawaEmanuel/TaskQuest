@@ -16,7 +16,6 @@ namespace TaskQuest.ViewModels
             this.Id = Util.Encrypt(grupo.Id.ToString());
             this.Nome = grupo.Nome;
             this.Descricao = grupo.Descricao;
-            this.Plano = grupo.Plano;
             this.Cor = grupo.Cor;
         }
 
@@ -30,7 +29,6 @@ namespace TaskQuest.ViewModels
                     Nome = this.Nome,
                     Descricao = this.Descricao,
                     DataCriacao = System.DateTime.Now,
-                    Plano = false,
                     Cor = this.Cor,
                 };
 
@@ -47,7 +45,6 @@ namespace TaskQuest.ViewModels
 
                         grupo.Nome = this.Nome;
                         grupo.Descricao = this.Descricao;
-                        grupo.Plano = false;
                         grupo.Cor = this.Cor;
 
                         return grupo;
@@ -61,15 +58,12 @@ namespace TaskQuest.ViewModels
         public string Id { get; set; }
 
         [Required]
-        [StringLength(40, MinimumLength = 3)]
+        [StringLength(40, MinimumLength = 2)]
         public string Nome { get; set; }
 
         [Required]
-        [StringLength(120, MinimumLength = 3)]
+        [StringLength(120, MinimumLength = 2)]
         public string Descricao { get; set; }
-
-        [Required]
-        public bool Plano { get; set; }
 
         [Required]
         [StringLength(7, MinimumLength = 4)]

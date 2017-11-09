@@ -4,11 +4,13 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
+using TaskQuest.Data;
 using TaskQuest.Models;
 using TaskQuest.ViewModels;
 
 namespace TaskQuest.Controllers
 {
+    [Authorize]
     public class ChatController : Controller
     {
 

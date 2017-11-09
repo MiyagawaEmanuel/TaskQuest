@@ -6,9 +6,9 @@ using System.Linq;
 
 namespace TaskQuest.Models
 {
-    public class Grupo
+    public class Grupo: NotificacaoMetaData
     {
-        public Grupo()
+        public Grupo(): base()
         {
             Quests = new HashSet<Quest>();
             Mensagens = new HashSet<Mensagem>();
@@ -24,8 +24,6 @@ namespace TaskQuest.Models
 
         public DateTime DataCriacao { get; set; }
 
-        public bool Plano { get; set; }
-
         public string Descricao { get; set; }
 
         public virtual ICollection<Quest> Quests { get; set; }
@@ -33,6 +31,8 @@ namespace TaskQuest.Models
         public virtual ICollection<Mensagem> Mensagens { get; set; }
 
         public virtual ICollection<User> Users { get; set; }
+
+        public virtual ICollection<Notificacao> Notificacoes { get; set; }
 
         public virtual Pagamento Pagamento { get; set; }
 

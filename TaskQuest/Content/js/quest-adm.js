@@ -26,8 +26,6 @@
         return this.TasksViewModel;
     },
 
-
-
     render: function () {
         $('#task-container div').remove();
         for (var x = 0; x < this.TasksViewModel.length; x++) {
