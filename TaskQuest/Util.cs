@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
+using System.Data.Entity;
 using System.Data.Entity.Core.Mapping;
 using System.Data.Entity.Core.Metadata.Edm;
 using System.Data.Entity.Core.Objects;
@@ -14,6 +15,7 @@ using System.Linq.Expressions;
 using System.Reflection;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Web.Mvc;
 using TaskQuest.Data;
 using TaskQuest.Models;
@@ -49,7 +51,7 @@ namespace TaskQuest
 
         public static bool IsAdm(this IIdentity identity, int GrupoId)
         {
-            using (var db = new DbContext())
+            using (var db = new TaskQuest.Data.DbContext())
             {
                 var user = db.Users.Find(identity.GetUserId<int>());
                 var oi = user.Grupos.Any(q => q.Id == GrupoId);
@@ -66,7 +68,7 @@ namespace TaskQuest
             int Id;
             if (identity.IsAuthenticated && Int32.TryParse(Decrypt(questId), out Id))
             {
-                using (var db = new DbContext())
+                using (var db = new TaskQuest.Data.DbContext())
                 {
                     if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == Id).Any())
                         return true;
@@ -83,7 +85,7 @@ namespace TaskQuest
         {
             if (identity.IsAuthenticated)
             {
-                using (var db = new DbContext())
+                using (var db = new TaskQuest.Data.DbContext())
                 {
                     if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == questId).Any())
                         return true;
@@ -100,7 +102,7 @@ namespace TaskQuest
         {
             if (identity.IsAuthenticated)
             {
-                using (var db = new DbContext())
+                using (var db = new TaskQuest.Data.DbContext())
                 {
                     return db.Users.Find(identity.GetUserId<int>()).Cor;
                 }
@@ -185,6 +187,108 @@ namespace TaskQuest
             return plaintext;
 
         }
+
+        public static async void CreateNotificacaoAsync(IEnumerable<DbEntityEntry> entries)
+        {
+            using (var db = new TaskQuest.Data.DbContext())
+            {
+                foreach (var entry in entries)
+                {
+                    if (entry.State != EntityState.Unchanged)
+                    {
+
+                        if (entry.Entity is NotificacaoMetaData)
+                        {
+
+                            var notificacao = new Notificacao();
+                            bool IsValid = false;
+
+                            notificacao.TipoNotificacao = entry.State;
+                            notificacao.EntidadeModificada = entry.Entity.GetType().ToString();
+                            notificacao.DataNotificacao = DateTime.Now;
+
+                            if (entry.Entity.GetType() == typeof(Grupo))
+                            {
+                                var grupo = ((Grupo)entry.Entity);
+                                notificacao.Grupo = grupo;
+                                notificacao.GrupoId = grupo.Id;
+                                notificacao.Texto = "";
+                                IsValid = true;
+                            }
+                            else if (entry.Entity.GetType() == typeof(Quest))
+                            {
+                                var quest = ((Quest)entry.Entity);
+                                if (quest.GrupoCriador != null)
+                                {
+                                    notificacao.Grupo = quest.GrupoCriador;
+                                    notificacao.GrupoId = quest.GrupoCriador.Id;
+                                    notificacao.Texto = "";
+                                    IsValid = true;
+                                }
+                            }
+                            else if (entry.Entity.GetType() == typeof(Task))
+                            {
+                                var task = ((Task)entry.Entity);
+                                if (task.Quest.GrupoCriador != null)
+                                {
+                                    notificacao.Grupo = task.Quest.GrupoCriador;
+                                    notificacao.GrupoId = task.Quest.GrupoCriador.Id;
+                                    notificacao.Texto = "";
+                                    IsValid = true;
+                                }
+                            }
+                            else if (entry.Entity.GetType() == typeof(Feedback))
+                            {
+                                var feedback = ((Feedback)entry.Entity);
+                                if (feedback.Task.Quest.GrupoCriador != null)
+                                {
+                                    notificacao.Grupo = feedback.Task.Quest.GrupoCriador;
+                                    notificacao.GrupoId = feedback.Task.Quest.GrupoCriador.Id;
+                                    notificacao.Texto = "";
+                                    IsValid = true;
+                                }
+                            }
+                            if (IsValid)
+                                db.Notificacao.Add(notificacao);
+                        }
+                    }
+                }
+                db.SaveWithoutThreads();
+            }
+        }
+
+        public static async void CreateBackupAsync(IEnumerable<DbEntityEntry> entries)
+        {
+            using (var db = new TaskQuest.Data.DbContext())
+            {
+                foreach (var entry in entries)
+                {
+                    if (entry.State != EntityState.Unchanged)
+                    {
+                        var bkp = new Backup();
+
+                        bkp.TableName = entry.Entity.GetType().ToString();
+                        bkp.QueryType = entry.State.ToString();
+
+                        StringBuilder data = new StringBuilder();
+
+                        foreach (var prop in entry.Entity.GetType().GetProperties())
+                        {
+                            if (data.Length > 0)
+                                data.Append("&");
+                            data.Append(prop.Name);
+                            data.Append("=");
+                            data.Append(prop.GetValue(entry.Entity));
+                        }
+
+                        bkp.Data = data.ToString();
+                        db.Backup.Add(bkp);
+                    }
+                    db.SaveWithoutThreads();
+                }
+            }
+        }
+
     }
 
     public class Date : ValidationAttribute

@@ -46,8 +46,13 @@ namespace TaskQuest.Data
 
         public override int SaveChanges()
         {
-            //System.Threading.Tasks.Task.Run(() => CreateBackupAsync(ChangeTracker.Entries()));
-            //System.Threading.Tasks.Task.Run(() => CreateNotificacaoAsync(ChangeTracker.Entries()));
+            System.Threading.Tasks.Task.Run(() => Util.CreateBackupAsync(ChangeTracker.Entries()));
+            System.Threading.Tasks.Task.Run(() => Util.CreateNotificacaoAsync(ChangeTracker.Entries()));
+            return base.SaveChanges();
+        }
+
+        public int SaveWithoutThreads()
+        {
             return base.SaveChanges();
         }
 
@@ -75,100 +80,5 @@ namespace TaskQuest.Data
             modelBuilder.Configurations.Add(new UserLoginConfiguration());
             modelBuilder.Configurations.Add(new UserRoleConfiguration());
         }
-
-        private async void CreateNotificacaoAsync(IEnumerable<DbEntityEntry> entries)
-        {
-            foreach (var entry in entries)
-            {
-                if (entry.State != EntityState.Unchanged)
-                {
-
-                    if (entry.Entity is NotificacaoMetaData)
-                    {
-
-                        var notificacao = new Notificacao();
-                        bool IsValid = true;
-
-                        notificacao.TipoNotificacao = entry.State;
-                        notificacao.EntidadeModificada = entry.Entity.GetType().ToString();
-                        notificacao.DataNotificacao = DateTime.Now;
-
-                        if (entry.Entity.GetType() == typeof(Grupo))
-                        {
-                            var grupo = ((Grupo)entry.Entity);
-                            notificacao.GrupoId = grupo.Id;
-                            notificacao.Texto = "";
-                        }
-                        else if (entry.Entity.GetType() == typeof(Quest))
-                        {
-                            var quest = ((Quest)entry.Entity);
-                            if (quest.GrupoCriadorId != null)
-                            {
-                                notificacao.GrupoId = quest.GrupoCriadorId.Value;
-                                notificacao.Texto = "";
-                            }
-                                
-                            else
-                                IsValid = false;
-                        }
-                        else if (entry.Entity.GetType() == typeof(Task))
-                        {
-                            var task = ((Task)entry.Entity);
-                            if (task.Quest.GrupoCriadorId != null)
-                            {
-                                notificacao.GrupoId = task.Quest.GrupoCriadorId.Value;
-                                notificacao.Texto = "";
-                            }
-                            else
-                                IsValid = false;
-                        }
-                        else if (entry.Entity.GetType() == typeof(Feedback))
-                        {
-                            var feedback = ((Feedback)entry.Entity);
-                            if (feedback.Task.Quest.GrupoCriadorId != null)
-                            {
-                                notificacao.GrupoId = feedback.Task.Quest.GrupoCriadorId.Value;
-                                notificacao.Texto = "";
-                            }
-                            else
-                                IsValid = false;
-                        }
-                        if (IsValid)
-                            this.Notificacao.Add(notificacao);
-                    }
-                }
-            }
-            base.SaveChanges();
-        }
-
-        private async void CreateBackupAsync(IEnumerable<DbEntityEntry> entries)
-        {
-            foreach (var entry in entries)
-            {
-                if (entry.State != EntityState.Unchanged)
-                {
-                    var bkp = new Backup();
-
-                    bkp.TableName = entry.Entity.GetType().ToString();
-                    bkp.QueryType = entry.State.ToString();
-
-                    StringBuilder data = new StringBuilder();
-
-                    foreach (var prop in entry.Entity.GetType().GetProperties())
-                    {
-                        if (data.Length > 0)
-                            data.Append("&");
-                        data.Append(prop.Name);
-                        data.Append("=");
-                        data.Append(prop.GetValue(entry.Entity));
-                    }
-
-                    bkp.Data = data.ToString();
-                    this.Backup.Add(bkp);
-                }
-                base.SaveChanges();
-            }
-        }
-
     }
 }

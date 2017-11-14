@@ -9,6 +9,7 @@ using System.Net;
 using TaskQuest.Data;
 using System.Diagnostics;
 using TaskQuest;
+using System;
 
 namespace TaskQuest.Controllers
 {
@@ -21,16 +22,6 @@ namespace TaskQuest.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-//            db.Database.ExecuteSqlCommand(@"
-//                USE task_quest;
-//                DROP EVENT teste;
-//
-//                CREATE EVENT teste
-//                    ON SCHEDULE EVERY 1 WEEK
-//		                        STARTS '2017-11-08'
-//                    DO
-//                      UPDATE task_quest.tsk_task SET tsk_status = 0;
-//            ");
             return View();
         }
 
@@ -121,18 +112,29 @@ namespace TaskQuest.Controllers
         [Authorize]
         public ActionResult Quests()
         {
-            List<Quest> model = new List<Quest>();
+            QuestsViewModel model = new QuestsViewModel();
 
             User user = db.Users.Find(User.Identity.GetUserId<int>());
 
-            foreach (var gru in user.Grupos)
-                foreach (var qst in gru.Quests)
-                    model.Add(qst);
+            var x = 0;
+            foreach (var quest in user.Quests)
+            {
+                model.Quests.Add(quest);
+                foreach (var task in quest.Tasks)
+                    model.Tasks.Add(new Tuple<int, Task>(x, task));
+                x++;
+            }
 
-            foreach (var qst in user.Quests)
-                model.Add(qst);
-
-            model = model.OrderBy(a => a.Tasks.OrderBy(b => b.DataConclusao).FirstOrDefault()).ToList();
+            foreach (var grupo in user.Grupos)
+            {
+                foreach (var quest in grupo.Quests)
+                {
+                    model.Quests.Add(quest);
+                    foreach (var task in quest.Tasks)
+                        model.Tasks.Add(new Tuple<int, Task>(x, task));
+                    x++;
+                }
+            }
 
             return View(model);
         }
