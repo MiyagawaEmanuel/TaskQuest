@@ -46,8 +46,8 @@ namespace TaskQuest.Data
 
         public override int SaveChanges()
         {
-            System.Threading.Tasks.Task.Run(() => CreateBackupAsync(ChangeTracker.Entries()));
-            System.Threading.Tasks.Task.Run(() => CreateNotificacaoAsync(ChangeTracker.Entries()));
+            //System.Threading.Tasks.Task.Run(() => CreateBackupAsync(ChangeTracker.Entries()));
+            //System.Threading.Tasks.Task.Run(() => CreateNotificacaoAsync(ChangeTracker.Entries()));
             return base.SaveChanges();
         }
 
@@ -87,6 +87,7 @@ namespace TaskQuest.Data
                     {
 
                         var notificacao = new Notificacao();
+                        bool IsValid = true;
 
                         notificacao.TipoNotificacao = entry.State;
                         notificacao.EntidadeModificada = entry.Entity.GetType().ToString();
@@ -101,23 +102,39 @@ namespace TaskQuest.Data
                         else if (entry.Entity.GetType() == typeof(Quest))
                         {
                             var quest = ((Quest)entry.Entity);
-                            notificacao.GrupoId = quest.GrupoCriadorId.Value;
-                            notificacao.Texto = "";
+                            if (quest.GrupoCriadorId != null)
+                            {
+                                notificacao.GrupoId = quest.GrupoCriadorId.Value;
+                                notificacao.Texto = "";
+                            }
+                                
+                            else
+                                IsValid = false;
                         }
                         else if (entry.Entity.GetType() == typeof(Task))
                         {
                             var task = ((Task)entry.Entity);
-                            notificacao.GrupoId = task.Quest.GrupoCriadorId.Value;
-                            notificacao.Texto = "";
+                            if (task.Quest.GrupoCriadorId != null)
+                            {
+                                notificacao.GrupoId = task.Quest.GrupoCriadorId.Value;
+                                notificacao.Texto = "";
+                            }
+                            else
+                                IsValid = false;
                         }
                         else if (entry.Entity.GetType() == typeof(Feedback))
                         {
                             var feedback = ((Feedback)entry.Entity);
-                            notificacao.GrupoId = feedback.Task.Quest.GrupoCriadorId.Value;
-                            notificacao.Texto = "";
+                            if (feedback.Task.Quest.GrupoCriadorId != null)
+                            {
+                                notificacao.GrupoId = feedback.Task.Quest.GrupoCriadorId.Value;
+                                notificacao.Texto = "";
+                            }
+                            else
+                                IsValid = false;
                         }
-
-                        this.Notificacao.Add(notificacao);
+                        if (IsValid)
+                            this.Notificacao.Add(notificacao);
                     }
                 }
             }

@@ -1,114 +1,121 @@
-﻿@model List<TaskQuest.Models.Quest>
+﻿@model List<taskquest.models.quest>
 
-@{
-    ViewBag.Title = "Quests";
-}
+    @{
+        ViewBag.Title = "Quests";
+    }
 
-@section css{
-    <link rel="stylesheet" href="~/Content/css/balloon.css" />
-}
+    @section css{
+        <link rel="stylesheet" href="~/Content/css/balloon.css" />
+    }
 
-@section js
+    @section js
 {
-    <script src="~/Content/js/link.js"></script>
-    <script src="~/Content/js/showBalloon.js"></script>
-    <script src="~/Content/js/mudar-status.js"></script>
-    <script src="~/Content/js/quests.js"></script>
-}
+        <script src="~/Content/js/link.js"></script>
+        <script src="~/Content/js/showBalloon.js"></script>
+        <script src="~/Content/js/mudar-status.js"></script>
+        <script src="~/Content/js/quests.js"></script>
+    }
 
-<section class="pads-bot">
+    <section class="pads-bot">
 
-    <div class="flex-properties-r">
-        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Quests</h2></div>
-        <div class="title-b">
-            <div class="flex-properties-r pads icon-black">
-                <i class="fa fa-plus elipse" aria-hidden="true"></i>
-                <h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
+        <div class="flex-properties-r">
+            <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Quests</h2></div>
+            <div class="title-b">
+                <div class="flex-properties-r pads icon-black">
+                    <i class="fa fa-plus elipse" aria-hidden="true"></i>
+                    <h3><a href="/Quest/CriarQuest">Criar Quest</a></h3>
+                </div>
+                <div class="flex-properties-r pads icon-black">
+                    <i class="fa fa-globe elipse" aria-hidden="true"></i>
+                    <h3><a onclick="filter(-1)">Mostrar Tudo</a></h3>
+                </div>
+
             </div>
-            <div class="flex-properties-r pads icon-black">
-                <i class="fa fa-globe elipse" aria-hidden="true"></i>
-                <h3><a onclick="filter(-1)">Mostrar Tudo</a></h3>
-            </div>
-
         </div>
-    </div>
 
-    <div class="questlist">
-        @{
-            int questIndex = 0;
+        <div class="questlist">
+            @{
+                int questIndex = 0;
 
-        }
+            }
 
-        @if (Model.Count == 0)
-        {
-            <div class="questlist-none">
-                <span>Não há quests</span>
-            </div>
-        }
-        else
-        {
-            <div class="container questblock">
-
-                @foreach (var quest in Model)
-                {
-                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Qst" + questIndex, quest.Id.ToString(), "/Quest"))
-                    <div class="questlist-block flex-properties-r" onclick="filter(@questIndex)">
-                        <div class="quest-cor" style="background-color: @quest.Cor"></div>
-                        <div class="quest-info">
-                            <div class="quest-nome"><span class="icon-black"><a onclick="link(@Html.ToString("Qst" + questIndex))">@quest.Nome</a></span></div>
-                            <span class="quest-desc">@quest.Descricao</span>
-                        </div>
-                    </div>
-                    questIndex += 1;
-                }
-            </div>
-        }
-    </div>
-
-    <div class="container flex-properties-r margintop">
-
-        @{
-            questIndex = 0;
-        }
-
-        @foreach (var quest in Model)
-        {
-            foreach (var task in quest.Tasks)
+            @if (Model.Count == 0)
             {
-                <div class="margin-bottom item task-item" data-quest="@questIndex">
-                    <a onclick="link(@Html.ToString("Qst"+questIndex))"><div class="filete" style="background-color: @quest.Cor"></div></a>
-                    <div class="quest-body flex-properties-c">
-                        <div class="limit-lines icon-black"><a onclick="link(@Html.ToString("Qst"+questIndex))"><h4>@task.Nome</h4></a></div>
-                        <div class="limit-lines"><h4>@task.Descricao</h4></div>
-                        <div><h4>@task.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
-                        <div class="select-container">
-                            <select id="@Util.Encrypt(task.Id.ToString())" class="form-control" onchange="mudarStatus(this)">
-                                @if (task.Status == 0)
-                                {
-                                    <option selected value="0">A Fazer</option>
-                                    <option value="1">Fazendo</option>
-                                    <option value="2">Feito</option>
-                                }
-                                else if (task.Status == 1)
-                                {
-                                    <option value="0">A Fazer</option>
-                                    <option selected value="1">Fazendo</option>
-                                    <option value="2">Feito</option>
-                                }
-                                else if (task.Status == 2)
-                                {
-                                    <option value="0">A Fazer</option>
-                                    <option value="1">Fazendo</option>
-                                    <option selected value="2">Feito</option>
-                                }
-                            </select>
-                        </div>
-                    </div>
+                <div class="questlist-none">
+                    <span>Não há quests</span>
                 </div>
             }
-            questIndex += 1;
-        }
+            else
+            {
+                <div class="container questblock">
 
-    </div>
+                    @foreach (var quest in Model)
+                    {
+                        @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Qst" + questIndex, quest.Id.ToString(), "/Quest"))
+                        <div class="questlist-block flex-properties-r" onclick="filter(@questIndex)">
+                            <div class="quest-cor" style="background-color: @quest.Cor"></div>
+                            <div class="quest-info">
+                                <div class="quest-nome"><span class="icon-black"><a onclick="link(@Html.ToString("Qst" + questIndex))">@quest.Nome</a></span></div>
+                                <span class="quest-desc">@quest.Descricao</span>
+                            </div>
+                        </div>
+                        questIndex += 1;
+                    }
+                </div>
+            }
+        </div>
 
-</section>
+        <div class="container flex-properties-r margintop">
+
+            @{
+                questIndex = 0;
+            }
+
+            @foreach (var quest in Model)
+            {
+                foreach (var task in quest.Tasks)
+                {
+                    <div class="margin-bottom item task-item" data-quest="@questIndex">
+                        <a onclick="link(@Html.ToString("Qst"+questIndex))"><div class="filete" style="background-color: @quest.Cor"></div></a>
+                        <div class="quest-body flex-properties-c">
+                            <div class="limit-lines icon-black">
+                                <a onclick="link(@Html.ToString("Qst"+questIndex))">
+                                    <div class="limit-lines task-namegroup">
+                                        <div title="@task.Quest.GrupoCriador.Nome" class="task-group-elipse" style="background-color: @task.Quest.GrupoCriador.Cor"></div>
+                                        <h4>task.Nome</h4>
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="limit-lines"><h4>@task.Descricao</h4></div>
+                            <div><h4>@task.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+                            <div class="select-container">
+                                <select id="@Util.Encrypt(task.Id.ToString())" class="form-control" onchange="mudarStatus(this)">
+                                    @if (task.Status == 0)
+                                    {
+                                        <option selected value="0">A Fazer</option>
+                                        <option value="1">Fazendo</option>
+                                        <option value="2">Feito</option>
+                                    }
+                                    else if (task.Status == 1)
+                                    {
+                                        <option value="0">A Fazer</option>
+                                        <option selected value="1">Fazendo</option>
+                                        <option value="2">Feito</option>
+                                    }
+                                    else if (task.Status == 2)
+                                    {
+                                        <option value="0">A Fazer</option>
+                                        <option value="1">Fazendo</option>
+                                        <option selected value="2">Feito</option>
+                                    }
+                                </select>
+                            </div>
+                        </div>
+                    </div>
+                }
+                questIndex += 1;
+            }
+
+        </div>
+
+    </section>

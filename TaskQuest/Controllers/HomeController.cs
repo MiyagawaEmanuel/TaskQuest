@@ -21,16 +21,16 @@ namespace TaskQuest.Controllers
         [AllowAnonymous]
         public ActionResult Index()
         {
-            db.Database.ExecuteSqlCommand(@"
-                USE task_quest;
-                DROP EVENT teste;
-
-                CREATE EVENT teste
-                    ON SCHEDULE EVERY 1 WEEK
-		                        STARTS '2017-11-08'
-                    DO
-                      UPDATE task_quest.tsk_task SET tsk_status = 0;
-            ");
+//            db.Database.ExecuteSqlCommand(@"
+//                USE task_quest;
+//                DROP EVENT teste;
+//
+//                CREATE EVENT teste
+//                    ON SCHEDULE EVERY 1 WEEK
+//		                        STARTS '2017-11-08'
+//                    DO
+//                      UPDATE task_quest.tsk_task SET tsk_status = 0;
+//            ");
             return View();
         }
 

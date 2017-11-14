@@ -38,9 +38,51 @@ header {
     justify-content: space-around;
 }
 
-.dropdown-menu {
+.dropdown-menu, dropdown-notificacao {
     left: initial;
     right: 0;
+}
+
+.notify{
+    min-width: 215px !important;
+    max-height: 300px !important;
+    overflow-y: auto !important;
+    overflow-x: hidden !important;
+}
+
+.notify-elipse{
+    background-color: pink;
+    width: 20px;
+    height: 20px;
+    border-radius: 30px;
+    margin-right: 4%;
+}
+
+.notify-text{
+    word-wrap: break-word;
+    width: 280px;
+}
+
+.principal{
+    width: 300px;
+    align-items: center;
+    display: flex;
+}
+
+.notify a{
+    display: flex !important;
+    align-items: center !important;
+    white-space: normal;
+}
+
+.notify span{
+    color: #000;
+    width: 280px;
+    white-space: normal;
+}
+
+.negrito{
+    font-weight: bolder;
 }
 
 .li-hidden {
@@ -229,6 +271,7 @@ textarea {
     -ms-flex-pack: center;
     justify-content: center;
 }
+
 
 .error {
     color: #ce2e2e;
@@ -583,6 +626,19 @@ label {
 
 .download-info p{
     margin-left: 10%;
+}
+
+.task-namegroup{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.task-group-elipse{
+    width: 20px;
+    height: 20px;
+    border-radius: 20px;
+    margin-right: 5%;
 }
 
 @media (max-width: 600px) {
