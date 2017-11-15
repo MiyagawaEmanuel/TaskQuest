@@ -24,7 +24,10 @@
     <script src="~/Content/js/showBalloon.js"></script>
     <script src="~/Content/js/integrante.js"></script>
     <script src="~/Content/js/Chart.bundle.js"></script>
-    <script src="~/Content/js/chart.js"></script>
+    @if (Util.IsPremium(Model.Id))
+    {
+        <script src="~/Content/js/chart.js"></script>
+    }
 }
 
 <section class="pads-bot">
@@ -55,7 +58,7 @@
 
 </section>
 
-@if (Model.Quests.Any())
+@if (Model.Quests.Any() && Util.IsPremium(Model.Id))
 {
     <section class="container flex-properties-r" id="chartContainer" data-id="@Model.Id">
         <select id="integrantesChart" class="form-control" style="width:auto; margin-left: 5%; margin-bottom: 5%" onchange="barChart(this.value)">

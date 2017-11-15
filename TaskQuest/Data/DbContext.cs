@@ -49,30 +49,32 @@ namespace TaskQuest.Data
 
             foreach (var entry in ChangeTracker.Entries())
             {
-
-                var bkp = new Backup();
-
-                bkp.TableName = entry.Entity.GetType().ToString();
-                bkp.QueryType = entry.State.ToString();
-
-                StringBuilder data = new StringBuilder();
-
-                foreach (var prop in entry.Entity.GetType().GetProperties())
+                if (entry.State != EntityState.Unchanged)
                 {
-                    if (data.Length > 0)
-                        data.Append("&");
-                    data.Append(prop.Name);
-                    data.Append("=");
-                    data.Append(prop.GetValue(entry.Entity));
-                }
+                    var bkp = new Backup();
 
-                bkp.Data = data.ToString();
-                this.Backup.Add(bkp);
+                    bkp.TableName = entry.Entity.GetType().ToString();
+                    bkp.QueryType = entry.State.ToString();
+
+                    StringBuilder data = new StringBuilder();
+
+                    foreach (var prop in entry.Entity.GetType().GetProperties())
+                    {
+                        if (data.Length > 0)
+                            data.Append("&");
+                        data.Append(prop.Name);
+                        data.Append("=");
+                        data.Append(prop.GetValue(entry.Entity));
+                    }
+
+                    bkp.Data = data.ToString();
+                    this.Backup.Add(bkp);
+                }
             }
 
             foreach (var entry in ChangeTracker.Entries())
             {
-                if (entry.Entity is NotificacaoMetaData)
+                if (entry.Entity is NotificacaoMetaData && entry.State != EntityState.Unchanged)
                 {
                     var notificacao = new Notificacao();
                     bool IsValid = false;
@@ -128,11 +130,6 @@ namespace TaskQuest.Data
 
             }
             return base.SaveChanges();
-        }
-
-        public async System.Threading.Tasks.Task<int> SaveWithoutThreads()
-        {
-            return await base.SaveChangesAsync();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

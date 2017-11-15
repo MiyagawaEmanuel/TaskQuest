@@ -48,33 +48,33 @@ namespace TaskQuest.PagSeguro
         public static HttpWebResponse Request(string urlPath, string query, string method)
         {
             HttpWebRequest request;
-            try
+            if (Util.HasInternetConnection())
             {
-
-                request = (HttpWebRequest)WebRequest.Create(urlPath);
-
-                request.ContentType = "application/x-www-form-urlencoded; charset= ISO-8859-1";
-                request.Method = method;
-                request.Timeout = 10000;
-                request.Headers.Add("lib-description", ".net:" + "2.4.0");
-                request.Headers.Add("language-engine-description", ".net:" + Environment.Version.ToString());
-
-                if (!string.IsNullOrEmpty(query))
+                try
                 {
-                    using (Stream requestStream = request.GetRequestStream())
+
+                    request = (HttpWebRequest)WebRequest.Create(urlPath);
+
+                    request.ContentType = "application/x-www-form-urlencoded; charset= ISO-8859-1";
+                    request.Method = method;
+                    request.Timeout = 10000;
+                    request.Headers.Add("lib-description", ".net:" + "2.4.0");
+                    request.Headers.Add("language-engine-description", ".net:" + Environment.Version.ToString());
+
+                    if (!string.IsNullOrEmpty(query))
                     {
-                        byte[] byteArray = Encoding.UTF8.GetBytes(query);
-                        requestStream.Write(byteArray, 0, byteArray.Length);
-                        requestStream.Close();
+                        using (Stream requestStream = request.GetRequestStream())
+                        {
+                            byte[] byteArray = Encoding.UTF8.GetBytes(query);
+                            requestStream.Write(byteArray, 0, byteArray.Length);
+                            requestStream.Close();
+                        }
                     }
+                    return (HttpWebResponse)request.GetResponse();
                 }
-                
-                return (HttpWebResponse)request.GetResponse();
+                catch (WebException) { return null; }
             }
-            catch (WebException exception)
-            {
-                throw exception;
-            }
+            return null;
         }
 
         public static IDictionary<string, string> ReadXml(XDocument doc)

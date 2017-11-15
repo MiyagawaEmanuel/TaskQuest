@@ -22,6 +22,9 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult Index(string Id)
         {
+            if (!Util.IsPremium(Id))
+                return Json(null);
+
             int id;
             if (int.TryParse(Util.Decrypt(Id), out id))
             {
@@ -62,6 +65,9 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult BarChartIntegrante(string UserId, string GrupoId)
         {
+            if (!Util.IsPremium(GrupoId))
+                return Json(null);
+
             int Id;
             if (int.TryParse(Util.Decrypt(GrupoId), out Id))
             {
@@ -105,6 +111,8 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult BarChartGrupo(string Id)
         {
+            if (!Util.IsPremium(Id))
+                return Json(null);
 
             int grupoId;
             if (int.TryParse(Util.Decrypt(Id), out grupoId))
@@ -144,6 +152,8 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult PieChart(string Id)
         {
+            if (!Util.IsPremium(Id))
+                return Json(null);
 
             if (!User.Identity.HasQuest(Id))
                 return Json(new ChartViewModel() { Response = "Error" });
@@ -174,6 +184,9 @@ namespace TaskQuest.Controllers
         [HttpPost]
         public ActionResult GanttChart(string Id)
         {
+            if (!Util.IsPremium(Id))
+                return Json(null);
+
             if (!User.Identity.HasQuest(Id))
                 return Json(new ChartViewModel() { Response = "Error" });
 
@@ -207,7 +220,6 @@ namespace TaskQuest.Controllers
 
         public ActionResult ConfiguracaoChart()
         {
-
             var user = db.Users.Find(User.Identity.GetUserId<int>());
 
             ChartViewModel model = new ChartViewModel() { Response = "Ok" };

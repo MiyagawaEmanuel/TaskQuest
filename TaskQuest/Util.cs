@@ -7,6 +7,7 @@ using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Security.Principal;
 using System.Text;
@@ -164,6 +165,54 @@ namespace TaskQuest
 
             return plaintext;
 
+        }
+
+        public static string IsPremium(Grupo grupo)
+        {
+            return TaskQuest.PagSeguro.Status.Ativa;
+            if (grupo.Pagamento != null)
+                return grupo.Pagamento.Status;
+            return null;
+        }
+
+        public static bool IsPremium(string grupoId)
+        {
+            return true;
+            using (var db = new TaskQuest.Data.DbContext())
+            {
+                int Id;
+                if (int.TryParse(Decrypt(grupoId), out Id))
+                {
+                    var grupo = db.Grupo.Find(Id);
+                    if (grupo.Pagamento != null)
+                        if (grupo.Pagamento.Status == TaskQuest.PagSeguro.Status.Ativa)
+                            return true;
+                }
+            }
+            return false;
+        }
+
+        public static bool HasInternetConnection()
+        {
+            try
+            {
+                Ping myPing = new Ping();
+                String host = "google.com";
+                byte[] buffer = new byte[32];
+                int timeout = 1000;
+                PingOptions pingOptions = new PingOptions();
+                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+                return (reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+        }
+
+        public static string CreateRandomString()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("+", "").Replace("=", "").Replace("/", "");
         }
 
     }

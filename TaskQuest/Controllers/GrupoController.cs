@@ -151,6 +151,12 @@ namespace TaskQuest.Controllers
                 if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
                 {
                     Grupo grupo = db.Grupo.Find(Id);
+
+                    if (string.IsNullOrEmpty(Util.IsPremium(grupo)))
+                        return RedirectToAction("PremiumPropaganda", "Premium");
+                    else if (Util.IsPremium(grupo) != TaskQuest.PagSeguro.Status.Ativa && grupo.Users.Count >= 10)
+                        return RedirectToAction("PremiumAguardandoPagamento", "Premium");
+
                     if (!User.Identity.IsAdm(grupo.Id))
                     {
                         TempData["Classe"] = "yellow-alert";
@@ -257,17 +263,23 @@ namespace TaskQuest.Controllers
                 if (int.TryParse(Util.Decrypt(model.GrupoId), out Id))
                 {
                     var grupo = db.Grupo.Find(Id);
+
+                    if (string.IsNullOrEmpty(Util.IsPremium(grupo)))
+                        return RedirectToAction("PremiumPropaganda", "Premium");
+                    else if (Util.IsPremium(grupo) != TaskQuest.PagSeguro.Status.Ativa)
+                        return RedirectToAction("PremiumAguardandoPagamento", "Premium");
+
                     if (User.Identity.IsAdm(grupo.Id))
                     {
-                        var aux3 = db.Users.ToList().Where(q => q.Email == model.Email);
-                        if (aux3.Any())
+                        var aux = db.Users.ToList().Where(q => q.Email == model.Email);
+                        if (aux.Any())
                         {
-                            aux3.First().Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
+                            aux.First().Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
 
                             TempData["Classe"] = "green-alert";
                             TempData["Alerta"] = "Integrante promovido a Administrador com sucesso";
 
-                            db.Entry(aux3.First()).State = System.Data.Entity.EntityState.Modified;
+                            db.Entry(aux.First()).State = System.Data.Entity.EntityState.Modified;
                             db.SaveChanges();
                         }
                         else
