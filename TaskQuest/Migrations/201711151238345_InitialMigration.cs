@@ -104,7 +104,7 @@ namespace TaskQuest.Migrations
                     {
                         not_id = c.Int(nullable: false, identity: true),
                         not_texto = c.String(nullable: false, unicode: false),
-                        not_tipo_notificacao = c.Int(nullable: false),
+                        not_tipo_notificacao = c.String(nullable: false, unicode: false),
                         not_entidade_modificada = c.String(nullable: false, unicode: false),
                         not_data_notificacao = c.DateTime(nullable: false, precision: 0),
                         gru_id = c.Int(nullable: false),

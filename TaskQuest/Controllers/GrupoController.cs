@@ -27,7 +27,8 @@ namespace TaskQuest.Controllers
                 {
                     var user = db.Users.Find(User.Identity.GetUserId<int>());
 
-                    user.Grupos.Add(grupo);
+                    db.Entry(grupo).State = System.Data.Entity.EntityState.Added;
+                    grupo.Users.Add(user);
                     db.SaveChanges();
 
                     user.Claims.Add(new UserClaim(grupo.Id.ToString(), "Adm"));
@@ -325,7 +326,7 @@ namespace TaskQuest.Controllers
 
                     foreach (var user in grupo.Users)
                         foreach (var claim in user.Claims.ToList())
-                            if (claim.ClaimType == "3")
+                            if (claim.ClaimType == "Adm")
                                 db.Entry(claim).State = System.Data.Entity.EntityState.Deleted;
 
                     db.SaveChanges();

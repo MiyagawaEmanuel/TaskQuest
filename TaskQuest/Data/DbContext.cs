@@ -46,14 +46,93 @@ namespace TaskQuest.Data
 
         public override int SaveChanges()
         {
-            System.Threading.Tasks.Task.Run(() => Util.CreateBackupAsync(ChangeTracker.Entries()));
-            System.Threading.Tasks.Task.Run(() => Util.CreateNotificacaoAsync(ChangeTracker.Entries()));
+
+            foreach (var entry in ChangeTracker.Entries())
+            {
+
+                var bkp = new Backup();
+
+                bkp.TableName = entry.Entity.GetType().ToString();
+                bkp.QueryType = entry.State.ToString();
+
+                StringBuilder data = new StringBuilder();
+
+                foreach (var prop in entry.Entity.GetType().GetProperties())
+                {
+                    if (data.Length > 0)
+                        data.Append("&");
+                    data.Append(prop.Name);
+                    data.Append("=");
+                    data.Append(prop.GetValue(entry.Entity));
+                }
+
+                bkp.Data = data.ToString();
+                this.Backup.Add(bkp);
+            }
+
+            foreach (var entry in ChangeTracker.Entries())
+            {
+                if (entry.Entity is NotificacaoMetaData)
+                {
+                    var notificacao = new Notificacao();
+                    bool IsValid = false;
+
+                    notificacao.TipoNotificacao = entry.State.ToString();
+                    notificacao.EntidadeModificada = entry.Entity.GetType().ToString();
+                    notificacao.DataNotificacao = DateTime.Now;
+
+                    if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Grupo))
+                    {
+                        var grupo = ((Grupo)entry.Entity);
+                        notificacao.Grupo = grupo;
+                        notificacao.GrupoId = grupo.Id;
+                        notificacao.Texto = "";
+                        IsValid = true;
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Quest))
+                    {
+                        var quest = ((Quest)entry.Entity);
+                        if (quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = quest.GrupoCriador;
+                            notificacao.GrupoId = quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Task))
+                    {
+                        var task = ((Task)entry.Entity);
+                        if (task.Quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = task.Quest.GrupoCriador;
+                            notificacao.GrupoId = task.Quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Feedback))
+                    {
+                        var feedback = ((Feedback)entry.Entity);
+                        if (feedback.Task.Quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = feedback.Task.Quest.GrupoCriador;
+                            notificacao.GrupoId = feedback.Task.Quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    if (IsValid)
+                        this.Notificacao.Add(notificacao);
+                }
+
+            }
             return base.SaveChanges();
         }
 
-        public int SaveWithoutThreads()
+        public async System.Threading.Tasks.Task<int> SaveWithoutThreads()
         {
-            return base.SaveChanges();
+            return await base.SaveChangesAsync();
         }
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)

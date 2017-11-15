@@ -12,7 +12,7 @@ namespace TaskQuest.Models
 
         public string Texto { get; set; }
 
-        public EntityState TipoNotificacao { get; set; }
+        public string TipoNotificacao { get; set; }
 
         public string EntidadeModificada { get; set; }
 
