@@ -16,7 +16,7 @@ using TaskQuest.PagSeguro;
 namespace TaskQuest.Controllers
 {
     [Authorize]
-    public static class PremiumController: Controller
+    public class PremiumController: Controller
     {
         private static DbContext db = new DbContext();
 
