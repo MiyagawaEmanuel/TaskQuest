@@ -7,9 +7,9 @@ using System.Linq;
 
 namespace TaskQuest.Models
 {
-    public class Task
+    public class Task: NotificacaoMetaData
     {
-        public Task()
+        public Task(): base()
         {
             Feedbacks = new HashSet<Feedback>();
             PontoUsuarios = new HashSet<PontoUsuario>();

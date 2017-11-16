@@ -94,10 +94,24 @@ namespace TaskQuest.Migrations
                         gru_nome = c.String(nullable: false, maxLength: 40, storeType: "nvarchar"),
                         gru_cor = c.String(nullable: false, maxLength: 7, storeType: "nvarchar"),
                         gru_data_criacao = c.DateTime(nullable: false, precision: 0),
-                        gru_plano = c.Boolean(nullable: false),
                         gru_descricao = c.String(nullable: false, maxLength: 120, storeType: "nvarchar"),
                     })
                 .PrimaryKey(t => t.gru_id);
+            
+            CreateTable(
+                "dbo.not_notificacao",
+                c => new
+                    {
+                        not_id = c.Int(nullable: false, identity: true),
+                        not_texto = c.String(nullable: false, unicode: false),
+                        not_tipo_notificacao = c.String(nullable: false, unicode: false),
+                        not_entidade_modificada = c.String(nullable: false, unicode: false),
+                        not_data_notificacao = c.DateTime(nullable: false, precision: 0),
+                        gru_id = c.Int(nullable: false),
+                    })
+                .PrimaryKey(t => t.not_id)
+                .ForeignKey("dbo.gru_grupo", t => t.gru_id, cascadeDelete: true)
+                .Index(t => t.gru_id);
             
             CreateTable(
                 "dbo.pag_pagamento",
@@ -289,6 +303,7 @@ namespace TaskQuest.Migrations
             DropForeignKey("dbo.fle_file", "tsk_id", "dbo.tsk_task");
             DropForeignKey("dbo.feb_feedback", "tsk_id", "dbo.tsk_task");
             DropForeignKey("dbo.pag_pagamento", "pag_id", "dbo.gru_grupo");
+            DropForeignKey("dbo.not_notificacao", "gru_id", "dbo.gru_grupo");
             DropForeignKey("dbo.msg_mensagem", "gru_id_destinatario", "dbo.gru_grupo");
             DropForeignKey("dbo.cli_client", "usu_id", "dbo.usu_usuario");
             DropForeignKey("dbo.cuc_custom_user_claim", "usu_id", "dbo.usu_usuario");
@@ -309,6 +324,7 @@ namespace TaskQuest.Migrations
             DropIndex("dbo.qst_quest", new[] { "gru_id_criador" });
             DropIndex("dbo.qst_quest", new[] { "usu_id_criador" });
             DropIndex("dbo.pag_pagamento", new[] { "pag_id" });
+            DropIndex("dbo.not_notificacao", new[] { "gru_id" });
             DropIndex("dbo.msg_mensagem", new[] { "gru_id_destinatario" });
             DropIndex("dbo.msg_mensagem", new[] { "usu_id_destinatario" });
             DropIndex("dbo.msg_mensagem", new[] { "usu_id_remetente" });
@@ -327,6 +343,7 @@ namespace TaskQuest.Migrations
             DropTable("dbo.tsk_task");
             DropTable("dbo.qst_quest");
             DropTable("dbo.pag_pagamento");
+            DropTable("dbo.not_notificacao");
             DropTable("dbo.gru_grupo");
             DropTable("dbo.msg_mensagem");
             DropTable("dbo.cuc_custom_user_claim");

@@ -1,4 +1,4 @@
-﻿@model List<TaskQuest.Models.Quest>
+﻿@model TaskQuest.ViewModels.QuestsViewModel
 
 @{
     ViewBag.Title = "Quests";
@@ -34,12 +34,12 @@
     </div>
 
     <div class="questlist">
+
         @{
             int questIndex = 0;
-
         }
 
-        @if (Model.Count == 0)
+        @if (Model.Quests.Count == 0)
         {
             <div class="questlist-none">
                 <span>Não há quests</span>
@@ -49,7 +49,7 @@
         {
             <div class="container questblock">
 
-                @foreach (var quest in Model)
+                @foreach (var quest in Model.Quests)
                 {
                     @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Qst" + questIndex, quest.Id.ToString(), "/Quest"))
                     <div class="questlist-block flex-properties-r" onclick="filter(@questIndex)">
@@ -67,53 +67,49 @@
 
     <div class="container flex-properties-r margintop">
 
-        @{
-            questIndex = 0;
-        }
-
-        @foreach (var quest in Model)
+        @foreach (var task in Model.Tasks.OrderBy(e => e.Item2.DataConclusao))
         {
-            foreach (var task in quest.Tasks)
-            {
-                <div class="margin-bottom item task-item" data-quest="@questIndex">
-                    <a onclick="link(@Html.ToString("Qst"+questIndex))"><div class="filete" style="background-color: @quest.Cor"></div></a>
-                    <div class="quest-body flex-properties-c">
-                        <div class="limit-lines icon-black">
-                            <a onclick="link(@Html.ToString("Qst"+questIndex))">
-                                <div class="limit-lines task-namegroup">
-                                    <div title="@task.Quest.GrupoCriador.Nome" class="task-group-elipse" style="background-color: @task.Quest.GrupoCriador.Cor"></div>
-                                    <h4>@task.Nome</h4>
-                                </div>
-                            </a>
-                        </div>
-                        <div class="limit-lines"><h4>@task.Descricao</h4></div>
-                        <div><h4>@task.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
-                        <div class="select-container">
-                            <select id="@Util.Encrypt(task.Id.ToString())" class="form-control" onchange="mudarStatus(this)">
-                                @if (task.Status == 0)
+            <div class="margin-bottom item task-item" data-quest="@task.Item1">
+                <a onclick="link(@Html.ToString("Qst" + task.Item1))"><div class="filete" style="background-color: @task.Item2.Quest.Cor"></div></a>
+                <div class="quest-body flex-properties-c">
+                    <div class="limit-lines icon-black">
+                        <a onclick="link(@Html.ToString("Qst" + task.Item1))">
+                            <div class="limit-lines task-namegroup">
+                                @if (task.Item2.Quest.GrupoCriador != null)
                                 {
-                                    <option selected value="0">A Fazer</option>
-                                    <option value="1">Fazendo</option>
-                                    <option value="2">Feito</option>
+                                    <div title="@task.Item2.Quest.GrupoCriador.Nome" class="task-group-elipse" style="background-color: @task.Item2.Quest.GrupoCriador.Cor"></div>
+
                                 }
-                                else if (task.Status == 1)
-                                {
-                                    <option value="0">A Fazer</option>
-                                    <option selected value="1">Fazendo</option>
-                                    <option value="2">Feito</option>
-                                }
-                                else if (task.Status == 2)
-                                {
-                                    <option value="0">A Fazer</option>
-                                    <option value="1">Fazendo</option>
-                                    <option selected value="2">Feito</option>
-                                }
-                            </select>
-                        </div>
+                                <h4>@task.Item2.Nome</h4>
+                            </div>
+                        </a>
+                    </div>
+                    <div class="limit-lines"><h4>@task.Item2.Descricao</h4></div>
+                    <div><h4>@task.Item2.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
+                    <div class="select-container">
+                        <select id="@Util.Encrypt(task.Item2.Id.ToString())" class="form-control" onchange="mudarStatus(this)">
+                            @if (task.Item2.Status == 0)
+                            {
+                                <option selected value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option value="2">Feito</option>
+                            }
+                            else if (task.Item2.Status == 1)
+                            {
+                                <option value="0">A Fazer</option>
+                                <option selected value="1">Fazendo</option>
+                                <option value="2">Feito</option>
+                            }
+                            else if (task.Item2.Status == 2)
+                            {
+                                <option value="0">A Fazer</option>
+                                <option value="1">Fazendo</option>
+                                <option selected value="2">Feito</option>
+                            }
+                        </select>
                     </div>
                 </div>
-            }
-            questIndex += 1;
+            </div>
         }
 
     </div>

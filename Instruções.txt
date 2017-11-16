@@ -28,11 +28,24 @@ routes.MapRoute(
 routes.MapRoute("PageNotFound", "{*catchall}", new { controller = "Error", action = "Index" });
 
 Insira as seguintes linhas em "appSettings" na raiz de "configuration" no arquivo web.config:
-<add key="mailAccount" value="taskquest01@gmail.com"/>
-<add key="mailPassword" value="Teste@123"/>
-<add key="AesIV" value="1fa4866dfe"/>
-<add key="AesKey" value="c9203488c0"/>
-<add key="Salt" value="80fa1f5f9e"/>
+    <add key="mailAccount" value="taskquest01@gmail.com"/>
+    <add key="mailPassword" value="Teste@123"/>
+    
+    <add key="AesIV" value="1fa4866dfe"/>
+    <add key="AesKey" value="c9203488c0"/>
+    <add key="Salt" value="80fa1f5f9e"/>
+    
+    <add key="IsSandBox" value="True"/>
+    <add key="PagSeguroEmail" value="taskquest01@gmail.com" />
+    <add key="PagSeguroToken" value="85E43107188E4237B2E284181B9E673E"/>
 
 Insira a seguinte linha em Webconfig, acima de </system.web> (antes do fechamento da tag syste.web)
 <globalization fileEncoding="utf-8" requestEncoding="utf-8" responseEncoding="utf-8" culture="pt-br"/>
+
+Adicione no WebConfig em system.webServer:
+    <staticContent>
+      <remove fileExtension=".woff" />
+      <remove fileExtension=".woff2" />
+      <mimeMap fileExtension=".woff" mimeType="application/font-woff" />
+      <mimeMap fileExtension=".woff2" mimeType="font/x-woff" />
+    </staticContent>

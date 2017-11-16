@@ -104,7 +104,7 @@ namespace TesteMVC.Controllers
                     else
                     {
                         //Cria um nome único para o arquivo
-                        var fileName = Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("+", "").Replace("=", "").Replace("/", "");
+                        var fileName = Util.CreateRandomString();
 
                         //Cria o caminho onde o arquivo será salvo
                         var path = Path.Combine(Server.MapPath("~/Images/"), fileName + "." + file.FileName.Split('.').Last());

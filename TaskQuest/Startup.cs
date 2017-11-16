@@ -1,5 +1,7 @@
-﻿using Owin;
+﻿using Microsoft.Owin;
+using Owin;
 
+[assembly: OwinStartupAttribute(typeof(TaskQuest.Startup))]
 namespace TaskQuest
 {
     public partial class Startup

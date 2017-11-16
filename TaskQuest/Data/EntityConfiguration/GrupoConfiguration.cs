@@ -33,10 +33,6 @@ namespace TaskQuest.Data.EntityConfiguration
                 .HasColumnName("gru_data_criacao")
                 .IsRequired();
 
-            Property(e => e.Plano)
-                .HasColumnName("gru_plano")
-                .IsRequired();
-
             Property(e => e.Descricao)
                 .HasColumnName("gru_descricao")
                 .HasMaxLength(120)
@@ -50,6 +46,11 @@ namespace TaskQuest.Data.EntityConfiguration
             HasMany(e => e.Mensagens)
                 .WithOptional(e => e.GrupoDestinatario)
                 .HasForeignKey(e => e.GrupoDestinatarioId)
+                .WillCascadeOnDelete();
+
+            HasMany(e => e.Notificacoes)
+                .WithRequired(e => e.Grupo)
+                .HasForeignKey(e => e.GrupoId)
                 .WillCascadeOnDelete();
 
             HasOptional(e => e.Pagamento)

@@ -170,7 +170,7 @@ namespace TaskQuest.Controllers
                     </table>
                 ", callbackUrl);
 
-                await UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
+                System.Threading.Tasks.Task.Run(() => UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody));
 
                 TempData["Alerta"] = "Verifique seu email";
                 TempData["Classe"] = "green-alert";
@@ -229,7 +229,7 @@ namespace TaskQuest.Controllers
                     </table>
                 ", callbackUrl);
 
-                UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody);
+                System.Threading.Tasks.Task.Run(() => UserManager.SendEmailAsync(user.Id, "Confirme sua Conta", mailBody));
 
                 TempData["Alerta"] = "Cadastrado com sucesso";
                 TempData["Classe"] = "green-alert";
@@ -288,7 +288,7 @@ namespace TaskQuest.Controllers
                 var code = await UserManager.GeneratePasswordResetTokenAsync(user.Id);
                 var callbackUrl = Url.Action("ResetPassword", "Account", new { userId = user.Id, code },
                     Request.Url.Scheme);
-                await UserManager.SendEmailAsync(user.Id, "Esqueci minha senha", string.Format(@"
+                System.Threading.Tasks.Task.Run(() => UserManager.SendEmailAsync(user.Id, "Esqueci minha senha", string.Format(@"
                     <table width=621 border='1' cellpadding='0' cellspacing='0'>
 	                    <tr height=160 style='background-color: #106494;'>
 		                    <td style='text-align: center; color:white; font-size: 100px;'><span style='font-family: Calibri;'>Task</span><span style='font-family: Impact;'>Quest</span></td>
@@ -302,7 +302,7 @@ namespace TaskQuest.Controllers
 			                    <span style='color: #929496; font-family: Calibri; font-size: 20px;'>Por favor, altere sua senha </span style='font-family:Calibri; font-size: 20px;'><span style='font-size: 20px;'><a href='{0}' style='text-decoration: none; color: #106494;'>clicando aqui.</a></span>
 		                    </td>
 	                    </tr>       
-                    </table>", callbackUrl));
+                    </table>", callbackUrl)));
                 return View("ForgotPasswordConfirmation");
             }
 

@@ -1,19 +1,16 @@
 ﻿using Microsoft.AspNet.Identity;
 using System;
 using System.Collections.Generic;
-using System.Collections.ObjectModel;
 using System.ComponentModel.DataAnnotations;
 using System.Configuration;
-using System.Data.Entity.Core.Mapping;
-using System.Data.Entity.Core.Metadata.Edm;
-using System.Data.Entity.Core.Objects;
+using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
-using System.Reflection;
+using System.Net.NetworkInformation;
 using System.Security.Cryptography;
 using System.Security.Principal;
+using System.Text;
 using System.Web.Mvc;
 using TaskQuest.Data;
 using TaskQuest.Models;
@@ -49,11 +46,9 @@ namespace TaskQuest
 
         public static bool IsAdm(this IIdentity identity, int GrupoId)
         {
-            using (var db = new DbContext())
+            using (var db = new TaskQuest.Data.DbContext())
             {
                 var user = db.Users.Find(identity.GetUserId<int>());
-                var oi = user.Grupos.Any(q => q.Id == GrupoId);
-                var io = user.Claims.Any(q => q.ClaimType == GrupoId.ToString() && q.ClaimValue == "Adm");
                 if (user.Claims.Any(q => q.ClaimType == GrupoId.ToString() && q.ClaimValue == "Adm") && user.Grupos.Any(q => q.Id == GrupoId))
                     return true;
                 else
@@ -66,7 +61,7 @@ namespace TaskQuest
             int Id;
             if (identity.IsAuthenticated && Int32.TryParse(Decrypt(questId), out Id))
             {
-                using (var db = new DbContext())
+                using (var db = new TaskQuest.Data.DbContext())
                 {
                     if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == Id).Any())
                         return true;
@@ -83,7 +78,7 @@ namespace TaskQuest
         {
             if (identity.IsAuthenticated)
             {
-                using (var db = new DbContext())
+                using (var db = new TaskQuest.Data.DbContext())
                 {
                     if (db.Users.Find(identity.GetUserId<int>()).Quests.Where(q => q.Id == questId).Any())
                         return true;
@@ -99,16 +94,10 @@ namespace TaskQuest
         public static string GetCor(this IIdentity identity)
         {
             if (identity.IsAuthenticated)
-            {
-                using (var db = new DbContext())
-                {
+                using (var db = new TaskQuest.Data.DbContext())
                     return db.Users.Find(identity.GetUserId<int>()).Cor;
-                }
-            }
             else
-            {
                 return null;
-            }
         }
 
 
@@ -140,9 +129,7 @@ namespace TaskQuest
                     using (CryptoStream csEncrypt = new CryptoStream(msEncrypt, encryptor, CryptoStreamMode.Write))
                     {
                         using (StreamWriter swEncrypt = new StreamWriter(csEncrypt))
-                        {
                             swEncrypt.Write(plainText);
-                        }
                         encrypted = msEncrypt.ToArray();
                     }
                 }
@@ -169,15 +156,9 @@ namespace TaskQuest
                 try
                 {
                     using (MemoryStream msDecrypt = new MemoryStream(Convert.FromBase64String(cipherText)))
-                    {
-                        using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
-                        {
-                            using (StreamReader srDecrypt = new StreamReader(csDecrypt))
-                            {
-                                plaintext = srDecrypt.ReadToEnd();
-                            }
-                        }
-                    }
+                    using (CryptoStream csDecrypt = new CryptoStream(msDecrypt, decryptor, CryptoStreamMode.Read))
+                    using (StreamReader srDecrypt = new StreamReader(csDecrypt))
+                        plaintext = srDecrypt.ReadToEnd();
                 }
                 catch (Exception) { return ""; }
             }
@@ -186,71 +167,54 @@ namespace TaskQuest
 
         }
 
-        public static void Delete<T>(this DbContext db, Expression<Func<T, object>> prop, string where) where T : class
+        public static string IsPremium(Grupo grupo)
         {
-            db.Database.ExecuteSqlCommand(string.Format(@"delete from task_quest.{0} where {1} = {2}", db.GetTableName<T>(), db.GetColumnName<T>(prop), where));
+            return TaskQuest.PagSeguro.Status.Ativa;
+            if (grupo.Pagamento != null)
+                return grupo.Pagamento.Status;
+            return null;
         }
 
-        private static T GetAttributeFrom<T>(this object instance, string propertyName) where T : Attribute
+        public static bool IsPremium(string grupoId)
         {
-            var attrType = typeof(T);
-            var property = instance.GetType().GetProperty(propertyName);
-            return (T)property.GetCustomAttributes(attrType, false).First();
-        }
-
-        private static string GetTableName<T>(this DbContext context) where T : class
-        {
-            string result = "";
-            var itens = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace.GetItems<EntityContainerMapping>(DataSpace.CSSpace);
-
-            foreach (EntityContainerMapping ecm in itens)
+            return true;
+            using (var db = new TaskQuest.Data.DbContext())
             {
-                EntitySet entitySet;
-                if (ecm.StoreEntityContainer.TryGetEntitySetByName(typeof(T).Name, true, out entitySet))
-                    return result = entitySet.Table;
+                int Id;
+                if (int.TryParse(Decrypt(grupoId), out Id))
+                {
+                    var grupo = db.Grupo.Find(Id);
+                    if (grupo.Pagamento != null)
+                        if (grupo.Pagamento.Status == TaskQuest.PagSeguro.Status.Ativa)
+                            return true;
+                }
             }
-            return "";
+            return false;
         }
 
-        private static string GetColumnName<T>(this DbContext context, Expression<Func<T, object>> expression)
+        public static bool HasInternetConnection()
         {
-            var propertyName = ((MemberExpression)((UnaryExpression)expression.Body).Operand).Member.Name;
-            var metadata = ((IObjectContextAdapter)context).ObjectContext.MetadataWorkspace;
-
-            // Get the part of the model that contains info about the actual CLR types
-            var objectItemCollection = ((ObjectItemCollection)metadata.GetItemCollection(DataSpace.OSpace));
-
-            // Get the entity type from the model that maps to the CLR type
-            var entityType = metadata
-                    .GetItems<EntityType>(DataSpace.OSpace)
-                    .Single(e => objectItemCollection.GetClrType(e) == typeof(T));
-
-            // Get the entity set that uses this entity type
-            var entitySet = metadata
-                .GetItems<EntityContainer>(DataSpace.CSpace)
-                .Single()
-                .EntitySets
-                .Single(s => s.ElementType.Name == entityType.Name);
-
-            // Find the mapping between conceptual and storage model for this entity set
-            var mapping = metadata.GetItems<EntityContainerMapping>(DataSpace.CSSpace)
-                    .Single()
-                    .EntitySetMappings
-                    .Single(s => s.EntitySet == entitySet);
-
-            // Find the storage property (column) that the property is mapped
-            var columnName = mapping
-                .EntityTypeMappings.Single()
-                .Fragments.Single()
-                .PropertyMappings
-                .OfType<ScalarPropertyMapping>()
-                .Single(m => m.Property.Name == propertyName)
-                .Column
-                .Name;
-
-            return columnName;
+            try
+            {
+                Ping myPing = new Ping();
+                String host = "google.com";
+                byte[] buffer = new byte[32];
+                int timeout = 1000;
+                PingOptions pingOptions = new PingOptions();
+                PingReply reply = myPing.Send(host, timeout, buffer, pingOptions);
+                return (reply.Status == IPStatus.Success);
+            }
+            catch (Exception)
+            {
+                return false;
+            }
         }
-        
+
+        public static string CreateRandomString()
+        {
+            return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("+", "").Replace("=", "").Replace("/", "");
+        }
+
     }
 
     public class Date : ValidationAttribute

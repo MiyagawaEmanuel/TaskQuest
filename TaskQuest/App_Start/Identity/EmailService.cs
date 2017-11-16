@@ -13,7 +13,8 @@ namespace TaskQuest.Identity
     {
         public Task SendAsync(IdentityMessage message)
         {
-            //return SendMail(message);
+            if (Util.HasInternetConnection())
+                return SendMail(message);
             return Task.FromResult(0);
         }
 

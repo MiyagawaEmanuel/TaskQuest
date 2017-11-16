@@ -103,7 +103,7 @@
                                 <option value="">Todos</option>
                                 @foreach (var colaborador in Model.Colaboradores)
                                 {
-                                <option value="@Util.Encrypt(colaborador.Id.ToString())">@colaborador.Nome @colaborador.Sobrenome</option>
+                                    <option value="@Util.Encrypt(colaborador.Id.ToString())">@colaborador.Nome @colaborador.Sobrenome</option>
                                 }
                             </select>
                         </div>

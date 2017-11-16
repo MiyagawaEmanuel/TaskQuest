@@ -10,6 +10,8 @@ using TaskQuest.Models;
 using System.Linq;
 using System;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
+using System.Collections.Generic;
 
 namespace TaskQuest.Data
 {
@@ -30,6 +32,7 @@ namespace TaskQuest.Data
         public virtual DbSet<File> File { get; set; }
         public virtual DbSet<Grupo> Grupo { get; set; }
         public virtual DbSet<Mensagem> Mensagen { get; set; }
+        public virtual DbSet<Notificacao> Notificacao { get; set; }
         public virtual DbSet<Pagamento> Pagamento { get; set; }
         public virtual DbSet<PontoUsuario> PontoUsuario { get; set; }
         public virtual DbSet<Quest> Quest { get; set; }
@@ -43,6 +46,7 @@ namespace TaskQuest.Data
 
         public override int SaveChanges()
         {
+
             foreach (var entry in ChangeTracker.Entries())
             {
                 if (entry.State != EntityState.Unchanged)
@@ -64,28 +68,67 @@ namespace TaskQuest.Data
                     }
 
                     bkp.Data = data.ToString();
-                    Backup.Add(bkp);
+                    this.Backup.Add(bkp);
                 }
             }
 
-            bool saveFailed;
-            do
+            foreach (var entry in ChangeTracker.Entries())
             {
-                saveFailed = false;
-                try
+                if (entry.Entity is NotificacaoMetaData && entry.State != EntityState.Unchanged)
                 {
-                    return base.SaveChanges();
-                }
-                catch (DbUpdateConcurrencyException ex)
-                {
-                    saveFailed = true;
+                    var notificacao = new Notificacao();
+                    bool IsValid = false;
 
-                    // Update original values from the database 
-                    var entry = ex.Entries.Single();
-                    entry.OriginalValues.SetValues(entry.GetDatabaseValues());
+                    notificacao.TipoNotificacao = entry.State.ToString();
+                    notificacao.EntidadeModificada = entry.Entity.GetType().ToString();
+                    notificacao.DataNotificacao = DateTime.Now;
+
+                    if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Grupo))
+                    {
+                        var grupo = ((Grupo)entry.Entity);
+                        notificacao.Grupo = grupo;
+                        notificacao.GrupoId = grupo.Id;
+                        notificacao.Texto = "";
+                        IsValid = true;
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Quest))
+                    {
+                        var quest = ((Quest)entry.Entity);
+                        if (quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = quest.GrupoCriador;
+                            notificacao.GrupoId = quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Task))
+                    {
+                        var task = ((Task)entry.Entity);
+                        if (task.Quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = task.Quest.GrupoCriador;
+                            notificacao.GrupoId = task.Quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Feedback))
+                    {
+                        var feedback = ((Feedback)entry.Entity);
+                        if (feedback.Task.Quest.GrupoCriador != null)
+                        {
+                            notificacao.Grupo = feedback.Task.Quest.GrupoCriador;
+                            notificacao.GrupoId = feedback.Task.Quest.GrupoCriador.Id;
+                            notificacao.Texto = "";
+                            IsValid = true;
+                        }
+                    }
+                    if (IsValid)
+                        this.Notificacao.Add(notificacao);
                 }
 
-            } while (saveFailed);
+            }
             return base.SaveChanges();
         }
 
@@ -101,6 +144,7 @@ namespace TaskQuest.Data
             modelBuilder.Configurations.Add(new FileConfiguration());
             modelBuilder.Configurations.Add(new GrupoConfiguration());
             modelBuilder.Configurations.Add(new MensagemConfiguration());
+            modelBuilder.Configurations.Add(new NotificacaoConfiguration());
             modelBuilder.Configurations.Add(new PagamentoConfiguration());
             modelBuilder.Configurations.Add(new PontoUsuarioConfiguration());
             modelBuilder.Configurations.Add(new QuestConfiguration());
