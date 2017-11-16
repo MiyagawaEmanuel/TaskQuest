@@ -78,7 +78,12 @@ ViewBag.Title = "Início";
 		<div class="margin-bottom item">
 			<a onclick="link(@Html.ToString("Task"+x))"> <div class="filete" style="background-color: @Model.Tasks[x].Quest.Cor"></div></a>
 			<div class="quest-body flex-properties-c icon-black">
-				<a onclick="link(@Html.ToString("Task"+x))"><div class="limit-lines"><h4>@Model.Tasks[x].Nome</h4></div></a>
+				<a onclick="link(@Html.ToString("Task"+x))">
+                    <div class="limit-lines task-namegroup">
+                        <div title="@Model.Tasks[x].Quest.GrupoCriador.Nome" class="task-group-elipse" style="background-color: @Model.Tasks[x].Quest.GrupoCriador.Cor"></div>
+                        <h4>@Model.Tasks[x].Nome</h4>
+                    </div>
+                </a>
 				<div class="limit-lines"><h4>@Model.Tasks[x].Descricao</h4></div>
 				<div><h4>@Model.Tasks[x].DataConclusao.ToString("dd/MM/yyyy")</h4></div>
 				<div class="select-container">

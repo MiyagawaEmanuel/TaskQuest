@@ -26,7 +26,26 @@
         </div>
         <div class="icon-container mobile-hidden"><li class="li-hidden icon-white" title="Grupos"><a href="/Home/Grupos"><i class="fa fa-group" aria-hidden="true"></i></a></li></div>
         <div class="icon-container mobile-hidden"><li class="li-hidden icon-white" title="Pendências"><a href="/Home/Quests"><i class="fa fa-check" aria-hidden="true"></i></a></li></div>
-        <div class="icon-container"><li class="li-hidden" title="Notificações"> <i class="fa fa-bell" aria-hidden="true"></i></li></div>
+        <div class="icon-container icon-white">
+            <li class="dropdown li-hidden" title="Notificações">
+                <a class="header-a dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
+                    <i class="fa fa-bell" aria-hidden="true"></i>
+                </a>
+                <ul class="dropdown-menu notify">
+                    <li>
+                        <a href="/Quest/CriarQuest">
+                            <div class="principal">
+                                <div class="notify-elipse"></div>
+                                <div class="notify-text">
+                                    <span>Grupo <span class="negrito">Projeto Interdisciplinar</span> atualizou uma quest.</span>
+                                </div>
+                            </div>
+                        </a>
+                    </li>
+                    <li role="separator" class="divider"></li>
+                </ul>
+            </li>
+        </div>
         <div class="icon-container icon-white">
             <li class="dropdown li-hidden" title="Menu">
                 <a class="header-a dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">
@@ -36,6 +55,8 @@
                     <li><a href="/Quest/CriarQuest">Criar Quest</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="/Configuracao">Visualizar Perfil</a></li>
+                    <li role="separator" class="divider"></li>
+                    <li><a href="/Configuracao">Mensagens</a></li>
                     <li role="separator" class="divider"></li>
                     <li><a href="/Account/SignOutEverywhere">Sair</a></li>
                 </ul>

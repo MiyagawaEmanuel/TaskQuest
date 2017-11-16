@@ -33,7 +33,7 @@ namespace TaskQuest.Controllers
 
             var model = new InicioViewModel();
 
-            model.Grupos.AddRange(user.Grupos.ToList());
+            model.Grupos = user.Grupos.ToList();
 
             foreach (var gru in model.Grupos)
                 foreach (var qst in gru.Quests)

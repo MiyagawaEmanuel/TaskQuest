@@ -78,7 +78,14 @@
                 <div class="margin-bottom item task-item" data-quest="@questIndex">
                     <a onclick="link(@Html.ToString("Qst"+questIndex))"><div class="filete" style="background-color: @quest.Cor"></div></a>
                     <div class="quest-body flex-properties-c">
-                        <div class="limit-lines icon-black"><a onclick="link(@Html.ToString("Qst"+questIndex))"><h4>@task.Nome</h4></a></div>
+                        <div class="limit-lines icon-black">
+                            <a onclick="link(@Html.ToString("Qst"+questIndex))">
+                                <div class="limit-lines task-namegroup">
+                                    <div title="@task.Quest.GrupoCriador.Nome" class="task-group-elipse" style="background-color: @task.Quest.GrupoCriador.Cor"></div>
+                                    <h4>@task.Nome</h4>
+                                </div>
+                            </a>
+                        </div>
                         <div class="limit-lines"><h4>@task.Descricao</h4></div>
                         <div><h4>@task.DataConclusao.ToString("dd/MM/yyyy")</h4></div>
                         <div class="select-container">
