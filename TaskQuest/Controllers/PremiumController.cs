@@ -85,14 +85,14 @@ namespace TaskQuest.Controllers
             }
         }
 
-        public ActionResult CancelarAssinatura()
+        public ActionResult PremiumCancelar()
         {
             return View();
         }
 
         //Cancela a assinatura do plano Premium
         [HttpPost]
-        public ActionResult CancelarAssinatura(Grupo grupo)
+        public ActionResult PremiumCancelar(Grupo grupo)
         {
             var IsSandBox = ConfigurationManager.AppSettings["IsSandBox"];
             var path = "";

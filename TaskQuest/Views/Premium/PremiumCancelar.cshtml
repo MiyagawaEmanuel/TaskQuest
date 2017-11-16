@@ -1,17 +1,39 @@
-﻿
-@{
-    Layout = null;
+﻿@{
+    ViewBag.Title = "Cancelamento Premium";
 }
 
-<!DOCTYPE html>
-
-<html>
-<head>
-    <meta name="viewport" content="width=device-width" />
-    <title>PremiumCancelar</title>
-</head>
-<body>
-    <div> 
+<section>
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Premium</h2></div>
+        <div class="title-b">
+            <div class="flex-properties-r pads icon-black">
+                <a onclick=""><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
+                <h3><a onclick="">Cancelar Pagamento</a></h3>
+            </div>
+        </div>
     </div>
-</body>
-</html>
+</section>
+
+<section class="background-page flex-properties-c">
+    <div class="flex-properties-c">
+        <span class="messages-1">Cancelamento Premium</span>
+        <span class="messages-2">O cancelamento do Premium fará o grupo retornar ao plano básico</span>
+        <span class="messages-2"><a class="link" href="/">Voltar para a página inicial</a></span>
+    </div>
+</section>
+
+<section class="margintop">
+    <div class="premium flex-premium">
+        <div class="flex-premium premium-header">
+            <h4>Plano Premium</h4>
+            <h1>R$ 100/m</h1>
+        </div>
+        <ul class="flex-premium premium-body">
+            <li>Adiciona diversas funcionalidades no seu grupo</li>
+            <li>Convide muito mais integrantes para seu grupo</li>
+            <li>Tenha mais de um administrador</li>
+            <li>Gere gráficos de desempenho individual e coletivo de vários tipos</li>
+            <li><a href="">Continuar no Plano</a></li>
+        </ul>
+    </div>
+</section>

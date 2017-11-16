@@ -50,8 +50,16 @@
                 <h3><a data-target="#modalEditarGrupo" data-toggle="modal">Editar Grupo</a></h3>
             </div>
             <div class="flex-properties-r pads icon-black">
-                <a href="/Grupo/Premium"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
-                <h3><a>Premium</a></h3>
+                @if (Util.IsPremium(Model.Id))
+                {
+                    <a href="/Premium/PremiumPropaganda"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
+                    <h3><a href="/Premium/PremiumPropaganda">Premium</a></h3>
+                }
+                else
+                {
+                    <a href="/Premium/PremiumCancelar"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
+                    <h3><a href="/Premium/PremiumCancelar">Premium</a></h3>
+                }
             </div>
         </div>
     </div>
