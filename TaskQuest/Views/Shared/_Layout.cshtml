@@ -8,7 +8,6 @@
     <link rel="stylesheet" href="~/Content/css/font-awesome.min.css">
     <link rel="stylesheet" href="~/Content/css/style.css">
     <link rel="stylesheet" href="~/Content/css/balloon.css" />
-    <link rel="stylesheet" href="~/Content/css/premium.css" />
     @RenderSection("css", false)
 
     <title>@ViewBag.Title</title>
@@ -33,17 +32,7 @@
                     <i class="fa fa-bell" aria-hidden="true"></i>
                 </a>
                 <ul class="dropdown-menu notify">
-                    <li>
-                        <a href="/Quest/CriarQuest">
-                            <div class="principal">
-                                <div class="notify-elipse"></div>
-                                <div class="notify-text">
-                                    <span>Grupo <span class="negrito">Projeto Interdisciplinar</span> atualizou uma quest.</span>
-                                </div>
-                            </div>
-                        </a>
-                    </li>
-                    <li role="separator" class="divider"></li>
+                    @Html.Action("Notificacao", "Home")
                 </ul>
             </li>
         </div>
@@ -75,6 +64,7 @@
     <script src="~/Content/js/jquery.min.js"></script>
     <script src="~/Content/js/bootstrap.min.js"></script>
     <script src="~/Content/js/balloon.js"></script>
+    <script src="~/Content/js/link.js"></script>
     @RenderSection("js", false)
 
 </body>

@@ -12,6 +12,8 @@ using System.Xml.Linq;
 using TaskQuest.Data;
 using TaskQuest.Models;
 using TaskQuest.PagSeguro;
+using Microsoft.AspNet.Identity;
+using TaskQuest.ViewModels;
 
 namespace TaskQuest.Controllers
 {
@@ -20,41 +22,60 @@ namespace TaskQuest.Controllers
     {
         private static DbContext db = new DbContext();
 
-        public ActionResult PremiumPropaganda()
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult PremiumPropaganda(LinkViewModel model)
         {
-            return View();
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
+                return View(new Tuple<string>(model.Hash));
+
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Inicio", "Home");
         }
 
         //Criar requisição de pagamento
         [HttpPost]
-        public ActionResult CriarAssinatura(User user, Grupo grupo, string urlRedirect, string urlReview)
+        [ValidateAntiForgeryToken]
+        public ActionResult CriarAssinatura(LinkViewModel model)
         {
-            Assinatura a = new Assinatura()
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
             {
-                Email = ConfigurationManager.AppSettings["PagSeguroEmail"],
-                Token = ConfigurationManager.AppSettings["PagSeguroToken"],
-                PreApprovalDetails = "Assinatura de R$ 40,00 cobrada mensalmente pelos serviços extras prestados pela plataforma TaskQuest",
-                PreApprovalName = Util.CreateRandomString(),
-                ReceiverEmail = ConfigurationManager.AppSettings["PagSeguroEmail"],
-                Reference = Util.CreateRandomString(),
-                RedirectURL = Url.Action("PremiumAguardandoPagamento"),
-                SenderEmail = user.Email,
-                SenderName = user.Nome + " " + user.Sobrenome,
+                var grupo = db.Grupo.Find(Id);
+                var user = db.Users.Find(User.Identity.GetUserId<int>());
 
-                ReviewURL = Url.Action("ReceberNotificacao"),
-            };
-            var data = a.CriarAssinatura();
+                Assinatura a = new Assinatura()
+                {
+                    Email = ConfigurationManager.AppSettings["PagSeguroEmail"],
+                    Token = ConfigurationManager.AppSettings["PagSeguroToken"],
+                    PreApprovalDetails = "Assinatura de R$ 40,00 cobrada mensalmente pelos serviços extras prestados pela plataforma TaskQuest",
+                    PreApprovalName = Util.CreateRandomString(),
+                    ReceiverEmail = ConfigurationManager.AppSettings["PagSeguroEmail"],
+                    Reference = Util.CreateRandomString(),
+                    RedirectURL = Url.Action("PremiumAguardandoPagamento"),
+                    SenderEmail = user.Email,
+                    SenderName = user.Nome + " " + user.Sobrenome,
 
-            Pagamento pag = new Pagamento()
-            {
-                Code = data["code"],
-                Grupo = grupo,
-                Status = Status.Pendente
-            };
-            db.Pagamento.Add(pag);
-            db.SaveChanges();
+                    ReviewURL = Url.Action("ReceberNotificacao"),
+                };
+                var data = a.CriarAssinatura();
 
-            return RedirectToAction("PremiumAguardandoPagamento", new Tuple<string>(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"])));
+                Pagamento pag = new Pagamento()
+                {
+                    Code = data["code"],
+                    Grupo = grupo,
+                    Status = Status.Pendente
+                };
+                db.Pagamento.Add(pag);
+                db.SaveChanges();
+
+                return View(new Tuple<string>(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"])));
+            }
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Inicio", "Home");
         }
 
         public ActionResult PremiumAguardandoPagamento()
@@ -85,30 +106,44 @@ namespace TaskQuest.Controllers
             }
         }
 
-        public ActionResult PremiumCancelar()
+        public ActionResult PremiumCancelar(LinkViewModel model)
         {
-            return View();
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
+                return View(new Tuple<string>(model.Hash));
+
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Inicio", "Home");
         }
 
         //Cancela a assinatura do plano Premium
         [HttpPost]
-        public ActionResult PremiumCancelar(Grupo grupo)
+        public ActionResult CancelarAssinatura(LinkViewModel model)
         {
-            var IsSandBox = ConfigurationManager.AppSettings["IsSandBox"];
-            var path = "";
-            if (IsSandBox == "True")
-                path = "https://ws.sandbox.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}";
-            else
-                path = "https://ws.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}";
+            int Id;
+            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
+            {
+                var grupo = db.Grupo.Find(Id);
+                var IsSandBox = ConfigurationManager.AppSettings["IsSandBox"];
+                var path = "";
+                if (IsSandBox == "True")
+                    path = "https://ws.sandbox.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}";
+                else
+                    path = "https://ws.pagseguro.uol.com.br/v2/pre-approvals/cancel/{preApprovalCode}?email={email}&token={token}";
 
-            var pag = grupo.Pagamento;
+                var pag = grupo.Pagamento;
 
-            IDictionary<string, string> data = GetResponse(path, pag.Code);
-            pag.Status = Status.Cancelada;
-            db.Entry(pag).State = System.Data.Entity.EntityState.Modified;
-            db.SaveChanges();
+                IDictionary<string, string> data = GetResponse(path, pag.Code);
+                pag.Status = Status.Cancelada;
+                db.Entry(pag).State = System.Data.Entity.EntityState.Modified;
+                db.SaveChanges();
 
-            return RedirectToAction("PremiumPropaganda");
+                return RedirectToAction("PremiumPropaganda");
+            }
+            TempData["Alerta"] = "Algo deu errado";
+            TempData["Classe"] = "yellow-alert";
+            return RedirectToAction("Inicio", "Home");
         }
 
         private static IDictionary<string, string> GetResponse(string path, string code)

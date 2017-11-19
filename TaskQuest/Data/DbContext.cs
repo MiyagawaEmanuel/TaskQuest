@@ -88,7 +88,7 @@ namespace TaskQuest.Data
                         var grupo = ((Grupo)entry.Entity);
                         notificacao.Grupo = grupo;
                         notificacao.GrupoId = grupo.Id;
-                        notificacao.Texto = "";
+                        notificacao.Texto = string.Format("O grupo {0} foi {1}", grupo.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                         IsValid = true;
                     }
                     else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Quest))
@@ -98,7 +98,7 @@ namespace TaskQuest.Data
                         {
                             notificacao.Grupo = quest.GrupoCriador;
                             notificacao.GrupoId = quest.GrupoCriador.Id;
-                            notificacao.Texto = "";
+                            notificacao.Texto = string.Format("A Quest {0} do grupo {1} foi {2}", quest.Nome.LimitLines(), quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                             IsValid = true;
                         }
                     }
@@ -109,7 +109,7 @@ namespace TaskQuest.Data
                         {
                             notificacao.Grupo = task.Quest.GrupoCriador;
                             notificacao.GrupoId = task.Quest.GrupoCriador.Id;
-                            notificacao.Texto = "";
+                            notificacao.Texto = string.Format("A Task {0} do grupo {1} foi {2}", task.Nome.LimitLines(), task.Quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                             IsValid = true;
                         }
                     }
@@ -120,7 +120,7 @@ namespace TaskQuest.Data
                         {
                             notificacao.Grupo = feedback.Task.Quest.GrupoCriador;
                             notificacao.GrupoId = feedback.Task.Quest.GrupoCriador.Id;
-                            notificacao.Texto = "";
+                            notificacao.Texto = string.Format("Um Feedback referente ao grupo {1} foi {2}", feedback.Task.Quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                             IsValid = true;
                         }
                     }

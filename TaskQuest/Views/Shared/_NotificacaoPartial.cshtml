@@ -1,0 +1,22 @@
+﻿@model List<TaskQuest.Models.Notificacao>
+
+@for (int x = 0; x < Model.Count; x++)
+{
+    <li>
+        <a href="/Quest/CriarQuest">
+            <div class="principal">
+                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model[x].Grupo.Id.ToString(), "/Grupo/Index"))
+                <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse"></div></a>
+                <a onclick="link(@Html.ToString("Grupo"+x))">
+                    <div class="notify-text">
+                        <span>Model[x].Texto</span>
+                    </div>
+                </a>
+            </div>
+        </a>
+    </li>
+    if (x < Model.Count - 1)
+    {
+        <li role="separator" class="divider"></li>
+    }
+}

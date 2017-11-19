@@ -1,5 +1,11 @@
-﻿@{
+﻿@model Tuple<string>
+
+@{
     ViewBag.Title = "Início";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/css/premium.css" />
 }
 
 <section class="pads-bot">
@@ -21,7 +27,8 @@
             <li>Convide muito mais integrantes para seu grupo</li>
             <li>Tenha mais de um administrador</li>
             <li>Gere gráficos de desempenho individual e coletivo de vários tipos</li>
-            <li><a href="">Começar</a></li>
+            @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("CriarAssinatura", Model.Item1, "/Premium/CriarAssinatura", false))
+            <li><a onclick="link(CriarAssinatura)">Começar</a></li>
         </ul>
     </div>
 </section>

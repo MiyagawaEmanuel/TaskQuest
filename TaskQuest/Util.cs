@@ -215,6 +215,23 @@ namespace TaskQuest
             return Convert.ToBase64String(Guid.NewGuid().ToByteArray()).Replace("+", "").Replace("=", "").Replace("/", "");
         }
 
+        public static string ToPortuguese(this EntityState entity)
+        {
+            if (entity == EntityState.Added)
+                return "adicionada";
+            else if (entity == EntityState.Deleted)
+                return "excluida";
+            else if (entity == EntityState.Detached)
+                return "retidada";
+            else if (entity == EntityState.Modified)
+                return "modificada";
+            return "";
+        }
+
+        public static string LimitLines(this string @string)
+        {
+            return string.Format("<div class='limit-lines'><span>{0}</span></div>", @string);
+        }
     }
 
     public class Date : ValidationAttribute

@@ -1,5 +1,11 @@
-﻿@{
+﻿@model Tuple<string>
+
+@{
     ViewBag.Title = "Cancelamento Premium";
+}
+
+@section css{
+    <link rel="stylesheet" href="~/Content/css/premium.css" />
 }
 
 <section>
@@ -8,7 +14,8 @@
         <div class="title-b">
             <div class="flex-properties-r pads icon-black">
                 <a onclick=""><i class="fa fa-plus elipse" aria-hidden="true"></i></a>
-                <h3><a onclick="">Cancelar Pagamento</a></h3>
+                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("CancelarAssinatura", Model.Item1, "/Premium/CancelarAssinatura", false))
+                <h3><a onclick="link(CancelarAssinatura)">Cancelar Pagamento</a></h3>
             </div>
         </div>
     </div>

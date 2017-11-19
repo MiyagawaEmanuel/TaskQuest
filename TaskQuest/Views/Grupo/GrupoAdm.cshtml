@@ -20,7 +20,6 @@
     <script src="~/Content/js/tabs.js"></script>
     <script src="~/Content/js/jquery.validate.js"></script>
     <script src="~/Content/js/grupo.js"></script>
-    <script src="~/Content/js/link.js"></script>
     <script src="~/Content/js/showBalloon.js"></script>
     <script src="~/Content/js/integrante.js"></script>
     <script src="~/Content/js/Chart.bundle.js"></script>
@@ -52,13 +51,15 @@
             <div class="flex-properties-r pads icon-black">
                 @if (Util.IsPremium(Model.Id))
                 {
-                    <a href="/Premium/PremiumPropaganda"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
-                    <h3><a href="/Premium/PremiumPropaganda">Premium</a></h3>
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("PremiumPropaganda", Model.Id, "/Premium/PremiumPropaganda", false))
+                    <a onclick="link(PremiumPropaganda)"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
+                    <h3><a onclick="link(PremiumPropaganda)">Premium</a></h3>
                 }
                 else
                 {
-                    <a href="/Premium/PremiumCancelar"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
-                    <h3><a href="/Premium/PremiumCancelar">Premium</a></h3>
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("PremiumCancelar", Model.Id, "/Premium/PremiumCancelar", false))
+                    <a onclick="link(PremiumCancelar)"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
+                    <h3><a onclick="link(PremiumCancelar)">Premium</a></h3>
                 }
             </div>
         </div>

@@ -37,7 +37,7 @@ namespace TaskQuest.Controllers
 
             model = model.OrderBy(e => e.DataNotificacao).ToList();
 
-            return Json(model);
+            return PartialView("_NotificacaoPartial", model);
         }
 
         [Authorize]
