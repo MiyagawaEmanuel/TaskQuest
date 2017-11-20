@@ -1,3 +1,14 @@
 ﻿@model Tuple<string>
 
-<a href="@Model.Item1">Entre nesse link para realizar o pagamento da assinatura manolo</a>
+
+@{
+    ViewBag.Title = "Confirmação de Assinatura";
+}
+
+<section class="background-page flex-properties-c">
+    <div class="flex-properties-c">
+        <span class="messages-1">PagSeguro</span>
+        <span class="messages-2">Ao clicar no link abaixo, você confirma o upgrade do grupo para o Plano Premium</span>
+        <span class="messages-2"><a class="link" href="@Model.Item1">Confirmar Assinatura</a></span>
+    </div>
+</section>
