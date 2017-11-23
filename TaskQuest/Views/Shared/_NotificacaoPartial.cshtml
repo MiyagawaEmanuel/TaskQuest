@@ -7,15 +7,14 @@
             <div class="principal">
                     <div class="notify-text">
                         <span>Não há notificações</span>
-                    </div>
-                </a>
+                    </div>  
             </div>
         </a>
     </li>
 }
 else
 {
-	@for (int x = 0; x < Model.Count; x++)
+	for (int x = 0; x < Model.Count; x++)
 	{
 	    <li>
 	        <a href="/Quest/CriarQuest">
@@ -24,7 +23,7 @@ else
 	                <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse"></div></a>
 	                <a onclick="link(@Html.ToString("Grupo"+x))">
 	                    <div class="notify-text">
-	                        <span>Model[x].Texto</span>
+	                        <span>@Html.Raw(Model[x].Texto)</span>
 	                    </div>
 	                </a>
 	            </div>

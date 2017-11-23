@@ -57,7 +57,7 @@ namespace TaskQuest.Controllers
                 {
                     Nome = model.Nome,
                     Descricao = model.Descricao,
-                    Cor = model.Cor
+                    Cor = model.Cor.Contains("#")? model.Cor : "#" + model.Cor
                 };
 
                 if (model.TasksViewModel != null)

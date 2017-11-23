@@ -31,6 +31,10 @@ namespace TaskQuest.PagSeguro
 
         public Assinatura()
         {
+
+            Email = ConfigurationManager.AppSettings["PagSeguroEmail"];
+            Token = ConfigurationManager.AppSettings["PagSeguroToken"];
+
             PreApprovalCharge = "auto";
 
             PreApprovalPeriod = "Monthly";
@@ -67,9 +71,10 @@ namespace TaskQuest.PagSeguro
             catch (WebException ex)
             {
                 var doc = new XmlDocument();
-                return Service.ReadXml(XDocument.Load(ex.Response.GetResponseStream()));
+                //return Service.ReadXml(XDocument.Load(ex.Response.GetResponseStream()));
+                return null;
             }
-
+            catch { return null; }
         }
 
         [Required]

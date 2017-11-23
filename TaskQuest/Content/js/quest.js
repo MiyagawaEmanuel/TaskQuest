@@ -322,7 +322,7 @@ $(document).ready(function () {
         type: "POST",
         url: "/Quest/GetQuests",
         data: JSON.stringify({
-            "Hash": $("#Hash").val()
+            "Hash": $("#GrupoId").val()
         }),
         success: function (result) {
             oi = result;

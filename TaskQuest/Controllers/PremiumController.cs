@@ -61,17 +61,20 @@ namespace TaskQuest.Controllers
                     ReviewURL = Url.Action("ReceberNotificacao"),
                 };
                 var data = a.CriarAssinatura();
-
-                Pagamento pag = new Pagamento()
+                if (data != null)
                 {
-                    Code = data["code"],
-                    Grupo = grupo,
-                    Status = Status.Pendente
-                };
-                db.Pagamento.Add(pag);
-                db.SaveChanges();
+                    Pagamento pag = new Pagamento()
+                    {
+                        Code = data["code"],
+                        Grupo = grupo,
+                        Status = Status.Pendente
+                    };
+                    db.Pagamento.Add(pag);
+                    db.SaveChanges();
 
-                return View(new Tuple<string>(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"])));
+                    return View(new Tuple<string>(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"])));
+                }
+                return View(new Tuple<string>("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}"));
             }
             TempData["Alerta"] = "Algo deu errado";
             TempData["Classe"] = "yellow-alert";

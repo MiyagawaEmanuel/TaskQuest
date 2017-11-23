@@ -197,7 +197,7 @@ namespace TaskQuest
             try
             {
                 Ping myPing = new Ping();
-                String host = "google.com";
+                String host = "8.8.8.8";
                 byte[] buffer = new byte[32];
                 int timeout = 1000;
                 PingOptions pingOptions = new PingOptions();

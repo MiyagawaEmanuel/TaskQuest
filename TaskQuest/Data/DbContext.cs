@@ -120,7 +120,7 @@ namespace TaskQuest.Data
                         {
                             notificacao.Grupo = feedback.Task.Quest.GrupoCriador;
                             notificacao.GrupoId = feedback.Task.Quest.GrupoCriador.Id;
-                            notificacao.Texto = string.Format("Um Feedback referente ao grupo {1} foi {2}", feedback.Task.Quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
+                            notificacao.Texto = string.Format("Um Feedback referente ao grupo {0} foi {1}", feedback.Task.Quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                             IsValid = true;
                         }
                     }

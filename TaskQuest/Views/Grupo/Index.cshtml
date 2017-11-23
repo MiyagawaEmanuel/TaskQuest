@@ -77,8 +77,8 @@
             {
                 <div class="quest-container icon-black questlist-g">
                     <i class="fa fa-circle bull" aria-hidden="true" style="color: @Model.Quests.ToList()[x].Cor"></i>
-                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model.Quests.ToList()[x].Id.ToString(), "/Quest"))
-                    <a onclick="link(@Html.ToString("Grupo"+x))"><h4 class="quest-container">@Model.Quests.ToList()[x].Nome</h4></a>
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Quest" + x, Model.Quests.ToList()[x].Id.ToString(), "/Quest"))
+                    <a onclick="link(@Html.ToString("Quest"+x))"><h4 class="quest-container">@Model.Quests.ToList()[x].Nome</h4></a>
                 </div>
             }
         </div>
