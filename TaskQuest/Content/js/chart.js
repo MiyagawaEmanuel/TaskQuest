@@ -184,6 +184,7 @@ $("#btnBarChart").on("click", function(){
     $("#integrantesChart").show();
     $("#questsChart").hide();
     barChart("");
+    $("#integrantesChart").val("");
 });
 
 $("#btnPieChart").on("click", function(){
@@ -212,9 +213,9 @@ $("#btnGanttChart").on("click", function(){
 
 $("#questsChart").change(function(){
     if(isPieSelected)
-        pieChart($("#questChart").val());
+        pieChart($("#questsChart").val());
     else
-        ganttChart($("#questChart").val());
+        ganttChart($("#questsChart").val());
 });
 
 function pieChart(index){

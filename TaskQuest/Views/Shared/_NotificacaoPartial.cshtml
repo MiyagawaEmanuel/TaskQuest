@@ -20,7 +20,7 @@ else
 	        <a href="/Quest/CriarQuest">
 	            <div class="principal">
 	                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model[x].Grupo.Id.ToString(), "/Grupo/Index"))
-	                <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse"></div></a>
+	                <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse" style="background-color: @Model[x].Grupo.Cor"></div></a>
 	                <a onclick="link(@Html.ToString("Grupo"+x))">
 	                    <div class="notify-text">
 	                        <span>@Html.Raw(Model[x].Texto)</span>
