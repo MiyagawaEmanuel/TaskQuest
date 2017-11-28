@@ -94,10 +94,9 @@ namespace TaskQuest.Data
                     else if (entry.Cast<NotificacaoMetaData>().Entity.GetTipoNotificacao() == typeof(Quest))
                     {
                         var quest = ((Quest)entry.Entity);
-                        if (quest.GrupoCriador != null)
+                        if (quest.GrupoCriadorId != null)
                         {
                             notificacao.Grupo = quest.GrupoCriador;
-                            notificacao.GrupoId = quest.GrupoCriador.Id;
                             notificacao.Texto = string.Format("A Quest {0} do grupo {1} foi {2}", quest.Nome.LimitLines(), quest.GrupoCriador.Nome.LimitLines(), entry.State.ToPortuguese().LimitLines());
                             IsValid = true;
                         }

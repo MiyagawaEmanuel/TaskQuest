@@ -100,7 +100,7 @@ namespace TaskQuest.Controllers
                     int Id;
                     if (int.TryParse(Util.Decrypt(model.GrupoCriadorId), out Id))
                         if (User.Identity.IsAdm(Id))
-                            quest.GrupoCriadorId = Id;
+                            quest.GrupoCriador = db.Grupo.Find(Id);
                         else
                             return "Você não pode executar esta ação";
                     else

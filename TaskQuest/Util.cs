@@ -230,7 +230,7 @@ namespace TaskQuest
 
         public static string LimitLines(this string @string)
         {
-            return string.Format("<div class='limit-lines'><span>{0}</span></div>", @string);
+            return string.Format("<span class='limit-lines'><span>{0}</span></span>", @string);
         }
     }
 

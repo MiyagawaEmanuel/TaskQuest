@@ -56,6 +56,7 @@
 .user-container a{
 	font-size: 25px;
 	margin-left: 2%;
+    cursor: pointer;
 }
 
 .modalfooter-container{
@@ -90,6 +91,10 @@
     margin: 0;
     width: 300px;
     word-wrap: break-word;
+}
+
+.integrante{
+    cursor: pointer;
 }
 
 @media (max-width: 600px){

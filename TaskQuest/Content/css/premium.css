@@ -62,6 +62,7 @@
 	text-transform: uppercase;
     font-weight: bolder;
     border: none;
+    cursor: pointer;
 }
 
 .premium-body li:last-child a{
@@ -73,13 +74,9 @@
 	background-color: rgba(0,0,0,0.06);
 	transition: all .25s ease-in-out;
     -moz-transition: all .25s ease-in-out;
-    -webkit-transition: all .25s 
+    -webkit-transition: all .25s
 }
 
 .premium-body li{
 	height: 42px;
-}
-
-@media (max-width: 600px){
-
 }

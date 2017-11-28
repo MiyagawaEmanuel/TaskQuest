@@ -48,10 +48,10 @@ header {
     max-height: 300px !important;
     overflow-y: auto !important;
     overflow-x: hidden !important;
+    border-radius: 18px;
 }
 
 .notify-elipse{
-    background-color: pink;
     width: 20px;
     height: 20px;
     border-radius: 30px;
@@ -60,7 +60,7 @@ header {
 
 .notify-text{
     word-wrap: break-word;
-    width: 280px;
+    width: 265px;
 }
 
 .principal{
@@ -73,6 +73,7 @@ header {
     display: flex !important;
     align-items: center !important;
     white-space: normal;
+    padding-left: 1%;
 }
 
 .notify span{
@@ -241,6 +242,10 @@ textarea {
     white-space: nowrap;
 }
 
+span .limit-lines{
+    font-weight: bold;
+}
+
 .limit-lines_grupo {
     margin: 0;
     width: 250px;
@@ -290,6 +295,7 @@ label {
     height: 140px;
     border-radius: 80px;
     background-image: url("../img/groupicon.png");
+    cursor: pointer;
 }
 
     .grupo-elipse img {
@@ -349,6 +355,7 @@ label {
         margin-left: 10px;
         text-align: center;
     }
+
 
     .pads a {
         color: black;
@@ -639,6 +646,19 @@ label {
     height: 20px;
     border-radius: 20px;
     margin-right: 5%;
+}
+    /* 1000 - 1332 */
+
+@media (min-width: 1332px){
+    .pads h3{
+        font-size: 21px;
+    }
+}
+
+@media (min-width: 1000px ) and (max-width: 1332px){
+    .pads h3 {
+        font-size: 15px;
+    }
 }
 
 @media (max-width: 600px) {
