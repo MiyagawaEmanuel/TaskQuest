@@ -16,21 +16,19 @@ using System.Collections.Generic;
 namespace TaskQuest.Data
 {
     [DbConfigurationType(typeof(MySqlEFConfiguration))]
-    public class DbContext : IdentityDbContext<User, Role, int,
-    UserLogin, UserRole, UserClaim>
+    public class DbContext : IdentityDbContext<User, Role, int, UserLogin, UserRole, UserClaim>
     {
-        public DbContext()
-            : base("DefaultConnection")
+        public DbContext() : base("DefaultConnection")
         {
             DbConfiguration.SetConfiguration(new MySqlEFConfiguration());
-            Database.SetInitializer(new DropCreateDatabaseIfModelChanges<DbContext>());
+            Database.SetInitializer<TaskQuest.Data.DbContext>(null);
         }
 
-        public virtual DbSet<Backup> Backup { get; set; }
         public virtual DbSet<Client> Client { get; set; }
         public virtual DbSet<Feedback> Feedback { get; set; }
         public virtual DbSet<File> File { get; set; }
         public virtual DbSet<Grupo> Grupo { get; set; }
+        public virtual DbSet<Log> Log { get; set; }
         public virtual DbSet<Mensagem> Mensagen { get; set; }
         public virtual DbSet<Notificacao> Notificacao { get; set; }
         public virtual DbSet<Pagamento> Pagamento { get; set; }
@@ -51,24 +49,24 @@ namespace TaskQuest.Data
             {
                 if (entry.State != EntityState.Unchanged)
                 {
-                    var bkp = new Backup();
+                    var log = new Log();
 
-                    bkp.TableName = entry.Entity.GetType().ToString();
-                    bkp.QueryType = entry.State.ToString();
+                    log.TableName = entry.Entity.GetType().ToString();
+                    log.QueryType = entry.State.ToString();
 
                     StringBuilder data = new StringBuilder();
 
                     foreach (var prop in entry.Entity.GetType().GetProperties())
                     {
                         if (data.Length > 0)
-                            data.Append("&");
+                            data.Append(";");
                         data.Append(prop.Name);
-                        data.Append("=");
+                        data.Append(":");
                         data.Append(prop.GetValue(entry.Entity));
                     }
 
-                    bkp.Data = data.ToString();
-                    this.Backup.Add(bkp);
+                    log.Data = data.ToString();
+                    this.Log.Add(log);
                 }
             }
 
@@ -137,11 +135,11 @@ namespace TaskQuest.Data
             //Remove uma configuração embutida no Entity que modifica os nomes das tabelas e campos
             modelBuilder.Conventions.Remove<PluralizingTableNameConvention>();
 
-            modelBuilder.Configurations.Add(new BackupConfiguration());
             modelBuilder.Configurations.Add(new ClientConfiguration());
             modelBuilder.Configurations.Add(new FeedbackConfiguration());
             modelBuilder.Configurations.Add(new FileConfiguration());
             modelBuilder.Configurations.Add(new GrupoConfiguration());
+            modelBuilder.Configurations.Add(new LogConfiguration());
             modelBuilder.Configurations.Add(new MensagemConfiguration());
             modelBuilder.Configurations.Add(new NotificacaoConfiguration());
             modelBuilder.Configurations.Add(new PagamentoConfiguration());

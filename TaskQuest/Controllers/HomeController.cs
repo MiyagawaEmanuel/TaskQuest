@@ -35,7 +35,7 @@ namespace TaskQuest.Controllers
                 foreach (var notificacao in grupo.Notificacoes)
                     model.Add(notificacao);
 
-            model = model.OrderBy(e => e.DataNotificacao).ToList();
+            model = model.OrderByDescending(e => e.DataNotificacao).ToList();
 
             return PartialView("_NotificacaoPartial", model);
         }

@@ -5,7 +5,7 @@ using System.Web;
 
 namespace TaskQuest.Models
 {
-    public class Backup
+    public class Log
     {
         public int Id { get; set; }
 

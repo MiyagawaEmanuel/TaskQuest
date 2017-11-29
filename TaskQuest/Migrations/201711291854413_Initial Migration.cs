@@ -8,17 +8,6 @@ namespace TaskQuest.Migrations
         public override void Up()
         {
             CreateTable(
-                "dbo.bkp_backup",
-                c => new
-                    {
-                        bkp_id = c.Int(nullable: false, identity: true),
-                        bkp_table_name = c.String(nullable: false, unicode: false),
-                        bkp_query_type = c.String(nullable: false, unicode: false),
-                        bkp_data = c.String(nullable: false, unicode: false),
-                    })
-                .PrimaryKey(t => t.bkp_id);
-            
-            CreateTable(
                 "dbo.cli_client",
                 c => new
                     {
@@ -259,6 +248,17 @@ namespace TaskQuest.Migrations
                 .Index(t => t.usu_id);
             
             CreateTable(
+                "dbo.log_log_transacao",
+                c => new
+                    {
+                        log_id = c.Int(nullable: false, identity: true),
+                        log_table_name = c.String(nullable: false, unicode: false),
+                        log_query_type = c.String(nullable: false, unicode: false),
+                        log_data = c.String(nullable: false, unicode: false),
+                    })
+                .PrimaryKey(t => t.log_id);
+            
+            CreateTable(
                 "dbo.ctr_custom_role",
                 c => new
                     {
@@ -334,6 +334,7 @@ namespace TaskQuest.Migrations
             DropIndex("dbo.cli_client", new[] { "usu_id" });
             DropTable("dbo.uxg_usuario_grupo");
             DropTable("dbo.ctr_custom_role");
+            DropTable("dbo.log_log_transacao");
             DropTable("dbo.tel_telefone");
             DropTable("dbo.cur_custom_user_role");
             DropTable("dbo.cul_custom_user_login");
@@ -349,7 +350,6 @@ namespace TaskQuest.Migrations
             DropTable("dbo.cuc_custom_user_claim");
             DropTable("dbo.usu_usuario");
             DropTable("dbo.cli_client");
-            DropTable("dbo.bkp_backup");
         }
     }
 }

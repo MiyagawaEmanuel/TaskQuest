@@ -8,27 +8,27 @@ using TaskQuest.Models;
 
 namespace TaskQuest.Data.EntityConfiguration
 {
-    public class BackupConfiguration: EntityTypeConfiguration<Backup>
+    public class LogConfiguration: EntityTypeConfiguration<Log>
     {
-        public BackupConfiguration()
+        public LogConfiguration()
         {
-            ToTable("bkp_backup");
+            ToTable("log_log_transacao");
 
             HasKey(e => e.Id)
                 .Property(e => e.Id)
-                .HasColumnName("bkp_id")
+                .HasColumnName("log_id")
                 .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
 
             Property(e => e.TableName)
-                .HasColumnName("bkp_table_name")
+                .HasColumnName("log_table_name")
                 .IsRequired();
 
             Property(e => e.QueryType)
-                .HasColumnName("bkp_query_type")
+                .HasColumnName("log_query_type")
                 .IsRequired();
 
             Property(e => e.Data)
-                .HasColumnName("bkp_data")
+                .HasColumnName("log_data")
                 .IsRequired();
 
         }
