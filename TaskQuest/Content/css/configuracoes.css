@@ -2,12 +2,14 @@
 	width: 100%;
 }
 
-.flex-properties-r{
-	-webkit-box-align: center;
-	    -ms-flex-align: center;
-	            -ms-grid-row-align: center;
-	        align-items: center;
+.fa-remove{
+     margin-left: 40%;
 }
+
+.flex-properties-r{
+	align-items: unset;
+}
+
 
 .subtitulo{
 	-webkit-box-align: initial;
@@ -17,7 +19,6 @@
 }
 
 .flex-properties-r div:not(.title-a):not(.title-b){
-	width: 30%;
 	margin-left: 1%;
 }
 
@@ -31,12 +32,6 @@
 
 .pads{
 	height: 75px;
-}
-
-.flex-properties-r li{
-	margin-left: 1%;
-	margin-bottom: 20px;
-	font-size: 35px;
 }
 
 .title{
@@ -83,6 +78,16 @@
 #cartao-input-container div{
 	width: 47%;
 }
+
+.icon-container{
+    flex-wrap: nowrap;
+    align-items: initial;
+}
+
+.largura{
+    width: 28%;
+}
+
 
 @media (max-width: 600px){
 	

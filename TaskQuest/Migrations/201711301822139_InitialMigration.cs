@@ -96,6 +96,7 @@ namespace TaskQuest.Migrations
                         not_tipo_notificacao = c.String(nullable: false, unicode: false),
                         not_entidade_modificada = c.String(nullable: false, unicode: false),
                         not_data_notificacao = c.DateTime(nullable: false, precision: 0),
+                        IsReaded = c.Boolean(nullable: false),
                         gru_id = c.Int(nullable: false),
                     })
                 .PrimaryKey(t => t.not_id)
@@ -106,7 +107,7 @@ namespace TaskQuest.Migrations
                 "dbo.pag_pagamento",
                 c => new
                     {
-                        pag_id = c.Int(nullable: false, identity: true),
+                        pag_id = c.Int(nullable: false),
                         pag_code = c.String(nullable: false, unicode: false),
                         pag_satus = c.String(nullable: false, unicode: false),
                     })

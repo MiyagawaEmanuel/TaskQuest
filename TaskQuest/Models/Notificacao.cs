@@ -8,6 +8,11 @@ namespace TaskQuest.Models
 {
     public class Notificacao
     {
+
+        public Notificacao() {
+            this.IsReaded = false;
+        }
+
         public int Id { get; set; }
 
         public string Texto { get; set; }
@@ -17,6 +22,8 @@ namespace TaskQuest.Models
         public string EntidadeModificada { get; set; }
 
         public DateTime DataNotificacao { get; set; }
+
+        public bool IsReaded { get; set; }
 
         public int GrupoId { get; set; }
 

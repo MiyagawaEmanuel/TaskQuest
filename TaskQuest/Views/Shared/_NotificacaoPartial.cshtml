@@ -1,37 +1,55 @@
 ﻿@model List<TaskQuest.Models.Notificacao>
 
-@if (Model.Count == 0)
-{
-	<li>
-        <a href="/Quest/CriarQuest">
-            <div class="principal">
-                    <div class="notify-text">
-                        <span>Não há notificações</span>
-                    </div>  
-            </div>
-        </a>
-    </li>
+@{
+    var qtd_notificacao = 0;
 }
-else
+
+<li class="dropdown li-hidden" title="Notificações">
+    <a class="header-a dropdown-toggle" href="#" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false" id="notificacao">
+        <i class="fa fa-bell" aria-hidden="true"></i>
+    </a>
+    <ul class="dropdown-menu notify">
+        @if (Model.Count == 0)
+        {
+            <li>
+                <a href="/Quest/CriarQuest">
+                    <div class="principal">
+                        <div class="notify-text">
+                            <span>Não há notificações</span>
+                        </div>
+                    </div>
+                </a>
+            </li>
+        }
+        else
+        {
+            for (int x = 0; x < Model.Count && x < 10; x++, qtd_notificacao++)
+            {
+                <li class="notificacao" data-id="@Util.Encrypt(Model[x].Id.ToString())">
+                    <a href="/Quest/CriarQuest" class="notify-item">
+                        <div class="principal">
+                            @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model[x].Grupo.Id.ToString(), "/Grupo/Index"))
+                            <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse" style="background-color: @Model[x].Grupo.Cor"></div></a>
+                            <a onclick="link(@Html.ToString("Grupo"+x))">
+                                <div class="notify-text">
+                                    <span>@Html.Raw(Model[x].Texto)</span>
+                                </div>
+                            </a>
+                        </div>
+                    </a>
+                </li>
+                if (x < Model.Count - 1)
+                {
+                    <li role="separator" class="divider"></li>
+                }
+            }
+        }
+    </ul>
+</li>
+
+@if (qtd_notificacao > 0)
 {
-	for (int x = 0; x < Model.Count; x++)
-	{
-	    <li>
-	        <a href="/Quest/CriarQuest">
-	            <div class="principal">
-	                @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("Grupo" + x, Model[x].Grupo.Id.ToString(), "/Grupo/Index"))
-	                <a onclick="link(@Html.ToString("Grupo"+x))"><div class="notify-elipse" style="background-color: @Model[x].Grupo.Cor"></div></a>
-	                <a onclick="link(@Html.ToString("Grupo"+x))">
-	                    <div class="notify-text">
-	                        <span>@Html.Raw(Model[x].Texto)</span>
-	                    </div>
-	                </a>
-	            </div>
-	        </a>
-	    </li>
-	    if (x < Model.Count - 1)
-	    {
-	        <li role="separator" class="divider"></li>
-	    }
-	}
+    <div>
+        <span class="w3-badge" id="badge" data-color="@User.Identity.GetCor()">@qtd_notificacao</span>
+    </div>
 }

@@ -33,11 +33,25 @@ namespace TaskQuest.Controllers
 
             foreach (var grupo in user.Grupos)
                 foreach (var notificacao in grupo.Notificacoes)
-                    model.Add(notificacao);
+                    if (!notificacao.IsReaded)
+                        model.Add(notificacao);
 
             model = model.OrderByDescending(e => e.DataNotificacao).ToList();
 
             return PartialView("_NotificacaoPartial", model);
+        }
+
+        [Authorize]
+        public void NotificationVisualizada(List<string> Notificacoes)
+        {
+            if (Notificacoes != null) 
+            {
+                int Id;
+                foreach (var notificacaoId in Notificacoes)
+                    if (int.TryParse(Util.Decrypt(notificacaoId), out Id))
+                        db.Notificacao.Find(Id).IsReaded = true;
+                db.SaveChanges();
+            }
         }
 
         [Authorize]

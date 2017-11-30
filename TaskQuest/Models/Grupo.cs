@@ -20,7 +20,18 @@ namespace TaskQuest.Models
 
         public string Nome { get; set; }
 
-        public string Cor { get; set; }
+        private string _Cor;
+        public string Cor
+        {
+            get { return _Cor; }
+            set
+            {
+                if (value == "#fff" || value == "#ffffff")
+                    _Cor = "#106494";
+                else
+                    _Cor = value;
+            }
+        }
 
         public DateTime DataCriacao { get; set; }
 

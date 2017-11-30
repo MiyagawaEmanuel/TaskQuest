@@ -16,6 +16,17 @@
 
 /* Layout CSS */
 
+.elements{
+    display: flex;
+    justify-content: space-around;
+    width: 45%;
+}
+
+.icon-container{
+    width: 20%;
+    justify-content: initial !important;
+}
+
 input:focus {
     border-color: #106494 !important;
 }
@@ -41,6 +52,10 @@ header {
 .dropdown-menu, dropdown-notificacao {
     left: initial;
     right: 0;
+}
+
+.notify-item{
+    padding: 0;
 }
 
 .notify{

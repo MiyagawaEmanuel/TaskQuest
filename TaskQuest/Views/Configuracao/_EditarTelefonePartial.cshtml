@@ -7,11 +7,11 @@
         <li class="li-hidden icon-black">
             <a onclick="submit('@Html.ToString("formTelefone"+@Model.Item1)', '/Configuracao/EditarTelefone')" title="Salvar"><i class="fa fa-save" aria-hidden="true"></i></a>
         </li>
-        <div>
+        <div class="largura">
             <input type="text" class="form-control" value="@Model.Item2.Tipo" name="Item2.Tipo" id="Item2.Tipo">
             <label for="Item2.Tipo"></label>
         </div>
-        <div>
+        <div class="largura">
             <input type="text" class="form-control TelefoneNumero" value="@Model.Item2.Numero" name="Item2.Numero" id="Item2.Numero">
             <label for="Item2.Numero"></label>
         </div>

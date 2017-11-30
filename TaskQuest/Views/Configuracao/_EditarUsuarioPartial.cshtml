@@ -4,15 +4,15 @@
     <input type="hidden" value="@Model.Id" name="Id" id="Id" required />
     @Html.AntiForgeryToken()
     <div class="flex-properties-r">
-        <div>
+        <div class="largura">
             <input type="text" class="form-control" value="@Model.Nome" name="Nome" id="Nome" required>
             <label for="Nome"></label>
         </div>
-        <div>
+        <div class="largura">
             <input type="text" class="form-control" value="@Model.Sobrenome" name="Sobrenome" id="Sobrenome" required>
             <label for="Sobrenome"></label>
         </div>
-        <div>
+        <div class="largura">
             <input type="date" class="form-control" name="DataNascimento" id="DataNascimento" value="@Model.DataNascimento" required>
             <label for="DataNascimento"></label>
         </div>

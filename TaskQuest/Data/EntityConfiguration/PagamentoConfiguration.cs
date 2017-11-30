@@ -16,8 +16,7 @@ namespace TaskQuest.Data.EntityConfiguration
 
             HasKey(e => e.Id)
                 .Property(e => e.Id)
-                .HasColumnName("pag_id")
-                .HasDatabaseGeneratedOption(DatabaseGeneratedOption.Identity);
+                .HasColumnName("pag_id");
 
             Property(e => e.Code)
                 .HasColumnName("pag_code")

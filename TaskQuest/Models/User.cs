@@ -31,7 +31,18 @@ namespace TaskQuest.Models
 
         public string Sexo { get; set; }
 
-        public string Cor { get; set; }
+        private string _Cor;
+        public string Cor 
+        { 
+            get { return _Cor; } 
+            set 
+            {
+                if (value == "#fff" || value == "#ffffff")
+                    _Cor = "#106494";
+                else
+                    _Cor = value;
+            } 
+        }
 
         public virtual ICollection<Mensagem> RemetenteMensagens { get; set; }
 

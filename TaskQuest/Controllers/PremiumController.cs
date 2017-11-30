@@ -54,11 +54,14 @@ namespace TaskQuest.Controllers
                     PreApprovalName = Util.CreateRandomString(),
                     ReceiverEmail = ConfigurationManager.AppSettings["PagSeguroEmail"],
                     Reference = Util.CreateRandomString(),
-                    RedirectURL = Url.Action("PremiumAguardandoPagamento"),
                     SenderEmail = user.Email,
                     SenderName = user.Nome + " " + user.Sobrenome,
 
-                    ReviewURL = Url.Action("ReceberNotificacao"),
+                    RedirectURL = "google.com",
+                    //RedirectURL = Request.Url.AbsoluteUri + Url.Action("PremiumAguardandoPagamento").Remove(0,1),
+
+                    ReviewURL = "google.com"
+                    //ReviewURL = Request.Url.AbsoluteUri + Url.Action("ReceberNotificacao").Remove(0,1),
                 };
                 var data = a.CriarAssinatura();
                 if (data != null)
@@ -74,7 +77,6 @@ namespace TaskQuest.Controllers
 
                     return View(new Tuple<string>(string.Format("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}", data["code"])));
                 }
-                return View(new Tuple<string>("https://pagseguro.uol.com.br/v2/pre-approvals/request.html?code={0}"));
             }
             TempData["Alerta"] = "Algo deu errado";
             TempData["Classe"] = "yellow-alert";
