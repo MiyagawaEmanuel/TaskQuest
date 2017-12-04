@@ -72,7 +72,7 @@ namespace TaskQuest.PagSeguro
                     }
                     return (HttpWebResponse)request.GetResponse();
                 }
-                catch (WebException e) { return null; }
+                catch (WebException) { return null; }
             }
             return null;
         }

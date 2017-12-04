@@ -50,6 +50,6 @@
 @if (qtd_notificacao > 0)
 {
     <div>
-        <span class="w3-badge" id="badge" data-color="@User.Identity.GetCor()">@qtd_notificacao</span>
+        <span class="w3-badge" id="badge" style="background-color: @Util.InvertColor(User.Identity.GetCor()); color: @User.Identity.GetCor()">@qtd_notificacao</span>
     </div>
 }

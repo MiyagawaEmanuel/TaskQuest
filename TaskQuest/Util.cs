@@ -5,6 +5,8 @@ using System.ComponentModel.DataAnnotations;
 using System.Configuration;
 using System.Data.Entity;
 using System.Data.Entity.Infrastructure;
+using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Net.NetworkInformation;
@@ -232,6 +234,26 @@ namespace TaskQuest
         {
             return string.Format("<span class='limit-lines'><span>{0}</span></span>", @string);
         }
+
+        public static string InvertColor(string hex) 
+        {
+            if (hex[0] == '#')
+                hex = hex.Remove(0, 1);
+            var charHex = hex.ToCharArray();
+
+            if (charHex.Count() == 3) 
+                hex = charHex[0].ToString() + charHex[0] + charHex[1] + charHex[1] + charHex[2] + charHex[2];
+    
+            if (charHex.Count() != 6) 
+                return null;
+
+            var r = (255 - Convert.ToInt32(new String(hex.ToCharArray(0, 2)), 16)).ToString("X2");
+            var g = (255 - Convert.ToInt32(new String(hex.ToCharArray(2, 2)), 16)).ToString("X2");
+            var b = (255 - Convert.ToInt32(new String(hex.ToCharArray(4, 2)), 16)).ToString("X2");
+
+            return '#' + r + g + b;
+        }
+
     }
 
     public class Date : ValidationAttribute

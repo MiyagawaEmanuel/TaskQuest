@@ -68,7 +68,7 @@ namespace TaskQuest.PagSeguro
                 else
                     return null;
             }
-            catch (WebException ex)
+            catch (WebException)
             {
                 var doc = new XmlDocument();
                 //return Service.ReadXml(XDocument.Load(ex.Response.GetResponseStream()));
