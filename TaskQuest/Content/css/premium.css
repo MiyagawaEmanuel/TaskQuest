@@ -80,3 +80,11 @@
 .premium-body li{
 	height: 42px;
 }
+
+.pag-img{
+    height: auto;
+}
+
+.pag-img img{
+    width: 40%;
+}

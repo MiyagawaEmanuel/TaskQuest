@@ -51,9 +51,9 @@
             <div class="flex-properties-r pads icon-black">
                 @if (Util.IsPremium(Model.Id))
                 {
-                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("PremiumPropaganda", Model.Id, "/Premium/PremiumPropaganda", false))
-                    <a onclick="link(PremiumPropaganda)"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
-                    <h3><a onclick="link(PremiumPropaganda)">Premium</a></h3>
+                    @Html.Partial("_LinkPartial", new TaskQuest.ViewModels.LinkViewModel("PremiumCriarAssinatura", Model.Id, "/Premium/CriarAssinatura", false))
+                    <a onclick="link(PremiumCriarAssinatura)"><i class="fa fa-diamond elipse" aria-hidden="true"></i></a>
+                    <h3><a onclick="link(PremiumCriarAssinatura)">Premium</a></h3>
                 }
                 else
                 {

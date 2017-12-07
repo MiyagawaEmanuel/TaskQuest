@@ -22,19 +22,6 @@ namespace TaskQuest.Controllers
     {
         private static DbContext db = new DbContext();
 
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public ActionResult PremiumPropaganda(LinkViewModel model)
-        {
-            int Id;
-            if (int.TryParse(Util.Decrypt(model.Hash), out Id))
-                return View(new Tuple<string>(model.Hash));
-
-            TempData["Alerta"] = "Algo deu errado";
-            TempData["Classe"] = "yellow-alert";
-            return RedirectToAction("Inicio", "Home");
-        }
-
         //Criar requisição de pagamento
         [HttpPost]
         [ValidateAntiForgeryToken]

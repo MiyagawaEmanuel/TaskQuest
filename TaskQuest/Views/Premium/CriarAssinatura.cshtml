@@ -5,10 +5,31 @@
     ViewBag.Title = "Confirmação de Assinatura";
 }
 
-<section class="background-page flex-properties-c">
-    <div class="flex-properties-c">
-        <span class="messages-1">PagSeguro</span>
-        <span class="messages-2">Ao clicar no link abaixo, você confirma o upgrade do grupo para o Plano Premium</span>
-        <span class="messages-2"><a class="link" href="@Model.Item1">Confirmar Assinatura</a></span>
+@section css{
+    <link rel="stylesheet" href="~/Content/css/premium.css" />
+}
+
+<section class="pads-bot">
+    <div class="flex-properties-r">
+        <div class="title-a" style="color: @User.Identity.GetCor()"><h2>Premium</h2></div>
+        <div class="title-b">
+        </div>
+    </div>
+</section>
+
+<section class="margintop">
+    <div class="premium flex-premium">
+        <div class="flex-premium premium-header">
+            <h4>Plano Premium</h4>
+            <h1>R$ 40/m</h1>
+        </div>
+        <ul class="flex-premium premium-body">
+            <li>Adiciona diversas funcionalidades no seu grupo</li>
+            <li>Convide muito mais integrantes para seu grupo</li>
+            <li>Tenha mais de um administrador</li>
+            <li>Gere gráficos de desempenho individual e coletivo de vários tipos</li>
+            <li class="pag-img"><img src="~/Content/img/pagseguro.png" /></li>
+            <li><a class="link" href="@Model.Item1">Começar</a></li>
+        </ul>
     </div>
 </section>
